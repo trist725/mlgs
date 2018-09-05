@@ -1,5 +1,0 @@
-package gate
-
-func init() {
-
-}

@@ -1,4 +1,4 @@
-Leaf server
+My Leaf Game Server
 ===========
 A game server based on [Leaf framework](https://github.com/name5566/leaf).
 
