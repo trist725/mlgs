@@ -53,7 +53,7 @@ rpc:
 
 model:
 	@echo $(shell date "+%F %R:%S")
-	cd $(WORK_DIR)/src/model; go generate; go test
+	cd $(WORK_DIR)/src/model; ./gen.sh
 
 gateway:
 	@echo $(shell date "+%F %R:%S")

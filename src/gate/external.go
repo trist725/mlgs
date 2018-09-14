@@ -1,7 +1,7 @@
 package gate
 
 import (
-	"gate/internal"
+	"mlgs/src/gate/internal"
 )
 
 var (

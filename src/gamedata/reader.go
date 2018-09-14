@@ -1,8 +1,8 @@
 package gamedata
 
 import (
-	"github.com/name5566/leaf/log"
-	"github.com/name5566/leaf/recordfile"
+	"github.com/trist725/myleaf/log"
+	"github.com/trist725/myleaf/recordfile"
 	"reflect"
 )
 

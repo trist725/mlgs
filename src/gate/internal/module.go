@@ -1,10 +1,10 @@
 package internal
 
 import (
-	"github.com/name5566/leaf/gate"
-	"conf"
-	"game"
-	"msg"
+	"github.com/trist725/myleaf/gate"
+	"mlgs/src/conf"
+	"mlgs/src/game"
+	"mlgs/src/msg"
 )
 
 type Module struct {

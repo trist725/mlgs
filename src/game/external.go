@@ -1,7 +1,7 @@
 package game
 
 import (
-	"game/internal"
+	"mlgs/src/game/internal"
 )
 
 var (

@@ -1,8 +1,8 @@
 package internal
 
 import (
-	"github.com/name5566/leaf/module"
-	"base"
+	"github.com/trist725/myleaf/module"
+	"mlgs/src/base"
 )
 
 var (

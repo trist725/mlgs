@@ -2,7 +2,7 @@
 	"LogLevel": "debug",
 	"LogPath": "",
 	"TCPAddr": "0.0.0.0:6666",
-	"MaxConnNum": 20000,
+	"MaxConnNum": 10000,
 	"ConsolePort": 3333
 }
 
