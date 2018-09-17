@@ -1,0 +1,34 @@
+syntax="proto3";
+
+package model;
+
+enum E_UserSex {
+    UserSex_ = 0;
+    /// 男性
+    Male = 1;
+    /// 女性
+    Female = 2;
+}
+
+/// 用户数据
+//@collection
+message User {
+    /// 用户性别枚举
+    /// 用户id
+    //@_id
+    int64 ID = 1;
+    /// 帐号id
+    int64 AccountID = 2;
+    /// 服务器ID
+    int32 ServerID = 3;
+    /// 名字
+    string Name = 4;
+    /// 性别
+    E_UserSex Sex = 5;
+    /// 创建时刻
+    int64 CreateTime = 6;
+    /// 上次登录时刻
+    int64 LastLoginTime = 7;
+    /// 上次登出时刻
+    int64 LastLogoutTime = 8;
+}
