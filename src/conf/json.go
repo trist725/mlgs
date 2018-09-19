@@ -6,12 +6,6 @@ import (
 	"io/ioutil"
 )
 
-type MongoDB struct {
-	Url        string
-	SessionNum int
-	Name       string
-}
-
 var Server struct {
 	LogLevel      string
 	LogPath       string
