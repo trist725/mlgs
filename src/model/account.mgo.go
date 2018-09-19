@@ -11,7 +11,7 @@ package model
 import "fmt"
 import "encoding/json"
 import "sync"
-import "github.com/name5566/leaf/db/mongodb"
+import "github.com/trist725/myleaf/db/mongodb"
 import "gopkg.in/mgo.v2"
 
 var _ = fmt.Sprintf
@@ -25,36 +25,22 @@ var _ *mgo.DBRef
 
 /// 帐号表 @collection
 type Account struct {
-	/// 帐号id @_id
+	/// 帐号id,mongodb默认主键 @_id
 	ID int64 `bson:"ID"`
-	/// 帐号名
-	Name string `bson:"Name"`
-	/// 游客名
-	VName string `bson:"VName"`
-	/// 密码
-	Password string `bson:"Password"`
-	/// 注册时间
+	/// 唯一id
+	UID string `bson:"UID"`
+	/// 密码 string Password = 4; / 注册时间
 	RegisterTime int64 `bson:"RegisterTime"`
-	/// 帐号状态 1=游客, 2=注册, 3=绑定
-	State E_AccountState `bson:"State"`
-	/// 密钥
-	Token string `bson:"Token"`
-	/// 上次服务器ID
-	LastLoginServerID int32 `bson:"LastLoginServerID"`
-	/// 登录过服务器ID列表
-	LoginList []int32 `bson:"LoginList"`
-	/// 渠道名
-	ChannelName string `bson:"ChannelName"`
-	/// 渠道帐号
-	ChannelAccount string `bson:"ChannelAccount"`
-	/// 封号标记
+	///token校验    string accessToken = 6;    string refreshToken = 7; /登陆地理位置
+	Location string `bson:"Location"`
+	///密码
+	Password string `bson:"Password"`
+	/// 帐号状态 1=游客, 2=注册, 3=绑定 E_AccountState State = 6; / 密钥 string Token = 7; / 上次服务器ID int32 LastLoginServerID = 8; / 登录过服务器ID列表 repeated int32 LoginList = 9; / 渠道名 string ChannelName = 10; / 渠道帐号 string ChannelAccount = 11; / 封号标记,1为被封
 	Ban int32 `bson:"Ban"`
 }
 
 func New_Account() *Account {
-	m := &Account{
-		LoginList: []int32{},
-	}
+	m := &Account{}
 	return m
 }
 
@@ -65,16 +51,10 @@ func (m Account) String() string {
 
 func (m *Account) Reset() {
 	m.ID = 0
-	m.Name = ""
-	m.VName = ""
-	m.Password = ""
+	m.UID = ""
 	m.RegisterTime = 0
-	m.State = 0
-	m.Token = ""
-	m.LastLoginServerID = 0
-	m.LoginList = []int32{}
-	m.ChannelName = ""
-	m.ChannelAccount = ""
+	m.Location = ""
+	m.Password = ""
 	m.Ban = 0
 
 }
@@ -86,23 +66,10 @@ func (m Account) Clone() *Account {
 	}
 
 	n.ID = m.ID
-	n.Name = m.Name
-	n.VName = m.VName
-	n.Password = m.Password
+	n.UID = m.UID
 	n.RegisterTime = m.RegisterTime
-	n.State = m.State
-	n.Token = m.Token
-	n.LastLoginServerID = m.LastLoginServerID
-
-	if len(m.LoginList) > 0 {
-		n.LoginList = make([]int32, len(m.LoginList))
-		copy(n.LoginList, m.LoginList)
-	} else {
-		n.LoginList = []int32{}
-	}
-
-	n.ChannelName = m.ChannelName
-	n.ChannelAccount = m.ChannelAccount
+	n.Location = m.Location
+	n.Password = m.Password
 	n.Ban = m.Ban
 
 	return n

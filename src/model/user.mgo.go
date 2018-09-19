@@ -11,7 +11,7 @@ package model
 import "fmt"
 import "encoding/json"
 import "sync"
-import "github.com/name5566/leaf/db/mongodb"
+import "github.com/trist725/myleaf/db/mongodb"
 import "gopkg.in/mgo.v2"
 
 var _ = fmt.Sprintf
@@ -29,22 +29,26 @@ type User struct {
 	ID int64 `bson:"ID"`
 	/// 帐号id
 	AccountID int64 `bson:"AccountID"`
-	/// 服务器ID
-	ServerID int32 `bson:"ServerID"`
-	/// 名字
-	Name string `bson:"Name"`
+	///头像url
+	AvatarURL string `bson:"AvatarURL"`
+	/// 服务器ID int32 ServerID = 3; / 名字
+	NickName string `bson:"NickName"`
 	/// 性别
-	Sex E_UserSex `bson:"Sex"`
+	Sex string `bson:"Sex"`
 	/// 创建时刻
 	CreateTime int64 `bson:"CreateTime"`
 	/// 上次登录时刻
 	LastLoginTime int64 `bson:"LastLoginTime"`
 	/// 上次登出时刻
 	LastLogoutTime int64 `bson:"LastLogoutTime"`
+	/// 货币信息
+	Monies []*Money `bson:"Monies"`
 }
 
 func New_User() *User {
-	m := &User{}
+	m := &User{
+		Monies: []*Money{},
+	}
 	return m
 }
 
@@ -56,12 +60,17 @@ func (m User) String() string {
 func (m *User) Reset() {
 	m.ID = 0
 	m.AccountID = 0
-	m.ServerID = 0
-	m.Name = ""
-	m.Sex = 0
+	m.AvatarURL = ""
+	m.NickName = ""
+	m.Sex = ""
 	m.CreateTime = 0
 	m.LastLoginTime = 0
 	m.LastLogoutTime = 0
+
+	for _, i := range m.Monies {
+		Put_Money(i)
+	}
+	m.Monies = []*Money{}
 
 }
 
@@ -73,12 +82,24 @@ func (m User) Clone() *User {
 
 	n.ID = m.ID
 	n.AccountID = m.AccountID
-	n.ServerID = m.ServerID
-	n.Name = m.Name
+	n.AvatarURL = m.AvatarURL
+	n.NickName = m.NickName
 	n.Sex = m.Sex
 	n.CreateTime = m.CreateTime
 	n.LastLoginTime = m.LastLoginTime
 	n.LastLogoutTime = m.LastLogoutTime
+
+	if len(m.Monies) > 0 {
+		for _, i := range m.Monies {
+			if i != nil {
+				n.Monies = append(n.Monies, i.Clone())
+			} else {
+				n.Monies = append(n.Monies, nil)
+			}
+		}
+	} else {
+		n.Monies = []*Money{}
+	}
 
 	return n
 }

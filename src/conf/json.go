@@ -6,16 +6,25 @@ import (
 	"io/ioutil"
 )
 
+type MongoDB struct {
+	Url        string
+	SessionNum int
+	Name       string
+}
+
 var Server struct {
-	LogLevel    string
-	LogPath     string
-	WSAddr      string
-	CertFile    string
-	KeyFile     string
-	TCPAddr     string
-	MaxConnNum  int
-	ConsolePort int
-	ProfilePath string
+	LogLevel      string
+	LogPath       string
+	WSAddr        string
+	CertFile      string
+	KeyFile       string
+	TCPAddr       string
+	MaxConnNum    int
+	ConsolePort   int
+	ProfilePath   string
+	MgoUrl        string
+	MgoSessionNum int
+	MgoName       string
 }
 
 func init() {

@@ -3,42 +3,47 @@ syntax="proto3";
 package model;
 
 /// 帐号状态
-enum E_AccountState {
-    State_ = 0;
-    /// 游客
-    Visitor = 1;
-    /// 注册
-    Register = 2;
-    /// 绑定
-    Bind = 3;
-}
+//enum E_AccountState {
+//    State_ = 0;
+//    /// 游客
+//    Visitor = 1;
+//    /// 注册
+//    Register = 2;
+//    /// 绑定
+//    Bind = 3;
+//}
 
 /// 帐号表
 //@collection
 message Account {
-    /// 帐号id
+    /// 帐号id,mongodb默认主键
     //@_id
     int64 ID = 1;
-    /// 帐号名
-    string Name = 2;
-    /// 游客名
-    string VName = 3;
+    /// 唯一id
+    string UID = 2;
     /// 密码
-    string Password = 4;
+    //string Password = 4;
     /// 注册时间
     int64 RegisterTime = 5;
+    ///token校验
+//    string accessToken = 6;
+//    string refreshToken = 7;
+    ///登陆地理位置
+    string location = 8;
+    ///密码
+    string password = 9;
     /// 帐号状态 1=游客, 2=注册, 3=绑定
-    E_AccountState State = 6;
+    //E_AccountState State = 6;
     /// 密钥
-    string Token = 7;
+    //string Token = 7;
     /// 上次服务器ID
-    int32 LastLoginServerID = 8;
+    //int32 LastLoginServerID = 8;
     /// 登录过服务器ID列表
-    repeated int32 LoginList = 9;
+    //repeated int32 LoginList = 9;
     /// 渠道名
-    string ChannelName = 10;
+    //string ChannelName = 10;
     /// 渠道帐号
-    string ChannelAccount = 11;
-    /// 封号标记
+    //string ChannelAccount = 11;
+    /// 封号标记,1为被封
     int32 Ban = 12;
 }

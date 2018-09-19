@@ -1,12 +1,10 @@
 package gate
 
 import (
-	"mlgs/src/game"
+	"login"
 	"mlgs/src/msg"
 )
 
 func init() {
-	msg.Processor.SetRouter(&msg.C2S_Login{}, game.ChanRPC)
-	msg.Processor.SetRouter(&msg.S2C_LoginFailed{}, game.ChanRPC)
-	msg.Processor.SetRouter(&msg.S2C_LoginSucced{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_Login{}, login.ChanRPC)
 }

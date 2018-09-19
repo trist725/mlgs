@@ -2,11 +2,13 @@ package main
 
 import (
 	"conf"
+	"fmt"
 	"game"
 	"gate"
 	"github.com/trist725/myleaf"
 	lconf "github.com/trist725/myleaf/conf"
 	"login"
+	"mlgs/src/model"
 )
 
 func main() {
@@ -16,9 +18,15 @@ func main() {
 	lconf.ConsolePort = conf.Server.ConsolePort
 	lconf.ProfilePath = conf.Server.ProfilePath
 
+	if err := model.Init(conf.Server.MgoUrl, conf.Server.MgoSessionNum, conf.Server.MgoName); err != nil {
+		fmt.Println(err)
+	}
+	defer model.Release()
+
 	leaf.Run(
 		game.Module,
 		gate.Module,
 		login.Module,
 	)
+
 }
