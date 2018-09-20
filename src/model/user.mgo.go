@@ -25,10 +25,12 @@ var _ *mgo.DBRef
 
 /// 用户数据 @collection
 type User struct {
-	/// 用户性别枚举 / 用户id @_id
+	/// 用户id @_id
 	ID int64 `bson:"ID"`
 	/// 帐号id
 	AccountID int64 `bson:"AccountID"`
+	///等级
+	Level int32 `bson:"Level"`
 	///头像url
 	AvatarURL string `bson:"AvatarURL"`
 	/// 服务器ID int32 ServerID = 3; / 名字
@@ -41,13 +43,18 @@ type User struct {
 	LastLoginTime int64 `bson:"LastLoginTime"`
 	/// 上次登出时刻
 	LastLogoutTime int64 `bson:"LastLogoutTime"`
-	/// 货币信息
+	///货币信息
 	Monies []*Money `bson:"Monies"`
+	///物品
+	Items []*Item `bson:"Items"`
+	///经验
+	Exp int64 `bson:"Exp"`
 }
 
 func New_User() *User {
 	m := &User{
 		Monies: []*Money{},
+		Items:  []*Item{},
 	}
 	return m
 }
@@ -60,6 +67,7 @@ func (m User) String() string {
 func (m *User) Reset() {
 	m.ID = 0
 	m.AccountID = 0
+	m.Level = 0
 	m.AvatarURL = ""
 	m.NickName = ""
 	m.Sex = ""
@@ -72,6 +80,12 @@ func (m *User) Reset() {
 	}
 	m.Monies = []*Money{}
 
+	for _, i := range m.Items {
+		Put_Item(i)
+	}
+	m.Items = []*Item{}
+	m.Exp = 0
+
 }
 
 func (m User) Clone() *User {
@@ -82,6 +96,7 @@ func (m User) Clone() *User {
 
 	n.ID = m.ID
 	n.AccountID = m.AccountID
+	n.Level = m.Level
 	n.AvatarURL = m.AvatarURL
 	n.NickName = m.NickName
 	n.Sex = m.Sex
@@ -100,6 +115,20 @@ func (m User) Clone() *User {
 	} else {
 		n.Monies = []*Money{}
 	}
+
+	if len(m.Items) > 0 {
+		for _, i := range m.Items {
+			if i != nil {
+				n.Items = append(n.Items, i.Clone())
+			} else {
+				n.Items = append(n.Items, nil)
+			}
+		}
+	} else {
+		n.Items = []*Item{}
+	}
+
+	n.Exp = m.Exp
 
 	return n
 }

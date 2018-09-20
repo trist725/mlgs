@@ -5,11 +5,11 @@ package msg;
 //@msg
 message C2S_Login{
     ///微信登陆时是微信uid,游客登陆时是手机唯一标识
-    string uid=1;
+    string UID=1;
     ///用户昵称
-    string nickname=2;
+    string NickName = 2;
     ///用户头像url
-    string head=3;
+    string AvatarURL = 3;
     ///性别
     string sex = 4;
     //微信登陆传openid，游客登陆传空
@@ -30,14 +30,20 @@ message C2S_Login{
 //@msg
 message S2C_Login{
     enum E_ErrReason {
-        //成功登陆,将下发数据
-        E_Err_SucceeLogin=0;
-        //成功创建新账号,读表获取初始数据
-        E_Err_NewAccount=1;
-        //登陆信息不匹配,登陆失败
-        E_Err_LoginInfoNotMatch=2;
-        //验证通过,允许登陆,但登陆地点异常警告
-        E_Err_LocationWarn = 3;
+        ///保留
+        E_ErrReason_ = 0;
+        ///成功登陆,将下发数据
+        E_Err_LoginSuccess = 1;
+        ///成功创建新账号,读表获取初始数据
+        E_Err_NewAccount = 2;
+        ///登陆信息不匹配,登陆失败
+        E_Err_LoginInfoNotMatch = 3;
+        ///验证通过,允许登陆,但登陆地点异常警告
+        E_Err_LocationWarn = 4;
+        ///用户不存在
+        E_Err_UserNotExist = 5;
+        ///其它错误
+        E_Err_Unknown = 6;
     }
     E_ErrReason reason=1;
 }

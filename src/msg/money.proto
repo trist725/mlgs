@@ -1,0 +1,18 @@
+syntax="proto3";
+
+package msg;
+
+/// 用户货币信息
+message Money {
+    /// 类型, 1=金币,2=钻石,3=积分,
+    int32 Type = 1;
+    /// 数量
+    int64 Num = 2;
+}
+
+/// 更新货币
+//@msg
+message S2C_UpdateMoney {
+    /// 发生变更的货币列表
+    repeated Money Monies = 1;
+}

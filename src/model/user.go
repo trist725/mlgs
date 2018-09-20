@@ -1,22 +1,25 @@
 package model
 
 import (
+	"mlgs/src/msg"
 	"time"
 )
 
-func CreateUser(accountID int64, serverID int32, name string, sex string) (m *User, err error) {
+func CreateUser(accountID int64, recv *msg.C2S_Login) (m *User, err error) {
 	nextSeq, err := NextSeq(TblUser)
 	if err != nil {
 		return nil, err
 	}
 	now := time.Now()
 	m = Get_User()
-	m.ID = int64(nextSeq)*10000 + int64(serverID)
+	m.ID = int64(nextSeq) * 10000 //+ int64(serverID)
 	m.AccountID = accountID
-	m.NickName = name
-	m.Sex = sex
+	m.NickName = recv.NickName
+	m.Sex = recv.Sex
 	m.CreateTime = now.Unix()
 	m.LastLoginTime = now.Unix()
+	m.AvatarURL = recv.AvatarURL
+	m.Level = 1
 	return
 }
 

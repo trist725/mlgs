@@ -3,30 +3,37 @@ syntax="proto3";
 package model;
 
 import "money.proto";
+import "item.proto";
 
 /// 用户数据
 //@collection
 message User {
-    /// 用户性别枚举
     /// 用户id
     //@_id
     int64 ID = 1;
     /// 帐号id
     int64 AccountID = 2;
+    ///等级
+    int32 Level = 3;
     ///头像url
-    string AvatarURL = 3;
+    string AvatarURL = 4;
     /// 服务器ID
     //int32 ServerID = 3;
     /// 名字
-    string NickName = 4;
+    string NickName = 5;
     /// 性别
-    string Sex = 5;
+    string Sex = 6;
     /// 创建时刻
-    int64 CreateTime = 6;
+    int64 CreateTime = 7;
     /// 上次登录时刻
-    int64 LastLoginTime = 7;
+    int64 LastLoginTime = 8;
     /// 上次登出时刻
-    int64 LastLogoutTime = 8;
-    /// 货币信息
-    repeated Money Monies = 9;
+    int64 LastLogoutTime = 9;
+    ///货币信息
+    repeated Money Monies = 10;
+    ///物品
+    repeated Item Items = 11;
+    ///经验
+    int64 Exp = 12;
+    ///任务状态
 }

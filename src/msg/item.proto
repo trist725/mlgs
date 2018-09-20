@@ -1,0 +1,83 @@
+syntax="proto3";
+
+package msg;
+
+/// 用户物品信息
+message Item {
+    /// 唯一id
+    string UID = 1;
+    /// 类型id, item.xlsx中的id字段
+    int32 TID = 2;
+    /// 数量
+    int32 Num = 3;
+}
+
+/// 获得物品
+//@msg
+message S2C_GainItem {
+    /// 新物品列表
+    repeated Item Items = 1;
+}
+
+/// 失去物品
+//@msg
+message S2C_LostItem {
+    /// 失去的物品id列表
+    repeated string IDs = 1;
+}
+
+/// 更新物品
+//@msg
+message S2C_UpdateItem {
+    /// 发生变更的物品列表
+    repeated Item Items = 1;
+}
+
+///购买物品请求
+//@msg
+message C2S_BuyItem {
+    ///物品类型id
+    int32 TID = 1;
+    ///购买数量
+    int32 Num = 2;
+}
+
+///购买物品回复
+//@msg
+message S2C_BuyItem {
+    enum E_Error {
+        Error_ = 0;
+        OK = 1;
+    }
+    ///错误码
+    E_Error Err = 1;
+    ///物品类型id
+    int32 TID = 2;
+    ///购买数量
+    int32 Num = 3;
+}
+
+///使用物品请求
+//@msg
+message C2S_UseItem {
+    ///物品类型id
+    int32 TID = 1;
+    ///数量
+    int32 Num = 2;
+}
+
+///使用物品回复
+//@msg
+message S2C_UseItem {
+    enum E_Error {
+        Error_ = 0;
+        OK = 1;
+    }
+    ///错误码
+    E_Error Err = 1;
+    ///物品类型id
+    int32 TID = 2;
+    ///数量
+    int32 Num = 3;
+}
+
