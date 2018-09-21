@@ -4,7 +4,7 @@ import (
 	"github.com/trist725/myleaf/gate"
 )
 
-var agents = make(map[gate.Agent]struct{})
+var Agents = make(map[gate.Agent]struct{})
 
 func init() {
 	skeleton.RegisterChanRPC("NewAgent", rpcNewAgent)
@@ -13,14 +13,10 @@ func init() {
 
 func rpcNewAgent(args []interface{}) {
 	a := args[0].(gate.Agent)
-	agents[a] = struct{}{}
+	Agents[a] = struct{}{}
 }
 
 func rpcCloseAgent(args []interface{}) {
 	a := args[0].(gate.Agent)
-	delete(agents, a)
-}
-
-func GetAgents() map[gate.Agent]struct{} {
-	return agents
+	delete(Agents, a)
 }

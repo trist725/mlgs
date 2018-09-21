@@ -24,7 +24,6 @@ func handleLogin(args []interface{}) {
 	sender := args[1].(gate.Agent)
 	send := &msg.S2C_Login{}
 	defer sender.WriteMsg(send)
-
 	dbSession := model.GetSession()
 	defer model.PutSession(dbSession)
 
@@ -62,8 +61,10 @@ func handleLogin(args []interface{}) {
 			return
 		}
 
-		//agent和user绑定
-		sender.SetUserData(user)
+		//todo:agent和session绑定
+		//sender.SetUserData(user)
+		_ = user
+		account.Location = recv.Location
 		log.Debug("login success")
 		send.Reason = msg.S2C_Login_E_Err_LoginSuccess
 		return
@@ -89,6 +90,7 @@ func handleLogin(args []interface{}) {
 
 	//agent和user绑定
 	sender.SetUserData(newUser)
+
 
 	send.Reason = msg.S2C_Login_E_Err_NewAccount
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
