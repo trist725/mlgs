@@ -16,10 +16,10 @@ package model;
 /// 帐号表
 //@collection
 message Account {
-    /// 帐号id,mongodb默认主键
-    //@_id
+    /// mongodb默认主键_id做账号id
+    //@bson=_id
     int64 ID = 1;
-    /// 唯一id
+    /// 客户端传来的唯一id,如微信unionID
     string UID = 2;
     /// 密码
     //string Password = 4;

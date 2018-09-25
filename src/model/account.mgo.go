@@ -25,9 +25,9 @@ var _ *mgo.DBRef
 
 /// 帐号表 @collection
 type Account struct {
-	/// 帐号id,mongodb默认主键 @_id
-	ID int64 `bson:"ID"`
-	/// 唯一id
+	/// mongodb默认主键_id做账号id @bson=_id
+	ID int64 `bson:"_id"`
+	/// 客户端传来的唯一id,如微信unionID
 	UID string `bson:"UID"`
 	/// 密码 string Password = 4; / 注册时间
 	RegisterTime int64 `bson:"RegisterTime"`

@@ -265,15 +265,15 @@
                   <td>ID</td>
                   <td><a href="#int64">int64</a></td>
                   <td></td>
-                  <td><p>帐号id,mongodb默认主键
-@_id </p></td>
+                  <td><p>mongodb默认主键_id做账号id
+@bson=_id </p></td>
                 </tr>
               
                 <tr>
                   <td>UID</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>唯一id </p></td>
+                  <td><p>客户端传来的唯一id,如微信unionID </p></td>
                 </tr>
               
                 <tr>
@@ -457,8 +457,8 @@ string ChannelAccount = 11;
                   <td>ID</td>
                   <td><a href="#int64">int64</a></td>
                   <td></td>
-                  <td><p>用户id
-@_id </p></td>
+                  <td><p>mongodb默认主键_id做用户id
+@bson=_id </p></td>
                 </tr>
               
                 <tr>

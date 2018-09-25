@@ -25,8 +25,8 @@ var _ *mgo.DBRef
 
 /// 用户数据 @collection
 type User struct {
-	/// 用户id @_id
-	ID int64 `bson:"ID"`
+	/// mongodb默认主键_id做用户id @bson=_id
+	ID int64 `bson:"_id"`
 	/// 帐号id
 	AccountID int64 `bson:"AccountID"`
 	///等级
