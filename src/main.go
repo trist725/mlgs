@@ -2,7 +2,6 @@ package main
 
 import (
 	"conf"
-	"fmt"
 	"game"
 	"gate"
 	"github.com/trist725/myleaf"
@@ -19,7 +18,7 @@ func main() {
 	lconf.ProfilePath = conf.Server.ProfilePath
 
 	if err := model.Init(conf.Server.MgoUrl, conf.Server.MgoSessionNum, conf.Server.MgoName); err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 	defer model.Release()
 

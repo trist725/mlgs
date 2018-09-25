@@ -27,7 +27,7 @@ func handleLogin(args []interface{}) {
 	dbSession := model.GetSession()
 	defer model.PutSession(dbSession)
 
-	if account, err := checkAccountExist(recv.UID); err != nil {
+	if account, err := checkAccountExist(dbSession, recv.UID); err != nil {
 		log.Debug("login: %s", err)
 
 		if err = checkLoginInfo(account, recv); err != nil {
@@ -71,7 +71,7 @@ func handleLogin(args []interface{}) {
 	}
 
 	//创建新账号
-	newAccount, err := createAccount(recv)
+	newAccount, err := createAccount(dbSession, recv)
 	if err != nil {
 		send.Reason = msg.S2C_Login_E_Err_Unknown
 		sender.Close()
@@ -80,7 +80,7 @@ func handleLogin(args []interface{}) {
 	defer model.Put_Account(newAccount)
 
 	//创建新用户
-	newUser, err := createUser(newAccount.ID, recv)
+	newUser, err := createUser(dbSession, newAccount.ID, recv)
 	if err != nil {
 		send.Reason = msg.S2C_Login_E_Err_Unknown
 		sender.Close()
@@ -90,7 +90,6 @@ func handleLogin(args []interface{}) {
 
 	//agent和user绑定
 	sender.SetUserData(newUser)
-
 
 	send.Reason = msg.S2C_Login_E_Err_NewAccount
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

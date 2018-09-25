@@ -2,15 +2,13 @@ package internal
 
 import (
 	"fmt"
+	"github.com/trist725/myleaf/db/mongodb"
 	"gopkg.in/mgo.v2/bson"
 	"mlgs/src/model"
 	"mlgs/src/msg"
 )
 
-func checkAccountExist(uid string) (*model.Account, error) {
-	dbSession := model.GetSession()
-	defer model.PutSession(dbSession)
-
+func checkAccountExist(dbSession *mongodb.Session, uid string) (*model.Account, error) {
 	account, err := model.FindOne_Account(dbSession, bson.M{"UID": uid})
 	if err == nil {
 		return account, fmt.Errorf("account[uid: %s] already exist", uid)
@@ -32,10 +30,7 @@ func checkLoginInfo(account *model.Account, recv *msg.C2S_Login) error {
 	return nil
 }
 
-func createAccount(recv *msg.C2S_Login) (*model.Account, error) {
-	dbSession := model.GetSession()
-	defer model.PutSession(dbSession)
-
+func createAccount(dbSession *mongodb.Session, recv *msg.C2S_Login) (*model.Account, error) {
 	newAccount, err := model.CreateAccount(recv)
 	if err != nil {
 		return nil, fmt.Errorf("CreateAccount fail, %s", err)

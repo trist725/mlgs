@@ -6,7 +6,7 @@
 	"ConsolePort": 3333,
 
 	"MgoUrl": "mongodb://admin:admin111@192.168.101.100:27017/admin",
-	"MgoSessionNum": 1,
+	"MgoSessionNum": 100,
 	"MgoName": "dzpk"
 
 }
