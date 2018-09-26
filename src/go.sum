@@ -7,12 +7,8 @@ github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORN
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
-github.com/name5566/leaf v0.0.0-20180626144555-bfe29434ec36 h1:9BweOTyTbnnJ6huT7BJwshF4vzfLhko/h8iLJ13DwD8=
-github.com/name5566/leaf v0.0.0-20180626144555-bfe29434ec36/go.mod h1:JrOIxq3vDxvtuEI7Kmm2yqkuBfuT9DMLFMnCyYHLaKM=
-github.com/tealeg/xlsx v1.0.3 h1:BXsDIQYBPq2HgbwUxrsVXIrnO0BDxmsdUfHSfvwfBuQ=
-github.com/tealeg/xlsx v1.0.3/go.mod h1:uxu5UY2ovkuRPWKQ8Q7JG0JbSivrISjdPzZQKeo74mA=
-github.com/trist725/mgsu v0.0.0-20180912070731-42455ae37a12 h1:qlCk4eiXm41X235u8s0INjwpIF+knpoZ4IAb9+bBIoM=
-github.com/trist725/mgsu v0.0.0-20180912070731-42455ae37a12/go.mod h1:hr3Sim12prrHtBqc/3a4nBkTWhPfMXLx3yYk/AXjFgY=
+github.com/trist725/mgsu v0.0.0-20180925101614-524f46b485de h1:Du8S9dmmLmD8Q/MeMylcfQ1IVfea/VpHfDrNTZKHkcU=
+github.com/trist725/mgsu v0.0.0-20180925101614-524f46b485de/go.mod h1:hr3Sim12prrHtBqc/3a4nBkTWhPfMXLx3yYk/AXjFgY=
 github.com/trist725/myleaf v0.0.0-20180912090459-560d092705ea h1:li8wG8AhioA4VO/IZq7VXJRAL+ddAJp+u7ugrMInr7k=
 github.com/trist725/myleaf v0.0.0-20180912090459-560d092705ea/go.mod h1:mT+ihRlq8G7tIjAUMMpUeFUOx7wu4987G14EABZhZA4=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
