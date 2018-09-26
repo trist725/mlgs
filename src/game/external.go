@@ -2,7 +2,6 @@ package game
 
 import (
 	"mlgs/src/game/internal"
-	"github.com/trist725/myleaf/gate"
 )
 
 var (
@@ -10,6 +9,6 @@ var (
 	ChanRPC = internal.ChanRPC
 )
 
-func GetAgents() map[gate.Agent]struct{} {
-	return internal.Agents
-}
+//func GetAgents() map[gate.Agent]struct{} {
+//	return nil
+//}

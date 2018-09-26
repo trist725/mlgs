@@ -2,9 +2,8 @@ package internal
 
 import (
 	"github.com/trist725/myleaf/gate"
+	//s "mlgs/src/session"
 )
-
-var Agents = make(map[gate.Agent]struct{})
 
 func init() {
 	skeleton.RegisterChanRPC("NewAgent", rpcNewAgent)
@@ -13,10 +12,13 @@ func init() {
 
 func rpcNewAgent(args []interface{}) {
 	a := args[0].(gate.Agent)
-	Agents[a] = struct{}{}
+	_ = a
 }
 
 func rpcCloseAgent(args []interface{}) {
 	a := args[0].(gate.Agent)
-	delete(Agents, a)
+	_ = a
+	//mgr := s.GetSessionMgr()
+	//mgr.GetSession(a.UserData().(uint64)).Close()
+
 }

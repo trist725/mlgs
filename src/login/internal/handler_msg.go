@@ -6,15 +6,28 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"mlgs/src/model"
 	"mlgs/src/msg"
+	s "mlgs/src/session"
 	"reflect"
 )
 
 func init() {
 	regiserMsgHandle(&msg.C2S_Login{}, handleLogin)
+	regiserMsgHandle(&msg.C2S_UpdateUserData{}, handleUpdateUserData)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
 	skeleton.RegisterChanRPC(reflect.TypeOf(m), h)
+}
+
+func handleUpdateUserData(args []interface{}) {
+	// 收到的消息
+	//recv := args[0].(*msg.C2S_Login)
+	// 消息的发送者
+	sender := args[1].(gate.Agent)
+	send := &msg.S2C_Login{}
+	defer sender.WriteMsg(send)
+	dbSession := model.GetSession()
+	defer model.PutSession(dbSession)
 }
 
 func handleLogin(args []interface{}) {
@@ -28,8 +41,7 @@ func handleLogin(args []interface{}) {
 	defer model.PutSession(dbSession)
 
 	if account, err := checkAccountExist(dbSession, recv.UID); err != nil {
-		log.Debug("login: %s", err)
-
+		//登陆
 		if err = checkLoginInfo(account, recv); err != nil {
 			send.Reason = msg.S2C_Login_E_Err_LoginInfoNotMatch
 			log.Debug("login err: [%s]", err)
@@ -60,11 +72,8 @@ func handleLogin(args []interface{}) {
 			send.Reason = msg.S2C_Login_E_Err_UserNotExist
 			return
 		}
-
-		//todo:agent和session绑定
-		//sender.SetUserData(user)
-		_ = user
 		account.Location = recv.Location
+		s.NewSession(sender, account, user)
 		log.Debug("login success")
 		send.Reason = msg.S2C_Login_E_Err_LoginSuccess
 		return
@@ -88,9 +97,7 @@ func handleLogin(args []interface{}) {
 	}
 	defer model.Put_User(newUser)
 
-	//agent和user绑定
-	sender.SetUserData(newUser)
-
+	s.NewSession(sender, newAccount, newUser)
 	send.Reason = msg.S2C_Login_E_Err_NewAccount
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//logic.SetData(newUser)
