@@ -2,7 +2,7 @@ package internal
 
 import (
 	"github.com/trist725/myleaf/gate"
-	//s "mlgs/src/session"
+	s "mlgs/src/session"
 )
 
 func init() {
@@ -17,8 +17,14 @@ func rpcNewAgent(args []interface{}) {
 
 func rpcCloseAgent(args []interface{}) {
 	a := args[0].(gate.Agent)
-	_ = a
-	//mgr := s.GetSessionMgr()
-	//mgr.GetSession(a.UserData().(uint64)).Close()
+	//_ = a
+	a.Destroy()
+	if a.UserData() == nil {
+		return
+	}
+	mgr := s.GetSessionMgr()
+	if session := mgr.GetSession(a.UserData().(uint64)); session != nil {
+		session.Close()
+	}
 
 }

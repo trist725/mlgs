@@ -8,6 +8,7 @@ import (
 	lconf "github.com/trist725/myleaf/conf"
 	"login"
 	"mlgs/src/model"
+	"session"
 )
 
 func main() {
@@ -22,10 +23,13 @@ func main() {
 	}
 	defer model.Release()
 
+	initLogic()
+
 	leaf.Run(
 		game.Module,
 		gate.Module,
 		login.Module,
 	)
 
+	session.GetSessionMgr().Dispose()
 }

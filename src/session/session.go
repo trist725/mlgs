@@ -5,6 +5,8 @@ import (
 	"github.com/trist725/mgsu/event"
 	"github.com/trist725/myleaf/gate"
 	"log"
+	ext "mlgs/src/external"
+	l "mlgs/src/logic"
 	"mlgs/src/model"
 	"sync/atomic"
 )
@@ -16,6 +18,9 @@ type Session struct {
 	//定时写库
 	//timer
 	//sign string // 日志标识
+
+	//防循环引用
+	logicMap  map[l.ID]ext.ILogic
 	agent     gate.Agent
 	closeFlag int32
 	user      *model.User    // 需要保存到数据库的用户数据
@@ -35,11 +40,35 @@ func NewSession(agent gate.Agent, account *model.Account, user *model.User) *Ses
 	}
 	//用于从agent获取到session
 	session.agent.SetUserData(session.id)
+
+	session.logicMap = l.GenerateLogicMap(session)
+	if err := session.initLogic(); err != nil {
+		log.Fatal("init logicMap fail, %s", err)
+		return nil
+	}
+	session.runLogic()
+
 	if gSessionManager == nil {
 		log.Fatal("gSessionManager is nil")
 	}
 	gSessionManager.putSession(session)
+
 	return session
+}
+
+func (s *Session) initLogic() error {
+	for _, lm := range s.logicMap {
+		if err := lm.Init(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (s *Session) runLogic() {
+	for _, lm := range s.logicMap {
+		lm.Run()
+	}
 }
 
 func (s *Session) RegisterEventHandler(id event.ID, handler event.Handler) {
@@ -77,6 +106,13 @@ func (s *Session) SetUserData(user *model.User) {
 //func (s *Session) LeafAgent() *gate.Agent{
 //	return s.agent
 //}
+
+func (s *Session) GetLogic(id l.ID) ext.ILogic {
+	if lm, ok := s.logicMap[id]; ok {
+		return lm
+	}
+	return nil
+}
 
 func (session *Session) IsClosed() bool {
 	return atomic.LoadInt32(&session.closeFlag) == 1

@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-var gSessionManager = NewManager()
+var gSessionManager = newManager()
 
 func GetSessionMgr() *Manager {
 	return gSessionManager
@@ -26,7 +26,7 @@ type sessionMap struct {
 	disposed bool
 }
 
-func NewManager() *Manager {
+func newManager() *Manager {
 	manager := &Manager{}
 	for i := 0; i < len(manager.sessionMaps); i++ {
 		manager.sessionMaps[i].sessions = make(map[uint64]*Session)

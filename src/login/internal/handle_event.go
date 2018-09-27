@@ -6,7 +6,7 @@ import (
 )
 
 func (logic *Logic) registerAllEventHandler() {
-	logic.s.RegisterEventHandler(ev.OnLoginID, handleOnLogin)
+	logic.RegisterEventHandler(ev.OnLoginID, handleOnLogin)
 }
 
 func handleOnLogin(iEv event.IEvent, args ...interface{}) {
