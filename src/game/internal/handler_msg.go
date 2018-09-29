@@ -5,7 +5,6 @@ import (
 )
 
 func init() {
-
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {

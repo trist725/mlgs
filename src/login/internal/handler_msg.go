@@ -1,17 +1,18 @@
 package internal
 
 import (
+	"fmt"
+	"game"
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
 	"gopkg.in/mgo.v2/bson"
 	"mlgs/src/model"
 	"mlgs/src/msg"
-	s "mlgs/src/session"
 	"reflect"
 )
 
 func init() {
-	regiserMsgHandle(&msg.C2S_Login{}, handleLogin)
+	regiserMsgHandle(&msg.C2S_Login{}, handleLoginAuth)
 	regiserMsgHandle(&msg.C2S_UpdateUserData{}, handleUpdateUserData)
 }
 
@@ -30,7 +31,8 @@ func handleUpdateUserData(args []interface{}) {
 	defer model.PutSession(dbSession)
 }
 
-func handleLogin(args []interface{}) {
+func handleLoginAuth(args []interface{}) {
+	fmt.Println("handleLoginAuth......")
 	// 收到的消息
 	recv := args[0].(*msg.C2S_Login)
 	// 消息的发送者
@@ -52,7 +54,6 @@ func handleLogin(args []interface{}) {
 			send.Reason = msg.S2C_Login_E_Err_LocationWarn
 		}
 
-		//todo:触发登陆事件,下发数据
 		//根据关联的accountID查找user
 		user, err := model.FindOne_User(
 			dbSession,
@@ -73,8 +74,7 @@ func handleLogin(args []interface{}) {
 			return
 		}
 		account.Location = recv.Location
-		s.NewSession(sender, account, user)
-		log.Debug("login success")
+		game.ChanRPC.Go("LoginAuthPass", sender, account, user)
 		send.Reason = msg.S2C_Login_E_Err_LoginSuccess
 		return
 	}
@@ -97,15 +97,6 @@ func handleLogin(args []interface{}) {
 	}
 	defer model.Put_User(newUser)
 
-	s.NewSession(sender, newAccount, newUser)
+	game.ChanRPC.Go("LoginAuthPass", sender, newAccount, newUser)
 	send.Reason = msg.S2C_Login_E_Err_NewAccount
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//logic.SetData(newUser)
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 同步触发创角事件
-	//logic.ProcessEvent(&game_ev.OnCreate{
-	//	AccountID: account.ID,
-	//	ServerID:  logic.cache.ServerID,
-	//	UserID:    newUser.ID,
-	//})
 }

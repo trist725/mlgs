@@ -9,6 +9,6 @@ var (
 	ChanRPC = internal.ChanRPC
 )
 
-//func GetAgents() map[gate.Agent]struct{} {
-//	return nil
-//}
+func Init() {
+	internal.Init()
+}

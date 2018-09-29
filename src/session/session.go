@@ -1,7 +1,6 @@
 package session
 
 import (
-	"fmt"
 	"github.com/trist725/mgsu/event"
 	"github.com/trist725/myleaf/gate"
 	"log"
@@ -43,13 +42,13 @@ func NewSession(agent gate.Agent, account *model.Account, user *model.User) *Ses
 
 	session.logicMap = l.GenerateLogicMap(session)
 	if err := session.initLogic(); err != nil {
-		log.Fatal("init logicMap fail, %s", err)
+		log.Fatal("init logicMap failed, %s", err)
 		return nil
 	}
 	session.runLogic()
 
 	if gSessionManager == nil {
-		log.Fatal("gSessionManager is nil")
+		panic("new session failed, because gSessionManager is nil")
 	}
 	gSessionManager.putSession(session)
 
@@ -118,10 +117,12 @@ func (session *Session) IsClosed() bool {
 	return atomic.LoadInt32(&session.closeFlag) == 1
 }
 
+//todo：更新最后登陆时间等,写库
+//todo：断线重连,deepcopy保存快照
 func (s *Session) Close() error {
 	if atomic.CompareAndSwapInt32(&s.closeFlag, 0, 1) {
 		if gSessionManager == nil {
-			return fmt.Errorf("close session faild because gSessionManager is nil")
+			panic("close session failed because gSessionManager is nil")
 		}
 		s.agent.Close()
 		gSessionManager.delSession(s)
