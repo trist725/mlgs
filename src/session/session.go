@@ -51,7 +51,6 @@ func NewSession(agent gate.Agent, account *model.Account, user *model.User) *Ses
 		panic("new session failed, because gSessionManager is nil")
 	}
 	gSessionManager.putSession(session)
-
 	return session
 }
 
