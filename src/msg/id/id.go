@@ -16,7 +16,8 @@ func Gen() {
 		if err != nil {
 			panic(err)
 		}
-		idMap[t.String()] = id
+		//5是过滤*msg.
+		idMap[t.String()[5:]] = id
 	})
 	defer f.Close()
 
