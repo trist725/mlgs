@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"fmt"
 	"game"
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
@@ -32,7 +31,6 @@ func handleUpdateUserData(args []interface{}) {
 }
 
 func handleLoginAuth(args []interface{}) {
-	fmt.Println("handleLoginAuth......")
 	// 收到的消息
 	recv := args[0].(*msg.C2S_Login)
 	// 消息的发送者
