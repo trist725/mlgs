@@ -1,6 +1,9 @@
 syntax ="proto3";
 package msg;
 
+import "money.proto";
+import "item.proto";
+
 ///登陆请求
 //@msg
 message C2S_Login{
@@ -48,21 +51,23 @@ message S2C_Login{
     E_ErrReason reason=1;
 }
 
-///玩家公开信息
+///登陆成功后下发信息
 //@msg
-message Player{
+message S2C_LoginInfo{
     ///玩家id
-    int32 id=1;
-    ///昵称
-    string nickname=2;
-    ///头像
-    string head=3;
-    ///金币
-    int32 money=4;
-    ///等级
-    int32 grade=5;
-    ///积分
-    int64 interial=6;
+    int64 ID = 1;
+    ///用户昵称
+    string NickName = 2;
+    ///头像url
+    string AvatarURL = 4;
+    ///货币信息
+    repeated Money Monies = 5;
+    ///今日是否已签到
+    bool DaySigned = 6;
+    ///已签到天数
+    int32 SignedDays = 7;
+    ///每日签到奖励,数组第几个代表第几天
+    repeated Item SignRewards = 8;
 }
 
 ///服务端大厅广播
@@ -75,32 +80,13 @@ message S2C_HallBroadCast{
 //@msg
 message C2S_Userinfo{
 }
-///服务端个人信息返回
-//@msg
-message S2C_Userinfo{
-    UserModel userinfo=1;
-}
-//@msg
-message UserModel{
-    ///公共信息
-    Player playerinfo=1;
-    ///局数
-    int64 jushu=2;
-    ///入场率     
-    int32 rujurate=3; 
-    ///胜率 
-    int32 shenglurate=4;
-    ///摊派率
-    int32 tanpairate=5;
-    ///最大牌型idlist
-    repeated string ids=6;
-}
 
 ///客户端向服务端发送商品列表请求
 //@msg
 message C2S_MallProduct { //空包
 	
 }
+
 ///服务端向客户端发送商品列表
 //@msg
 message S2C_MallProduct {

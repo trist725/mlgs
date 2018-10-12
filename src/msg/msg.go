@@ -12,5 +12,5 @@ func init() {
 
 	Processor.Register(&C2S_Login{})
 	Processor.Register(&S2C_Login{})
-	Processor.Register(&C2S_UpdateUserData{})
+	Processor.Register(&S2C_LoginInfo{})
 }

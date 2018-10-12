@@ -537,7 +537,28 @@ int32 ServerID = 3;
                   <td>Exp</td>
                   <td><a href="#int64">int64</a></td>
                   <td></td>
-                  <td><p>经验
+                  <td><p>经验 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>DaySigned</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>今日是否已签到 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>SignedDays</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>已签到天数 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>SignRewards</td>
+                  <td><a href="#model.Item">Item</a></td>
+                  <td>repeated</td>
+                  <td><p>每日签到奖励,数组第几个代表第几天
 
 
 任务状态 </p></td>

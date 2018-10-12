@@ -3,17 +3,15 @@ package internal
 import (
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
-	"github.com/trist725/myleaf/timer"
 	"mlgs/src/model"
 	s "mlgs/src/session"
-	"time"
 )
 
 func init() {
 	skeleton.RegisterChanRPC("NewAgent", rpcNewAgent)
 	skeleton.RegisterChanRPC("CloseAgent", rpcCloseAgent)
 	skeleton.RegisterChanRPC("LoginAuthPass", rpcHandleLoginAuthPass)
-
+	skeleton.RegisterChanRPC("AfterLoginAuthPass", handleAfterLoginAuthPass)
 }
 
 func rpcNewAgent(args []interface{}) {
@@ -54,18 +52,21 @@ func rpcHandleLoginAuthPass(args []interface{}) {
 
 	ns := s.NewSession(a, account, user)
 
+	//下发用户数据
+	ChanRPC.Go("AfterLoginAuthPass", a, user)
+
 	//定时写库
-	var f func()
-	var timer *timer.Timer
-	f = func() {
-		timer = skeleton.AfterFunc(saveIntervalMinute*time.Minute, func() {
-			f()
-			//实际要做的事
-			ns.SaveData()
-		})
-	}
-	ns.SetTimer(timer)
-	f()
+	//var f func()
+	//var timer *timer.Timer
+	//f = func() {
+	//	timer = skeleton.AfterFunc(2*time.Second, func() {
+	//		f()
+	//		//实际要做的事
+	//		ns.SaveData()
+	//	})
+	//}
+	//ns.SetTimer(timer)
+	//f()
 
 	log.Debug("[%s] login success", ns.Sign())
 }

@@ -142,7 +142,7 @@ func (s *Session) Close() error {
 			s.user.LastLogoutTime = time.Now().Unix()
 		}
 		s.SaveData()
-		s.timer.Stop()
+		//s.timer.Stop()
 		gSessionManager.delSession(s)
 	}
 	return nil

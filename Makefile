@@ -69,11 +69,11 @@ login:
 
 msg:
 	@echo $(shell date "+%F %R:%S")
-	cd $(WORK_DIR)/src/msg; ./gen.sh; go test
+	cd $(WORK_DIR)/src/msg; ./gen.sh
 
-game-sd:
+sd:
 	@echo $(shell date "+%F %R:%S")
-	cd $(WORK_DIR)/src/game/sd; go generate; go test
+	cd $(WORK_DIR)/src/sd; go generate
 
 game-cache:
 	@echo $(shell date "+%F %R:%S")

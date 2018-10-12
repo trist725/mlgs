@@ -1,0 +1,7 @@
+{
+  "ExcelDir": "../../xlsx",
+  "SourceCodeDir": ".",
+  "Debug": true,
+  "WhiteList": [],
+  "BlackList": []
+}
