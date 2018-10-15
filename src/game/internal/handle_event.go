@@ -8,6 +8,7 @@ import (
 	"mlgs/src/msg"
 )
 
+//每轮签到天数
 const signCountPerRound = 14
 
 func (logic *Logic) registerAllEventHandler() {

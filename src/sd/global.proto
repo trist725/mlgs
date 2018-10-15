@@ -1,0 +1,9 @@
+syntax="proto3";
+
+package sd;
+
+enum E_Global {
+    E_Global_ = 0;
+    ///初始用户数据在person表的id
+    E_Global_InitUserDataId = 1;
+}

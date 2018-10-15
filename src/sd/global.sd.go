@@ -3,7 +3,10 @@
 
 package sd
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"strconv"
+)
 import "fmt"
 import "log"
 import "path/filepath"
@@ -17,14 +20,10 @@ import "gitee.com/nggs/util"
 //import_extend_end
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-type Shop struct {
-	ID int64 `excel_column:"0" excel_name:"id"` // 编号
+type Global struct {
+	ID int64 `excel_column:"0" excel_name:"id"` // 公共配置表ID
 
-	Name string `excel_column:"1" excel_name:"name"` // 名称
-
-	Des string `excel_column:"2" excel_name:"des"` // 描述
-
-	Content []int `excel_column:"3" excel_name:"content"` // 内容
+	Value string `excel_column:"1" excel_name:"value"` // 配置值
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体扩展字段
@@ -33,8 +32,8 @@ type Shop struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func NewShop() *Shop {
-	sd := &Shop{}
+func NewGlobal() *Global {
+	sd := &Global{}
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体New代码
 	//struct_new_begin
@@ -43,17 +42,14 @@ func NewShop() *Shop {
 	return sd
 }
 
-func (sd Shop) String() string {
+func (sd Global) String() string {
 	ba, _ := json.Marshal(sd)
 	return string(ba)
 }
 
-func (sd Shop) Clone() *Shop {
-	n := NewShop()
+func (sd Global) Clone() *Global {
+	n := NewGlobal()
 	*n = sd
-
-	n.Content = make([]int, len(sd.Content))
-	copy(n.Content, sd.Content)
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体Clone代码
@@ -64,14 +60,14 @@ func (sd Shop) Clone() *Shop {
 	return n
 }
 
-func (sd *Shop) load(row *xlsx.Row) error {
+func (sd *Global) load(row *xlsx.Row) error {
 	return util.DeserializeStructFromExcelRow(sd, row)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-type ShopManager struct {
-	dataArray []*Shop
-	dataMap   map[int64]*Shop
+type GlobalManager struct {
+	dataArray []*Global
+	dataMap   map[int64]*Global
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加manager扩展字段
@@ -80,10 +76,10 @@ type ShopManager struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func newShopManager() *ShopManager {
-	mgr := &ShopManager{
-		dataArray: []*Shop{},
-		dataMap:   make(map[int64]*Shop),
+func newGlobalManager() *GlobalManager {
+	mgr := &GlobalManager{
+		dataArray: []*Global{},
+		dataMap:   make(map[int64]*Global),
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +91,7 @@ func newShopManager() *ShopManager {
 	return mgr
 }
 
-func (mgr *ShopManager) Load(excelFilePath string) (success bool) {
+func (mgr *GlobalManager) Load(excelFilePath string) (success bool) {
 	success = true
 
 	absExcelFilePath, err := filepath.Abs(excelFilePath)
@@ -141,7 +137,7 @@ func (mgr *ShopManager) Load(excelFilePath string) (success bool) {
 			}
 		}
 
-		sd := NewShop()
+		sd := NewGlobal()
 		err = sd.load(row)
 		if err != nil {
 			log.Printf("%s 加载第%d行失败, %s\n", excelFilePath, i+1, err)
@@ -178,11 +174,11 @@ func (mgr *ShopManager) Load(excelFilePath string) (success bool) {
 	return
 }
 
-func (mgr ShopManager) Size() int {
+func (mgr GlobalManager) Size() int {
 	return len(mgr.dataArray)
 }
 
-func (mgr ShopManager) Get(id int64) *Shop {
+func (mgr GlobalManager) Get(id int64) *Global {
 	sd, ok := mgr.dataMap[id]
 	if !ok {
 		return nil
@@ -190,7 +186,7 @@ func (mgr ShopManager) Get(id int64) *Shop {
 	return sd.Clone()
 }
 
-func (mgr ShopManager) Each(f func(sd *Shop) bool) {
+func (mgr GlobalManager) Each(f func(sd *Global) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd.Clone()) {
 			break
@@ -198,7 +194,7 @@ func (mgr ShopManager) Each(f func(sd *Shop) bool) {
 	}
 }
 
-func (mgr *ShopManager) each(f func(sd *Shop) bool) {
+func (mgr *GlobalManager) each(f func(sd *Global) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd) {
 			break
@@ -206,7 +202,7 @@ func (mgr *ShopManager) each(f func(sd *Shop) bool) {
 	}
 }
 
-func (mgr ShopManager) findIf(f func(sd *Shop) bool) *Shop {
+func (mgr GlobalManager) findIf(f func(sd *Global) bool) *Global {
 	for _, sd := range mgr.dataArray {
 		if f(sd) {
 			return sd
@@ -215,7 +211,7 @@ func (mgr ShopManager) findIf(f func(sd *Shop) bool) *Shop {
 	return nil
 }
 
-func (mgr ShopManager) FindIf(f func(sd *Shop) bool) *Shop {
+func (mgr GlobalManager) FindIf(f func(sd *Global) bool) *Global {
 	for _, sd := range mgr.dataArray {
 		n := sd.Clone()
 		if f(n) {
@@ -225,7 +221,7 @@ func (mgr ShopManager) FindIf(f func(sd *Shop) bool) *Shop {
 	return nil
 }
 
-func (mgr ShopManager) check(excelFilePath string, row int, sd *Shop) error {
+func (mgr GlobalManager) check(excelFilePath string, row int, sd *Global) error {
 	if _, ok := mgr.dataMap[sd.ID]; ok {
 		return fmt.Errorf("%s 第%d行的id重复", excelFilePath, row)
 	}
@@ -239,11 +235,28 @@ func (mgr ShopManager) check(excelFilePath string, row int, sd *Shop) error {
 	return nil
 }
 
-func (mgr *ShopManager) AfterLoadAll(excelFilePath string) (success bool) {
+func (mgr *GlobalManager) AfterLoadAll(excelFilePath string) (success bool) {
 	success = true
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加加载后处理代码
 	//after_load_all_begin
+	{
+		d, ok := mgr.dataMap[int64(E_Global_InitUserDataId)]
+		if !ok {
+			log.Fatal("获取用户初始数据在person表id失败")
+			return false
+		}
+		tid, err := strconv.Atoi(d.Value)
+		if err != nil {
+			log.Fatal("获取用户初始数据在person表id失败, %v", err)
+			return false
+		}
+		gInitUserDataId = int64(tid)
+		if gInitUserDataId <= 0 {
+			log.Fatal("获取用户初始数据在person表id值有误, [%d]", tid)
+			return false
+		}
+	}
 	//after_load_all_end
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	return
@@ -252,5 +265,13 @@ func (mgr *ShopManager) AfterLoadAll(excelFilePath string) (success bool) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // TODO 添加扩展代码
 //extend_begin
+
+//用户初始化数据在person表的id
+var gInitUserDataId int64
+
+func InitUserDataId() int64 {
+	return gInitUserDataId
+}
+
 //extend_end
 //////////////////////////////////////////////////////////////////////////////////////////////////

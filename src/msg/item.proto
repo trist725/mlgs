@@ -42,21 +42,6 @@ message C2S_BuyItem {
     int32 Num = 2;
 }
 
-///购买物品回复
-//@msg
-message S2C_BuyItem {
-    enum E_Error {
-        Error_ = 0;
-        OK = 1;
-    }
-    ///错误码
-    E_Error Err = 1;
-    ///物品类型id
-    int32 TID = 2;
-    ///购买数量
-    int32 Num = 3;
-}
-
 ///使用物品请求
 //@msg
 message C2S_UseItem {
@@ -66,18 +51,4 @@ message C2S_UseItem {
     int32 Num = 2;
 }
 
-///使用物品回复
-//@msg
-message S2C_UseItem {
-    enum E_Error {
-        Error_ = 0;
-        OK = 1;
-    }
-    ///错误码
-    E_Error Err = 1;
-    ///物品类型id
-    int32 TID = 2;
-    ///数量
-    int32 Num = 3;
-}
 

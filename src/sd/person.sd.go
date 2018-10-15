@@ -17,14 +17,18 @@ import "gitee.com/nggs/util"
 //import_extend_end
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-type Shop struct {
+type Person struct {
 	ID int64 `excel_column:"0" excel_name:"id"` // 编号
 
 	Name string `excel_column:"1" excel_name:"name"` // 名称
 
-	Des string `excel_column:"2" excel_name:"des"` // 描述
+	Des string `excel_column:"3" excel_name:"des"` // 描述
 
-	Content []int `excel_column:"3" excel_name:"content"` // 内容
+	Coin int `excel_column:"4" excel_name:"coin"` // 金币
+
+	Dmd int `excel_column:"5" excel_name:"dmd"` // 钻石
+
+	Point int `excel_column:"6" excel_name:"point"` // 积分
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体扩展字段
@@ -33,8 +37,8 @@ type Shop struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func NewShop() *Shop {
-	sd := &Shop{}
+func NewPerson() *Person {
+	sd := &Person{}
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体New代码
 	//struct_new_begin
@@ -43,17 +47,14 @@ func NewShop() *Shop {
 	return sd
 }
 
-func (sd Shop) String() string {
+func (sd Person) String() string {
 	ba, _ := json.Marshal(sd)
 	return string(ba)
 }
 
-func (sd Shop) Clone() *Shop {
-	n := NewShop()
+func (sd Person) Clone() *Person {
+	n := NewPerson()
 	*n = sd
-
-	n.Content = make([]int, len(sd.Content))
-	copy(n.Content, sd.Content)
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体Clone代码
@@ -64,14 +65,14 @@ func (sd Shop) Clone() *Shop {
 	return n
 }
 
-func (sd *Shop) load(row *xlsx.Row) error {
+func (sd *Person) load(row *xlsx.Row) error {
 	return util.DeserializeStructFromExcelRow(sd, row)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-type ShopManager struct {
-	dataArray []*Shop
-	dataMap   map[int64]*Shop
+type PersonManager struct {
+	dataArray []*Person
+	dataMap   map[int64]*Person
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加manager扩展字段
@@ -80,10 +81,10 @@ type ShopManager struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func newShopManager() *ShopManager {
-	mgr := &ShopManager{
-		dataArray: []*Shop{},
-		dataMap:   make(map[int64]*Shop),
+func newPersonManager() *PersonManager {
+	mgr := &PersonManager{
+		dataArray: []*Person{},
+		dataMap:   make(map[int64]*Person),
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +96,7 @@ func newShopManager() *ShopManager {
 	return mgr
 }
 
-func (mgr *ShopManager) Load(excelFilePath string) (success bool) {
+func (mgr *PersonManager) Load(excelFilePath string) (success bool) {
 	success = true
 
 	absExcelFilePath, err := filepath.Abs(excelFilePath)
@@ -141,7 +142,7 @@ func (mgr *ShopManager) Load(excelFilePath string) (success bool) {
 			}
 		}
 
-		sd := NewShop()
+		sd := NewPerson()
 		err = sd.load(row)
 		if err != nil {
 			log.Printf("%s 加载第%d行失败, %s\n", excelFilePath, i+1, err)
@@ -178,11 +179,11 @@ func (mgr *ShopManager) Load(excelFilePath string) (success bool) {
 	return
 }
 
-func (mgr ShopManager) Size() int {
+func (mgr PersonManager) Size() int {
 	return len(mgr.dataArray)
 }
 
-func (mgr ShopManager) Get(id int64) *Shop {
+func (mgr PersonManager) Get(id int64) *Person {
 	sd, ok := mgr.dataMap[id]
 	if !ok {
 		return nil
@@ -190,7 +191,7 @@ func (mgr ShopManager) Get(id int64) *Shop {
 	return sd.Clone()
 }
 
-func (mgr ShopManager) Each(f func(sd *Shop) bool) {
+func (mgr PersonManager) Each(f func(sd *Person) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd.Clone()) {
 			break
@@ -198,7 +199,7 @@ func (mgr ShopManager) Each(f func(sd *Shop) bool) {
 	}
 }
 
-func (mgr *ShopManager) each(f func(sd *Shop) bool) {
+func (mgr *PersonManager) each(f func(sd *Person) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd) {
 			break
@@ -206,7 +207,7 @@ func (mgr *ShopManager) each(f func(sd *Shop) bool) {
 	}
 }
 
-func (mgr ShopManager) findIf(f func(sd *Shop) bool) *Shop {
+func (mgr PersonManager) findIf(f func(sd *Person) bool) *Person {
 	for _, sd := range mgr.dataArray {
 		if f(sd) {
 			return sd
@@ -215,7 +216,7 @@ func (mgr ShopManager) findIf(f func(sd *Shop) bool) *Shop {
 	return nil
 }
 
-func (mgr ShopManager) FindIf(f func(sd *Shop) bool) *Shop {
+func (mgr PersonManager) FindIf(f func(sd *Person) bool) *Person {
 	for _, sd := range mgr.dataArray {
 		n := sd.Clone()
 		if f(n) {
@@ -225,7 +226,7 @@ func (mgr ShopManager) FindIf(f func(sd *Shop) bool) *Shop {
 	return nil
 }
 
-func (mgr ShopManager) check(excelFilePath string, row int, sd *Shop) error {
+func (mgr PersonManager) check(excelFilePath string, row int, sd *Person) error {
 	if _, ok := mgr.dataMap[sd.ID]; ok {
 		return fmt.Errorf("%s 第%d行的id重复", excelFilePath, row)
 	}
@@ -239,7 +240,7 @@ func (mgr ShopManager) check(excelFilePath string, row int, sd *Shop) error {
 	return nil
 }
 
-func (mgr *ShopManager) AfterLoadAll(excelFilePath string) (success bool) {
+func (mgr *PersonManager) AfterLoadAll(excelFilePath string) (success bool) {
 	success = true
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加加载后处理代码

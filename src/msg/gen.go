@@ -1,2 +1,2 @@
-//go:generate PROTO_FILES=(*.proto) protoc -I=. --go_out=. ${PROTO_FILES[*]}
+//go:generate
 package msg

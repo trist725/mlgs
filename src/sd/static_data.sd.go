@@ -7,8 +7,10 @@ import "log"
 import "path/filepath"
 
 var (
-	ItemMgr = newItemManager()
-	ShopMgr = newShopManager()
+	GlobalMgr = newGlobalManager()
+	ItemMgr   = newItemManager()
+	PersonMgr = newPersonManager()
+	ShopMgr   = newShopManager()
 )
 
 func LoadAll(excelDir string) (success bool) {
@@ -20,7 +22,11 @@ func LoadAll(excelDir string) (success bool) {
 
 	success = true
 
+	success = GlobalMgr.Load(filepath.Join(absExcelDir, "global.xlsx")) && success
+
 	success = ItemMgr.Load(filepath.Join(absExcelDir, "item.xlsx")) && success
+
+	success = PersonMgr.Load(filepath.Join(absExcelDir, "person.xlsx")) && success
 
 	success = ShopMgr.Load(filepath.Join(absExcelDir, "shop.xlsx")) && success
 
@@ -36,7 +42,11 @@ func AfterLoadAll(excelDir string) (success bool) {
 
 	success = true
 
+	success = GlobalMgr.AfterLoadAll(filepath.Join(absExcelDir, "global.xlsx")) && success
+
 	success = ItemMgr.AfterLoadAll(filepath.Join(absExcelDir, "item.xlsx")) && success
+
+	success = PersonMgr.AfterLoadAll(filepath.Join(absExcelDir, "person.xlsx")) && success
 
 	success = ShopMgr.AfterLoadAll(filepath.Join(absExcelDir, "shop.xlsx")) && success
 

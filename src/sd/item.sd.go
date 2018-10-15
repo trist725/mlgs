@@ -18,7 +18,7 @@ import "gitee.com/nggs/util"
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 type Item struct {
-	ID int `excel_column:"0" excel_name:"id"` // 编号
+	ID int64 `excel_column:"0" excel_name:"id"` // 编号
 
 	Name string `excel_column:"1" excel_name:"name"` // 名称
 
@@ -35,6 +35,8 @@ type Item struct {
 	Income int `excel_column:"8" excel_name:"Income"` // 收入
 
 	Usetimes int `excel_column:"9" excel_name:"usetimes"` // 使用次数
+
+	Timeliness int `excel_column:"10" excel_name:"timeliness"` // 时效性（小时）
 
 	Icon int `excel_column:"12" excel_name:"icon"` // 图标
 
