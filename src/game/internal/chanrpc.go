@@ -5,6 +5,7 @@ import (
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/model"
 	s "mlgs/src/session"
+	"time"
 )
 
 func init() {
@@ -56,17 +57,17 @@ func rpcHandleLoginAuthPass(args []interface{}) {
 	ChanRPC.Go("AfterLoginAuthPass", a, user)
 
 	//定时写库
-	//var f func()
-	//var timer *timer.Timer
-	//f = func() {
-	//	timer = skeleton.AfterFunc(2*time.Second, func() {
-	//		f()
-	//		//实际要做的事
-	//		ns.SaveData()
-	//	})
-	//}
-	//ns.SetTimer(timer)
-	//f()
+	var f func()
+	f = func() {
+		timer := skeleton.AfterFunc(saveIntervalMinute*time.Minute, func() {
+			f()
+			//实际要做的事
+			ns.SaveData()
+		})
+		log.Debug("%v", timer)
+		ns.SetTimer(timer)
+	}
+	f()
 
 	log.Debug("[%s] login success", ns.Sign())
 }
