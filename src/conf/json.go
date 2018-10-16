@@ -19,6 +19,7 @@ var Server struct {
 	MgoUrl        string
 	MgoSessionNum int
 	MgoName       string
+	XlsxPath      string
 }
 
 func init() {
