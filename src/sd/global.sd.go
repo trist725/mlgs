@@ -12,7 +12,7 @@ import "log"
 import "path/filepath"
 
 import "github.com/tealeg/xlsx"
-import "gitee.com/nggs/util"
+import "github.com/trist725/mgsu/util"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // TODO 添加扩展import代码
@@ -61,7 +61,7 @@ func (sd Global) Clone() *Global {
 }
 
 func (sd *Global) load(row *xlsx.Row) error {
-	return util.DeserializeStructFromExcelRow(sd, row)
+	return util.DeserializeStructFromXlsxRow(sd, row)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////

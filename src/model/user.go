@@ -1,7 +1,9 @@
 package model
 
 import (
+	"github.com/trist725/myleaf/log"
 	"mlgs/src/msg"
+	"mlgs/src/sd"
 	"time"
 )
 
@@ -20,6 +22,25 @@ func CreateUser(accountID int64, recv *msg.C2S_Login) (m *User, err error) {
 	m.LastLoginTime = now.Unix()
 	m.AvatarURL = recv.AvatarURL
 	m.Level = 1
+
+	//todo:根据玩家类别初始化
+	personSd := sd.PersonMgr.Get(sd.InitUserDataId())
+	if personSd == nil {
+		log.Fatal("策划坑爹了,读person表有误，id: [%d]", sd.InitUserDataId())
+		return
+	}
+
+	money := Get_Money()
+	money.Type = 1
+	money.Num = personSd.Coin
+	m.Monies = append(m.Monies, money)
+	money.Type = 2
+	money.Num = personSd.Dmd
+	m.Monies = append(m.Monies, money)
+	money.Type = 3
+	money.Num = personSd.Point
+	m.Monies = append(m.Monies, money)
+
 	return
 }
 

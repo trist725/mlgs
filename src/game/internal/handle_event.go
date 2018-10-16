@@ -31,12 +31,10 @@ func handleAfterLoginAuthPass(args []interface{}) {
 		DaySigned:  user.DaySigned,
 		SignedDays: user.SignedDays,
 	}
+
+	nm := msg.Get_Money()
 	for _, m := range user.Monies {
-		um := &msg.Money{
-			Type: m.Type,
-			Num:  m.Num,
-		}
-		send.Monies = append(send.Monies, m.ToMsg(um))
+		send.Monies = append(send.Monies, m.ToMsg(nm))
 	}
 
 	//暂写死,构造14天签到奖励

@@ -9,7 +9,7 @@ import "log"
 import "path/filepath"
 
 import "github.com/tealeg/xlsx"
-import "gitee.com/nggs/util"
+import "github.com/trist725/mgsu/util"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // TODO 添加扩展import代码
@@ -19,8 +19,6 @@ import "gitee.com/nggs/util"
 
 type Shop struct {
 	ID int64 `excel_column:"0" excel_name:"id"` // 编号
-
-	Name string `excel_column:"1" excel_name:"name"` // 名称
 
 	Des string `excel_column:"2" excel_name:"des"` // 描述
 
@@ -65,7 +63,7 @@ func (sd Shop) Clone() *Shop {
 }
 
 func (sd *Shop) load(row *xlsx.Row) error {
-	return util.DeserializeStructFromExcelRow(sd, row)
+	return util.DeserializeStructFromXlsxRow(sd, row)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////

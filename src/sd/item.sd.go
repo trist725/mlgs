@@ -9,7 +9,7 @@ import "log"
 import "path/filepath"
 
 import "github.com/tealeg/xlsx"
-import "gitee.com/nggs/util"
+import "github.com/trist725/mgsu/util"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // TODO 添加扩展import代码
@@ -20,25 +20,21 @@ import "gitee.com/nggs/util"
 type Item struct {
 	ID int64 `excel_column:"0" excel_name:"id"` // 编号
 
-	Name string `excel_column:"1" excel_name:"name"` // 名称
-
 	Des string `excel_column:"3" excel_name:"des"` // 描述
 
 	Level int `excel_column:"4" excel_name:"level"` // 等级
 
 	BuyNeed int `excel_column:"5" excel_name:"buy_need"` // 花费所需
 
-	BuyCost int `excel_column:"6" excel_name:"buy_cost"` // 花费
+	BuyCost int64 `excel_column:"6" excel_name:"buy_cost"` // 花费
 
 	IncomeNeed int `excel_column:"7" excel_name:"Income_need"` // 收入所需
 
-	Income int `excel_column:"8" excel_name:"Income"` // 收入
+	Income int64 `excel_column:"8" excel_name:"Income"` // 收入
 
 	Usetimes int `excel_column:"9" excel_name:"usetimes"` // 使用次数
 
 	Timeliness int `excel_column:"10" excel_name:"timeliness"` // 时效性（小时）
-
-	Icon int `excel_column:"12" excel_name:"icon"` // 图标
 
 	Sound int `excel_column:"13" excel_name:"sound"` // 音效
 
@@ -82,7 +78,7 @@ func (sd Item) Clone() *Item {
 }
 
 func (sd *Item) load(row *xlsx.Row) error {
-	return util.DeserializeStructFromExcelRow(sd, row)
+	return util.DeserializeStructFromXlsxRow(sd, row)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////

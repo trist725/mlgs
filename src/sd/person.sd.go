@@ -9,7 +9,7 @@ import "log"
 import "path/filepath"
 
 import "github.com/tealeg/xlsx"
-import "gitee.com/nggs/util"
+import "github.com/trist725/mgsu/util"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // TODO 添加扩展import代码
@@ -20,15 +20,13 @@ import "gitee.com/nggs/util"
 type Person struct {
 	ID int64 `excel_column:"0" excel_name:"id"` // 编号
 
-	Name string `excel_column:"1" excel_name:"name"` // 名称
-
 	Des string `excel_column:"3" excel_name:"des"` // 描述
 
-	Coin int `excel_column:"4" excel_name:"coin"` // 金币
+	Coin int64 `excel_column:"4" excel_name:"coin"` // 金币
 
-	Dmd int `excel_column:"5" excel_name:"dmd"` // 钻石
+	Dmd int64 `excel_column:"5" excel_name:"dmd"` // 钻石
 
-	Point int `excel_column:"6" excel_name:"point"` // 积分
+	Point int64 `excel_column:"6" excel_name:"point"` // 积分
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体扩展字段
@@ -66,7 +64,7 @@ func (sd Person) Clone() *Person {
 }
 
 func (sd *Person) load(row *xlsx.Row) error {
-	return util.DeserializeStructFromExcelRow(sd, row)
+	return util.DeserializeStructFromXlsxRow(sd, row)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
