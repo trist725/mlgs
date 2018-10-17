@@ -34,9 +34,11 @@ func CreateUser(accountID int64, recv *msg.C2S_Login) (m *User, err error) {
 	money.Type = 1
 	money.Num = personSd.Coin
 	m.Monies = append(m.Monies, money)
+	money = Get_Money()
 	money.Type = 2
 	money.Num = personSd.Dmd
 	m.Monies = append(m.Monies, money)
+	money = Get_Money()
 	money.Type = 3
 	money.Num = personSd.Point
 	m.Monies = append(m.Monies, money)

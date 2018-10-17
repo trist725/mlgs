@@ -32,8 +32,8 @@ func handleAfterLoginAuthPass(args []interface{}) {
 		SignedDays: user.SignedDays,
 	}
 
-	nm := msg.Get_Money()
 	for _, m := range user.Monies {
+		nm := msg.Get_Money()
 		send.Monies = append(send.Monies, m.ToMsg(nm))
 	}
 
