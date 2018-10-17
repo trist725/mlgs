@@ -72,6 +72,9 @@ func handleLoginAuth(args []interface{}) {
 			return
 		}
 		account.Location = recv.Location
+		user.Sex = recv.Sex
+		user.AvatarURL = recv.AvatarURL
+		user.NickName = recv.NickName
 		game.ChanRPC.Go("LoginAuthPass", sender, account, user)
 		send.Reason = msg.S2C_Login_E_Err_LoginSuccess
 		return

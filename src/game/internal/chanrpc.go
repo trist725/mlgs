@@ -64,7 +64,6 @@ func rpcHandleLoginAuthPass(args []interface{}) {
 			//实际要做的事
 			ns.SaveData()
 		})
-		log.Debug("%v", timer)
 		ns.SetTimer(timer)
 	}
 	f()
