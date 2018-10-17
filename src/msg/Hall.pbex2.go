@@ -6,6 +6,8 @@ It has these top-level messages:
 	C2S_Login
 	S2C_Login
 	S2C_LoginInfo
+	C2S_DaySign
+	S2C_DaySign
 */
 
 package msg
@@ -103,6 +105,50 @@ func Each_S2C_Login_E_ErrReason_I(f func(int32) bool) {
 }
 
 // enum [S2C_Login_E_ErrReason] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// enum [S2C_DaySign_E_Err_DaySign] begin
+
+var S2C_DaySign_E_Err_DaySign_Slice = []int32{
+	0,
+	1,
+	2,
+	6,
+}
+
+func S2C_DaySign_E_Err_DaySign_Len() int {
+	return len(S2C_DaySign_E_Err_DaySign_Slice)
+}
+
+func Check_S2C_DaySign_E_Err_DaySign_I(value int32) bool {
+	if _, ok := S2C_DaySign_E_Err_DaySign_name[value]; ok && value != 0 {
+		return true
+	}
+	return false
+}
+
+func Check_S2C_DaySign_E_Err_DaySign(value S2C_DaySign_E_Err_DaySign) bool {
+	return Check_S2C_DaySign_E_Err_DaySign_I(int32(value))
+}
+
+func Each_S2C_DaySign_E_Err_DaySign(f func(S2C_DaySign_E_Err_DaySign) bool) {
+	for _, value := range S2C_DaySign_E_Err_DaySign_Slice {
+		if !f(S2C_DaySign_E_Err_DaySign(value)) {
+			break
+		}
+	}
+}
+
+func Each_S2C_DaySign_E_Err_DaySign_I(f func(int32) bool) {
+	for _, value := range S2C_DaySign_E_Err_DaySign_Slice {
+		if !f(value) {
+			break
+		}
+	}
+}
+
+// enum [S2C_DaySign_E_Err_DaySign] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -401,4 +447,183 @@ func init() {
 }
 
 // message [S2C_LoginInfo] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [C2S_DaySign] begin
+func (m *C2S_DaySign) ResetEx() {
+	m.Day = 0
+
+}
+
+func (m C2S_DaySign) Clone() *C2S_DaySign {
+	n, ok := g_C2S_DaySign_Pool.Get().(*C2S_DaySign)
+	if !ok || n == nil {
+		n = &C2S_DaySign{}
+	}
+
+	n.Day = m.Day
+
+	return n
+}
+
+func Clone_C2S_DaySign_Slice(dst []*C2S_DaySign, src []*C2S_DaySign) []*C2S_DaySign {
+	for _, i := range dst {
+		Put_C2S_DaySign(i)
+	}
+	dst = []*C2S_DaySign{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func (C2S_DaySign) V2() {
+}
+
+func (C2S_DaySign) MessageID() protocol.MessageID {
+	return "msg.C2S_DaySign"
+}
+
+func C2S_DaySign_MessageID() protocol.MessageID {
+	return "msg.C2S_DaySign"
+}
+
+func New_C2S_DaySign() *C2S_DaySign {
+	m := &C2S_DaySign{}
+	return m
+}
+
+var g_C2S_DaySign_Pool = sync.Pool{}
+
+func Get_C2S_DaySign() *C2S_DaySign {
+	m, ok := g_C2S_DaySign_Pool.Get().(*C2S_DaySign)
+	if !ok {
+		m = New_C2S_DaySign()
+	} else {
+		if m == nil {
+			m = New_C2S_DaySign()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_C2S_DaySign(i interface{}) {
+	if m, ok := i.(*C2S_DaySign); ok && m != nil {
+		g_C2S_DaySign_Pool.Put(i)
+	}
+}
+
+func init() {
+	Protocol.Register(
+		&C2S_DaySign{},
+		func() protocol.IMessage { return Get_C2S_DaySign() },
+		func(msg protocol.IMessage) { Put_C2S_DaySign(msg) },
+	)
+}
+
+// message [C2S_DaySign] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_DaySign] begin
+func (m *S2C_DaySign) ResetEx() {
+	m.Err = 0
+
+	for _, i := range m.Monies {
+		Put_Money(i)
+	}
+	m.Monies = []*Money{}
+
+}
+
+func (m S2C_DaySign) Clone() *S2C_DaySign {
+	n, ok := g_S2C_DaySign_Pool.Get().(*S2C_DaySign)
+	if !ok || n == nil {
+		n = &S2C_DaySign{}
+	}
+
+	n.Err = m.Err
+
+	if len(m.Monies) > 0 {
+		for _, i := range m.Monies {
+			if i != nil {
+				n.Monies = append(n.Monies, i.Clone())
+			} else {
+				n.Monies = append(n.Monies, nil)
+			}
+		}
+	} else {
+		n.Monies = []*Money{}
+	}
+
+	return n
+}
+
+func Clone_S2C_DaySign_Slice(dst []*S2C_DaySign, src []*S2C_DaySign) []*S2C_DaySign {
+	for _, i := range dst {
+		Put_S2C_DaySign(i)
+	}
+	dst = []*S2C_DaySign{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func (S2C_DaySign) V2() {
+}
+
+func (S2C_DaySign) MessageID() protocol.MessageID {
+	return "msg.S2C_DaySign"
+}
+
+func S2C_DaySign_MessageID() protocol.MessageID {
+	return "msg.S2C_DaySign"
+}
+
+func New_S2C_DaySign() *S2C_DaySign {
+	m := &S2C_DaySign{
+		Monies: []*Money{},
+	}
+	return m
+}
+
+var g_S2C_DaySign_Pool = sync.Pool{}
+
+func Get_S2C_DaySign() *S2C_DaySign {
+	m, ok := g_S2C_DaySign_Pool.Get().(*S2C_DaySign)
+	if !ok {
+		m = New_S2C_DaySign()
+	} else {
+		if m == nil {
+			m = New_S2C_DaySign()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_DaySign(i interface{}) {
+	if m, ok := i.(*S2C_DaySign); ok && m != nil {
+		g_S2C_DaySign_Pool.Put(i)
+	}
+}
+
+func init() {
+	Protocol.Register(
+		&S2C_DaySign{},
+		func() protocol.IMessage { return Get_S2C_DaySign() },
+		func(msg protocol.IMessage) { Put_S2C_DaySign(msg) },
+	)
+}
+
+// message [S2C_DaySign] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

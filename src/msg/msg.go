@@ -16,4 +16,6 @@ func init() {
 	Processor.Register(&C2S_Login{})
 	Processor.Register(&S2C_Login{})
 	Processor.Register(&S2C_LoginInfo{})
+	Processor.Register(&C2S_DaySign{})
+	Processor.Register(&S2C_DaySign{})
 }

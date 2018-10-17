@@ -69,3 +69,28 @@ message S2C_LoginInfo{
     ///每日签到奖励,数组第几个代表第几天
     repeated Item SignRewards = 7;
 }
+
+///每日签到请求
+//@msg
+message C2S_DaySign{
+    ///要签到的天数
+    int32 day = 1;
+}
+
+///每日签到回复
+//@msg
+message S2C_DaySign{
+    enum E_Err_DaySign {
+        ///保留
+        E_ErrReason_ = 0;
+        ///成功签到
+        E_Err_Success = 1;
+        ///今日已签到
+        E_Err_AlreadySign = 2;
+        ///其它错误
+        E_Err_Unknown = 6;
+    }
+    E_Err_DaySign err = 1;
+    ///签到后的货币信息
+    repeated Money Monies = 2;
+}
