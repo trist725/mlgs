@@ -24,14 +24,12 @@ func rpcCloseAgent(args []interface{}) {
 	a := args[0].(gate.Agent)
 	//_ = a
 	a.Destroy()
+
 	//清session
 	if a.UserData() != nil {
 		sid := a.UserData().(uint64)
-		mgr := s.GetSessionMgr()
-		if mgr == nil {
-			panic("gSessionManager is nil")
-		}
-		if session := mgr.GetSession(sid); session != nil {
+		session := s.GetSession(sid)
+		if session != nil {
 			session.Close()
 			log.Debug("[%s] session id:[%d] closed", session.Sign(), sid)
 		}
@@ -45,6 +43,7 @@ const saveIntervalMinute = 3 // 保存数据间隔（单位：分钟）
 
 func rpcHandleLoginAuthPass(args []interface{}) {
 	a := args[0].(gate.Agent)
+	//conn已断开则不必做下一步动作
 	if a.UserData() != nil && a.UserData().(uint64) == 0 {
 		return
 	}

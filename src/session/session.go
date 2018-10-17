@@ -13,6 +13,7 @@ import (
 	"time"
 )
 
+//todo:心跳处理
 type Session struct {
 	id uint64
 	//事件管理器
@@ -160,4 +161,20 @@ func (s *Session) SetSign(sign string) {
 
 func (s *Session) SetTimer(t *timer.Timer) {
 	s.timer = t
+}
+
+func GetSession(sid uint64) *Session {
+	mgr := GetSessionMgr()
+	if mgr == nil {
+		log.Fatal("gSessionManager is nil, session id:[%d]", sid)
+		return nil
+	}
+
+	session := mgr.GetSession(sid)
+	if session == nil {
+		log.Debug("session id:[%d] not exist", sid)
+		return nil
+	}
+
+	return session
 }

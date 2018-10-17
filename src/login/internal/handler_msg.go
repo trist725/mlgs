@@ -12,22 +12,10 @@ import (
 
 func init() {
 	regiserMsgHandle(&msg.C2S_Login{}, handleLoginAuth)
-	regiserMsgHandle(&msg.C2S_UpdateUserData{}, handleUpdateUserData)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
 	skeleton.RegisterChanRPC(reflect.TypeOf(m), h)
-}
-
-func handleUpdateUserData(args []interface{}) {
-	// 收到的消息
-	//recv := args[0].(*msg.C2S_Login)
-	// 消息的发送者
-	sender := args[1].(gate.Agent)
-	send := &msg.S2C_Login{}
-	defer sender.WriteMsg(send)
-	dbSession := model.GetSession()
-	defer model.PutSession(dbSession)
 }
 
 func handleLoginAuth(args []interface{}) {
