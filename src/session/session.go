@@ -164,15 +164,15 @@ func (s *Session) SetTimer(t *timer.Timer) {
 }
 
 func GetSession(sid uint64) *Session {
-	mgr := GetSessionMgr()
+	mgr := SessionMgr()
 	if mgr == nil {
-		log.Fatal("gSessionManager is nil, session id:[%d]", sid)
+		log.Fatal("gSessionManager is nil, get session id:[%d]", sid)
 		return nil
 	}
 
-	session := mgr.GetSession(sid)
+	session := mgr.getSession(sid)
 	if session == nil {
-		log.Debug("session id:[%d] not exist", sid)
+		log.Debug("get session id:[%d] not exist", sid)
 		return nil
 	}
 

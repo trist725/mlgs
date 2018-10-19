@@ -31,5 +31,5 @@ func main() {
 		login.Module,
 	)
 
-	session.GetSessionMgr().Dispose()
+	session.SessionMgr().Dispose()
 }

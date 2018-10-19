@@ -8,7 +8,7 @@ import (
 
 var gSessionManager = newManager()
 
-func GetSessionMgr() *Manager {
+func SessionMgr() *Manager {
 	return gSessionManager
 }
 
@@ -49,7 +49,7 @@ func (manager *Manager) Dispose() {
 	})
 }
 
-func (manager *Manager) GetSession(sessionID uint64) *Session {
+func (manager *Manager) getSession(sessionID uint64) *Session {
 	smap := &manager.sessionMaps[sessionID%sessionMapNum]
 	smap.RLock()
 	defer smap.RUnlock()
