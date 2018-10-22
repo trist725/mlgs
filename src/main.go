@@ -8,6 +8,7 @@ import (
 	lconf "github.com/trist725/myleaf/conf"
 	"login"
 	"mlgs/src/model"
+	"room"
 	"session"
 )
 
@@ -25,11 +26,12 @@ func main() {
 
 	initLogic()
 
+	defer session.Mgr().Dispose()
+	defer room.Mgr().Dispose()
+
 	leaf.Run(
 		game.Module,
 		gate.Module,
 		login.Module,
 	)
-
-	session.GetSessionMgr().Dispose()
 }

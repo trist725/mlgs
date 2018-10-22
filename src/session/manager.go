@@ -8,7 +8,7 @@ import (
 
 var gSessionManager = newManager()
 
-func GetSessionMgr() *Manager {
+func Mgr() *Manager {
 	return gSessionManager
 }
 

@@ -50,7 +50,7 @@ func rpcHandleLoginAuthPass(args []interface{}) {
 	account := args[1].(*model.Account)
 	user := args[2].(*model.User)
 
-	ns := s.NewSession(a, account, user)
+	ns := s.New(a, account, user)
 
 	//下发用户数据
 	ChanRPC.Go("AfterLoginAuthPass", a, user)

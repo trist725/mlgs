@@ -14,6 +14,7 @@ import (
 )
 
 //todo:心跳处理
+//非线程安全
 type Session struct {
 	id uint64
 	//事件管理器
@@ -33,7 +34,7 @@ type Session struct {
 
 var gSessionId uint64
 
-func NewSession(agent gate.Agent, account *model.Account, user *model.User) *Session {
+func New(agent gate.Agent, account *model.Account, user *model.User) *Session {
 	session := &Session{
 		agent:           agent,
 		account:         account,
@@ -164,7 +165,7 @@ func (s *Session) SetTimer(t *timer.Timer) {
 }
 
 func GetSession(sid uint64) *Session {
-	mgr := GetSessionMgr()
+	mgr := Mgr()
 	if mgr == nil {
 		log.Fatal("gSessionManager is nil, session id:[%d]", sid)
 		return nil
