@@ -23,8 +23,6 @@ func main() {
 	}
 	defer model.Release()
 
-	initLogic()
-
 	leaf.Run(
 		game.Module,
 		gate.Module,

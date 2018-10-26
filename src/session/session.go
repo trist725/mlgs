@@ -6,8 +6,6 @@ import (
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
 	"github.com/trist725/myleaf/timer"
-	ext "mlgs/src/external"
-	l "mlgs/src/logic"
 	"mlgs/src/model"
 	"sync/atomic"
 	"time"
@@ -22,8 +20,6 @@ type Session struct {
 	timer *timer.Timer
 	sign  string // 日志标识
 
-	//防循环引用
-	logicMap  map[l.ID]ext.ILogic
 	agent     gate.Agent
 	closeFlag int32
 	user      *model.User    // 需要保存到数据库的用户数据
@@ -45,33 +41,11 @@ func NewSession(agent gate.Agent, account *model.Account, user *model.User) *Ses
 	//用于从agent获取到session
 	session.agent.SetUserData(session.id)
 
-	session.logicMap = l.GenerateLogicMap(session)
-	if err := session.initLogic(); err != nil {
-		log.Fatal("init logicMap failed, %s", err)
-		return nil
-	}
-	session.runLogic()
-
 	if gSessionManager == nil {
 		panic("new session failed, because gSessionManager is nil")
 	}
 	gSessionManager.putSession(session)
 	return session
-}
-
-func (s *Session) initLogic() error {
-	for _, lm := range s.logicMap {
-		if err := lm.Init(); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (s *Session) runLogic() {
-	for _, lm := range s.logicMap {
-		lm.Run()
-	}
 }
 
 func (s *Session) RegisterEventHandler(id event.ID, handler event.Handler) {
@@ -109,13 +83,6 @@ func (s *Session) SetUserData(user *model.User) {
 //func (s *Session) LeafAgent() *gate.Agent{
 //	return s.agent
 //}
-
-func (s *Session) GetLogic(id l.ID) ext.ILogic {
-	if lm, ok := s.logicMap[id]; ok {
-		return lm
-	}
-	return nil
-}
 
 func (s *Session) SaveData() {
 	if s.user != nil {
