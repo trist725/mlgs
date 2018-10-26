@@ -10,4 +10,5 @@ func init() {
 	msg.Processor.SetRouter(&msg.C2S_Login{}, login.ChanRPC)
 
 	msg.Processor.SetRouter(&msg.C2S_DaySign{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_QuickMatchStart{}, game.ChanRPC)
 }

@@ -6,8 +6,7 @@ import (
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
 	"github.com/trist725/myleaf/timer"
-	ext "mlgs/src/external"
-	l "mlgs/src/logic"
+	"mlgs/src/cache"
 	"mlgs/src/model"
 	"sync/atomic"
 	"time"
@@ -23,13 +22,11 @@ type Session struct {
 	timer *timer.Timer
 	sign  string // 日志标识
 
-	//防循环引用
-	logicMap  map[l.ID]ext.ILogic
 	agent     gate.Agent
 	closeFlag int32
 	user      *model.User    // 需要保存到数据库的用户数据
 	account   *model.Account // 帐号数据
-	//cache       *cache.User    // 不需要保存到数据库的临时数据
+	cache     *cache.Player  // 玩家游戏过程中的数据
 }
 
 var gSessionId uint64
@@ -46,33 +43,11 @@ func New(agent gate.Agent, account *model.Account, user *model.User) *Session {
 	//用于从agent获取到session
 	session.agent.SetUserData(session.id)
 
-	session.logicMap = l.GenerateLogicMap(session)
-	if err := session.initLogic(); err != nil {
-		log.Fatal("init logicMap failed, %s", err)
-		return nil
-	}
-	session.runLogic()
-
 	if gSessionManager == nil {
 		panic("new session failed, because gSessionManager is nil")
 	}
 	gSessionManager.putSession(session)
 	return session
-}
-
-func (s *Session) initLogic() error {
-	for _, lm := range s.logicMap {
-		if err := lm.Init(); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (s *Session) runLogic() {
-	for _, lm := range s.logicMap {
-		lm.Run()
-	}
 }
 
 func (s *Session) RegisterEventHandler(id event.ID, handler event.Handler) {
@@ -110,13 +85,6 @@ func (s *Session) SetUserData(user *model.User) {
 //func (s *Session) LeafAgent() *gate.Agent{
 //	return s.agent
 //}
-
-func (s *Session) GetLogic(id l.ID) ext.ILogic {
-	if lm, ok := s.logicMap[id]; ok {
-		return lm
-	}
-	return nil
-}
 
 func (s *Session) SaveData() {
 	if s.user != nil {
@@ -164,18 +132,10 @@ func (s *Session) SetTimer(t *timer.Timer) {
 	s.timer = t
 }
 
-func GetSession(sid uint64) *Session {
-	mgr := Mgr()
-	if mgr == nil {
-		log.Fatal("gSessionManager is nil, session id:[%d]", sid)
-		return nil
-	}
+func (s *Session) Player() *cache.Player {
+	return s.cache
+}
 
-	session := mgr.GetSession(sid)
-	if session == nil {
-		log.Debug("session id:[%d] not exist", sid)
-		return nil
-	}
-
-	return session
+func (s *Session) SetPlayer(p *cache.Player) {
+	s.cache = p
 }

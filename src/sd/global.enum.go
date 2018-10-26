@@ -16,21 +16,26 @@ const (
 	E_Global_ E_Global = 0
 	///初始用户数据在person表的id
 	E_Global_InitUserDataId E_Global = 1
+
+	E_Global_InitMatchRoomId E_Global = 2
 )
 
 var E_Global_name = map[int32]string{
 	0: "E_Global_",
 	1: "E_Global_InitUserDataId",
+	2: "E_Global_InitMatchRoomId",
 }
 
 var E_Global_value = map[string]int32{
-	"E_Global_":               0,
-	"E_Global_InitUserDataId": 1,
+	"E_Global_":                0,
+	"E_Global_InitUserDataId":  1,
+	"E_Global_InitMatchRoomId": 2,
 }
 
 var E_Global_Slice = []int32{
 	0,
 	1,
+	2,
 }
 
 func (x E_Global) String() string {

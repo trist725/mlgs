@@ -3,10 +3,7 @@
 
 package sd
 
-import (
-	"encoding/json"
-	"strconv"
-)
+import "encoding/json"
 import "fmt"
 import "log"
 import "path/filepath"
@@ -20,10 +17,24 @@ import "github.com/trist725/mgsu/util"
 //import_extend_end
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-type Global struct {
-	ID int64 `excel_column:"0" excel_name:"id"` // 公共配置表ID
+type Room struct {
+	ID int64 `excel_column:"0" excel_name:"id"` // 编号
 
-	Value string `excel_column:"1" excel_name:"value"` // 配置值
+	Des string `excel_column:"3" excel_name:"des"` // 描述
+
+	Chairlimit int `excel_column:"4" excel_name:"chairlimit"` // 座位数限制（玩家个数）
+
+	Playerlimit int `excel_column:"5" excel_name:"playerlimit"` // 房间内的总人数限制
+
+	Sb int64 `excel_column:"6" excel_name:"sb"` // 小盲注
+
+	Bb int64 `excel_column:"7" excel_name:"bb"` // 大盲注
+
+	Limit int64 `excel_column:"8" excel_name:"limit"` // 押注上限（0为无上限）
+
+	Chip int64 `excel_column:"9" excel_name:"chip"` // 带入场的筹码
+
+	Inning int `excel_column:"10" excel_name:"inning"` // 局数（0代表无限局）
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体扩展字段
@@ -32,8 +43,8 @@ type Global struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func NewGlobal() *Global {
-	sd := &Global{}
+func NewRoom() *Room {
+	sd := &Room{}
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体New代码
 	//struct_new_begin
@@ -42,13 +53,13 @@ func NewGlobal() *Global {
 	return sd
 }
 
-func (sd Global) String() string {
+func (sd Room) String() string {
 	ba, _ := json.Marshal(sd)
 	return string(ba)
 }
 
-func (sd Global) Clone() *Global {
-	n := NewGlobal()
+func (sd Room) Clone() *Room {
+	n := NewRoom()
 	*n = sd
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,14 +71,14 @@ func (sd Global) Clone() *Global {
 	return n
 }
 
-func (sd *Global) load(row *xlsx.Row) error {
+func (sd *Room) load(row *xlsx.Row) error {
 	return util.DeserializeStructFromXlsxRow(sd, row)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-type GlobalManager struct {
-	dataArray []*Global
-	dataMap   map[int64]*Global
+type RoomManager struct {
+	dataArray []*Room
+	dataMap   map[int64]*Room
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加manager扩展字段
@@ -76,10 +87,10 @@ type GlobalManager struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func newGlobalManager() *GlobalManager {
-	mgr := &GlobalManager{
-		dataArray: []*Global{},
-		dataMap:   make(map[int64]*Global),
+func newRoomManager() *RoomManager {
+	mgr := &RoomManager{
+		dataArray: []*Room{},
+		dataMap:   make(map[int64]*Room),
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +102,7 @@ func newGlobalManager() *GlobalManager {
 	return mgr
 }
 
-func (mgr *GlobalManager) Load(excelFilePath string) (success bool) {
+func (mgr *RoomManager) Load(excelFilePath string) (success bool) {
 	success = true
 
 	absExcelFilePath, err := filepath.Abs(excelFilePath)
@@ -137,7 +148,7 @@ func (mgr *GlobalManager) Load(excelFilePath string) (success bool) {
 			}
 		}
 
-		sd := NewGlobal()
+		sd := NewRoom()
 		err = sd.load(row)
 		if err != nil {
 			log.Printf("%s 加载第%d行失败, %s\n", excelFilePath, i+1, err)
@@ -174,11 +185,11 @@ func (mgr *GlobalManager) Load(excelFilePath string) (success bool) {
 	return
 }
 
-func (mgr GlobalManager) Size() int {
+func (mgr RoomManager) Size() int {
 	return len(mgr.dataArray)
 }
 
-func (mgr GlobalManager) Get(id int64) *Global {
+func (mgr RoomManager) Get(id int64) *Room {
 	sd, ok := mgr.dataMap[id]
 	if !ok {
 		return nil
@@ -186,7 +197,7 @@ func (mgr GlobalManager) Get(id int64) *Global {
 	return sd.Clone()
 }
 
-func (mgr GlobalManager) Each(f func(sd *Global) bool) {
+func (mgr RoomManager) Each(f func(sd *Room) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd.Clone()) {
 			break
@@ -194,7 +205,7 @@ func (mgr GlobalManager) Each(f func(sd *Global) bool) {
 	}
 }
 
-func (mgr *GlobalManager) each(f func(sd *Global) bool) {
+func (mgr *RoomManager) each(f func(sd *Room) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd) {
 			break
@@ -202,7 +213,7 @@ func (mgr *GlobalManager) each(f func(sd *Global) bool) {
 	}
 }
 
-func (mgr GlobalManager) findIf(f func(sd *Global) bool) *Global {
+func (mgr RoomManager) findIf(f func(sd *Room) bool) *Room {
 	for _, sd := range mgr.dataArray {
 		if f(sd) {
 			return sd
@@ -211,7 +222,7 @@ func (mgr GlobalManager) findIf(f func(sd *Global) bool) *Global {
 	return nil
 }
 
-func (mgr GlobalManager) FindIf(f func(sd *Global) bool) *Global {
+func (mgr RoomManager) FindIf(f func(sd *Room) bool) *Room {
 	for _, sd := range mgr.dataArray {
 		n := sd.Clone()
 		if f(n) {
@@ -221,7 +232,7 @@ func (mgr GlobalManager) FindIf(f func(sd *Global) bool) *Global {
 	return nil
 }
 
-func (mgr GlobalManager) check(excelFilePath string, row int, sd *Global) error {
+func (mgr RoomManager) check(excelFilePath string, row int, sd *Room) error {
 	if _, ok := mgr.dataMap[sd.ID]; ok {
 		return fmt.Errorf("%s 第%d行的id重复", excelFilePath, row)
 	}
@@ -235,39 +246,11 @@ func (mgr GlobalManager) check(excelFilePath string, row int, sd *Global) error 
 	return nil
 }
 
-func (mgr *GlobalManager) AfterLoadAll(excelFilePath string) (success bool) {
+func (mgr *RoomManager) AfterLoadAll(excelFilePath string) (success bool) {
 	success = true
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加加载后处理代码
 	//after_load_all_begin
-	{
-		d, ok := mgr.dataMap[int64(E_Global_InitUserDataId)]
-		if !ok {
-			log.Fatal("获取用户初始数据在person表id失败")
-			return false
-		}
-		tid, err := strconv.Atoi(d.Value)
-		if err != nil {
-			log.Fatal("获取用户初始数据在person表id失败, %v", err)
-			return false
-		}
-		gInitUserDataId = int64(tid)
-		if gInitUserDataId <= 0 {
-			log.Fatal("获取用户初始数据在person表id值有误, [%d]", tid)
-			return false
-		}
-	}
-	{
-		d, ok := mgr.dataMap[int64(E_Global_InitMatchRoomId)]
-		if !ok {
-			log.Fatal("获取匹配房间数据在room表的id数组失败")
-			return false
-		}
-		if err := json.Unmarshal([]byte(d.Value), &gInitMatchRoomId); err != nil {
-			log.Fatal("获取匹配房间数据在room表的id数组有误", err)
-			return false
-		}
-	}
 	//after_load_all_end
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	return
@@ -276,24 +259,5 @@ func (mgr *GlobalManager) AfterLoadAll(excelFilePath string) (success bool) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // TODO 添加扩展代码
 //extend_begin
-
-//用户初始化数据在person表的id
-var gInitUserDataId int64
-
-func InitUserDataId() int64 {
-	return gInitUserDataId
-}
-
-//匹配房间数据在room表的id数组
-var gInitMatchRoomId []int64
-
-//快速匹配房间数据在room表的id
-func InitQuickMatchRoomId() int64 {
-	if len(gInitMatchRoomId) < 1 {
-		log.Fatal("匹配房间数据在room表的id数组 配表有误")
-	}
-	return gInitMatchRoomId[0]
-}
-
 //extend_end
 //////////////////////////////////////////////////////////////////////////////////////////////////

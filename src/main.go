@@ -24,8 +24,6 @@ func main() {
 	}
 	defer model.Release()
 
-	initLogic()
-
 	defer session.Mgr().Dispose()
 	defer room.Mgr().Dispose()
 

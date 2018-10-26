@@ -10,6 +10,7 @@ var (
 	GlobalMgr = newGlobalManager()
 	ItemMgr   = newItemManager()
 	PersonMgr = newPersonManager()
+	RoomMgr   = newRoomManager()
 	ShopMgr   = newShopManager()
 )
 
@@ -27,6 +28,8 @@ func LoadAll(excelDir string) (success bool) {
 	success = ItemMgr.Load(filepath.Join(absExcelDir, "item.xlsx")) && success
 
 	success = PersonMgr.Load(filepath.Join(absExcelDir, "person.xlsx")) && success
+
+	success = RoomMgr.Load(filepath.Join(absExcelDir, "room.xlsx")) && success
 
 	success = ShopMgr.Load(filepath.Join(absExcelDir, "shop.xlsx")) && success
 
@@ -47,6 +50,8 @@ func AfterLoadAll(excelDir string) (success bool) {
 	success = ItemMgr.AfterLoadAll(filepath.Join(absExcelDir, "item.xlsx")) && success
 
 	success = PersonMgr.AfterLoadAll(filepath.Join(absExcelDir, "person.xlsx")) && success
+
+	success = RoomMgr.AfterLoadAll(filepath.Join(absExcelDir, "room.xlsx")) && success
 
 	success = ShopMgr.AfterLoadAll(filepath.Join(absExcelDir, "shop.xlsx")) && success
 

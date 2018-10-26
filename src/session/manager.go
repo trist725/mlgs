@@ -9,6 +9,10 @@ import (
 var gSessionManager = newManager()
 
 func Mgr() *Manager {
+	//todo: recover gSessionManager
+	if gSessionManager == nil {
+		panic("gSessionManager is nil")
+	}
 	return gSessionManager
 }
 
@@ -81,4 +85,17 @@ func (manager *Manager) delSession(session *Session) {
 
 	delete(smap.sessions, session.id)
 	manager.disposeWait.Done()
+}
+
+func (manager *Manager) GetByUserId(id int64) *Session {
+	for i := 0; i < sessionMapNum; i++ {
+		rmap := &manager.sessionMaps[i]
+		for _, s := range rmap.sessions {
+			if s.UserData().ID == id {
+				return s
+			}
+		}
+	}
+
+	return nil
 }

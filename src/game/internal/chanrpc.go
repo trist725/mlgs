@@ -4,6 +4,7 @@ import (
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/model"
+	"mlgs/src/room"
 	s "mlgs/src/session"
 	"time"
 )
@@ -28,8 +29,16 @@ func rpcCloseAgent(args []interface{}) {
 	//清session
 	if a.UserData() != nil {
 		sid := a.UserData().(uint64)
-		session := s.GetSession(sid)
+		session := s.Mgr().GetSession(sid)
 		if session != nil {
+			//player离开room
+			//todo:bystander离开room
+			rid := session.Player().RoomId()
+			r := room.Mgr().GetRoom(rid)
+			if r != nil {
+				r.PlayerLeave(session.Player())
+			}
+
 			session.Close()
 			log.Debug("[%s] session id:[%d] closed", session.Sign(), sid)
 		}
@@ -41,6 +50,7 @@ func rpcCloseAgent(args []interface{}) {
 
 const saveIntervalMinute = 3 // 保存数据间隔（单位：分钟）
 
+//所有handle消息需在此函数执行完后执行
 func rpcHandleLoginAuthPass(args []interface{}) {
 	a := args[0].(gate.Agent)
 	//conn已断开则不必做下一步动作

@@ -1,0 +1,54 @@
+syntax="proto3";
+
+package msg;
+
+/// 玩家
+message Player{
+    ///用户Id
+    int64 UserId = 1;
+    ///玩家名
+    string NickName = 2;
+    ///头像
+    string AvatarURL = 3;
+    ///在房间的位置
+    uint32 Pos = 4;
+    ///角色,1=庄家，2=大盲, 3=小盲
+    int32 Role = 5;
+    /// 筹码
+    int64 Chip = 6;
+    ///已押注筹码
+    int64 BetChip = 7;
+}
+
+/// 房间
+message Room {
+    ///房间号
+    uint64 Id = 1;
+    ///房间名
+    string Name = 2;
+    ///房间玩家
+    repeated Player Players = 3;
+    ///房间奖池内的筹码
+    int64 Chip = 4;
+    ///当前最大加注
+    int64 MaxBet = 5;
+}
+
+/// 快速开始游戏请求
+message C2S_QuickMatchStart {
+}
+
+/// 快速开始游戏回复
+message S2C_QuickMatchStart {
+    enum E_Err_QuickMatchStart{
+        E_Err_ = 0;
+        //成功
+        E_Err_Success = 1;
+        //分配房间失败
+        E_Err_Room = 2;
+        //其它错误
+        E_Err_UnKnown = 3;
+    }
+    E_Err_QuickMatchStart Err = 1;
+    Room Room = 2;
+}

@@ -7,6 +7,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"mlgs/src/model"
 	"mlgs/src/msg"
+	s "mlgs/src/session"
 	"reflect"
 )
 
@@ -35,7 +36,7 @@ func handleLoginAuth(args []interface{}) {
 			log.Debug("login err: [%s]", err)
 			return
 		}
-		//登陆成功
+
 		if recv.Location != account.Location {
 			send.Reason = msg.S2C_Login_E_Err_LocationWarn
 		}
@@ -59,6 +60,16 @@ func handleLoginAuth(args []interface{}) {
 			send.Reason = msg.S2C_Login_E_Err_UserNotExist
 			return
 		}
+
+		//是否已在线
+		session := s.Mgr().GetByUserId(user.ID)
+		if session != nil {
+			log.Debug("[%d-%s] already online", user.ID, user.NickName)
+			send.Reason = msg.S2C_Login_E_Err_Unknown
+			sender.Close()
+			return
+		}
+
 		account.Location = recv.Location
 		user.Sex = recv.Sex
 		user.AvatarURL = recv.AvatarURL

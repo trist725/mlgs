@@ -1,24 +1,13 @@
 package internal
 
 import (
-	"github.com/trist725/mgsu/event"
 	"github.com/trist725/myleaf/gate"
-	ev "mlgs/src/event"
 	"mlgs/src/model"
 	"mlgs/src/msg"
 )
 
 //每轮签到天数
 const signCountPerRound = 14
-
-func (logic *Logic) registerAllEventHandler() {
-	logic.RegisterEventHandler(ev.OnLoginID, logic.handleOnLogin)
-}
-
-func (logic *Logic) handleOnLogin(iEv event.IEvent, args ...interface{}) {
-	ev := iEv.(*ev.OnLogin)
-	_ = ev
-}
 
 func handleAfterLoginAuthPass(args []interface{}) {
 	sender := args[0].(gate.Agent)

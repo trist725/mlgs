@@ -1,10 +1,20 @@
 package room
 
-import "sync"
+import (
+	"github.com/trist725/myleaf/log"
+	"mlgs/src/cache"
+	"mlgs/src/sd"
+	"sync"
+	"sync/atomic"
+)
 
 var gRoomManager = newManager()
 
 func Mgr() *Manager {
+	//todo: recover gRoomManager
+	if gRoomManager == nil {
+		panic("gRoomManager is nil")
+	}
 	return gRoomManager
 }
 
@@ -30,51 +40,103 @@ func newManager() *Manager {
 	return manager
 }
 
+func (manager *Manager) NewRoom(pt uint32, gt uint32, t int64) *Room {
+	//todo:根据t创建不同房间类型
+	var rommSd *sd.Room
+	switch t {
+	default:
+		rommSd = sd.RoomMgr.Get(t)
+		if rommSd == nil {
+			log.Fatal("策划坑爹了,读room表有误，id: [%d]", t)
+			return nil
+		}
+	}
+
+	room := &Room{
+		id:         atomic.AddUint64(&gRoomId, 1),
+		pType:      pt,
+		gType:      gt,
+		sb:         rommSd.Sb,
+		bb:         rommSd.Bb,
+		players:    make(map[uint32]*cache.Player),
+		bystanders: make(map[int64]*cache.Player),
+	}
+	manager.putRoom(room)
+	return room
+}
+
 func (manager *Manager) Dispose() {
 	manager.disposeOnce.Do(func() {
 		for i := 0; i < roomMapNum; i++ {
-			smap := &manager.roomMaps[i]
-			smap.Lock()
-			smap.disposed = true
-			for _, room := range smap.rooms {
+			rmap := &manager.roomMaps[i]
+			rmap.Lock()
+			rmap.disposed = true
+			for _, room := range rmap.rooms {
 				room.Destroy()
 			}
-			smap.Unlock()
+			rmap.Unlock()
 		}
 		manager.disposeWait.Wait()
 	})
 }
 
 func (manager *Manager) putRoom(room *Room) {
-	smap := &manager.roomMaps[room.id%roomMapNum]
+	rmap := &manager.roomMaps[room.id%roomMapNum]
 
-	smap.Lock()
-	defer smap.Unlock()
+	rmap.Lock()
+	defer rmap.Unlock()
 
-	if smap.disposed {
+	if rmap.disposed {
 		room.Destroy()
 		return
 	}
 
-	smap.rooms[room.id] = room
+	rmap.rooms[room.id] = room
 	manager.disposeWait.Add(1)
 }
 
 func (manager *Manager) delRoom(room *Room) {
-	smap := &manager.roomMaps[room.id%roomMapNum]
+	rmap := &manager.roomMaps[room.id%roomMapNum]
 
-	smap.Lock()
-	defer smap.Unlock()
+	rmap.Lock()
+	defer rmap.Unlock()
 
-	delete(smap.rooms, room.id)
+	delete(rmap.rooms, room.id)
 	manager.disposeWait.Done()
 }
 
 func (manager *Manager) GetRoom(roomID uint64) *Room {
-	smap := &manager.roomMaps[roomID%roomMapNum]
-	smap.RLock()
-	defer smap.RUnlock()
+	rmap := &manager.roomMaps[roomID%roomMapNum]
+	rmap.RLock()
+	defer rmap.RUnlock()
 
-	room, _ := smap.rooms[roomID]
+	room, _ := rmap.rooms[roomID]
 	return room
+}
+
+func (manager *Manager) PlayerJoin(p *cache.Player) bool {
+	for i := 0; i < roomMapNum; i++ {
+		rmap := &manager.roomMaps[i]
+		for _, r := range rmap.rooms {
+			if success := r.PlayerJoin(p); success {
+				//r.BoardCast(p)
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func (manager *Manager) BystanderJoin(p *cache.Player) bool {
+	for i := 0; i < roomMapNum; i++ {
+		rmap := &manager.roomMaps[i]
+		for _, r := range rmap.rooms {
+			if success := r.bystanderJoin(p); success {
+				return true
+			}
+		}
+	}
+
+	return false
 }
