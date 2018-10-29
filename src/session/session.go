@@ -91,7 +91,9 @@ func (s *Session) SaveData() {
 		// 保存用户数据
 		log.Debug("[%s] save data on [%v]", s.sign, time.Now())
 		dbSession := model.GetSession()
-		s.user.Update(dbSession, s.user.ID, s.user)
+		if err := s.user.UpdateByID(dbSession); err != nil {
+			log.Error("[%s], save data error:[%s]", s.sign, err)
+		}
 		model.PutSession(dbSession)
 	}
 }
