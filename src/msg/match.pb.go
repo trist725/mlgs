@@ -49,7 +49,35 @@ func (x S2C_QuickMatchStart_E_Err_QuickMatchStart) String() string {
 	return proto.EnumName(S2C_QuickMatchStart_E_Err_QuickMatchStart_name, int32(x))
 }
 func (S2C_QuickMatchStart_E_Err_QuickMatchStart) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_match_35a98b4c4430ac55, []int{3, 0}
+	return fileDescriptor_match_e89479ba4cb4f4b2, []int{3, 0}
+}
+
+type S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom int32
+
+const (
+	S2C_PlayerLeaveRoom_E_Err_ S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom = 0
+	// /成功
+	S2C_PlayerLeaveRoom_E_Err_Success S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom = 1
+	// /失败,其它
+	S2C_PlayerLeaveRoom_E_Err_UnKnown S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom = 2
+)
+
+var S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_name = map[int32]string{
+	0: "E_Err_",
+	1: "E_Err_Success",
+	2: "E_Err_UnKnown",
+}
+var S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_value = map[string]int32{
+	"E_Err_":        0,
+	"E_Err_Success": 1,
+	"E_Err_UnKnown": 2,
+}
+
+func (x S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom) String() string {
+	return proto.EnumName(S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_name, int32(x))
+}
+func (S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_match_e89479ba4cb4f4b2, []int{5, 0}
 }
 
 // / 玩家
@@ -74,7 +102,7 @@ func (m *Player) Reset()         { *m = Player{} }
 func (m *Player) String() string { return proto.CompactTextString(m) }
 func (*Player) ProtoMessage()    {}
 func (*Player) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_35a98b4c4430ac55, []int{0}
+	return fileDescriptor_match_e89479ba4cb4f4b2, []int{0}
 }
 func (m *Player) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -170,7 +198,7 @@ func (m *Room) Reset()         { *m = Room{} }
 func (m *Room) String() string { return proto.CompactTextString(m) }
 func (*Room) ProtoMessage()    {}
 func (*Room) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_35a98b4c4430ac55, []int{1}
+	return fileDescriptor_match_e89479ba4cb4f4b2, []int{1}
 }
 func (m *Room) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -242,7 +270,7 @@ func (m *C2S_QuickMatchStart) Reset()         { *m = C2S_QuickMatchStart{} }
 func (m *C2S_QuickMatchStart) String() string { return proto.CompactTextString(m) }
 func (*C2S_QuickMatchStart) ProtoMessage()    {}
 func (*C2S_QuickMatchStart) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_35a98b4c4430ac55, []int{2}
+	return fileDescriptor_match_e89479ba4cb4f4b2, []int{2}
 }
 func (m *C2S_QuickMatchStart) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -281,7 +309,7 @@ func (m *S2C_QuickMatchStart) Reset()         { *m = S2C_QuickMatchStart{} }
 func (m *S2C_QuickMatchStart) String() string { return proto.CompactTextString(m) }
 func (*S2C_QuickMatchStart) ProtoMessage()    {}
 func (*S2C_QuickMatchStart) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_35a98b4c4430ac55, []int{3}
+	return fileDescriptor_match_e89479ba4cb4f4b2, []int{3}
 }
 func (m *S2C_QuickMatchStart) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -324,12 +352,190 @@ func (m *S2C_QuickMatchStart) GetRoom() *Room {
 	return nil
 }
 
+// / 玩家离开房间请求
+type C2S_PlayerLeaveRoom struct {
+}
+
+func (m *C2S_PlayerLeaveRoom) Reset()         { *m = C2S_PlayerLeaveRoom{} }
+func (m *C2S_PlayerLeaveRoom) String() string { return proto.CompactTextString(m) }
+func (*C2S_PlayerLeaveRoom) ProtoMessage()    {}
+func (*C2S_PlayerLeaveRoom) Descriptor() ([]byte, []int) {
+	return fileDescriptor_match_e89479ba4cb4f4b2, []int{4}
+}
+func (m *C2S_PlayerLeaveRoom) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *C2S_PlayerLeaveRoom) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_C2S_PlayerLeaveRoom.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *C2S_PlayerLeaveRoom) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_PlayerLeaveRoom.Merge(dst, src)
+}
+func (m *C2S_PlayerLeaveRoom) XXX_Size() int {
+	return m.Size()
+}
+func (m *C2S_PlayerLeaveRoom) XXX_DiscardUnknown() {
+	xxx_messageInfo_C2S_PlayerLeaveRoom.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_C2S_PlayerLeaveRoom proto.InternalMessageInfo
+
+// / 玩家离开房间回复
+type S2C_PlayerLeaveRoom struct {
+	Err S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom `protobuf:"varint,1,opt,name=Err,proto3,enum=msg.S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom" json:"Err,omitempty"`
+}
+
+func (m *S2C_PlayerLeaveRoom) Reset()         { *m = S2C_PlayerLeaveRoom{} }
+func (m *S2C_PlayerLeaveRoom) String() string { return proto.CompactTextString(m) }
+func (*S2C_PlayerLeaveRoom) ProtoMessage()    {}
+func (*S2C_PlayerLeaveRoom) Descriptor() ([]byte, []int) {
+	return fileDescriptor_match_e89479ba4cb4f4b2, []int{5}
+}
+func (m *S2C_PlayerLeaveRoom) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *S2C_PlayerLeaveRoom) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_S2C_PlayerLeaveRoom.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *S2C_PlayerLeaveRoom) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_PlayerLeaveRoom.Merge(dst, src)
+}
+func (m *S2C_PlayerLeaveRoom) XXX_Size() int {
+	return m.Size()
+}
+func (m *S2C_PlayerLeaveRoom) XXX_DiscardUnknown() {
+	xxx_messageInfo_S2C_PlayerLeaveRoom.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_S2C_PlayerLeaveRoom proto.InternalMessageInfo
+
+func (m *S2C_PlayerLeaveRoom) GetErr() S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom {
+	if m != nil {
+		return m.Err
+	}
+	return S2C_PlayerLeaveRoom_E_Err_
+}
+
+// / 玩家加入房间
+type S2C_UpdatePlayerJoinRoom struct {
+	Players []*Player `protobuf:"bytes,1,rep,name=Players" json:"Players,omitempty"`
+}
+
+func (m *S2C_UpdatePlayerJoinRoom) Reset()         { *m = S2C_UpdatePlayerJoinRoom{} }
+func (m *S2C_UpdatePlayerJoinRoom) String() string { return proto.CompactTextString(m) }
+func (*S2C_UpdatePlayerJoinRoom) ProtoMessage()    {}
+func (*S2C_UpdatePlayerJoinRoom) Descriptor() ([]byte, []int) {
+	return fileDescriptor_match_e89479ba4cb4f4b2, []int{6}
+}
+func (m *S2C_UpdatePlayerJoinRoom) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *S2C_UpdatePlayerJoinRoom) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_S2C_UpdatePlayerJoinRoom.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *S2C_UpdatePlayerJoinRoom) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_UpdatePlayerJoinRoom.Merge(dst, src)
+}
+func (m *S2C_UpdatePlayerJoinRoom) XXX_Size() int {
+	return m.Size()
+}
+func (m *S2C_UpdatePlayerJoinRoom) XXX_DiscardUnknown() {
+	xxx_messageInfo_S2C_UpdatePlayerJoinRoom.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_S2C_UpdatePlayerJoinRoom proto.InternalMessageInfo
+
+func (m *S2C_UpdatePlayerJoinRoom) GetPlayers() []*Player {
+	if m != nil {
+		return m.Players
+	}
+	return nil
+}
+
+// / 玩家离开房间
+type S2C_UpdatePlayerLeaveRoom struct {
+	// /离开的玩家的用户id
+	UserIds []int64 `protobuf:"varint,1,rep,packed,name=UserIds" json:"UserIds,omitempty"`
+}
+
+func (m *S2C_UpdatePlayerLeaveRoom) Reset()         { *m = S2C_UpdatePlayerLeaveRoom{} }
+func (m *S2C_UpdatePlayerLeaveRoom) String() string { return proto.CompactTextString(m) }
+func (*S2C_UpdatePlayerLeaveRoom) ProtoMessage()    {}
+func (*S2C_UpdatePlayerLeaveRoom) Descriptor() ([]byte, []int) {
+	return fileDescriptor_match_e89479ba4cb4f4b2, []int{7}
+}
+func (m *S2C_UpdatePlayerLeaveRoom) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *S2C_UpdatePlayerLeaveRoom) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_S2C_UpdatePlayerLeaveRoom.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *S2C_UpdatePlayerLeaveRoom) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_UpdatePlayerLeaveRoom.Merge(dst, src)
+}
+func (m *S2C_UpdatePlayerLeaveRoom) XXX_Size() int {
+	return m.Size()
+}
+func (m *S2C_UpdatePlayerLeaveRoom) XXX_DiscardUnknown() {
+	xxx_messageInfo_S2C_UpdatePlayerLeaveRoom.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_S2C_UpdatePlayerLeaveRoom proto.InternalMessageInfo
+
+func (m *S2C_UpdatePlayerLeaveRoom) GetUserIds() []int64 {
+	if m != nil {
+		return m.UserIds
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*Player)(nil), "msg.Player")
 	proto.RegisterType((*Room)(nil), "msg.Room")
 	proto.RegisterType((*C2S_QuickMatchStart)(nil), "msg.C2S_QuickMatchStart")
 	proto.RegisterType((*S2C_QuickMatchStart)(nil), "msg.S2C_QuickMatchStart")
+	proto.RegisterType((*C2S_PlayerLeaveRoom)(nil), "msg.C2S_PlayerLeaveRoom")
+	proto.RegisterType((*S2C_PlayerLeaveRoom)(nil), "msg.S2C_PlayerLeaveRoom")
+	proto.RegisterType((*S2C_UpdatePlayerJoinRoom)(nil), "msg.S2C_UpdatePlayerJoinRoom")
+	proto.RegisterType((*S2C_UpdatePlayerLeaveRoom)(nil), "msg.S2C_UpdatePlayerLeaveRoom")
 	proto.RegisterEnum("msg.S2C_QuickMatchStart_E_Err_QuickMatchStart", S2C_QuickMatchStart_E_Err_QuickMatchStart_name, S2C_QuickMatchStart_E_Err_QuickMatchStart_value)
+	proto.RegisterEnum("msg.S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom", S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_name, S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_value)
 }
 func (m *Player) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
@@ -488,6 +694,113 @@ func (m *S2C_QuickMatchStart) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
+func (m *C2S_PlayerLeaveRoom) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *C2S_PlayerLeaveRoom) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	return i, nil
+}
+
+func (m *S2C_PlayerLeaveRoom) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *S2C_PlayerLeaveRoom) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Err != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintMatch(dAtA, i, uint64(m.Err))
+	}
+	return i, nil
+}
+
+func (m *S2C_UpdatePlayerJoinRoom) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *S2C_UpdatePlayerJoinRoom) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Players) > 0 {
+		for _, msg := range m.Players {
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintMatch(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	return i, nil
+}
+
+func (m *S2C_UpdatePlayerLeaveRoom) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *S2C_UpdatePlayerLeaveRoom) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.UserIds) > 0 {
+		dAtA3 := make([]byte, len(m.UserIds)*10)
+		var j2 int
+		for _, num1 := range m.UserIds {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA3[j2] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j2++
+			}
+			dAtA3[j2] = uint8(num)
+			j2++
+		}
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintMatch(dAtA, i, uint64(j2))
+		i += copy(dAtA[i:], dAtA3[:j2])
+	}
+	return i, nil
+}
+
 func encodeVarintMatch(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -578,6 +891,58 @@ func (m *S2C_QuickMatchStart) Size() (n int) {
 	if m.Room != nil {
 		l = m.Room.Size()
 		n += 1 + l + sovMatch(uint64(l))
+	}
+	return n
+}
+
+func (m *C2S_PlayerLeaveRoom) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *S2C_PlayerLeaveRoom) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Err != 0 {
+		n += 1 + sovMatch(uint64(m.Err))
+	}
+	return n
+}
+
+func (m *S2C_UpdatePlayerJoinRoom) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Players) > 0 {
+		for _, e := range m.Players {
+			l = e.Size()
+			n += 1 + l + sovMatch(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *S2C_UpdatePlayerLeaveRoom) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.UserIds) > 0 {
+		l = 0
+		for _, e := range m.UserIds {
+			l += sovMatch(uint64(e))
+		}
+		n += 1 + sovMatch(uint64(l)) + l
 	}
 	return n
 }
@@ -1117,6 +1482,329 @@ func (m *S2C_QuickMatchStart) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *C2S_PlayerLeaveRoom) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowMatch
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: C2S_PlayerLeaveRoom: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: C2S_PlayerLeaveRoom: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipMatch(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthMatch
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *S2C_PlayerLeaveRoom) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowMatch
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: S2C_PlayerLeaveRoom: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: S2C_PlayerLeaveRoom: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Err", wireType)
+			}
+			m.Err = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMatch
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Err |= (S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipMatch(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthMatch
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *S2C_UpdatePlayerJoinRoom) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowMatch
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: S2C_UpdatePlayerJoinRoom: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: S2C_UpdatePlayerJoinRoom: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Players", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMatch
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthMatch
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Players = append(m.Players, &Player{})
+			if err := m.Players[len(m.Players)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipMatch(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthMatch
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *S2C_UpdatePlayerLeaveRoom) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowMatch
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: S2C_UpdatePlayerLeaveRoom: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: S2C_UpdatePlayerLeaveRoom: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType == 0 {
+				var v int64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowMatch
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= (int64(b) & 0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				m.UserIds = append(m.UserIds, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowMatch
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= (int(b) & 0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthMatch
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				var count int
+				for _, integer := range dAtA {
+					if integer < 128 {
+						count++
+					}
+				}
+				elementCount = count
+				if elementCount != 0 && len(m.UserIds) == 0 {
+					m.UserIds = make([]int64, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v int64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowMatch
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						v |= (int64(b) & 0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					m.UserIds = append(m.UserIds, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field UserIds", wireType)
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipMatch(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthMatch
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func skipMatch(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1222,32 +1910,37 @@ var (
 	ErrIntOverflowMatch   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("match.proto", fileDescriptor_match_35a98b4c4430ac55) }
+func init() { proto.RegisterFile("match.proto", fileDescriptor_match_e89479ba4cb4f4b2) }
 
-var fileDescriptor_match_35a98b4c4430ac55 = []byte{
-	// 383 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x92, 0xcd, 0x8a, 0xe2, 0x40,
-	0x14, 0x85, 0x53, 0xa9, 0x18, 0xc7, 0x1b, 0x94, 0x4c, 0x89, 0x52, 0x0c, 0x33, 0x21, 0x04, 0x06,
-	0xb2, 0xca, 0x22, 0xf3, 0x02, 0x33, 0x8a, 0x0b, 0x99, 0x51, 0x9c, 0x0a, 0x2e, 0x7a, 0x25, 0xe9,
-	0x18, 0x54, 0x34, 0x46, 0x2a, 0xb1, 0x7f, 0x16, 0xfd, 0x0e, 0xfd, 0x24, 0xfd, 0x1c, 0xbd, 0xb4,
-	0x77, 0xbd, 0x6c, 0xf4, 0x45, 0x9a, 0xaa, 0xf8, 0x87, 0xb8, 0x3b, 0xe7, 0xbb, 0x55, 0xa7, 0xce,
-	0x0d, 0x01, 0x23, 0x09, 0xf3, 0x68, 0xea, 0xad, 0x78, 0x9a, 0xa7, 0x04, 0x27, 0xd9, 0xc4, 0x79,
-	0x41, 0xa0, 0x0f, 0x16, 0xe1, 0x63, 0xcc, 0x49, 0x13, 0xf4, 0x61, 0x16, 0xf3, 0xee, 0x98, 0x22,
-	0x1b, 0xb9, 0x98, 0xed, 0x1d, 0xf9, 0x06, 0x5f, 0xfa, 0xb3, 0x68, 0xde, 0x0f, 0x93, 0x98, 0xaa,
-	0x36, 0x72, 0x2b, 0xec, 0xe8, 0xc9, 0x77, 0xa8, 0xfc, 0xb9, 0x0b, 0xf3, 0x90, 0x0f, 0xd9, 0x3f,
-	0x8a, 0xe5, 0xf0, 0x04, 0x88, 0x09, 0x78, 0x90, 0x66, 0x54, 0xb3, 0x91, 0x5b, 0x65, 0x42, 0x12,
-	0x02, 0x1a, 0x4b, 0x17, 0x31, 0x2d, 0xd9, 0xc8, 0x2d, 0x31, 0xa9, 0x05, 0x6b, 0x4f, 0x67, 0x2b,
-	0xaa, 0xcb, 0x57, 0xa5, 0x26, 0x14, 0xca, 0xad, 0x38, 0x97, 0xb8, 0x2c, 0xf1, 0xc1, 0x3a, 0x4f,
-	0x22, 0x21, 0x4d, 0x48, 0x0d, 0xd4, 0x7d, 0x53, 0x8d, 0xa9, 0xdd, 0xb1, 0x48, 0x39, 0x6b, 0x28,
-	0x35, 0xf9, 0x09, 0xe5, 0x62, 0xb7, 0x8c, 0x62, 0x1b, 0xbb, 0x86, 0x6f, 0x78, 0x49, 0x36, 0xf1,
-	0x0a, 0xc6, 0x0e, 0xb3, 0x63, 0x01, 0xed, 0xac, 0x40, 0x13, 0xf4, 0x5e, 0xf8, 0xd0, 0x8a, 0x73,
-	0x59, 0x15, 0xb3, 0xbd, 0x73, 0x1a, 0x50, 0x6f, 0xfb, 0xc1, 0xe8, 0xff, 0x7a, 0x16, 0xcd, 0x7b,
-	0xe2, 0x63, 0x06, 0x79, 0xc8, 0x73, 0xe7, 0x0d, 0x41, 0x3d, 0xf0, 0xdb, 0x97, 0x9c, 0xfc, 0x06,
-	0xdc, 0xe1, 0x5c, 0xd6, 0xac, 0xf9, 0x9e, 0x7c, 0xfd, 0xca, 0x31, 0xaf, 0x33, 0xea, 0x70, 0x7e,
-	0x49, 0x99, 0xb8, 0x4a, 0x7e, 0x14, 0xfb, 0xca, 0xbd, 0x0c, 0xbf, 0x22, 0x23, 0x04, 0x60, 0x12,
-	0x3b, 0x37, 0xd0, 0xb8, 0x7a, 0x99, 0x00, 0xe8, 0xc5, 0xc0, 0x54, 0xc8, 0x57, 0xa8, 0x16, 0x3a,
-	0x58, 0x47, 0x51, 0x9c, 0x65, 0x26, 0x22, 0x35, 0x80, 0x02, 0x89, 0x14, 0x53, 0x3d, 0x1d, 0x19,
-	0x2e, 0xff, 0x2e, 0xd3, 0xfb, 0xa5, 0x89, 0x5b, 0xf4, 0x75, 0x6b, 0xa1, 0xcd, 0xd6, 0x42, 0x1f,
-	0x5b, 0x0b, 0x3d, 0xef, 0x2c, 0x65, 0xb3, 0xb3, 0x94, 0xf7, 0x9d, 0xa5, 0xdc, 0xea, 0xf2, 0x07,
-	0xfa, 0xf5, 0x19, 0x00, 0x00, 0xff, 0xff, 0xd7, 0x56, 0x75, 0x9d, 0x4f, 0x02, 0x00, 0x00,
+var fileDescriptor_match_e89479ba4cb4f4b2 = []byte{
+	// 464 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x93, 0xc1, 0x6e, 0xd3, 0x30,
+	0x18, 0xc7, 0xeb, 0xb8, 0x4b, 0xe9, 0x57, 0xad, 0x0a, 0x9e, 0x36, 0x19, 0x04, 0x51, 0x14, 0x09,
+	0x29, 0xa7, 0x1c, 0x82, 0xb8, 0xb3, 0x56, 0x3d, 0x14, 0xb6, 0x69, 0xb8, 0xea, 0x81, 0xd3, 0x64,
+	0x52, 0x6b, 0xab, 0xb6, 0x34, 0x95, 0x93, 0x0d, 0x38, 0xf0, 0x0e, 0x3c, 0x03, 0x0f, 0xc0, 0x73,
+	0x70, 0x1c, 0x37, 0x8e, 0xa8, 0x7d, 0x11, 0xe4, 0xcf, 0xc9, 0x5a, 0x85, 0x4d, 0xbb, 0x7d, 0xdf,
+	0xcf, 0xf6, 0xff, 0xfb, 0xff, 0x2d, 0x1b, 0x7a, 0x99, 0x2c, 0xd3, 0x8b, 0x78, 0xa9, 0xf3, 0x32,
+	0x67, 0x34, 0x2b, 0xce, 0xc3, 0x9f, 0x04, 0xdc, 0xd3, 0x2b, 0xf9, 0x55, 0x69, 0x76, 0x00, 0xee,
+	0xb4, 0x50, 0x7a, 0x3c, 0xe3, 0x24, 0x20, 0x11, 0x15, 0x55, 0xc7, 0x9e, 0xc3, 0x93, 0x93, 0x79,
+	0x7a, 0x79, 0x22, 0x33, 0xc5, 0x9d, 0x80, 0x44, 0x5d, 0x71, 0xd7, 0xb3, 0x17, 0xd0, 0x3d, 0xbc,
+	0x91, 0xa5, 0xd4, 0x53, 0x71, 0xc4, 0x29, 0x2e, 0x6e, 0x00, 0xf3, 0x80, 0x9e, 0xe6, 0x05, 0x6f,
+	0x07, 0x24, 0xda, 0x15, 0xa6, 0x64, 0x0c, 0xda, 0x22, 0xbf, 0x52, 0x7c, 0x27, 0x20, 0xd1, 0x8e,
+	0xc0, 0xda, 0xb0, 0xe1, 0xc5, 0x7c, 0xc9, 0x5d, 0x9c, 0x8a, 0x35, 0xe3, 0xd0, 0x19, 0xa8, 0x12,
+	0x71, 0x07, 0x71, 0xdd, 0x86, 0xdf, 0x8c, 0x42, 0x9e, 0xb1, 0x3e, 0x38, 0x95, 0xd3, 0xb6, 0x70,
+	0xc6, 0x33, 0xa3, 0xb2, 0xe5, 0x10, 0x6b, 0xf6, 0x0a, 0x3a, 0x36, 0x5b, 0xc1, 0x69, 0x40, 0xa3,
+	0x5e, 0xd2, 0x8b, 0xb3, 0xe2, 0x3c, 0xb6, 0x4c, 0xd4, 0x6b, 0x77, 0x06, 0xda, 0x5b, 0x06, 0x0e,
+	0xc0, 0x3d, 0x96, 0x5f, 0x06, 0xaa, 0x44, 0xab, 0x54, 0x54, 0x5d, 0xb8, 0x0f, 0x7b, 0xc3, 0x64,
+	0x72, 0xf6, 0xe1, 0x7a, 0x9e, 0x5e, 0x1e, 0x9b, 0xcb, 0x9c, 0x94, 0x52, 0x97, 0xe1, 0x6f, 0x02,
+	0x7b, 0x93, 0x64, 0xd8, 0xe4, 0xec, 0x2d, 0xd0, 0x91, 0xd6, 0x68, 0xb3, 0x9f, 0xc4, 0x38, 0xfd,
+	0x9e, 0x6d, 0xf1, 0xe8, 0x6c, 0xa4, 0x75, 0x93, 0x0a, 0x73, 0x94, 0xbd, 0xb4, 0x79, 0x31, 0x57,
+	0x2f, 0xe9, 0xa2, 0x84, 0x01, 0x02, 0x71, 0xf8, 0x11, 0xf6, 0xef, 0x3d, 0xcc, 0x00, 0x5c, 0xbb,
+	0xe0, 0xb5, 0xd8, 0x53, 0xd8, 0xb5, 0xf5, 0xe4, 0x3a, 0x4d, 0x55, 0x51, 0x78, 0x84, 0xf5, 0x01,
+	0x2c, 0x32, 0x2a, 0x9e, 0xb3, 0xd9, 0x32, 0x5d, 0xbc, 0x5f, 0xe4, 0x9f, 0x17, 0x1e, 0xad, 0xa3,
+	0xda, 0x5b, 0x3a, 0x52, 0xf2, 0x46, 0xe1, 0xc4, 0x1f, 0x55, 0xd4, 0x06, 0x7f, 0x28, 0x6a, 0x63,
+	0x5b, 0x15, 0xb5, 0x41, 0x31, 0x6a, 0x38, 0xae, 0xb3, 0x34, 0xa5, 0x1f, 0xc9, 0xf2, 0x9f, 0x77,
+	0x27, 0x3c, 0x04, 0x6e, 0x86, 0x4f, 0x97, 0x33, 0x59, 0x2a, 0x2b, 0xf7, 0x2e, 0x9f, 0x2f, 0x50,
+	0x6d, 0xeb, 0x55, 0x90, 0x87, 0x5f, 0x45, 0xf8, 0x06, 0x9e, 0x35, 0x25, 0x36, 0x8e, 0x38, 0x74,
+	0xec, 0xef, 0xb0, 0x1a, 0x54, 0xd4, 0xed, 0x80, 0xff, 0x5a, 0xf9, 0xe4, 0x76, 0xe5, 0x93, 0xbf,
+	0x2b, 0x9f, 0x7c, 0x5f, 0xfb, 0xad, 0xdb, 0xb5, 0xdf, 0xfa, 0xb3, 0xf6, 0x5b, 0x9f, 0x5c, 0xfc,
+	0x76, 0xaf, 0xff, 0x05, 0x00, 0x00, 0xff, 0xff, 0xc6, 0x1c, 0xd5, 0x63, 0x85, 0x03, 0x00, 0x00,
 }

@@ -14,10 +14,15 @@ import (
 func init() {
 	regiserMsgHandle(&msg.C2S_DaySign{}, handleDaySign)
 	regiserMsgHandle(&msg.C2S_QuickMatchStart{}, handleQuickMatchStart)
+	regiserMsgHandle(&msg.C2S_PlayerLeaveRoom{}, handlePlayerLeaveRoom)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
 	skeleton.RegisterChanRPC(reflect.TypeOf(m), h)
+}
+
+func handlePlayerLeaveRoom(args []interface{}) {
+
 }
 
 func handleQuickMatchStart(args []interface{}) {
@@ -30,7 +35,7 @@ func handleQuickMatchStart(args []interface{}) {
 		return
 	}
 	send := msg.Get_S2C_QuickMatchStart()
-	defer sender.WriteMsg(send)
+	//defer sender.WriteMsg(send)
 
 	sid := sender.UserData().(uint64)
 	session := s.Mgr().GetSession(sid)
@@ -39,6 +44,7 @@ func handleQuickMatchStart(args []interface{}) {
 		return
 	}
 
+	//创建游戏内数据
 	player := cache.NewPlayer(session.ID(), sd.InitQuickMatchRoomId())
 	session.SetPlayer(player)
 
@@ -53,38 +59,14 @@ func handleQuickMatchStart(args []interface{}) {
 		send.Err = msg.S2C_QuickMatchStart_E_Err_Room
 		return
 	}
-	log.Error("[%s] player pos:[%d], room id:[%d]", session.Sign(), player.Pos(), player.RoomId())
+	log.Debug("[%s] pos:[%d], room id:[%d]", session.Sign(), player.Pos(), player.RoomId())
 
 	r := room.Mgr().GetRoom(player.RoomId())
 	send.Room = msg.Get_Room()
 	send.Room.Id = r.Id()
 	send.Room.Name = r.Name()
-	//给自己发所有玩家信息
-	//todo:给自己发旁观者信息
-	r.PlayerEach(func(player *cache.Player) {
-		session := s.Mgr().GetSession(player.SessionId())
-		//todo: 断线session被销毁但等待重连?
-		if session == nil {
-			log.Error("use nil session id:[%d]", player.SessionId())
-			return
-		}
-		//自己
-		//if player.SessionId() == sid{
-		//	return
-		//}
 
-		p := msg.Get_Player()
-		p.Chip = player.Chip()
-		p.NickName = session.UserData().NickName
-		p.UserId = session.UserData().ID
-		p.Pos = player.Pos()
-		p.AvatarURL = session.UserData().AvatarURL
-
-		send.Room.Players = append(send.Room.Players, p)
-	})
-	//todo: 给其它所有玩家发自己信息
-
-	send.Err = msg.S2C_QuickMatchStart_E_Err_Success
+	ChanRPC.Go("PlayerJoinRoom", sender, r, send, player)
 }
 
 func handleDaySign(args []interface{}) {

@@ -74,7 +74,7 @@ func handleLoginAuth(args []interface{}) {
 		user.Sex = recv.Sex
 		user.AvatarURL = recv.AvatarURL
 		user.NickName = recv.NickName
-		game.ChanRPC.Go("LoginAuthPass", sender, account, user)
+		game.ChanRPC.Go("LoginAuthPass", sender, *account, *user)
 		send.Reason = msg.S2C_Login_E_Err_LoginSuccess
 		return
 	}
@@ -97,6 +97,6 @@ func handleLoginAuth(args []interface{}) {
 	}
 	defer model.Put_User(newUser)
 
-	game.ChanRPC.Go("LoginAuthPass", sender, newAccount, newUser)
+	game.ChanRPC.Go("LoginAuthPass", sender, *newAccount, *newUser)
 	send.Reason = msg.S2C_Login_E_Err_NewAccount
 }

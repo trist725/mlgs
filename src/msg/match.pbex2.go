@@ -7,6 +7,10 @@ It has these top-level messages:
 	Room
 	C2S_QuickMatchStart
 	S2C_QuickMatchStart
+	C2S_PlayerLeaveRoom
+	S2C_PlayerLeaveRoom
+	S2C_UpdatePlayerJoinRoom
+	S2C_UpdatePlayerLeaveRoom
 */
 
 package msg
@@ -59,6 +63,49 @@ func Each_S2C_QuickMatchStart_E_Err_QuickMatchStart_I(f func(int32) bool) {
 }
 
 // enum [S2C_QuickMatchStart_E_Err_QuickMatchStart] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// enum [S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom] begin
+
+var S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_Slice = []int32{
+	0,
+	1,
+	2,
+}
+
+func S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_Len() int {
+	return len(S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_Slice)
+}
+
+func Check_S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_I(value int32) bool {
+	if _, ok := S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_name[value]; ok && value != 0 {
+		return true
+	}
+	return false
+}
+
+func Check_S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom(value S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom) bool {
+	return Check_S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_I(int32(value))
+}
+
+func Each_S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom(f func(S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom) bool) {
+	for _, value := range S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_Slice {
+		if !f(S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom(value)) {
+			break
+		}
+	}
+}
+
+func Each_S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_I(f func(int32) bool) {
+	for _, value := range S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_Slice {
+		if !f(value) {
+			break
+		}
+	}
+}
+
+// enum [S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -342,4 +389,268 @@ func Put_S2C_QuickMatchStart(i interface{}) {
 }
 
 // message [S2C_QuickMatchStart] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [C2S_PlayerLeaveRoom] begin
+func (m *C2S_PlayerLeaveRoom) ResetEx() {
+
+}
+
+func (m C2S_PlayerLeaveRoom) Clone() *C2S_PlayerLeaveRoom {
+	n, ok := g_C2S_PlayerLeaveRoom_Pool.Get().(*C2S_PlayerLeaveRoom)
+	if !ok || n == nil {
+		n = &C2S_PlayerLeaveRoom{}
+	}
+
+	return n
+}
+
+func Clone_C2S_PlayerLeaveRoom_Slice(dst []*C2S_PlayerLeaveRoom, src []*C2S_PlayerLeaveRoom) []*C2S_PlayerLeaveRoom {
+	for _, i := range dst {
+		Put_C2S_PlayerLeaveRoom(i)
+	}
+	dst = []*C2S_PlayerLeaveRoom{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_C2S_PlayerLeaveRoom() *C2S_PlayerLeaveRoom {
+	m := &C2S_PlayerLeaveRoom{}
+	return m
+}
+
+var g_C2S_PlayerLeaveRoom_Pool = sync.Pool{}
+
+func Get_C2S_PlayerLeaveRoom() *C2S_PlayerLeaveRoom {
+	m, ok := g_C2S_PlayerLeaveRoom_Pool.Get().(*C2S_PlayerLeaveRoom)
+	if !ok {
+		m = New_C2S_PlayerLeaveRoom()
+	} else {
+		if m == nil {
+			m = New_C2S_PlayerLeaveRoom()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_C2S_PlayerLeaveRoom(i interface{}) {
+	if m, ok := i.(*C2S_PlayerLeaveRoom); ok && m != nil {
+		g_C2S_PlayerLeaveRoom_Pool.Put(i)
+	}
+}
+
+// message [C2S_PlayerLeaveRoom] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_PlayerLeaveRoom] begin
+func (m *S2C_PlayerLeaveRoom) ResetEx() {
+	m.Err = 0
+
+}
+
+func (m S2C_PlayerLeaveRoom) Clone() *S2C_PlayerLeaveRoom {
+	n, ok := g_S2C_PlayerLeaveRoom_Pool.Get().(*S2C_PlayerLeaveRoom)
+	if !ok || n == nil {
+		n = &S2C_PlayerLeaveRoom{}
+	}
+
+	n.Err = m.Err
+
+	return n
+}
+
+func Clone_S2C_PlayerLeaveRoom_Slice(dst []*S2C_PlayerLeaveRoom, src []*S2C_PlayerLeaveRoom) []*S2C_PlayerLeaveRoom {
+	for _, i := range dst {
+		Put_S2C_PlayerLeaveRoom(i)
+	}
+	dst = []*S2C_PlayerLeaveRoom{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_S2C_PlayerLeaveRoom() *S2C_PlayerLeaveRoom {
+	m := &S2C_PlayerLeaveRoom{}
+	return m
+}
+
+var g_S2C_PlayerLeaveRoom_Pool = sync.Pool{}
+
+func Get_S2C_PlayerLeaveRoom() *S2C_PlayerLeaveRoom {
+	m, ok := g_S2C_PlayerLeaveRoom_Pool.Get().(*S2C_PlayerLeaveRoom)
+	if !ok {
+		m = New_S2C_PlayerLeaveRoom()
+	} else {
+		if m == nil {
+			m = New_S2C_PlayerLeaveRoom()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_PlayerLeaveRoom(i interface{}) {
+	if m, ok := i.(*S2C_PlayerLeaveRoom); ok && m != nil {
+		g_S2C_PlayerLeaveRoom_Pool.Put(i)
+	}
+}
+
+// message [S2C_PlayerLeaveRoom] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_UpdatePlayerJoinRoom] begin
+func (m *S2C_UpdatePlayerJoinRoom) ResetEx() {
+
+	for _, i := range m.Players {
+		Put_Player(i)
+	}
+	m.Players = []*Player{}
+
+}
+
+func (m S2C_UpdatePlayerJoinRoom) Clone() *S2C_UpdatePlayerJoinRoom {
+	n, ok := g_S2C_UpdatePlayerJoinRoom_Pool.Get().(*S2C_UpdatePlayerJoinRoom)
+	if !ok || n == nil {
+		n = &S2C_UpdatePlayerJoinRoom{}
+	}
+
+	if len(m.Players) > 0 {
+		for _, i := range m.Players {
+			if i != nil {
+				n.Players = append(n.Players, i.Clone())
+			} else {
+				n.Players = append(n.Players, nil)
+			}
+		}
+	} else {
+		n.Players = []*Player{}
+	}
+
+	return n
+}
+
+func Clone_S2C_UpdatePlayerJoinRoom_Slice(dst []*S2C_UpdatePlayerJoinRoom, src []*S2C_UpdatePlayerJoinRoom) []*S2C_UpdatePlayerJoinRoom {
+	for _, i := range dst {
+		Put_S2C_UpdatePlayerJoinRoom(i)
+	}
+	dst = []*S2C_UpdatePlayerJoinRoom{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_S2C_UpdatePlayerJoinRoom() *S2C_UpdatePlayerJoinRoom {
+	m := &S2C_UpdatePlayerJoinRoom{
+		Players: []*Player{},
+	}
+	return m
+}
+
+var g_S2C_UpdatePlayerJoinRoom_Pool = sync.Pool{}
+
+func Get_S2C_UpdatePlayerJoinRoom() *S2C_UpdatePlayerJoinRoom {
+	m, ok := g_S2C_UpdatePlayerJoinRoom_Pool.Get().(*S2C_UpdatePlayerJoinRoom)
+	if !ok {
+		m = New_S2C_UpdatePlayerJoinRoom()
+	} else {
+		if m == nil {
+			m = New_S2C_UpdatePlayerJoinRoom()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_UpdatePlayerJoinRoom(i interface{}) {
+	if m, ok := i.(*S2C_UpdatePlayerJoinRoom); ok && m != nil {
+		g_S2C_UpdatePlayerJoinRoom_Pool.Put(i)
+	}
+}
+
+// message [S2C_UpdatePlayerJoinRoom] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_UpdatePlayerLeaveRoom] begin
+func (m *S2C_UpdatePlayerLeaveRoom) ResetEx() {
+	m.UserIds = []int64{}
+
+}
+
+func (m S2C_UpdatePlayerLeaveRoom) Clone() *S2C_UpdatePlayerLeaveRoom {
+	n, ok := g_S2C_UpdatePlayerLeaveRoom_Pool.Get().(*S2C_UpdatePlayerLeaveRoom)
+	if !ok || n == nil {
+		n = &S2C_UpdatePlayerLeaveRoom{}
+	}
+
+	if len(m.UserIds) > 0 {
+		n.UserIds = make([]int64, len(m.UserIds))
+		copy(n.UserIds, m.UserIds)
+	} else {
+		n.UserIds = []int64{}
+	}
+
+	return n
+}
+
+func Clone_S2C_UpdatePlayerLeaveRoom_Slice(dst []*S2C_UpdatePlayerLeaveRoom, src []*S2C_UpdatePlayerLeaveRoom) []*S2C_UpdatePlayerLeaveRoom {
+	for _, i := range dst {
+		Put_S2C_UpdatePlayerLeaveRoom(i)
+	}
+	dst = []*S2C_UpdatePlayerLeaveRoom{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_S2C_UpdatePlayerLeaveRoom() *S2C_UpdatePlayerLeaveRoom {
+	m := &S2C_UpdatePlayerLeaveRoom{
+		UserIds: []int64{},
+	}
+	return m
+}
+
+var g_S2C_UpdatePlayerLeaveRoom_Pool = sync.Pool{}
+
+func Get_S2C_UpdatePlayerLeaveRoom() *S2C_UpdatePlayerLeaveRoom {
+	m, ok := g_S2C_UpdatePlayerLeaveRoom_Pool.Get().(*S2C_UpdatePlayerLeaveRoom)
+	if !ok {
+		m = New_S2C_UpdatePlayerLeaveRoom()
+	} else {
+		if m == nil {
+			m = New_S2C_UpdatePlayerLeaveRoom()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_UpdatePlayerLeaveRoom(i interface{}) {
+	if m, ok := i.(*S2C_UpdatePlayerLeaveRoom); ok && m != nil {
+		g_S2C_UpdatePlayerLeaveRoom_Pool.Put(i)
+	}
+}
+
+// message [S2C_UpdatePlayerLeaveRoom] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

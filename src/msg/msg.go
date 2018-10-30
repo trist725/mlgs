@@ -20,4 +20,8 @@ func init() {
 	Processor.Register(&S2C_DaySign{})
 	Processor.Register(&C2S_QuickMatchStart{})
 	Processor.Register(&S2C_QuickMatchStart{})
+	Processor.Register(&C2S_PlayerLeaveRoom{})
+	Processor.Register(&S2C_PlayerLeaveRoom{})
+	Processor.Register(&S2C_UpdatePlayerJoinRoom{})
+	Processor.Register(&S2C_UpdatePlayerLeaveRoom{})
 }

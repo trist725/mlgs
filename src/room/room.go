@@ -3,6 +3,7 @@ package room
 import (
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/cache"
+	"mlgs/src/msg"
 	s "mlgs/src/session"
 	"sd"
 	"sync"
@@ -166,26 +167,49 @@ func (r *Room) Id() uint64 {
 	return r.id
 }
 
-func (r *Room) BoardCast(me *cache.Player) {
+//广播玩家加入
+func (r *Room) BoardCastPJ(players []*cache.Player) {
 	r.PlayerEach(func(player *cache.Player) {
 		session := s.Mgr().GetSession(player.SessionId())
-		//todo: 断线session被销毁但等待重连?
 		if session == nil {
 			log.Error("use nil session id:[%d]", player.SessionId())
 			return
 		}
-		//自己
-		//if player.SessionId() == sid{
-		//	return
-		//}
 
-		//p := msg.Get_Player()
-		//p.Chip = player.Chip()
-		//p.NickName = session.UserData().NickName
-		//p.UserId = session.UserData().ID
-		//p.Pos = player.Pos()
-		//p.AvatarURL = session.UserData().AvatarURL
-		//
-		//send.Room.Players = append(send.Room.Players, p)
+		send := msg.Get_S2C_UpdatePlayerJoinRoom()
+		for _, p := range players {
+			np := msg.Get_Player()
+			np.NickName = session.UserData().NickName
+			np.Pos = p.Pos()
+			np.Chip = p.Chip()
+			np.AvatarURL = session.UserData().AvatarURL
+			np.UserId = session.UserData().ID
+
+			send.Players = append(send.Players, np)
+		}
+
+		session.Agent().WriteMsg(send)
 	})
+
+	return
+}
+
+//广播玩家离开
+func (r *Room) BoardCastPL(ids []int64) {
+	r.PlayerEach(func(player *cache.Player) {
+		session := s.Mgr().GetSession(player.SessionId())
+		if session == nil {
+			log.Error("use nil session id:[%d]", player.SessionId())
+			return
+		}
+
+		send := msg.Get_S2C_UpdatePlayerLeaveRoom()
+		for _, id := range ids {
+			send.UserIds = append(send.UserIds, id)
+		}
+
+		session.Agent().WriteMsg(send)
+	})
+
+	return
 }

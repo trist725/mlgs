@@ -13,7 +13,6 @@ func init() {
 	skeleton.RegisterChanRPC("NewAgent", rpcNewAgent)
 	skeleton.RegisterChanRPC("CloseAgent", rpcCloseAgent)
 	skeleton.RegisterChanRPC("LoginAuthPass", rpcHandleLoginAuthPass)
-	skeleton.RegisterChanRPC("AfterLoginAuthPass", handleAfterLoginAuthPass)
 }
 
 func rpcNewAgent(args []interface{}) {
@@ -57,13 +56,16 @@ func rpcHandleLoginAuthPass(args []interface{}) {
 	if a.UserData() != nil && a.UserData().(uint64) == 0 {
 		return
 	}
-	account := args[1].(*model.Account)
-	user := args[2].(*model.User)
-
-	ns := s.New(a, account, user)
+	account := args[1].(model.Account)
+	user := args[2].(model.User)
+	if account.ID == 0 || user.ID == 0 {
+		log.Error("invalid account or user")
+	}
+	ns := s.New(a, &account, &user)
+	log.Debug("current session count: %d", s.Mgr().Count())
 
 	//下发用户数据
-	ChanRPC.Go("AfterLoginAuthPass", a, user)
+	ChanRPC.Go("AfterLoginAuthPass", a, &user)
 
 	//定时写库
 	var f func()

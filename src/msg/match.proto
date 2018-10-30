@@ -52,3 +52,30 @@ message S2C_QuickMatchStart {
     E_Err_QuickMatchStart Err = 1;
     Room Room = 2;
 }
+
+/// 玩家离开房间请求
+message C2S_PlayerLeaveRoom {
+}
+
+/// 玩家离开房间回复
+message S2C_PlayerLeaveRoom {
+    enum E_Err_PlayerLeaveRoom{
+        E_Err_ = 0;
+        ///成功
+        E_Err_Success = 1;
+        ///失败,其它
+        E_Err_UnKnown = 2;
+    }
+    E_Err_PlayerLeaveRoom Err = 1;
+}
+
+/// 玩家加入房间
+message S2C_UpdatePlayerJoinRoom {
+    repeated Player Players = 1;
+}
+
+/// 玩家离开房间
+message S2C_UpdatePlayerLeaveRoom {
+    ///离开的玩家的用户id
+    repeated int64 UserIds = 1;
+}

@@ -89,8 +89,8 @@ func (manager *Manager) delSession(session *Session) {
 
 func (manager *Manager) GetByUserId(id int64) *Session {
 	for i := 0; i < sessionMapNum; i++ {
-		rmap := &manager.sessionMaps[i]
-		for _, s := range rmap.sessions {
+		smap := &manager.sessionMaps[i]
+		for _, s := range smap.sessions {
 			if s.UserData().ID == id {
 				return s
 			}
@@ -98,4 +98,14 @@ func (manager *Manager) GetByUserId(id int64) *Session {
 	}
 
 	return nil
+}
+
+func (manager *Manager) Count() uint64 {
+	var count uint64
+	for i := 0; i < sessionMapNum; i++ {
+		smap := &manager.sessionMaps[i]
+		count += uint64(len(smap.sessions))
+	}
+
+	return count
 }

@@ -2,7 +2,6 @@ package session
 
 import (
 	"fmt"
-	"github.com/trist725/mgsu/event"
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
 	"github.com/trist725/myleaf/timer"
@@ -16,8 +15,6 @@ import (
 //非线程安全
 type Session struct {
 	id uint64
-	//事件管理器
-	eventHandlerMgr *event.HandlerManager
 	//定时写库
 	timer *timer.Timer
 	sign  string // 日志标识
@@ -33,12 +30,11 @@ var gSessionId uint64
 
 func New(agent gate.Agent, account *model.Account, user *model.User) *Session {
 	session := &Session{
-		agent:           agent,
-		account:         account,
-		user:            user,
-		id:              atomic.AddUint64(&gSessionId, 1),
-		eventHandlerMgr: event.NewHandlerManager(),
-		sign:            fmt.Sprintf("user-%d-%s", user.ID, user.NickName),
+		agent:   agent,
+		account: account,
+		user:    user,
+		id:      atomic.AddUint64(&gSessionId, 1),
+		sign:    fmt.Sprintf("user-%d-%s", user.ID, user.NickName),
 	}
 	//用于从agent获取到session
 	session.agent.SetUserData(session.id)
@@ -48,14 +44,6 @@ func New(agent gate.Agent, account *model.Account, user *model.User) *Session {
 	}
 	gSessionManager.putSession(session)
 	return session
-}
-
-func (s *Session) RegisterEventHandler(id event.ID, handler event.Handler) {
-	s.eventHandlerMgr.Register(id, handler)
-}
-
-func (s *Session) ProcessEvent(ev event.IEvent) error {
-	return s.eventHandlerMgr.Process(ev)
 }
 
 func (s *Session) ID() uint64 {
@@ -140,4 +128,8 @@ func (s *Session) Player() *cache.Player {
 
 func (s *Session) SetPlayer(p *cache.Player) {
 	s.cache = p
+}
+
+func (s *Session) Agent() gate.Agent {
+	return s.agent
 }

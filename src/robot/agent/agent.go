@@ -1,6 +1,7 @@
 package agent
 
 import (
+	"github.com/trist725/mgsu/util"
 	"github.com/trist725/myleaf/log"
 	"github.com/trist725/myleaf/network"
 	"github.com/trist725/myleaf/network/protobuf"
@@ -26,8 +27,8 @@ func (a *Agent) SendSome() {
 	//登陆
 	{
 		send := msg.Get_C2S_Login()
-		send.UID = "testclient22222"
-		send.NickName = "testclient222222"
+		send.UID = util.GenRandomString(10)
+		send.NickName = util.GenRandomString(5)
 		send.Sex = "sex"
 		send.Location = "loc"
 		send.Password = "pwd"
@@ -40,11 +41,16 @@ func (a *Agent) SendSome() {
 	{
 		send := msg.Get_C2S_DaySign()
 		send.Day = 1
+		a.WriteMsg(send)
 	}
 	//快速匹配
 	{
 		send := msg.Get_C2S_QuickMatchStart()
 		a.WriteMsg(send)
+	}
+	//玩家离开房间请求
+	{
+
 	}
 }
 
@@ -60,11 +66,18 @@ func (a *Agent) Init() {
 	a.Processor.(*protobuf.Processor).Register(&msg.S2C_DaySign{})
 	a.Processor.(*protobuf.Processor).Register(&msg.C2S_QuickMatchStart{})
 	a.Processor.(*protobuf.Processor).Register(&msg.S2C_QuickMatchStart{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_PlayerLeaveRoom{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_PlayerLeaveRoom{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_UpdatePlayerJoinRoom{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_UpdatePlayerLeaveRoom{})
 
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_LoginInfo{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_Login{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_DaySign{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_QuickMatchStart{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_PlayerLeaveRoom{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_UpdatePlayerJoinRoom{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_UpdatePlayerLeaveRoom{}, robot.ChanRPC)
 }
 
 func (a *Agent) Run() {
