@@ -22,7 +22,31 @@ func regiserMsgHandle(m interface{}, h interface{}) {
 }
 
 func handlePlayerLeaveRoom(args []interface{}) {
+	// 消息的发送者
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	send := msg.Get_S2C_PlayerLeaveRoom()
+	defer sender.WriteMsg(send)
 
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handlePlayerLeaveRoom return for nil session")
+		return
+	}
+
+	r := room.Mgr().GetRoom(session.Player().RoomId())
+	if err := r.PlayerLeave(session.Player()); err != nil {
+		send.Err = msg.S2C_PlayerLeaveRoom_E_Err_UnKnown
+		return
+	}
+
+	ChanRPC.Go("PlayerLeaveRoom", session.UserData().ID, r)
+
+	send.Err = msg.S2C_PlayerLeaveRoom_E_Err_Success
 }
 
 func handleQuickMatchStart(args []interface{}) {

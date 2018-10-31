@@ -71,6 +71,7 @@ var S2C_Login_E_ErrReason_Slice = []int32{
 	4,
 	5,
 	6,
+	7,
 }
 
 func S2C_Login_E_ErrReason_Len() int {

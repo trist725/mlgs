@@ -1,6 +1,7 @@
 package room
 
 import (
+	"fmt"
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/cache"
 	"mlgs/src/msg"
@@ -100,14 +101,19 @@ func (r *Room) bystanderJoin(p *cache.Player) bool {
 	return true
 }
 
-func (r *Room) PlayerLeave(p *cache.Player) {
+func (r *Room) PlayerLeave(p *cache.Player) error {
 	if p == nil {
-		log.Error("PlayerLeave faild, invaild player")
-		return
+		return fmt.Errorf("PlayerLeave faild, invaild player")
 	}
 	r.Lock()
 	defer r.Unlock()
-	delete(r.players, p.Pos())
+
+	if player, ok := r.players[p.Pos()]; ok && player == p {
+		delete(r.players, p.Pos())
+		return nil
+	}
+
+	return fmt.Errorf("PlayerLeave faild, invalid player or pos:%d", p.Pos())
 }
 
 func (r *Room) bystanderLeave(p *cache.Player) {
@@ -178,6 +184,11 @@ func (r *Room) BoardCastPJ(players []*cache.Player) {
 
 		send := msg.Get_S2C_UpdatePlayerJoinRoom()
 		for _, p := range players {
+			session := s.Mgr().GetSession(p.SessionId())
+			if session == nil {
+				log.Error("use nil session id:[%d]", player.SessionId())
+				return
+			}
 			np := msg.Get_Player()
 			np.NickName = session.UserData().NickName
 			np.Pos = p.Pos()

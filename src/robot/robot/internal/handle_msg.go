@@ -58,18 +58,17 @@ func handlePlayerLeaveRoom(args []interface{}) {
 
 func handleUpdatePlayerJoinRoom(args []interface{}) {
 	// 收到的消息
-	//recv := args[0].(*msg.S2C_UpdatePlayerJoinRoom)
-	//
-	//for _, p := range recv.Players {
-	//	log.Debug("players :[%v]", p)
-	//}
+	recv := args[0].(*msg.S2C_UpdatePlayerJoinRoom)
+
+	log.Debug("handleUpdatePlayerJoinRoom, %v", recv.Players[0])
 
 }
 
 func handleUpdatePlayerLeaveRoom(args []interface{}) {
 	// 收到的消息
-	//recv := args[0].(*msg.S2C_QuickMatchStart)
+	recv := args[0].(*msg.S2C_UpdatePlayerLeaveRoom)
 
+	log.Debug("handleUpdatePlayerLeaveRoom, %v", recv.UserIds[0])
 	//log.Debug("Err:[%d]", recv.Err)
 	//log.Debug("room id:[%d], name:[%s], chip:[%d], maxBet:[%d]",
 	//	recv.Room.Id, recv.Room.Name, recv.Room.Chip, recv.Room.MaxBet)

@@ -81,5 +81,9 @@ func OnPlayerJoinRoom(args []interface{}) {
 }
 
 func OnPlayerLeaveRoom(args []interface{}) {
-
+	id := args[0].(int64)
+	room := args[1].(*r.Room)
+	var ids []int64
+	ids = append(ids, id)
+	room.BoardCastPL(ids)
 }

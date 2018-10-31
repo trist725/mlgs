@@ -36,6 +36,9 @@ func rpcCloseAgent(args []interface{}) {
 			r := room.Mgr().GetRoom(rid)
 			if r != nil {
 				r.PlayerLeave(session.Player())
+				//断线暂时直接发离开消息
+				//todo: 断线重连机制
+				ChanRPC.Go("PlayerLeaveRoom", session.UserData().ID, r)
 			}
 
 			session.Close()

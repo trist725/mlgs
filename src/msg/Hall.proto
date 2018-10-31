@@ -45,8 +45,10 @@ message S2C_Login{
         E_Err_LocationWarn = 4;
         ///用户不存在
         E_Err_UserNotExist = 5;
+        ///已登陆
+        E_Err_AlreadyLogin = 6;
         ///其它错误
-        E_Err_Unknown = 6;
+        E_Err_Unknown = 7;
     }
     E_ErrReason reason=1;
 }

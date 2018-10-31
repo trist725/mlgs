@@ -65,7 +65,7 @@ func handleLoginAuth(args []interface{}) {
 		session := s.Mgr().GetByUserId(user.ID)
 		if session != nil {
 			log.Debug("[%d-%s] already online", user.ID, user.NickName)
-			send.Reason = msg.S2C_Login_E_Err_Unknown
+			send.Reason = msg.S2C_Login_E_Err_AlreadyLogin
 			sender.Close()
 			return
 		}
