@@ -32,13 +32,15 @@ func rpcCloseAgent(args []interface{}) {
 		if session != nil {
 			//player离开room
 			//todo:bystander离开room
-			rid := session.Player().RoomId()
-			r := room.Mgr().GetRoom(rid)
-			if r != nil {
-				r.PlayerLeave(session.Player())
-				//断线暂时直接发离开消息
-				//todo: 断线重连机制
-				ChanRPC.Go("PlayerLeaveRoom", session.UserData().ID, r)
+			if p := session.Player(); p != nil {
+				rid := p.RoomId()
+				r := room.Mgr().GetRoom(rid)
+				if r != nil {
+					r.PlayerLeave(session.Player())
+					//断线暂时直接发离开消息
+					//todo: 断线重连机制
+					ChanRPC.Go("PlayerLeaveRoom", session.UserData().ID, r)
+				}
 			}
 
 			session.Close()
