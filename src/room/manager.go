@@ -3,6 +3,7 @@ package room
 import (
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/cache"
+	"mlgs/src/msg"
 	"mlgs/src/sd"
 	"sync"
 	"sync/atomic"
@@ -61,6 +62,12 @@ func (manager *Manager) NewRoom(pt uint32, gt uint32, t int64) *Room {
 		players:    make(map[uint32]*cache.Player),
 		bystanders: make(map[int64]*cache.Player),
 	}
+
+	room.stopSig = make(chan struct{})
+
+	room.refreshReadyTimeSig = make(chan struct{})
+	room.actSig = make(chan *msg.C2S_TurnAction)
+
 	manager.putRoom(room)
 	return room
 }
@@ -118,6 +125,10 @@ func (manager *Manager) PlayerJoin(p *cache.Player) bool {
 	for i := 0; i < roomMapNum; i++ {
 		rmap := &manager.roomMaps[i]
 		for _, r := range rmap.rooms {
+			//对局中的暂不允许加入
+			if r.Stage() > 0 {
+				continue
+			}
 			if success := r.PlayerJoin(p); success {
 				//r.BoardCast(p)
 				return true

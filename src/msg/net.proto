@@ -1,0 +1,18 @@
+syntax="proto3";
+
+package msg;
+
+///通知掉线
+message S2C_DisConn{
+    ///玩家id
+    int64 UserId = 1;
+}
+
+/// ping心跳
+message C2S_Ping {
+}
+
+/// 回复ping心跳
+message S2C_Pong {
+}
+

@@ -12,6 +12,7 @@ func init() {
 	regiserMsgHandle(&msg.S2C_PlayerLeaveRoom{}, handlePlayerLeaveRoom)
 	regiserMsgHandle(&msg.S2C_UpdatePlayerJoinRoom{}, handleUpdatePlayerJoinRoom)
 	regiserMsgHandle(&msg.S2C_UpdatePlayerLeaveRoom{}, handleUpdatePlayerLeaveRoom)
+	regiserMsgHandle(&msg.S2C_GameStart{}, handleGameStart)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -34,10 +35,8 @@ func handleQuickMatchStart(args []interface{}) {
 	//log.Debug("room id:[%d], name:[%s], chip:[%d], maxBet:[%d]",
 	//	recv.Room.Id, recv.Room.Name, recv.Room.Chip, recv.Room.MaxBet)
 
-	if len(recv.Room.Players) == 5 {
-		for _, p := range recv.Room.Players {
-			log.Debug("players :[%v]", p)
-		}
+	for _, p := range recv.Room.Players {
+		log.Debug("players :[%v]", p)
 	}
 	log.Debug("------------------------------")
 }
@@ -68,7 +67,7 @@ func handleUpdatePlayerLeaveRoom(args []interface{}) {
 	// 收到的消息
 	recv := args[0].(*msg.S2C_UpdatePlayerLeaveRoom)
 
-	log.Debug("handleUpdatePlayerLeaveRoom, %v", recv.UserIds[0])
+	log.Debug("handleUpdatePlayerLeaveRoom, %v", recv.UserId)
 	//log.Debug("Err:[%d]", recv.Err)
 	//log.Debug("room id:[%d], name:[%s], chip:[%d], maxBet:[%d]",
 	//	recv.Room.Id, recv.Room.Name, recv.Room.Chip, recv.Room.MaxBet)
@@ -76,5 +75,13 @@ func handleUpdatePlayerLeaveRoom(args []interface{}) {
 	//for _, p := range recv.Room.Players {
 	//	log.Debug("players :[%v]", p)
 	//}
+
+}
+
+func handleGameStart(args []interface{}) {
+	// 收到的消息
+	recv := args[0].(*msg.S2C_GameStart)
+
+	log.Debug("handleGameStart, %v", recv)
 
 }

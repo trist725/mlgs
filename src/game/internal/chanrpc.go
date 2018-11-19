@@ -23,7 +23,7 @@ func rpcNewAgent(args []interface{}) {
 func rpcCloseAgent(args []interface{}) {
 	a := args[0].(gate.Agent)
 	//_ = a
-	a.Destroy()
+	a.Close()
 
 	//清session
 	if a.UserData() != nil {

@@ -105,6 +105,9 @@ func (s *Session) Close() error {
 		if s.timer != nil {
 			s.timer.Stop()
 		}
+		if s.cache != nil {
+			s.cache.SetSessionId(0)
+		}
 		gSessionManager.delSession(s)
 	}
 	return nil

@@ -15,6 +15,8 @@ func init() {
 	regiserMsgHandle(&msg.C2S_DaySign{}, handleDaySign)
 	regiserMsgHandle(&msg.C2S_QuickMatchStart{}, handleQuickMatchStart)
 	regiserMsgHandle(&msg.C2S_PlayerLeaveRoom{}, handlePlayerLeaveRoom)
+	regiserMsgHandle(&msg.C2S_TurnAction{}, handleTurnAction)
+	regiserMsgHandle(&msg.C2S_AutoAction{}, handleAutoAction)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -35,6 +37,18 @@ func handlePlayerLeaveRoom(args []interface{}) {
 	session := s.Mgr().GetSession(sid)
 	if session == nil {
 		log.Debug("handlePlayerLeaveRoom return for nil session")
+		return
+	}
+
+	//对局中不能离开
+	player := session.Player()
+	if player == nil {
+		log.Error("session[%d] without player on handlePlayerLeaveRoom", session.ID())
+		return
+	}
+	if player.InTheGame() {
+		log.Debug("player:[%d] in the game, can't leave room", player.UserId())
+		send.Err = msg.S2C_PlayerLeaveRoom_E_Err_Playing
 		return
 	}
 
@@ -68,8 +82,16 @@ func handleQuickMatchStart(args []interface{}) {
 		return
 	}
 
+	player := session.Player()
+	if player != nil {
+		if player.InRoom() {
+			log.Debug("player:[%d] already in room", player.UserId())
+		}
+		return
+	}
+
 	//创建游戏内数据
-	player := cache.NewPlayer(session.ID(), sd.InitQuickMatchRoomId())
+	player = cache.NewPlayer(session.ID(), session.UserData().ID, sd.InitQuickMatchRoomId())
 	session.SetPlayer(player)
 
 	success := room.Mgr().PlayerJoin(player)
@@ -98,8 +120,12 @@ func handleDaySign(args []interface{}) {
 	recv := args[0].(*msg.C2S_DaySign)
 	// 消息的发送者
 	sender := args[1].(gate.Agent)
-	send := msg.Get_S2C_DaySign()
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
 
+	send := msg.Get_S2C_DaySign()
 	sid := sender.UserData().(uint64)
 	session := s.Mgr().GetSession(sid)
 	if session == nil {
@@ -122,7 +148,7 @@ func handleDaySign(args []interface{}) {
 		recv.Day > signCountPerRound ||
 		recv.Day < 0 {
 		send.Err = msg.S2C_DaySign_E_Err_Unknown
-		log.Debug("sign day invaild")
+		log.Debug("sign day invalid")
 		return
 	}
 
@@ -142,4 +168,39 @@ func handleDaySign(args []interface{}) {
 	if user.SignedDays == signCountPerRound+1 {
 		user.SignedDays = 0
 	}
+}
+
+func handleTurnAction(args []interface{}) {
+	// 收到的消息
+	recv := args[0].(*msg.C2S_TurnAction)
+	// 消息的发送者
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleQuickMatchStart return for nil session")
+		return
+	}
+
+	player := session.Player()
+	if player == nil {
+		log.Debug("handleQuickMatchStart return for nil player")
+		return
+	}
+
+	r := room.Mgr().GetRoom(player.RoomId())
+	if r == nil {
+		log.Debug("player not in room")
+		return
+	}
+	r.SendPlayerActionSig(recv)
+}
+
+func handleAutoAction(args []interface{}) {
+
 }

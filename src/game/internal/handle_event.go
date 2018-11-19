@@ -14,6 +14,8 @@ func init() {
 	skeleton.RegisterChanRPC("AfterLoginAuthPass", OnAfterLoginAuthPass)
 	skeleton.RegisterChanRPC("PlayerJoinRoom", OnPlayerJoinRoom)
 	skeleton.RegisterChanRPC("PlayerLeaveRoom", OnPlayerLeaveRoom)
+	skeleton.RegisterChanRPC("NewGame", OnNewGame)
+	skeleton.RegisterChanRPC("Turn", OnTurn)
 }
 
 //每轮签到天数
@@ -62,7 +64,7 @@ func OnPlayerJoinRoom(args []interface{}) {
 		session := s.Mgr().GetSession(player.SessionId())
 		//todo: 断线session被销毁但等待重连?
 		if session == nil {
-			log.Error("use nil session id:[%d]", player.SessionId())
+			log.Error("use nil session, on OnPlayerJoinRoom")
 			return
 		}
 		p := msg.Get_Player()
@@ -78,12 +80,36 @@ func OnPlayerJoinRoom(args []interface{}) {
 	var players []*cache.Player
 	players = append(players, player)
 	room.BoardCastPJ(players)
+
+	if room.Stage() == 0 {
+		room.Loop(skeleton)
+		room.SendRefreshReadyTimeSig()
+	}
 }
 
 func OnPlayerLeaveRoom(args []interface{}) {
 	id := args[0].(int64)
 	room := args[1].(*r.Room)
-	var ids []int64
-	ids = append(ids, id)
-	room.BoardCastPL(ids)
+	//var ids []int64
+	//ids = append(ids, id)
+
+	//已开局,不离开房间而广播掉线
+	//todo:掉线后执行自动操作
+	if room.Stage() != 0 {
+		room.BoardCastDisConn()
+		return
+	}
+
+	room.BoardCastPL(id)
+	room.SendRefreshReadyTimeSig()
+}
+
+func OnNewGame(args []interface{}) {
+	room := args[0].(*r.Room)
+	room.BoardCastGS()
+}
+
+func OnTurn(args []interface{}) {
+	room := args[0].(*r.Room)
+	room.BoardCastTurn()
 }

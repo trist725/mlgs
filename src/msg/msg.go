@@ -13,6 +13,8 @@ var Processor = protobuf.NewProcessor()
 func init() {
 	Processor.SetByteOrder(true)
 
+	Processor.Register(&C2S_Ping{})
+	Processor.Register(&S2C_Pong{})
 	Processor.Register(&C2S_Login{})
 	Processor.Register(&S2C_Login{})
 	Processor.Register(&S2C_LoginInfo{})
@@ -24,4 +26,11 @@ func init() {
 	Processor.Register(&S2C_PlayerLeaveRoom{})
 	Processor.Register(&S2C_UpdatePlayerJoinRoom{})
 	Processor.Register(&S2C_UpdatePlayerLeaveRoom{})
+	Processor.Register(&S2C_GameStart{})
+	Processor.Register(&S2C_Turn{})
+	Processor.Register(&C2S_TurnAction{})
+	Processor.Register(&S2C_TurnAction{})
+	Processor.Register(&S2C_DisConn{})
+	Processor.Register(&C2S_AutoAction{})
+	Processor.Register(&S2C_PublicCard{})
 }

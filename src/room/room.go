@@ -2,12 +2,17 @@ package room
 
 import (
 	"fmt"
+	"github.com/trist725/mgsu/util"
 	"github.com/trist725/myleaf/log"
+	"github.com/trist725/myleaf/module"
+	q "github.com/yireyun/go-queue"
 	"mlgs/src/cache"
 	"mlgs/src/msg"
 	s "mlgs/src/session"
 	"sd"
 	"sync"
+	"sync/atomic"
+	"time"
 )
 
 var (
@@ -18,15 +23,34 @@ var (
 	gBystanderLimit int
 )
 
+//共4*13=52,不包括大小王
+const gCardCount uint32 = 4*13 + 0
+
 type Room struct {
 	sync.RWMutex
 	id   uint64
 	name string
 
+	//对局阶段, 0-等待/准备阶段,>0对局开始:
+	//1-4第1到4阶段,5-结算
+	stage uint32
 	//初始小盲注
 	sb int64
 	//初始大盲注
 	bb int64
+	//小盲注位置
+	sbPos uint32
+	//大盲注位置
+	bbPos uint32
+	//庄家位置
+	dPos uint32
+	//当前轮询位置
+	curPos uint32
+	//上次加注位
+	raisePos uint32
+	//该轮最大下注
+	maxBet int64
+
 	//局数
 	//对局类型,1-普通赛,2-积分赛
 	pType uint32
@@ -37,7 +61,22 @@ type Room struct {
 	//当前房间内的旁观者,用户id做key
 	bystanders map[int64]*cache.Player
 
-	//todo:对局循环
+	//底池
+	pot int64
+
+	//牌池
+	cardPool *q.EsQueue
+	//公共牌
+	pc []cache.Card
+	//todo:对局循环，make chan
+	loopOnce sync.Once
+
+	//循环信号
+	stopSig chan struct{}
+	//更新准备时间信号
+	refreshReadyTimeSig chan struct{}
+	//玩家行动信号
+	actSig chan *msg.C2S_TurnAction
 }
 
 func init() {
@@ -49,9 +88,189 @@ func init() {
 	gBystanderLimit = roomSd.Playerlimit - roomSd.Chairlimit
 }
 
+func (r *Room) Loop(args ...interface{}) {
+	r.loopOnce.Do(func() {
+		go r.loop(args)
+	})
+}
+
+func (r *Room) loop(args []interface{}) {
+	defer r.SetStage(0)
+	skeleton := args[0].(*module.Skeleton)
+	if skeleton == nil {
+		log.Error("start room loop failed, skeleton is nil")
+		return
+	}
+
+	//暂写死1,策划蛋疼的配表
+	//游戏准备时间
+	timeSd := sd.TimeMgr.Get(1)
+
+	//准备阶段
+GAME_READY:
+	r.stage = 0
+	for {
+		select {
+		//todo: 可优化,手动timer.stop
+		case <-time.After(time.Duration(timeSd.Value) * time.Second):
+			//是否满足最少开局人数
+			if len(r.players) >= sd.InitMinStartGamePlayer() {
+				if !r.NewGame(skeleton) {
+					continue
+				}
+				goto GAME_STAGE1
+			}
+		case <-r.refreshReadyTimeSig:
+			//人满开
+			if len(r.players) == gPlayerLimit {
+				if !r.NewGame(skeleton) {
+					continue
+				}
+				goto GAME_STAGE1
+			}
+			continue
+		case <-r.stopSig:
+			return
+		}
+	}
+
+GAME_STAGE1:
+	r.stage = 1
+
+	//不要直接用sleep
+	//等待客户端发牌动作
+	select {
+	case <-time.After(time.Duration(sd.InitDealCardTime()) * time.Second):
+		//第一轮大小盲自动下注
+		r.FirstStageBlindBet()
+		//大盲下一位开始行动
+		r.curPos = r.bbPos
+		r.Turn(skeleton)
+	case <-r.stopSig:
+		return
+	}
+	//todo: 最大牌型计算
+	for {
+		select {
+		case <-time.After(time.Duration(sd.InitActionTime_S1()) * time.Second):
+			r.DoAutoAct()
+		case act := <-r.actSig:
+			r.DoAct(act)
+		case <-r.stopSig:
+			return
+		}
+		//阶段结束条件
+		if r.NextPos() != 0 &&
+			r.NextPos() == r.RaisePrePos() {
+			goto GAME_STAGE2
+		}
+		r.Turn(skeleton)
+	}
+GAME_STAGE2:
+	r.stage = 2
+	r.NewStage(skeleton)
+	for {
+		select {
+		case <-time.After(time.Duration(sd.InitActionTime_S2()) * time.Second):
+			r.DoAutoAct()
+		case act := <-r.actSig:
+			r.DoAct(act)
+		case <-r.stopSig:
+			return
+		}
+		//阶段结束条件
+		if r.NextPos() != 0 &&
+			r.NextPos() == r.RaisePrePos() {
+			goto GAME_STAGE3
+		}
+		r.Turn(skeleton)
+	}
+GAME_STAGE3:
+	r.stage = 3
+	r.NewStage(skeleton)
+	for {
+		goto GAME_STAGE4
+		select {
+		case <-time.After(time.Duration(sd.InitActionTime_S3()) * time.Second):
+			r.DoAutoAct()
+		case act := <-r.actSig:
+			r.DoAct(act)
+		case <-r.stopSig:
+			return
+		}
+		//阶段结束条件
+		if r.NextPos() != 0 &&
+			r.NextPos() == r.RaisePrePos() {
+			goto GAME_STAGE4
+		}
+		r.Turn(skeleton)
+	}
+GAME_STAGE4:
+	r.stage = 4
+	r.NewStage(skeleton)
+	for {
+		goto GAME_STAGE5
+		select {
+		case <-time.After(time.Duration(sd.InitActionTime_S4()) * time.Second):
+			r.DoAutoAct()
+		case act := <-r.actSig:
+			r.DoAct(act)
+		case <-r.stopSig:
+			return
+		}
+		//阶段结束条件
+		if r.NextPos() != 0 &&
+			r.NextPos() == r.RaisePrePos() {
+			goto GAME_STAGE5
+		}
+		r.Turn(skeleton)
+	}
+
+GAME_STAGE5:
+	r.stage = 5
+	//todo:结算
+	for {
+		goto GAME_READY
+		select {
+		case <-time.After(time.Duration(sd.InitActionTime_S1()) * time.Second):
+			r.DoAutoAct()
+		case act := <-r.actSig:
+			r.DoAct(act)
+		case <-r.stopSig:
+			return
+		}
+		r.Turn(skeleton)
+	}
+
+}
+
+func (r *Room) DoAutoAct() {
+
+}
+
+func (r *Room) DoAct(act *msg.C2S_TurnAction) {
+
+}
+
+func (r *Room) Pot() int64 {
+	return atomic.LoadInt64(&r.pot)
+}
+
+func (r *Room) SetPot(p int64) {
+	atomic.StoreInt64(&r.pot, p)
+}
+
+func (r *Room) SetStage(s uint32) {
+	atomic.StoreUint32(&r.stage, s)
+}
+
+func (r *Room) Stage() uint32 {
+	return atomic.LoadUint32(&r.stage)
+}
+
 func (r *Room) PlayerJoin(p *cache.Player) bool {
 	if p == nil {
-		log.Error("addPlayer faild, invaild player")
+		log.Error("addPlayer failed, invalid player")
 		return false
 	}
 	if !r.PlayerIdle() {
@@ -59,7 +278,7 @@ func (r *Room) PlayerJoin(p *cache.Player) bool {
 		return false
 	}
 	//if int(p.Pos()) > gPlayerLimit{
-	//	log.Error("faild to join player, invaild pos")
+	//	log.Error("failed to join player, invalid pos")
 	//	return false
 	//}
 
@@ -79,9 +298,29 @@ func (r *Room) PlayerJoin(p *cache.Player) bool {
 	return false
 }
 
+func (r *Room) FirstStageBlindBet() bool {
+	if _, ok := r.players[r.sbPos]; !ok {
+		log.Error("invalid sbPos on FirstStageBlindBet")
+		return false
+	}
+	if _, ok := r.players[r.bbPos]; !ok {
+		log.Error("invalid bbPos on FirstStageBlindBet")
+		return false
+	}
+
+	if chip := r.players[r.sbPos].Chip(); chip >= r.sb {
+		r.players[r.sbPos].SetChip(chip - r.sb)
+	}
+	if chip := r.players[r.bbPos].Chip(); chip >= r.bb {
+		r.players[r.bbPos].SetChip(chip - r.bb)
+	}
+	r.SetPot(r.bb + r.sb)
+	return true
+}
+
 func (r *Room) bystanderJoin(p *cache.Player) bool {
 	if p == nil {
-		log.Error("addBystander faild, invaild player")
+		log.Error("addBystander failed, invalid player")
 		return false
 	}
 	if !r.BystanderIdle() {
@@ -103,22 +342,27 @@ func (r *Room) bystanderJoin(p *cache.Player) bool {
 
 func (r *Room) PlayerLeave(p *cache.Player) error {
 	if p == nil {
-		return fmt.Errorf("PlayerLeave faild, invaild player")
+		return fmt.Errorf("PlayerLeave failed, invalid player")
 	}
 	r.Lock()
 	defer r.Unlock()
+
+	//已开局,不离开房间
+	if r.Stage() != 0 {
+		return nil
+	}
 
 	if player, ok := r.players[p.Pos()]; ok && player == p {
 		delete(r.players, p.Pos())
 		return nil
 	}
 
-	return fmt.Errorf("PlayerLeave faild, invalid player or pos:%d", p.Pos())
+	return fmt.Errorf("PlayerLeave failed, invalid player or pos:%d", p.Pos())
 }
 
 func (r *Room) bystanderLeave(p *cache.Player) {
 	if p == nil {
-		log.Error("BystanderLeave faild, invaild player")
+		log.Error("BystanderLeave failed, invalid player")
 		return
 	}
 	r.Lock()
@@ -134,7 +378,12 @@ func (r *Room) bystanderLeave(p *cache.Player) {
 }
 
 func (r *Room) Destroy() {
+	r.SendStopLoopSig()
+	close(r.refreshReadyTimeSig)
+	close(r.stopSig)
+	close(r.actSig)
 
+	Mgr().delRoom(r)
 }
 
 //是否有空闲座位
@@ -173,54 +422,216 @@ func (r *Room) Id() uint64 {
 	return r.id
 }
 
-//广播玩家加入
-func (r *Room) BoardCastPJ(players []*cache.Player) {
+func (r *Room) NewGame(args ...interface{}) bool {
+	r.SetStage(0)
+	r.InitCardPool()
+
+	//todo: 确定玩家是否还有筹码，客户端提示是否兑换，没筹码不兑换踢了或变成游客
+	//todo: 如果是大小盲 判断是否筹码大于相应的大小盲注
+
+	skeleton := args[0].(*module.Skeleton)
+	//确定庄家
+	if !r.AllocRole(1, r.dPos) {
+		return false
+	}
+	//发手牌
+	roomSd := sd.RoomMgr.Get(sd.InitQuickMatchRoomId())
+	if roomSd == nil {
+		log.Error("get room sd failed on NewGame")
+		return false
+	}
+	if !r.DealHandCard(roomSd.Handcard) {
+		log.Error("deal hand card failed on NewGame")
+		return false
+	}
+
+	r.SetStage(1)
+	r.raisePos = 0
+	//设置玩家对局状态
+	//todo : 游戏结束设为0
 	r.PlayerEach(func(player *cache.Player) {
-		session := s.Mgr().GetSession(player.SessionId())
-		if session == nil {
-			log.Error("use nil session id:[%d]", player.SessionId())
-			return
-		}
-
-		send := msg.Get_S2C_UpdatePlayerJoinRoom()
-		for _, p := range players {
-			session := s.Mgr().GetSession(p.SessionId())
-			if session == nil {
-				log.Error("use nil session id:[%d]", player.SessionId())
-				return
-			}
-			np := msg.Get_Player()
-			np.NickName = session.UserData().NickName
-			np.Pos = p.Pos()
-			np.Chip = p.Chip()
-			np.AvatarURL = session.UserData().AvatarURL
-			np.UserId = session.UserData().ID
-
-			send.Players = append(send.Players, np)
-		}
-
-		session.Agent().WriteMsg(send)
+		player.SetStat(1)
 	})
-
-	return
+	//异步发
+	skeleton.ChanRPCServer.Go("NewGame", r)
+	return true
 }
 
-//广播玩家离开
-func (r *Room) BoardCastPL(ids []int64) {
-	r.PlayerEach(func(player *cache.Player) {
-		session := s.Mgr().GetSession(player.SessionId())
-		if session == nil {
-			log.Error("use nil session id:[%d]", player.SessionId())
-			return
+//洗牌
+func (r *Room) InitCardPool() {
+	r.cardPool = q.NewQueue(gCardCount)
+
+	arr := make([]int, gCardCount)
+	for i := 0; i < int(gCardCount); i++ {
+		arr[i] = i
+	}
+	arr = util.KnuthDurstenfeldShuffle(arr)
+
+	for _, v := range arr {
+		var c cache.Card
+		num := v + 1
+		if uint8(num%4) == 0 {
+			c.Color = 4
+			c.Num = uint8(num / 4)
+		} else {
+			c.Color = uint8(num % 4)
+			c.Num = uint8(num/4) + 1
+		}
+		//A当作14
+		if c.Num == 1 {
+			c.Num = 14
+		}
+		r.cardPool.Put(c)
+	}
+}
+
+//role: 0-普通玩家,1-庄家,2-小盲,3-大盲
+//p: 原角色位置
+func (r *Room) AllocRole(role uint32, p uint32) bool {
+	if len(r.players) < 3 {
+		log.Error("not enough player to alloc role")
+		return false
+	}
+
+	//第一局随机取到的第一个玩家为庄家
+	if r.dPos == 0 && role == 1 {
+		for k, p := range r.players {
+			r.dPos = k
+			p.SetRole(1)
+			r.AllocRole(2, r.dPos)
+			return true
+		}
+	}
+
+	//不是第一局
+	for offset := 1; offset < gPlayerLimit; offset++ {
+		pos := uint32(offset) + p
+		if pos > uint32(gPlayerLimit) {
+			pos = pos - uint32(gPlayerLimit)
 		}
 
-		send := msg.Get_S2C_UpdatePlayerLeaveRoom()
-		for _, id := range ids {
-			send.UserIds = append(send.UserIds, id)
+		player, ok := r.players[pos]
+		//该位置没人,下一个
+		if !ok {
+			continue
 		}
 
-		session.Agent().WriteMsg(send)
+		switch role {
+		case 1:
+			r.dPos = pos
+			r.AllocRole(2, r.dPos)
+		case 2:
+			r.sbPos = pos
+			r.AllocRole(3, r.sbPos)
+		case 3:
+			r.bbPos = pos
+			r.AllocRole(0, r.bbPos)
+		case 0:
+			//设置普通玩家
+			if pos == r.dPos {
+				return true
+			}
+			player.SetRole(role)
+			continue
+		default:
+			log.Error("AllocRole failed")
+			return false
+		}
+
+		player.SetRole(role)
+		return true
+	}
+	//转一圈都没合适的
+	log.Error("alloc role failed")
+	return false
+}
+
+//发手牌
+//count: 张数
+func (r *Room) DealHandCard(count int) bool {
+	var ret = true
+	r.PlayerEach(func(p *cache.Player) {
+		for i := 0; i < count; i++ {
+			card, ok, _ := r.cardPool.Get()
+			if !ok {
+				log.Error("get card failed")
+				ret = false
+				return
+			}
+			p.GetCard(card.(cache.Card))
+		}
 	})
 
-	return
+	return ret
+}
+
+//发公共牌
+//count: 张数
+func (r *Room) DealCommunityCard(count int) {
+	for i := 0; i < count; i++ {
+		card, ok, _ := r.cardPool.Get()
+		if !ok {
+			log.Error("get card failed")
+			return
+		}
+		r.pc = append(r.pc, card.(cache.Card))
+	}
+}
+
+func (r *Room) Turn(skeleton *module.Skeleton) {
+	pos := r.NextPos()
+	if pos == 0 {
+		log.Error("invalid pos on Turn")
+	}
+	r.curPos = pos
+	skeleton.ChanRPCServer.Go("Turn", r)
+}
+
+func (r *Room) NextPos() uint32 {
+	for offset := 1; offset < gPlayerLimit; offset++ {
+		pos := uint32(offset) + r.curPos
+		if pos > uint32(gPlayerLimit) {
+			pos = pos - uint32(gPlayerLimit)
+		}
+
+		_, ok := r.players[pos]
+		//该位置没人,下一个
+		if !ok {
+			continue
+		}
+
+		return pos
+	}
+	return 0
+}
+
+func (r *Room) RaisePrePos() uint32 {
+	for offset := 1; offset < gPlayerLimit; offset++ {
+		pos := r.raisePos - uint32(offset)
+		if pos <= 0 {
+			pos = pos + uint32(gPlayerLimit)
+		}
+
+		_, ok := r.players[pos]
+		//该位置没人,下一个
+		if !ok {
+			continue
+		}
+
+		return pos
+	}
+	return 0
+}
+
+func (r *Room) NewStage(skeleton *module.Skeleton) {
+	//从小盲开始行动
+	_, ok := r.players[r.sbPos]
+	//该位置没人
+	if !ok {
+		log.Error("invalid pos on NewStage")
+		return
+	}
+
+	r.curPos = r.sbPos
+	skeleton.ChanRPCServer.Go("Turn", r)
 }

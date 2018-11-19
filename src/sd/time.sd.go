@@ -3,10 +3,7 @@
 
 package sd
 
-import (
-	"encoding/json"
-	"strconv"
-)
+import "encoding/json"
 import "fmt"
 import "log"
 import "path/filepath"
@@ -20,10 +17,14 @@ import "github.com/trist725/mgsu/util"
 //import_extend_end
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-type Global struct {
-	ID int64 `excel_column:"0" excel_name:"id"` // 公共配置表ID
+type Time struct {
+	ID int64 `excel_column:"0" excel_name:"id"` // 编号
 
-	Value string `excel_column:"1" excel_name:"value"` // 配置值
+	Value int `excel_column:"2" excel_name:"value"` // 数值
+
+	Des string `excel_column:"3" excel_name:"des"` // 描述
+
+	Res string `excel_column:"4" excel_name:"res"` // 结果
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体扩展字段
@@ -32,8 +33,8 @@ type Global struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func NewGlobal() *Global {
-	sd := &Global{}
+func NewTime() *Time {
+	sd := &Time{}
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体New代码
 	//struct_new_begin
@@ -42,13 +43,13 @@ func NewGlobal() *Global {
 	return sd
 }
 
-func (sd Global) String() string {
+func (sd Time) String() string {
 	ba, _ := json.Marshal(sd)
 	return string(ba)
 }
 
-func (sd Global) Clone() *Global {
-	n := NewGlobal()
+func (sd Time) Clone() *Time {
+	n := NewTime()
 	*n = sd
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,14 +61,14 @@ func (sd Global) Clone() *Global {
 	return n
 }
 
-func (sd *Global) load(row *xlsx.Row) error {
+func (sd *Time) load(row *xlsx.Row) error {
 	return util.DeserializeStructFromXlsxRow(sd, row)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-type GlobalManager struct {
-	dataArray []*Global
-	dataMap   map[int64]*Global
+type TimeManager struct {
+	dataArray []*Time
+	dataMap   map[int64]*Time
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加manager扩展字段
@@ -76,10 +77,10 @@ type GlobalManager struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func newGlobalManager() *GlobalManager {
-	mgr := &GlobalManager{
-		dataArray: []*Global{},
-		dataMap:   make(map[int64]*Global),
+func newTimeManager() *TimeManager {
+	mgr := &TimeManager{
+		dataArray: []*Time{},
+		dataMap:   make(map[int64]*Time),
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +92,7 @@ func newGlobalManager() *GlobalManager {
 	return mgr
 }
 
-func (mgr *GlobalManager) Load(excelFilePath string) (success bool) {
+func (mgr *TimeManager) Load(excelFilePath string) (success bool) {
 	success = true
 
 	absExcelFilePath, err := filepath.Abs(excelFilePath)
@@ -137,7 +138,7 @@ func (mgr *GlobalManager) Load(excelFilePath string) (success bool) {
 			}
 		}
 
-		sd := NewGlobal()
+		sd := NewTime()
 		err = sd.load(row)
 		if err != nil {
 			log.Printf("%s 加载第%d行失败, %s\n", excelFilePath, i+1, err)
@@ -174,11 +175,11 @@ func (mgr *GlobalManager) Load(excelFilePath string) (success bool) {
 	return
 }
 
-func (mgr GlobalManager) Size() int {
+func (mgr TimeManager) Size() int {
 	return len(mgr.dataArray)
 }
 
-func (mgr GlobalManager) Get(id int64) *Global {
+func (mgr TimeManager) Get(id int64) *Time {
 	sd, ok := mgr.dataMap[id]
 	if !ok {
 		return nil
@@ -186,7 +187,7 @@ func (mgr GlobalManager) Get(id int64) *Global {
 	return sd.Clone()
 }
 
-func (mgr GlobalManager) Each(f func(sd *Global) bool) {
+func (mgr TimeManager) Each(f func(sd *Time) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd.Clone()) {
 			break
@@ -194,7 +195,7 @@ func (mgr GlobalManager) Each(f func(sd *Global) bool) {
 	}
 }
 
-func (mgr *GlobalManager) each(f func(sd *Global) bool) {
+func (mgr *TimeManager) each(f func(sd *Time) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd) {
 			break
@@ -202,7 +203,7 @@ func (mgr *GlobalManager) each(f func(sd *Global) bool) {
 	}
 }
 
-func (mgr GlobalManager) findIf(f func(sd *Global) bool) *Global {
+func (mgr TimeManager) findIf(f func(sd *Time) bool) *Time {
 	for _, sd := range mgr.dataArray {
 		if f(sd) {
 			return sd
@@ -211,7 +212,7 @@ func (mgr GlobalManager) findIf(f func(sd *Global) bool) *Global {
 	return nil
 }
 
-func (mgr GlobalManager) FindIf(f func(sd *Global) bool) *Global {
+func (mgr TimeManager) FindIf(f func(sd *Time) bool) *Time {
 	for _, sd := range mgr.dataArray {
 		n := sd.Clone()
 		if f(n) {
@@ -221,7 +222,7 @@ func (mgr GlobalManager) FindIf(f func(sd *Global) bool) *Global {
 	return nil
 }
 
-func (mgr GlobalManager) check(excelFilePath string, row int, sd *Global) error {
+func (mgr TimeManager) check(excelFilePath string, row int, sd *Time) error {
 	if _, ok := mgr.dataMap[sd.ID]; ok {
 		return fmt.Errorf("%s 第%d行的id重复", excelFilePath, row)
 	}
@@ -235,51 +236,41 @@ func (mgr GlobalManager) check(excelFilePath string, row int, sd *Global) error 
 	return nil
 }
 
-func (mgr *GlobalManager) AfterLoadAll(excelFilePath string) (success bool) {
+func (mgr *TimeManager) AfterLoadAll(excelFilePath string) (success bool) {
 	success = true
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加加载后处理代码
 	//after_load_all_begin
+
+	//开局发牌时间
+	//菜鸡策划真心教不会配表，先写死了
 	{
-		d, ok := mgr.dataMap[int64(E_Global_InitUserDataId)]
-		if !ok {
-			log.Fatal("获取用户初始数据在person表id失败")
-			return false
-		}
-		tid, err := strconv.Atoi(d.Value)
-		if err != nil {
-			log.Fatal("获取用户初始数据在person表id失败, %v", err)
-			return false
-		}
-		gInitUserDataId = int64(tid)
-		if gInitUserDataId <= 0 {
-			log.Fatal("获取用户初始数据在person表id值有误, [%d]", tid)
-			return false
-		}
+		timeSd := TimeMgr.Get(5)
+		gDealCardTime = timeSd.Value
 	}
+	//第1阶段行动时间
+	//菜鸡策划真心教不会配表，先写死了
 	{
-		d, ok := mgr.dataMap[int64(E_Global_InitMatchRoomId)]
-		if !ok {
-			log.Fatal("获取匹配房间数据在room表的id数组失败")
-			return false
-		}
-		if err := json.Unmarshal([]byte(d.Value), &gInitMatchRoomId); err != nil {
-			log.Fatal("获取匹配房间数据在room表的id数组有误", err)
-			return false
-		}
+		timeSd := TimeMgr.Get(6)
+		gActionTime_S1 = timeSd.Value
 	}
+	//第2阶段行动时间
+	//菜鸡策划真心教不会配表，先写死了
 	{
-		d, ok := mgr.dataMap[int64(E_Global_MinStartGamePlayer)]
-		if !ok {
-			log.Fatal("获取开始对局的最少人数失败")
-			return false
-		}
-		tid, err := strconv.Atoi(d.Value)
-		if err != nil {
-			log.Fatal("获取开始对局的最少人数失败, %v", err)
-			return false
-		}
-		gMinStartGamePlayer = tid
+		timeSd := TimeMgr.Get(7)
+		gActionTime_S2 = timeSd.Value
+	}
+	//第3阶段行动时间
+	//菜鸡策划真心教不会配表，先写死了
+	{
+		timeSd := TimeMgr.Get(8)
+		gActionTime_S3 = timeSd.Value
+	}
+	//第4阶段行动时间
+	//菜鸡策划真心教不会配表，先写死了
+	{
+		timeSd := TimeMgr.Get(9)
+		gActionTime_S4 = timeSd.Value
 	}
 	//after_load_all_end
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -290,32 +281,54 @@ func (mgr *GlobalManager) AfterLoadAll(excelFilePath string) (success bool) {
 // TODO 添加扩展代码
 //extend_begin
 
-//用户初始化数据在person表的id
-var gInitUserDataId int64
+//开局发牌时间
+var gDealCardTime int
 
-func InitUserDataId() int64 {
-	return gInitUserDataId
-}
-
-//匹配房间数据在room表的id数组
-var gInitMatchRoomId []int64
-
-//快速匹配房间数据在room表的id
-func InitQuickMatchRoomId() int64 {
-	if len(gInitMatchRoomId) < 1 {
-		log.Fatal("匹配房间数据在room表的id数组 配表有误")
-	}
-	return gInitMatchRoomId[0]
-}
-
-//开始对局的最少人数
-var gMinStartGamePlayer int
-
-func InitMinStartGamePlayer() int {
-	if gMinStartGamePlayer < 1 {
-		log.Fatal("开始对局的最少人数 配表有误")
+func InitDealCardTime() int {
+	if gDealCardTime < 1 {
+		log.Fatal("开局发牌时间 配表有误")
 	}
 	return gMinStartGamePlayer
+}
+
+//第1阶段行动时间
+var gActionTime_S1 int
+
+func InitActionTime_S1() int {
+	if gActionTime_S1 < 1 {
+		log.Fatal("第1阶段行动时间 配表有误")
+	}
+	return gActionTime_S1
+}
+
+//第2阶段行动时间
+var gActionTime_S2 int
+
+func InitActionTime_S2() int {
+	if gActionTime_S2 < 1 {
+		log.Fatal("第2阶段行动时间 配表有误")
+	}
+	return gActionTime_S2
+}
+
+//第3阶段行动时间
+var gActionTime_S3 int
+
+func InitActionTime_S3() int {
+	if gActionTime_S3 < 1 {
+		log.Fatal("第3阶段行动时间 配表有误")
+	}
+	return gActionTime_S3
+}
+
+//第4阶段行动时间
+var gActionTime_S4 int
+
+func InitActionTime_S4() int {
+	if gActionTime_S4 < 1 {
+		log.Fatal("第4阶段行动时间 配表有误")
+	}
+	return gActionTime_S4
 }
 
 //extend_end

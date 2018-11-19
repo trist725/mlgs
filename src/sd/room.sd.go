@@ -36,6 +36,14 @@ type Room struct {
 
 	Inning int `excel_column:"10" excel_name:"inning"` // 局数（0代表无限局）
 
+	Handcard int `excel_column:"11" excel_name:"handcard"` // 手牌数
+
+	Pool int `excel_column:"12" excel_name:"pool"` // 牌池
+
+	Startpublicpokes int `excel_column:"13" excel_name:"startpublicpokes"` // 起始公共牌
+
+	Totalpublicpokes int `excel_column:"14" excel_name:"totalpublicpokes"` // 总共公共牌
+
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体扩展字段
 	//struct_extend_begin

@@ -3,6 +3,7 @@
 
 /*
 It has these top-level messages:
+	Card
 	Player
 	Room
 	C2S_QuickMatchStart
@@ -11,6 +12,13 @@ It has these top-level messages:
 	S2C_PlayerLeaveRoom
 	S2C_UpdatePlayerJoinRoom
 	S2C_UpdatePlayerLeaveRoom
+	S2C_GameStart
+	S2C_Turn
+	C2S_TurnAction
+	S2C_TurnAction
+	S2C_PublicCard
+	C2S_AutoAction
+	BestCombo
 */
 
 package msg
@@ -72,6 +80,7 @@ var S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_Slice = []int32{
 	0,
 	1,
 	2,
+	3,
 }
 
 func S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_Len() int {
@@ -109,6 +118,69 @@ func Each_S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_I(f func(int32) bool) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [Card] begin
+func (m *Card) ResetEx() {
+	m.Color = 0
+	m.Num = 0
+
+}
+
+func (m Card) Clone() *Card {
+	n, ok := g_Card_Pool.Get().(*Card)
+	if !ok || n == nil {
+		n = &Card{}
+	}
+
+	n.Color = m.Color
+	n.Num = m.Num
+
+	return n
+}
+
+func Clone_Card_Slice(dst []*Card, src []*Card) []*Card {
+	for _, i := range dst {
+		Put_Card(i)
+	}
+	dst = []*Card{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_Card() *Card {
+	m := &Card{}
+	return m
+}
+
+var g_Card_Pool = sync.Pool{}
+
+func Get_Card() *Card {
+	m, ok := g_Card_Pool.Get().(*Card)
+	if !ok {
+		m = New_Card()
+	} else {
+		if m == nil {
+			m = New_Card()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_Card(i interface{}) {
+	if m, ok := i.(*Card); ok && m != nil {
+		g_Card_Pool.Put(i)
+	}
+}
+
+// message [Card] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // message [Player] begin
 func (m *Player) ResetEx() {
 	m.UserId = 0
@@ -118,6 +190,12 @@ func (m *Player) ResetEx() {
 	m.Role = 0
 	m.Chip = 0
 	m.BetChip = 0
+
+	for _, i := range m.Cards {
+		Put_Card(i)
+	}
+	m.Cards = []*Card{}
+	m.Sex = ""
 
 }
 
@@ -134,6 +212,20 @@ func (m Player) Clone() *Player {
 	n.Role = m.Role
 	n.Chip = m.Chip
 	n.BetChip = m.BetChip
+
+	if len(m.Cards) > 0 {
+		for _, i := range m.Cards {
+			if i != nil {
+				n.Cards = append(n.Cards, i.Clone())
+			} else {
+				n.Cards = append(n.Cards, nil)
+			}
+		}
+	} else {
+		n.Cards = []*Card{}
+	}
+
+	n.Sex = m.Sex
 
 	return n
 }
@@ -152,7 +244,9 @@ func Clone_Player_Slice(dst []*Player, src []*Player) []*Player {
 }
 
 func New_Player() *Player {
-	m := &Player{}
+	m := &Player{
+		Cards: []*Card{},
+	}
 	return m
 }
 
@@ -590,7 +684,7 @@ func Put_S2C_UpdatePlayerJoinRoom(i interface{}) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // message [S2C_UpdatePlayerLeaveRoom] begin
 func (m *S2C_UpdatePlayerLeaveRoom) ResetEx() {
-	m.UserIds = []int64{}
+	m.UserId = 0
 
 }
 
@@ -600,12 +694,7 @@ func (m S2C_UpdatePlayerLeaveRoom) Clone() *S2C_UpdatePlayerLeaveRoom {
 		n = &S2C_UpdatePlayerLeaveRoom{}
 	}
 
-	if len(m.UserIds) > 0 {
-		n.UserIds = make([]int64, len(m.UserIds))
-		copy(n.UserIds, m.UserIds)
-	} else {
-		n.UserIds = []int64{}
-	}
+	n.UserId = m.UserId
 
 	return n
 }
@@ -624,9 +713,7 @@ func Clone_S2C_UpdatePlayerLeaveRoom_Slice(dst []*S2C_UpdatePlayerLeaveRoom, src
 }
 
 func New_S2C_UpdatePlayerLeaveRoom() *S2C_UpdatePlayerLeaveRoom {
-	m := &S2C_UpdatePlayerLeaveRoom{
-		UserIds: []int64{},
-	}
+	m := &S2C_UpdatePlayerLeaveRoom{}
 	return m
 }
 
@@ -653,4 +740,498 @@ func Put_S2C_UpdatePlayerLeaveRoom(i interface{}) {
 }
 
 // message [S2C_UpdatePlayerLeaveRoom] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_GameStart] begin
+func (m *S2C_GameStart) ResetEx() {
+	m.Pos = 0
+
+	for _, i := range m.Cards {
+		Put_Card(i)
+	}
+	m.Cards = []*Card{}
+	m.SmallBlind = 0
+
+}
+
+func (m S2C_GameStart) Clone() *S2C_GameStart {
+	n, ok := g_S2C_GameStart_Pool.Get().(*S2C_GameStart)
+	if !ok || n == nil {
+		n = &S2C_GameStart{}
+	}
+
+	n.Pos = m.Pos
+
+	if len(m.Cards) > 0 {
+		for _, i := range m.Cards {
+			if i != nil {
+				n.Cards = append(n.Cards, i.Clone())
+			} else {
+				n.Cards = append(n.Cards, nil)
+			}
+		}
+	} else {
+		n.Cards = []*Card{}
+	}
+
+	n.SmallBlind = m.SmallBlind
+
+	return n
+}
+
+func Clone_S2C_GameStart_Slice(dst []*S2C_GameStart, src []*S2C_GameStart) []*S2C_GameStart {
+	for _, i := range dst {
+		Put_S2C_GameStart(i)
+	}
+	dst = []*S2C_GameStart{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_S2C_GameStart() *S2C_GameStart {
+	m := &S2C_GameStart{
+		Cards: []*Card{},
+	}
+	return m
+}
+
+var g_S2C_GameStart_Pool = sync.Pool{}
+
+func Get_S2C_GameStart() *S2C_GameStart {
+	m, ok := g_S2C_GameStart_Pool.Get().(*S2C_GameStart)
+	if !ok {
+		m = New_S2C_GameStart()
+	} else {
+		if m == nil {
+			m = New_S2C_GameStart()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_GameStart(i interface{}) {
+	if m, ok := i.(*S2C_GameStart); ok && m != nil {
+		g_S2C_GameStart_Pool.Put(i)
+	}
+}
+
+// message [S2C_GameStart] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_Turn] begin
+func (m *S2C_Turn) ResetEx() {
+	m.Pos = 0
+
+}
+
+func (m S2C_Turn) Clone() *S2C_Turn {
+	n, ok := g_S2C_Turn_Pool.Get().(*S2C_Turn)
+	if !ok || n == nil {
+		n = &S2C_Turn{}
+	}
+
+	n.Pos = m.Pos
+
+	return n
+}
+
+func Clone_S2C_Turn_Slice(dst []*S2C_Turn, src []*S2C_Turn) []*S2C_Turn {
+	for _, i := range dst {
+		Put_S2C_Turn(i)
+	}
+	dst = []*S2C_Turn{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_S2C_Turn() *S2C_Turn {
+	m := &S2C_Turn{}
+	return m
+}
+
+var g_S2C_Turn_Pool = sync.Pool{}
+
+func Get_S2C_Turn() *S2C_Turn {
+	m, ok := g_S2C_Turn_Pool.Get().(*S2C_Turn)
+	if !ok {
+		m = New_S2C_Turn()
+	} else {
+		if m == nil {
+			m = New_S2C_Turn()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_Turn(i interface{}) {
+	if m, ok := i.(*S2C_Turn); ok && m != nil {
+		g_S2C_Turn_Pool.Put(i)
+	}
+}
+
+// message [S2C_Turn] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [C2S_TurnAction] begin
+func (m *C2S_TurnAction) ResetEx() {
+	m.Act = 0
+	m.Bet = 0
+
+}
+
+func (m C2S_TurnAction) Clone() *C2S_TurnAction {
+	n, ok := g_C2S_TurnAction_Pool.Get().(*C2S_TurnAction)
+	if !ok || n == nil {
+		n = &C2S_TurnAction{}
+	}
+
+	n.Act = m.Act
+	n.Bet = m.Bet
+
+	return n
+}
+
+func Clone_C2S_TurnAction_Slice(dst []*C2S_TurnAction, src []*C2S_TurnAction) []*C2S_TurnAction {
+	for _, i := range dst {
+		Put_C2S_TurnAction(i)
+	}
+	dst = []*C2S_TurnAction{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_C2S_TurnAction() *C2S_TurnAction {
+	m := &C2S_TurnAction{}
+	return m
+}
+
+var g_C2S_TurnAction_Pool = sync.Pool{}
+
+func Get_C2S_TurnAction() *C2S_TurnAction {
+	m, ok := g_C2S_TurnAction_Pool.Get().(*C2S_TurnAction)
+	if !ok {
+		m = New_C2S_TurnAction()
+	} else {
+		if m == nil {
+			m = New_C2S_TurnAction()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_C2S_TurnAction(i interface{}) {
+	if m, ok := i.(*C2S_TurnAction); ok && m != nil {
+		g_C2S_TurnAction_Pool.Put(i)
+	}
+}
+
+// message [C2S_TurnAction] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_TurnAction] begin
+func (m *S2C_TurnAction) ResetEx() {
+	m.Act = 0
+	m.Bet = 0
+	m.Pos = 0
+
+}
+
+func (m S2C_TurnAction) Clone() *S2C_TurnAction {
+	n, ok := g_S2C_TurnAction_Pool.Get().(*S2C_TurnAction)
+	if !ok || n == nil {
+		n = &S2C_TurnAction{}
+	}
+
+	n.Act = m.Act
+	n.Bet = m.Bet
+	n.Pos = m.Pos
+
+	return n
+}
+
+func Clone_S2C_TurnAction_Slice(dst []*S2C_TurnAction, src []*S2C_TurnAction) []*S2C_TurnAction {
+	for _, i := range dst {
+		Put_S2C_TurnAction(i)
+	}
+	dst = []*S2C_TurnAction{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_S2C_TurnAction() *S2C_TurnAction {
+	m := &S2C_TurnAction{}
+	return m
+}
+
+var g_S2C_TurnAction_Pool = sync.Pool{}
+
+func Get_S2C_TurnAction() *S2C_TurnAction {
+	m, ok := g_S2C_TurnAction_Pool.Get().(*S2C_TurnAction)
+	if !ok {
+		m = New_S2C_TurnAction()
+	} else {
+		if m == nil {
+			m = New_S2C_TurnAction()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_TurnAction(i interface{}) {
+	if m, ok := i.(*S2C_TurnAction); ok && m != nil {
+		g_S2C_TurnAction_Pool.Put(i)
+	}
+}
+
+// message [S2C_TurnAction] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_PublicCard] begin
+func (m *S2C_PublicCard) ResetEx() {
+
+	for _, i := range m.Cards {
+		Put_Card(i)
+	}
+	m.Cards = []*Card{}
+	m.Best.ResetEx()
+
+}
+
+func (m S2C_PublicCard) Clone() *S2C_PublicCard {
+	n, ok := g_S2C_PublicCard_Pool.Get().(*S2C_PublicCard)
+	if !ok || n == nil {
+		n = &S2C_PublicCard{}
+	}
+
+	if len(m.Cards) > 0 {
+		for _, i := range m.Cards {
+			if i != nil {
+				n.Cards = append(n.Cards, i.Clone())
+			} else {
+				n.Cards = append(n.Cards, nil)
+			}
+		}
+	} else {
+		n.Cards = []*Card{}
+	}
+
+	n.Best = m.Best.Clone()
+
+	return n
+}
+
+func Clone_S2C_PublicCard_Slice(dst []*S2C_PublicCard, src []*S2C_PublicCard) []*S2C_PublicCard {
+	for _, i := range dst {
+		Put_S2C_PublicCard(i)
+	}
+	dst = []*S2C_PublicCard{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_S2C_PublicCard() *S2C_PublicCard {
+	m := &S2C_PublicCard{
+		Cards: []*Card{},
+		Best:  New_BestCombo(),
+	}
+	return m
+}
+
+var g_S2C_PublicCard_Pool = sync.Pool{}
+
+func Get_S2C_PublicCard() *S2C_PublicCard {
+	m, ok := g_S2C_PublicCard_Pool.Get().(*S2C_PublicCard)
+	if !ok {
+		m = New_S2C_PublicCard()
+	} else {
+		if m == nil {
+			m = New_S2C_PublicCard()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_PublicCard(i interface{}) {
+	if m, ok := i.(*S2C_PublicCard); ok && m != nil {
+		g_S2C_PublicCard_Pool.Put(i)
+	}
+}
+
+// message [S2C_PublicCard] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [C2S_AutoAction] begin
+func (m *C2S_AutoAction) ResetEx() {
+	m.Act = 0
+
+}
+
+func (m C2S_AutoAction) Clone() *C2S_AutoAction {
+	n, ok := g_C2S_AutoAction_Pool.Get().(*C2S_AutoAction)
+	if !ok || n == nil {
+		n = &C2S_AutoAction{}
+	}
+
+	n.Act = m.Act
+
+	return n
+}
+
+func Clone_C2S_AutoAction_Slice(dst []*C2S_AutoAction, src []*C2S_AutoAction) []*C2S_AutoAction {
+	for _, i := range dst {
+		Put_C2S_AutoAction(i)
+	}
+	dst = []*C2S_AutoAction{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_C2S_AutoAction() *C2S_AutoAction {
+	m := &C2S_AutoAction{}
+	return m
+}
+
+var g_C2S_AutoAction_Pool = sync.Pool{}
+
+func Get_C2S_AutoAction() *C2S_AutoAction {
+	m, ok := g_C2S_AutoAction_Pool.Get().(*C2S_AutoAction)
+	if !ok {
+		m = New_C2S_AutoAction()
+	} else {
+		if m == nil {
+			m = New_C2S_AutoAction()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_C2S_AutoAction(i interface{}) {
+	if m, ok := i.(*C2S_AutoAction); ok && m != nil {
+		g_C2S_AutoAction_Pool.Put(i)
+	}
+}
+
+// message [C2S_AutoAction] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [BestCombo] begin
+func (m *BestCombo) ResetEx() {
+
+	for _, i := range m.Cards {
+		Put_Card(i)
+	}
+	m.Cards = []*Card{}
+	m.Type = 0
+
+}
+
+func (m BestCombo) Clone() *BestCombo {
+	n, ok := g_BestCombo_Pool.Get().(*BestCombo)
+	if !ok || n == nil {
+		n = &BestCombo{}
+	}
+
+	if len(m.Cards) > 0 {
+		for _, i := range m.Cards {
+			if i != nil {
+				n.Cards = append(n.Cards, i.Clone())
+			} else {
+				n.Cards = append(n.Cards, nil)
+			}
+		}
+	} else {
+		n.Cards = []*Card{}
+	}
+
+	n.Type = m.Type
+
+	return n
+}
+
+func Clone_BestCombo_Slice(dst []*BestCombo, src []*BestCombo) []*BestCombo {
+	for _, i := range dst {
+		Put_BestCombo(i)
+	}
+	dst = []*BestCombo{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_BestCombo() *BestCombo {
+	m := &BestCombo{
+		Cards: []*Card{},
+	}
+	return m
+}
+
+var g_BestCombo_Pool = sync.Pool{}
+
+func Get_BestCombo() *BestCombo {
+	m, ok := g_BestCombo_Pool.Get().(*BestCombo)
+	if !ok {
+		m = New_BestCombo()
+	} else {
+		if m == nil {
+			m = New_BestCombo()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_BestCombo(i interface{}) {
+	if m, ok := i.(*BestCombo); ok && m != nil {
+		g_BestCombo_Pool.Put(i)
+	}
+}
+
+// message [BestCombo] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

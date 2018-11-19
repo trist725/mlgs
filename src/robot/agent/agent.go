@@ -59,6 +59,8 @@ func (a *Agent) Init() {
 	a.Processor.(*protobuf.Processor).SetByteOrder(true)
 
 	//这里可能导致id和服务端不匹配
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_Ping{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_Pong{})
 	a.Processor.(*protobuf.Processor).Register(&msg.C2S_Login{})
 	a.Processor.(*protobuf.Processor).Register(&msg.S2C_Login{})
 	a.Processor.(*protobuf.Processor).Register(&msg.S2C_LoginInfo{})
@@ -70,6 +72,13 @@ func (a *Agent) Init() {
 	a.Processor.(*protobuf.Processor).Register(&msg.S2C_PlayerLeaveRoom{})
 	a.Processor.(*protobuf.Processor).Register(&msg.S2C_UpdatePlayerJoinRoom{})
 	a.Processor.(*protobuf.Processor).Register(&msg.S2C_UpdatePlayerLeaveRoom{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_GameStart{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_Turn{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_TurnAction{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_TurnAction{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_DisConn{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_AutoAction{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_PublicCard{})
 
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_LoginInfo{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_Login{}, robot.ChanRPC)
@@ -78,6 +87,8 @@ func (a *Agent) Init() {
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_PlayerLeaveRoom{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_UpdatePlayerJoinRoom{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_UpdatePlayerLeaveRoom{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GameStart{}, robot.ChanRPC)
+
 }
 
 func (a *Agent) Run() {

@@ -2,6 +2,14 @@ syntax="proto3";
 
 package msg;
 
+///牌
+message Card{
+    ///花色,1-黑桃(Spade),2-红桃(Heart),3-方块(Diamond),4-梅花(Club)
+    int32 Color = 1;
+    ///牌值,1-13
+    int32 Num = 2;
+}
+
 /// 玩家
 message Player{
     ///用户Id
@@ -12,12 +20,17 @@ message Player{
     string AvatarURL = 3;
     ///在房间的位置
     uint32 Pos = 4;
-    ///角色,1=庄家，2=大盲, 3=小盲
+    ///角色,0=普通玩家, 1=庄家，2=小盲, 3=大盲
     int32 Role = 5;
     /// 筹码
     int64 Chip = 6;
     ///已押注筹码
     int64 BetChip = 7;
+    ///牌
+    repeated Card Cards= 8;
+    ///性别
+    string Sex = 9;
+
 }
 
 /// 房间
@@ -63,8 +76,10 @@ message S2C_PlayerLeaveRoom {
         E_Err_ = 0;
         ///成功
         E_Err_Success = 1;
+        ///失败,对局中
+        E_Err_Playing = 2;
         ///失败,其它
-        E_Err_UnKnown = 2;
+        E_Err_UnKnown = 3;
     }
     E_Err_PlayerLeaveRoom Err = 1;
 }
@@ -77,5 +92,64 @@ message S2C_UpdatePlayerJoinRoom {
 /// 玩家离开房间
 message S2C_UpdatePlayerLeaveRoom {
     ///离开的玩家的用户id
-    repeated int64 UserIds = 1;
+    int64 UserId = 1;
 }
+
+/// 开局
+message S2C_GameStart{
+    ///庄家位置
+    uint32 Pos = 1;
+    ///牌
+    repeated Card Cards = 2;
+    ///初始小盲注
+    int64 SmallBlind = 3;
+    ///最大牌型
+    ///BestCombo Best = 4;
+}
+
+///当前轮到谁操作
+message S2C_Turn{
+    ///位置
+    uint32 Pos = 1;
+}
+
+///玩家操作
+message C2S_TurnAction {
+    ///操作,1-让牌,2-弃牌,3-跟注,4-加注,5-Allin
+    int32 Act = 1;
+    ///加注值
+    int64 Bet = 2;
+}
+
+///玩家操作回复,实际操作
+message S2C_TurnAction{
+    ///1-让牌,2-弃牌,3-跟注,4-加注,5-Allin
+    int32 Act = 1;
+    ///跟注值
+    int64 Bet = 2;
+    ///玩家位置
+    int32 pos = 3;
+}
+
+///发公共牌
+message S2C_PublicCard{
+    ///公共牌
+    repeated Card Cards = 1;
+    ///最大牌型
+    BestCombo Best = 3;
+}
+
+///勾选自动操作
+message C2S_AutoAction{
+    ///0-无勾选,1-让牌,2-弃牌,3-跟注,4-跟任何注
+    int32 Act = 1;
+}
+
+///当前最大牌型
+message BestCombo{
+    repeated Card Cards = 1;
+    ///1-皇家同花顺,2-同花顺,3-四条(金刚),4-葫芦,5-通话
+    ///6-顺子,7-三条,8-两队,9-对子,10-高牌
+    int32 Type = 2;
+}
+

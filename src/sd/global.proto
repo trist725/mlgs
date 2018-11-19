@@ -7,4 +7,5 @@ enum E_Global {
     ///初始用户数据在person表的id
     E_Global_InitUserDataId = 1;
     E_Global_InitMatchRoomId = 2;
+    E_Global_MinStartGamePlayer = 3;
 }
