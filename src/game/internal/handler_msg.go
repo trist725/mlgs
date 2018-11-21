@@ -86,8 +86,8 @@ func handleQuickMatchStart(args []interface{}) {
 	if player != nil {
 		if player.InRoom() {
 			log.Debug("player:[%d] already in room", player.UserId())
+			return
 		}
-		return
 	}
 
 	//创建游戏内数据
@@ -183,13 +183,12 @@ func handleTurnAction(args []interface{}) {
 	sid := sender.UserData().(uint64)
 	session := s.Mgr().GetSession(sid)
 	if session == nil {
-		log.Debug("handleQuickMatchStart return for nil session")
+		log.Debug("handleTurnAction return for nil session")
 		return
 	}
-
 	player := session.Player()
 	if player == nil {
-		log.Debug("handleQuickMatchStart return for nil player")
+		log.Debug("handleTurnAction return for nil player")
 		return
 	}
 
@@ -198,9 +197,32 @@ func handleTurnAction(args []interface{}) {
 		log.Debug("player not in room")
 		return
 	}
-	r.SendPlayerActionSig(recv)
+	r.SendPlayerActionSig(recv, player)
 }
 
 func handleAutoAction(args []interface{}) {
+	// 收到的消息
+	recv := args[0].(*msg.C2S_AutoAction)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
 
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleAutoAction return for nil session")
+		return
+	}
+	player := session.Player()
+	if player == nil {
+		log.Debug("handleAutoAction return for nil player")
+		return
+	}
+
+	if recv.Act < 0 || recv.Act > 4 {
+		log.Debug("[%s] invalid auto action", session.Sign())
+	}
+	player.SetAutoAct(recv.Act)
 }

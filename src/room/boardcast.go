@@ -143,3 +143,64 @@ func (r *Room) BoardCastGS() {
 
 	return
 }
+
+//广播玩家操作
+func (r *Room) BoardCastTA(ta TurnAction) {
+	r.PlayerEach(func(player *cache.Player) {
+		session := s.Mgr().GetSession(player.SessionId())
+		if session == nil {
+			log.Error("use nil session on BoardCastTA")
+			return
+		}
+
+		send := msg.Get_S2C_TurnAction()
+		send.Pos = int32(ta.p.Pos())
+		send.Bet = ta.act.Bet
+		send.Act = ta.act.Act
+
+		session.Agent().WriteMsg(send)
+	})
+
+	return
+}
+
+//广播发公共牌
+func (r *Room) BoardCastDC(cards []cache.Card) {
+	r.PlayerEach(func(player *cache.Player) {
+		session := s.Mgr().GetSession(player.SessionId())
+		if session == nil {
+			log.Error("use nil session on BoardCastTA")
+			return
+		}
+
+		send := msg.Get_S2C_PublicCard()
+		for _, c := range cards {
+			card := msg.Get_Card()
+			card.Color = int32(c.Color)
+			card.Num = int32(c.Num)
+			send.Cards = append(send.Cards, card)
+		}
+		//todo: 发最大牌型
+		session.Agent().WriteMsg(send)
+	})
+
+	return
+}
+
+//广播游戏结束
+func (r *Room) BoardCastGO() {
+	r.PlayerEach(func(player *cache.Player) {
+		session := s.Mgr().GetSession(player.SessionId())
+		if session == nil {
+			log.Debug("use nil session on BoardCastGO")
+			return
+		}
+
+		send := msg.Get_S2C_GameOver()
+
+		//todo: 发最大牌型
+		session.Agent().WriteMsg(send)
+	})
+
+	return
+}

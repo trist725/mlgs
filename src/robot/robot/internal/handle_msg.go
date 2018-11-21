@@ -13,6 +13,7 @@ func init() {
 	regiserMsgHandle(&msg.S2C_UpdatePlayerJoinRoom{}, handleUpdatePlayerJoinRoom)
 	regiserMsgHandle(&msg.S2C_UpdatePlayerLeaveRoom{}, handleUpdatePlayerLeaveRoom)
 	regiserMsgHandle(&msg.S2C_GameStart{}, handleGameStart)
+	regiserMsgHandle(&msg.S2C_GameOver{}, handleGameOver)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -79,6 +80,14 @@ func handleUpdatePlayerLeaveRoom(args []interface{}) {
 }
 
 func handleGameStart(args []interface{}) {
+	// 收到的消息
+	recv := args[0].(*msg.S2C_GameStart)
+
+	log.Debug("handleGameStart, %v", recv)
+
+}
+
+func handleGameOver(args []interface{}) {
 	// 收到的消息
 	recv := args[0].(*msg.S2C_GameStart)
 

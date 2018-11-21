@@ -136,7 +136,7 @@ message S2C_PublicCard{
     ///公共牌
     repeated Card Cards = 1;
     ///最大牌型
-    BestCombo Best = 3;
+    ///BestCombo Best = 3;
 }
 
 ///勾选自动操作
@@ -151,5 +151,10 @@ message BestCombo{
     ///1-皇家同花顺,2-同花顺,3-四条(金刚),4-葫芦,5-通话
     ///6-顺子,7-三条,8-两队,9-对子,10-高牌
     int32 Type = 2;
+}
+
+///游戏结束
+message S2C_GameOver{
+
 }
 

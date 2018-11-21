@@ -3,7 +3,6 @@ package room
 import (
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/cache"
-	"mlgs/src/msg"
 	"mlgs/src/sd"
 	"sync"
 	"sync/atomic"
@@ -66,7 +65,7 @@ func (manager *Manager) NewRoom(pt uint32, gt uint32, t int64) *Room {
 	room.stopSig = make(chan struct{})
 
 	room.refreshReadyTimeSig = make(chan struct{})
-	room.actSig = make(chan *msg.C2S_TurnAction)
+	room.actSig = make(chan TurnAction)
 
 	manager.putRoom(room)
 	return room

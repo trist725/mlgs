@@ -19,6 +19,7 @@ It has these top-level messages:
 	S2C_PublicCard
 	C2S_AutoAction
 	BestCombo
+	S2C_GameOver
 */
 
 package msg
@@ -1022,7 +1023,6 @@ func (m *S2C_PublicCard) ResetEx() {
 		Put_Card(i)
 	}
 	m.Cards = []*Card{}
-	m.Best.ResetEx()
 
 }
 
@@ -1044,8 +1044,6 @@ func (m S2C_PublicCard) Clone() *S2C_PublicCard {
 		n.Cards = []*Card{}
 	}
 
-	n.Best = m.Best.Clone()
-
 	return n
 }
 
@@ -1065,7 +1063,6 @@ func Clone_S2C_PublicCard_Slice(dst []*S2C_PublicCard, src []*S2C_PublicCard) []
 func New_S2C_PublicCard() *S2C_PublicCard {
 	m := &S2C_PublicCard{
 		Cards: []*Card{},
-		Best:  New_BestCombo(),
 	}
 	return m
 }
@@ -1234,4 +1231,62 @@ func Put_BestCombo(i interface{}) {
 }
 
 // message [BestCombo] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_GameOver] begin
+func (m *S2C_GameOver) ResetEx() {
+
+}
+
+func (m S2C_GameOver) Clone() *S2C_GameOver {
+	n, ok := g_S2C_GameOver_Pool.Get().(*S2C_GameOver)
+	if !ok || n == nil {
+		n = &S2C_GameOver{}
+	}
+
+	return n
+}
+
+func Clone_S2C_GameOver_Slice(dst []*S2C_GameOver, src []*S2C_GameOver) []*S2C_GameOver {
+	for _, i := range dst {
+		Put_S2C_GameOver(i)
+	}
+	dst = []*S2C_GameOver{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_S2C_GameOver() *S2C_GameOver {
+	m := &S2C_GameOver{}
+	return m
+}
+
+var g_S2C_GameOver_Pool = sync.Pool{}
+
+func Get_S2C_GameOver() *S2C_GameOver {
+	m, ok := g_S2C_GameOver_Pool.Get().(*S2C_GameOver)
+	if !ok {
+		m = New_S2C_GameOver()
+	} else {
+		if m == nil {
+			m = New_S2C_GameOver()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_GameOver(i interface{}) {
+	if m, ok := i.(*S2C_GameOver); ok && m != nil {
+		g_S2C_GameOver_Pool.Put(i)
+	}
+}
+
+// message [S2C_GameOver] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

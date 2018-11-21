@@ -2,16 +2,25 @@ package room
 
 import (
 	"github.com/trist725/myleaf/log"
+	"mlgs/src/cache"
 	"mlgs/src/msg"
 )
 
-func (r *Room) SendPlayerActionSig(act *msg.C2S_TurnAction) {
+type TurnAction struct {
+	act *msg.C2S_TurnAction
+	p   *cache.Player
+}
+
+func (r *Room) SendPlayerActionSig(act *msg.C2S_TurnAction, player *cache.Player) {
 	if r.stage == 0 {
 		return
 	}
 
 	select {
-	case r.actSig <- act:
+	case r.actSig <- TurnAction{
+		act: act,
+		p:   player,
+	}:
 	default:
 		log.Debug("no PlayerActionSig sent")
 		return

@@ -14,10 +14,12 @@ type Card struct {
 }
 
 type Op struct {
-	//操作
+	//1-让牌,2-弃牌,3-跟注,4-加注,5-Allin,6-大小盲第一轮默认操作
 	Op int32
 	//操作的筹码数
-	bet int64
+	Bet int64
+	//轮次
+	Stage uint32
 }
 
 //todo:保存对局数据,断线重连
@@ -29,26 +31,26 @@ type Player struct {
 	//todo:掉线后根据uid操作
 	//todo:重连后判断有无快照数据,是否在对局中
 	uid int64
-	//对局状态,0-非对局中,1-对局中
+	//对局状态,0-非对局中,1-对局中,2-弃牌,3-无筹码
 	stat uint32
 	//对局中的位置
 	pos uint32
 	//所在房间id
 	rid uint64
-	/// 筹码
+	// 筹码
 	chip int64
+	//本局已押注
+	totalBet int64
 	/// 角色, 0-普通玩家,1-庄家,2-小盲,3-大盲,4-占位观战
 	role uint32
 	//手牌
 	cards []Card
 	//当前勾选的自动操作
-	//0-无勾选,1-让牌,2-弃牌,3-跟注,4-跟任何注
+	//0-无勾选,1-让牌,2-弃牌,3-跟注num,4-跟任何注
 	autoAct int32
-	//是否已自动操作,操作过后的自动操作每轮重置为0
-	autoActCount int32
 
 	//操作集
-	Ops []Op
+	ops []Op
 }
 
 func (c *Card) Equal(card Card) bool {
@@ -58,20 +60,33 @@ func (c *Card) Equal(card Card) bool {
 	return false
 }
 
+func (p *Player) AddOp(op Op) {
+	p.ops = append(p.ops, op)
+}
+
+func (p *Player) ClearOps() {
+	p.ops = nil
+}
+
+//todo: 记录每次下注操作
+func (p *Player) Bet(b int64) {
+	if p.chip < b {
+		log.Error("not enough chip:[%d] to bet:[%d]", p.chip, b)
+		return
+	}
+	atomic.StoreInt64(&p.chip, p.chip-b)
+	atomic.StoreInt64(&p.totalBet, p.chip+b)
+	if p.chip == 0 {
+		p.stat = 3
+	}
+}
+
 func (p *Player) AutoAct() int32 {
 	return atomic.LoadInt32(&p.autoAct)
 }
 
-func (p *Player) SetAutoAct(act int32) {
-	atomic.StoreInt32(&p.autoAct, act)
-}
-
-func (p *Player) AutoActCount() int32 {
-	return atomic.LoadInt32(&p.autoActCount)
-}
-
-func (p *Player) SetAutoActCount(c int32) {
-	atomic.StoreInt32(&p.autoActCount, c)
+func (p *Player) SetAutoAct(a int32) {
+	atomic.StoreInt32(&p.autoAct, a)
 }
 
 func (p *Player) UserId() int64 {
@@ -140,6 +155,10 @@ func (p *Player) SetPos(index uint32) {
 	atomic.StoreUint32(&p.pos, index)
 }
 
+func (p *Player) Stat() uint32 {
+	return atomic.LoadUint32(&p.stat)
+}
+
 func (p *Player) SetStat(s uint32) {
 	atomic.StoreUint32(&p.stat, s)
 }
@@ -172,4 +191,45 @@ func (p *Player) SetSessionId(sid uint64) {
 
 func (p *Player) SessionId() uint64 {
 	return atomic.LoadUint64(&p.sid)
+}
+
+func (p *Player) TotalBet() int64 {
+	return atomic.LoadInt64(&p.totalBet)
+}
+
+func (p *Player) SetTotalBet(tb int64) {
+	atomic.StoreInt64(&p.totalBet, tb)
+}
+
+func (p *Player) HadAction(stage uint32) bool {
+	if stage < 0 || stage > 5 {
+		log.Error("HadAction: invalid stage: %d", stage)
+		return false
+	}
+	for _, op := range p.ops {
+		if op.Stage == stage {
+			//排除大小盲第一轮默认操作
+			if op.Op != 6 {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func (p *Player) GetBetByStage(stage uint32) int64 {
+	if stage < 0 || stage > 5 {
+		log.Error("GetBetByStage: invalid stage: %d", stage)
+		return -1
+	}
+	var bet int64
+	for _, op := range p.ops {
+		if op.Stage == stage {
+			bet += op.Bet
+		}
+		if op.Stage > stage {
+			break
+		}
+	}
+	return bet
 }

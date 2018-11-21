@@ -33,4 +33,5 @@ func init() {
 	Processor.Register(&S2C_DisConn{})
 	Processor.Register(&C2S_AutoAction{})
 	Processor.Register(&S2C_PublicCard{})
+	Processor.Register(&S2C_GameOver{})
 }

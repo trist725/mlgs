@@ -79,6 +79,7 @@ func (a *Agent) Init() {
 	a.Processor.(*protobuf.Processor).Register(&msg.S2C_DisConn{})
 	a.Processor.(*protobuf.Processor).Register(&msg.C2S_AutoAction{})
 	a.Processor.(*protobuf.Processor).Register(&msg.S2C_PublicCard{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_GameOver{})
 
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_LoginInfo{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_Login{}, robot.ChanRPC)
@@ -88,6 +89,7 @@ func (a *Agent) Init() {
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_UpdatePlayerJoinRoom{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_UpdatePlayerLeaveRoom{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GameStart{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GameOver{}, robot.ChanRPC)
 
 }
 

@@ -16,6 +16,7 @@ func init() {
 	skeleton.RegisterChanRPC("PlayerLeaveRoom", OnPlayerLeaveRoom)
 	skeleton.RegisterChanRPC("NewGame", OnNewGame)
 	skeleton.RegisterChanRPC("Turn", OnTurn)
+	skeleton.RegisterChanRPC("TurnAction", OnTurnAction)
 }
 
 //每轮签到天数
@@ -112,4 +113,8 @@ func OnNewGame(args []interface{}) {
 func OnTurn(args []interface{}) {
 	room := args[0].(*r.Room)
 	room.BoardCastTurn()
+}
+
+func OnTurnAction(args []interface{}) {
+
 }
