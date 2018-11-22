@@ -956,6 +956,7 @@ func (m *S2C_TurnAction) ResetEx() {
 	m.Act = 0
 	m.Bet = 0
 	m.Pos = 0
+	m.Auto = 0
 
 }
 
@@ -968,6 +969,7 @@ func (m S2C_TurnAction) Clone() *S2C_TurnAction {
 	n.Act = m.Act
 	n.Bet = m.Bet
 	n.Pos = m.Pos
+	n.Auto = m.Auto
 
 	return n
 }

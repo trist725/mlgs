@@ -15,7 +15,9 @@ func (r *Room) SendPlayerActionSig(act *msg.C2S_TurnAction, player *cache.Player
 	if r.stage == 0 {
 		return
 	}
-
+	if r.curPos != player.Pos() {
+		return
+	}
 	select {
 	case r.actSig <- TurnAction{
 		act: act,

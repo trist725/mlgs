@@ -367,7 +367,7 @@ REACT:
 		//本轮有下过注,不能让牌,错误操作当弃牌
 		//第一轮特殊
 		if r.maxBet != 0 &&
-			r.stage == 1 {
+			r.stage != 1 {
 			ta.act.Act = 2
 			goto REACT
 		}
@@ -822,6 +822,7 @@ func (r *Room) DealCommunityCard(count int) {
 		log.Error("策划坑爹。。。。time.xlsx error")
 		return
 	}
+	log.Debug("send CommunityCard---------[%d]", count)
 	time.Sleep(time.Duration(timeSd.Value) * time.Second)
 }
 
@@ -946,7 +947,7 @@ func (r *Room) StageEnd() bool {
 	//无人加注, 所有人轮完结束
 	pos := r.NextPos()
 	if pos == 0 {
-		log.Error("StageEnd: invalid pos:[%d]", pos)
+		//log.Error("StageEnd: invalid pos:[%d]", pos)
 		return false
 	}
 	if p, ok := r.players[pos]; ok {

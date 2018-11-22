@@ -6,13 +6,6 @@ import (
 	"sync/atomic"
 )
 
-type Card struct {
-	//花色,1-黑桃(Spade),2-红桃(Heart),3-方块(Diamond),4-梅花(Club)
-	Color uint8
-	//牌值,2-14
-	Num uint8
-}
-
 type Op struct {
 	//1-让牌,2-弃牌,3-跟注,4-加注,5-Allin,6-大小盲第一轮默认操作
 	Op int32
@@ -51,13 +44,6 @@ type Player struct {
 
 	//操作集
 	ops []Op
-}
-
-func (c *Card) Equal(card Card) bool {
-	if c.Num == card.Num && c.Color == card.Color {
-		return true
-	}
-	return false
 }
 
 func (p *Player) AddOp(op Op) {
@@ -232,4 +218,9 @@ func (p *Player) GetBetByStage(stage uint32) int64 {
 		}
 	}
 	return bet
+}
+
+//todo: 可能凑成的最好的牌
+func (p *Player) Nuts() []Card {
+	return nil
 }

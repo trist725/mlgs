@@ -129,6 +129,8 @@ message S2C_TurnAction{
     int64 Bet = 2;
     ///玩家位置
     int32 pos = 3;
+    ///是否自动操作,0-否,1-是
+    int32 Auto = 4;
 }
 
 ///发公共牌

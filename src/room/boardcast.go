@@ -157,6 +157,9 @@ func (r *Room) BoardCastTA(ta TurnAction) {
 		send.Pos = int32(ta.p.Pos())
 		send.Bet = ta.act.Bet
 		send.Act = ta.act.Act
+		if player.AutoAct() != 0 {
+			send.Auto = 1
+		}
 
 		session.Agent().WriteMsg(send)
 	})
