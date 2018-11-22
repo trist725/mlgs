@@ -6,7 +6,7 @@ package msg;
 message Card{
     ///花色,1-黑桃(Spade),2-红桃(Heart),3-方块(Diamond),4-梅花(Club)
     int32 Color = 1;
-    ///牌值,1-13
+    ///牌值,2-14
     int32 Num = 2;
 }
 

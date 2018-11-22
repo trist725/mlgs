@@ -365,7 +365,9 @@ REACT:
 	switch ta.act.Act {
 	case 1:
 		//本轮有下过注,不能让牌,错误操作当弃牌
-		if r.maxBet != 0 {
+		//第一轮特殊
+		if r.maxBet != 0 &&
+			r.stage == 1 {
 			ta.act.Act = 2
 			goto REACT
 		}
@@ -407,19 +409,12 @@ REACT:
 			ta.act.Bet = ta.p.Chip()
 			goto REACT
 		}
-		//跟num值有变化,取消跟num自动操作
-		if ta.p.AutoAct() == 3 {
-			r.PlayerEach(func(player *cache.Player) {
-				if player.AutoAct() == 3 {
-					player.SetAutoAct(0)
-				}
-			})
-		}
 		r.SetPot(r.pot + bet)
 		r.maxBet += ta.act.Bet
 		ta.p.Bet(bet)
 		//更新上次加注位
 		r.raisePos = ta.p.Pos()
+		log.Debug("raisePos:[%d]", r.raisePos)
 	case 5:
 		//钱不够allin,改为实际allin值
 		if ta.p.Chip() < ta.act.Bet {
@@ -439,6 +434,25 @@ REACT:
 		Bet:   bet,
 		Stage: r.stage,
 	})
+
+	//有人加注或allin后要判断是否大于其他人已下的注,改变其他人的自动操作状态
+	if ta.act.Act == 4 || ta.act.Act == 5 {
+		r.PlayerEach(func(player *cache.Player) {
+			//自动让时候有人加注
+			if player.AutoAct() == 1 {
+				//本轮下注值小于加注者加注后的值,改为弃
+				if player.GetBetByStage(r.stage) < ta.p.GetBetByStage(r.stage) {
+					player.SetAutoAct(2)
+				} else {
+					//否则取消自动操作
+					player.SetAutoAct(0)
+				}
+				//跟num值有变化,取消跟num自动操作
+			} else if player.AutoAct() == 3 {
+				player.SetAutoAct(0)
+			}
+		})
+	}
 
 	//todo:广播
 	r.BoardCastTA(ta)
@@ -670,6 +684,7 @@ func (r *Room) NewGame(args ...interface{}) bool {
 	r.PlayerEach(func(player *cache.Player) {
 		player.SetStat(1)
 		player.ClearOps()
+		player.SetAutoAct(0)
 	})
 	//异步发
 	skeleton.ChanRPCServer.Go("NewGame", r)
@@ -923,8 +938,10 @@ func (r *Room) StageEnd() bool {
 	//有人加注，到加注者前一位结束
 	if r.raisePos != 0 {
 		if r.NextPos() == r.raisePos {
+			//log.Debug("StageEnd: nextPos:[%d]------raisePos:[%d]", r.NextPos(), r.raisePos)
 			return true
 		}
+		return false
 	}
 	//无人加注, 所有人轮完结束
 	pos := r.NextPos()
