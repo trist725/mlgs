@@ -21,6 +21,8 @@ var (
 	gPlayerLimit int
 	//房间旁观者上限
 	gBystanderLimit int
+	//公共牌总数
+	gCommunityCardCount int
 )
 
 //共4*13=52,不包括大小王
@@ -86,6 +88,7 @@ func init() {
 	}
 	gPlayerLimit = roomSd.Chairlimit
 	gBystanderLimit = roomSd.Playerlimit - roomSd.Chairlimit
+	gCommunityCardCount = roomSd.Totalpublicpokes
 }
 
 func (r *Room) Loop(args ...interface{}) {
@@ -178,11 +181,17 @@ GAME_STAGE1:
 				continue
 			}
 		}
-
-		//阶段结束条件
-		if r.StageEnd() {
+		if r.GameStat() == 1 {
+			//阶段结束
 			goto GAME_STAGE2
+		} else if r.GameStat() == 2 {
+			//不发牌,有唯一胜者
+			goto GAME_STAGE5
+		} else if r.GameStat() == 4 {
+			//发完牌结算
+			goto GAME_STAGE5
 		}
+		//GameStat()返回0和3需轮到下一个
 		if !r.Turn(skeleton) {
 			goto GAME_STAGE5
 		}
@@ -217,12 +226,17 @@ GAME_STAGE2:
 				continue
 			}
 		}
-
-		//阶段结束条件
-		//todo: game over条件判断
-		if r.StageEnd() {
+		if r.GameStat() == 1 {
+			//阶段结束
 			goto GAME_STAGE3
+		} else if r.GameStat() == 2 {
+			//不发牌,有唯一胜者
+			goto GAME_STAGE5
+		} else if r.GameStat() == 4 {
+			//发完牌结算
+			goto GAME_STAGE5
 		}
+		//GameStat()返回0和3需轮到下一个
 		if !r.Turn(skeleton) {
 			goto GAME_STAGE5
 		}
@@ -257,11 +271,17 @@ GAME_STAGE3:
 				continue
 			}
 		}
-
-		//阶段结束条件
-		if r.StageEnd() {
+		if r.GameStat() == 1 {
+			//阶段结束
 			goto GAME_STAGE4
+		} else if r.GameStat() == 2 {
+			//不发牌,有唯一胜者
+			goto GAME_STAGE5
+		} else if r.GameStat() == 4 {
+			//发完牌结算
+			goto GAME_STAGE5
 		}
+		//GameStat()返回0和3需轮到下一个
 		if !r.Turn(skeleton) {
 			goto GAME_STAGE5
 		}
@@ -296,11 +316,17 @@ GAME_STAGE4:
 				continue
 			}
 		}
-
-		//阶段结束条件
-		if r.StageEnd() {
+		if r.GameStat() == 1 {
+			//阶段结束
+			goto GAME_STAGE5
+		} else if r.GameStat() == 2 {
+			//不发牌,有唯一胜者
+			goto GAME_STAGE5
+		} else if r.GameStat() == 4 {
+			//发完牌结算
 			goto GAME_STAGE5
 		}
+		//GameStat()返回0和3需轮到下一个
 		if !r.Turn(skeleton) {
 			goto GAME_STAGE5
 		}
@@ -308,8 +334,11 @@ GAME_STAGE4:
 
 GAME_STAGE5:
 	r.stage = 5
+	//发剩下牌
+	if r.GameStat() == 4 {
+		r.DealCommunityCard(gCommunityCardCount - len(r.pc))
+	}
 	//todo:结算
-
 	r.GameOver()
 	goto GAME_READY
 
@@ -338,7 +367,7 @@ func (r *Room) DoAutoAct(player *cache.Player) bool {
 	} else {
 		ta.Act = player.AutoAct()
 	}
-
+	log.Debug("DoAutoAct: Act:[%d]------", ta.Act)
 	r.DoAct(TurnAction{
 		act: ta,
 		p:   player,
@@ -427,6 +456,7 @@ REACT:
 		r.SetPot(r.pot + ta.act.Bet)
 		ta.p.Bet(ta.act.Bet)
 		bet = ta.act.Bet
+		ta.p.SetStat(3)
 	}
 
 	ta.p.AddOp(cache.Op{
@@ -657,6 +687,7 @@ func (r *Room) Id() uint64 {
 func (r *Room) NewGame(args ...interface{}) bool {
 	r.SetStage(0)
 	r.InitCardPool()
+	r.pc = nil
 
 	//todo: 确定玩家是否还有筹码，客户端提示是否兑换，没筹码不兑换踢了或变成游客
 	//todo: 如果是大小盲 判断是否筹码大于相应的大小盲注
@@ -684,6 +715,7 @@ func (r *Room) NewGame(args ...interface{}) bool {
 	r.PlayerEach(func(player *cache.Player) {
 		player.SetStat(1)
 		player.ClearOps()
+		player.ClearCards()
 		player.SetAutoAct(0)
 	})
 	//异步发
@@ -826,26 +858,50 @@ func (r *Room) DealCommunityCard(count int) {
 	time.Sleep(time.Duration(timeSd.Value) * time.Second)
 }
 
-func (r *Room) HasWinner() bool {
-	var remain int
+//return: 0-游戏未结束,阶段不结束,1-游戏未结束,阶段结束,2-有胜者,
+//3-出现比牌,轮下一个,4-出现比牌,不轮下一个
+func (r *Room) GameStat() int {
+	var pRemain, aRemain int
+	var remainPlayer *cache.Player
 	r.PlayerEach(func(player *cache.Player) {
+		//对局中玩家
 		if player.Stat() == 1 {
-			remain++
+			pRemain++
+			remainPlayer = player
+			//无筹码(allin)玩家
+		} else if player.Stat() == 3 {
+			aRemain++
 		}
 	})
-	if remain == 1 {
-		return true
+	if pRemain == 1 {
+		if aRemain == 0 {
+			return 2
+		} else if aRemain > 0 {
+			if remainPlayer == nil {
+				log.Error("GameStat: invalid remainPlayer")
+				return -1
+			}
+			if remainPlayer.GetBetByStage(r.stage) >= r.maxBet {
+				return 4
+			} else {
+				return 3
+			}
+		}
+	} else if pRemain == 0 {
+		return 4
 	}
-	return false
+
+	//游戏不结束,判断阶段是否结束
+	if r.StageEnd() {
+		return 1
+	}
+	return 0
 }
 
 func (r *Room) Turn(skeleton *module.Skeleton) bool {
 	pos := r.NextPos()
 	if pos == 0 {
-		log.Error("invalid pos on Turn")
-		return false
-	}
-	if r.HasWinner() {
+		log.Debug("no next pos on Turn")
 		return false
 	}
 

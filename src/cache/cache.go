@@ -54,6 +54,10 @@ func (p *Player) ClearOps() {
 	p.ops = nil
 }
 
+func (p *Player) ClearCards() {
+	p.cards = nil
+}
+
 //todo: 记录每次下注操作
 func (p *Player) Bet(b int64) {
 	if p.chip < b {
