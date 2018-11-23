@@ -111,6 +111,9 @@ func (r *Room) BoardCastTurn() {
 
 		send := msg.Get_S2C_Turn()
 		send.Pos = r.curPos
+		if player.AutoAct() != 0 {
+			send.Auto = 1
+		}
 
 		session.Agent().WriteMsg(send)
 	})
@@ -157,9 +160,6 @@ func (r *Room) BoardCastTA(ta TurnAction) {
 		send.Pos = int32(ta.p.Pos())
 		send.Bet = ta.act.Bet
 		send.Act = ta.act.Act
-		if player.AutoAct() != 0 {
-			send.Auto = 1
-		}
 
 		session.Agent().WriteMsg(send)
 	})

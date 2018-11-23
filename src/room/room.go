@@ -453,7 +453,7 @@ REACT:
 			}
 		})
 	}
-
+	log.Debug("player pos:[%d]-----do act:[%d]", ta.p.Pos(), ta.act.Act)
 	//todo:广播
 	r.BoardCastTA(ta)
 }
@@ -906,10 +906,15 @@ func (r *Room) RaisePrePos() uint32 {
 func (r *Room) NewStage(skeleton *module.Skeleton) {
 	log.Debug("new stage.....")
 	//从小盲开始行动
-	_, ok := r.players[r.sbPos]
+	p, ok := r.players[r.sbPos]
 	//该位置没人
 	if !ok {
 		log.Error("invalid pos on NewStage")
+		return
+	}
+	//小盲不在对局中,下一个
+	if p.Stat() != 1 {
+		r.Turn(skeleton)
 		return
 	}
 
