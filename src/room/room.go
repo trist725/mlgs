@@ -693,8 +693,14 @@ func (r *Room) NewGame(args ...interface{}) bool {
 	//todo: 如果是大小盲 判断是否筹码大于相应的大小盲注
 
 	skeleton := args[0].(*module.Skeleton)
+
+	r.SetStage(1)
+	r.raisePos = 0
+	r.ResetPlayers(0)
+
 	//确定庄家
 	if !r.AllocRole(1, r.dPos) {
+
 		return false
 	}
 	//发手牌
@@ -708,19 +714,24 @@ func (r *Room) NewGame(args ...interface{}) bool {
 		return false
 	}
 
-	r.SetStage(1)
-	r.raisePos = 0
-	//设置玩家对局状态
-	//todo : 游戏结束设为0
+	r.ResetPlayers(1)
+	//异步发
+	skeleton.ChanRPCServer.Go("NewGame", r)
+	return true
+}
+
+//重置玩家状态,
+func (r *Room) ResetPlayers(stat uint32) {
 	r.PlayerEach(func(player *cache.Player) {
-		player.SetStat(1)
+		if stat == 1 {
+			player.SetStat(stat)
+			return
+		}
+		player.SetStat(0)
 		player.ClearOps()
 		player.ClearCards()
 		player.SetAutoAct(0)
 	})
-	//异步发
-	skeleton.ChanRPCServer.Go("NewGame", r)
-	return true
 }
 
 //洗牌
@@ -827,7 +838,6 @@ func (r *Room) DealHandCard(count int) bool {
 			p.GetCard(card.(cache.Card))
 		}
 	})
-
 	return ret
 }
 
@@ -980,6 +990,7 @@ func (r *Room) NewStage(skeleton *module.Skeleton) {
 	skeleton.ChanRPCServer.Go("Turn", r)
 }
 
+//todo:结算,保存记录
 func (r *Room) GameOver() {
 	r.BoardCastGO()
 	r.SetStage(0)
