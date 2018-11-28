@@ -3,8 +3,22 @@ package cache
 import (
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/sd"
+	"sort"
 	"sync/atomic"
 )
+
+var (
+	gHandCardCount int
+)
+
+func init() {
+	roomSd := sd.RoomMgr.Get(1)
+	if roomSd == nil {
+		log.Fatal("策划坑爹?!...read room sd error")
+		return
+	}
+	gHandCardCount = roomSd.Handcard
+}
 
 type Op struct {
 	//1-让牌,2-弃牌,3-跟注,4-加注,5-Allin,6-大小盲第一轮默认操作
@@ -38,6 +52,12 @@ type Player struct {
 	role uint32
 	//手牌
 	cards []Card
+	//最大牌组
+	nuts CardSlice
+	//最大牌组类型
+	///10-皇家同花顺,9-同花顺,8-四条(金刚),7-葫芦,6-通话
+	///5-顺子,4-三条,3-两队,2-对子,1-高牌
+	nutsLevel int32
 	//当前勾选的自动操作
 	//0-无勾选,1-让牌,2-弃牌,3-跟注num,4-跟任何注
 	autoAct int32
@@ -56,6 +76,18 @@ func (p *Player) ClearOps() {
 
 func (p *Player) ClearCards() {
 	p.cards = nil
+}
+
+func (p *Player) ClearNuts() {
+	p.nuts = nil
+}
+
+func (p *Player) NutsLevel() int32 {
+	return atomic.LoadInt32(&p.nutsLevel)
+}
+
+func (p *Player) SetNutsLevel(l int32) {
+	atomic.StoreInt32(&p.nutsLevel, l)
 }
 
 //todo: 记录每次下注操作
@@ -224,7 +256,87 @@ func (p *Player) GetBetByStage(stage uint32) int64 {
 	return bet
 }
 
-//todo: 可能凑成的最好的牌
-func (p *Player) Nuts() []Card {
-	return nil
+func (p *Player) Nuts() CardSlice {
+	return p.nuts
+}
+
+func (p *Player) UpdateNuts(new CardSlice) {
+	p.nuts = nil
+	p.nuts = append(p.nuts, new...)
+}
+
+func (p *Player) CalNuts(pc CardSlice) {
+	switch pc.Len() {
+	case 0:
+		if len(p.cards) != gHandCardCount {
+			log.Error("invalid hand card count")
+			return
+		}
+		p.UpdateNuts(p.cards)
+		p.SetNutsLevel(p.nuts.CalLevel())
+	case 1:
+		log.Error("nani?")
+	case 2:
+		log.Error("impossible")
+	default:
+		//>=3
+		for i := 0; i < gGroupCardCount; i++ {
+			for j := i + 1; j < gGroupCardCount; j++ {
+				for k := j + 1; k < gGroupCardCount; k++ {
+					var cards CardSlice
+					cards = append(cards, p.cards...)
+					cards = append(cards, pc[i])
+					cards = append(cards, pc[j])
+					cards = append(cards, pc[k])
+					//先排序,降序
+					sort.Sort(CardSlice(cards))
+					//计算牌型等级
+					newLvl := cards.CalLevel()
+					curLvl := p.nutsLevel
+					if curLvl < newLvl ||
+						(p.nuts.Len() == 2 && pc.Len() == 3) {
+						p.SetNutsLevel(newLvl)
+						p.UpdateNuts(cards)
+					} else if curLvl == newLvl {
+						//只有同级比较才有意义
+						p.CompareCards(cards)
+					} //else next
+				}
+			}
+		}
+	}
+
+}
+
+func (p *Player) CompareCards(cs2 CardSlice) {
+	if p.nuts.Len() != cs2.Len() {
+		log.Error("diff len CardSlice can't compare")
+		return
+	}
+
+	var bigger CardSlice
+	switch p.nutsLevel {
+	case 10:
+		bigger = p.nuts.RoyalFlushCompare()
+	case 9:
+		bigger = p.nuts.StraightFlushCompare(cs2)
+	case 8:
+		bigger = p.nuts.FourOfAKindCompare(cs2)
+	case 7:
+		bigger = p.nuts.FullHouseCompare(cs2)
+	case 6:
+		bigger = p.nuts.FlushCompare(cs2)
+	case 5:
+		bigger = p.nuts.StraightCompare(cs2)
+	case 4:
+		bigger = p.nuts.TriOfAKindCompare(cs2)
+	case 3:
+		bigger = p.nuts.TwoPairCompare(cs2)
+	case 2:
+		bigger = p.nuts.OnePairCompare(cs2)
+	case 1:
+		bigger = p.nuts.HighCardCompare(cs2)
+	}
+
+	p.UpdateNuts(bigger)
 }

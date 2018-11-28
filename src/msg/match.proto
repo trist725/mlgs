@@ -104,7 +104,7 @@ message S2C_GameStart{
     ///初始小盲注
     int64 SmallBlind = 3;
     ///最大牌型
-    ///BestCombo Best = 4;
+    BestCombo Best = 4;
 }
 
 ///当前轮到谁操作
@@ -127,7 +127,7 @@ message C2S_TurnAction {
 message S2C_TurnAction{
     ///1-让牌,2-弃牌,3-跟注,4-加注,5-Allin
     int32 Act = 1;
-    ///跟注值
+    ///实际下注值
     int64 Bet = 2;
     ///玩家位置
     int32 pos = 3;
@@ -138,7 +138,7 @@ message S2C_PublicCard{
     ///公共牌
     repeated Card Cards = 1;
     ///最大牌型
-    ///BestCombo Best = 3;
+    BestCombo Best = 3;
 }
 
 ///勾选自动操作
@@ -150,8 +150,8 @@ message C2S_AutoAction{
 ///当前最大牌型
 message BestCombo{
     repeated Card Cards = 1;
-    ///1-皇家同花顺,2-同花顺,3-四条(金刚),4-葫芦,5-通话
-    ///6-顺子,7-三条,8-两队,9-对子,10-高牌
+    ///10-皇家同花顺,9-同花顺,8-四条(金刚),7-葫芦,6-通话
+    ///5-顺子,4-三条,3-两队,2-对子,1-高牌
     int32 Type = 2;
 }
 
@@ -160,3 +160,22 @@ message S2C_GameOver{
 
 }
 
+///结算
+message Balance{
+    ///用户Id
+    int64 UserId = 1;
+    ///最大牌型
+    BestCombo BestCombo = 2;
+    ///输赢的筹码,负数为输
+    int64 Gain = 3;
+    ///退回多余的筹码
+    int64 Refund = 4;
+    ///手牌
+    repeated Card Cards = 5;
+}
+
+///下发结算消息
+message S2C_Balance{
+    ///所有人的结算信息
+    repeated Balance Balances = 1;
+}

@@ -141,6 +141,17 @@ func (r *Room) BoardCastGS() {
 		}
 		send.SmallBlind = r.sb
 
+		//最大牌型
+		bc := msg.Get_BestCombo()
+		bc.Type = player.NutsLevel()
+		for _, c := range player.Nuts() {
+			card := msg.Get_Card()
+			card.Num = int32(c.Num)
+			card.Color = int32(c.Color)
+			bc.Cards = append(bc.Cards, card)
+		}
+		send.Best = bc
+
 		session.Agent().WriteMsg(send)
 	})
 
@@ -183,7 +194,19 @@ func (r *Room) BoardCastDC(cards []cache.Card) {
 			card.Num = int32(c.Num)
 			send.Cards = append(send.Cards, card)
 		}
-		//todo: 发最大牌型
+
+		//最大牌型
+		player.CalNuts(r.pc)
+		bc := msg.Get_BestCombo()
+		bc.Type = player.NutsLevel()
+		for _, c := range player.Nuts() {
+			card := msg.Get_Card()
+			card.Num = int32(c.Num)
+			card.Color = int32(c.Color)
+			bc.Cards = append(bc.Cards, card)
+		}
+		send.Best = bc
+
 		session.Agent().WriteMsg(send)
 	})
 
@@ -201,7 +224,6 @@ func (r *Room) BoardCastGO() {
 
 		send := msg.Get_S2C_GameOver()
 
-		//todo: 发最大牌型
 		session.Agent().WriteMsg(send)
 	})
 

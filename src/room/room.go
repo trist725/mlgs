@@ -483,7 +483,7 @@ REACT:
 			}
 		})
 	}
-	log.Debug("player pos:[%d]-----do act:[%d]", ta.p.Pos(), ta.act.Act)
+	log.Debug("player pos:[%d]-----do act:[%d]------bet:[%d]", ta.p.Pos(), ta.act.Act, bet)
 	//todo:广播
 	r.BoardCastTA(ta)
 }
@@ -731,6 +731,8 @@ func (r *Room) ResetPlayers(stat uint32) {
 		player.ClearOps()
 		player.ClearCards()
 		player.SetAutoAct(0)
+		player.ClearNuts()
+		player.SetNutsLevel(0)
 	})
 }
 
@@ -837,6 +839,7 @@ func (r *Room) DealHandCard(count int) bool {
 			}
 			p.GetCard(card.(cache.Card))
 		}
+		p.CalNuts(r.pc)
 	})
 	return ret
 }

@@ -1,5 +1,14 @@
 package cache
 
+import "github.com/trist725/myleaf/log"
+
+//组牌数
+const gGroupCardCount int = 5
+
+func GroupCardCount() int {
+	return gGroupCardCount
+}
+
 type Card struct {
 	//花色,1-黑桃(Spade),2-红桃(Heart),3-方块(Diamond),4-梅花(Club)
 	Color uint8
@@ -9,6 +18,20 @@ type Card struct {
 
 func (c *Card) Equal(card Card) bool {
 	if c.Num == card.Num && c.Color == card.Color {
+		return true
+	}
+	return false
+}
+
+func (c *Card) NumEqual(card Card) bool {
+	if c.Num == card.Num {
+		return true
+	}
+	return false
+}
+
+func (c *Card) ColorEqual(card Card) bool {
+	if c.Color == card.Color {
 		return true
 	}
 	return false
@@ -26,52 +49,399 @@ func (cs CardSlice) Less(i, j int) bool { // 重写 Less() 方法， 从大到�
 	return cs[j].Num < cs[i].Num
 }
 
-//皇家同花顺
-func (cs CardSlice) IsRoyalFlush() (bool, CardSlice) {
-	return false, cs
+//最大牌型
+const gMaxGroupLevel int32 = 10
+
+func (cs CardSlice) CalLevel() int32 {
+	if cs.Len() == 0 {
+		return 0
+	}
+	for level := gMaxGroupLevel; level >= 2; level-- {
+		switch level {
+		case 10:
+			if cs.IsRoyalFlush() {
+				return level
+			}
+		case 9:
+			if cs.IsStraightFlush() {
+				return level
+			}
+		case 8:
+			if cs.IsFourOfAKind() {
+				return level
+			}
+		case 7:
+			if cs.IsFullHouse() {
+				return level
+			}
+		case 6:
+			if cs.IsFlush() {
+				return level
+			}
+		case 5:
+			if cs.IsStraight() {
+				return level
+			}
+		case 4:
+			if cs.IsTriOfAKind() {
+				return level
+			}
+		case 3:
+			if cs.IsTwoPair() {
+				return level
+			}
+		case 2:
+			if cs.IsOnePair() {
+				return level
+			}
+		}
+	}
+	//以上都不是,只能是高牌
+	return 1
 }
 
-//同花顺
-func (cs CardSlice) IsStraightFlush() (bool, CardSlice) {
-	return false, cs
+//需要先降序排序
+//需要从高到低level顺序使用
+//使用compare之前要先用is,因compare中不做边界检查
+//皇家同花顺-10
+func (cs CardSlice) IsRoyalFlush() bool {
+	if len(cs) != gGroupCardCount {
+		return false
+	}
+
+	if cs.IsStraightFlush() {
+		if cs[0].Num == 14 {
+			return true
+		}
+	}
+	return false
 }
 
-//四条
-func (cs CardSlice) IsFourOfAKind() (bool, CardSlice) {
-	return false, cs
+//返回大的
+func (cs CardSlice) RoyalFlushCompare() CardSlice {
+	return cs
 }
 
-//葫芦
-func (cs CardSlice) IsFullHouse() (bool, CardSlice) {
-	return false, cs
+//同花顺-9
+func (cs CardSlice) IsStraightFlush() bool {
+	if len(cs) != gGroupCardCount {
+		return false
+	}
+	if cs.IsStraight() && cs.IsFlush() {
+		return true
+	}
+	return false
 }
 
-//同花
-func (cs CardSlice) IsFlush() (bool, CardSlice) {
-	return false, cs
+func (cs CardSlice) StraightFlushCompare(cs2 CardSlice) CardSlice {
+	//就是比顺子
+	return cs.StraightCompare(cs2)
 }
 
-//顺子
-func (cs CardSlice) IsStraight() (bool, CardSlice) {
-	return false, cs
+//四条-8
+func (cs CardSlice) IsFourOfAKind() bool {
+	if len(cs) < 4 {
+		return false
+	}
+
+	countMap := make(map[uint8]int)
+	for _, v := range cs {
+		countMap[v.Num]++
+	}
+	for _, v := range countMap {
+		if v == 4 {
+			return true
+		}
+	}
+
+	return false
 }
 
-//三条
-func (cs CardSlice) IsTriOfAKind() (bool, CardSlice) {
-	return false, cs
+func (cs CardSlice) FourOfAKindCompare(cs2 CardSlice) CardSlice {
+	csNum := cs.GetNOfAKindNum(4)
+	cs2Num := cs2.GetNOfAKindNum(4)
+
+	if csNum > cs2Num {
+		return cs
+	}
+	return cs2
 }
 
-//两对
-func (cs CardSlice) IsTwoPair() (bool, CardSlice) {
-	return false, cs
+//葫芦-7
+func (cs CardSlice) IsFullHouse() bool {
+	if len(cs) != gGroupCardCount {
+		return false
+	}
+
+	countMap := make(map[uint8]int)
+	for _, v := range cs {
+		countMap[v.Num]++
+	}
+	var tri, two int
+	for _, v := range countMap {
+		if v == 3 {
+			tri++
+		} else if v == 2 {
+			two++
+		}
+	}
+	if tri == 1 && two == 1 {
+		return true
+	}
+
+	return false
 }
 
-//一对
-func (cs CardSlice) IsOnePair() (bool, CardSlice) {
-	return false, cs
+func (cs CardSlice) FullHouseCompare(cs2 CardSlice) CardSlice {
+	csTri := cs.GetNOfAKindNum(3)
+	cs2Tri := cs2.GetNOfAKindNum(3)
+	csTwo := cs.GetNOfAKindNum(2)
+	cs2Two := cs2.GetNOfAKindNum(2)
+
+	if csTri == cs2Tri {
+		if csTwo > cs2Two {
+			return cs
+		}
+		return cs2
+	} else {
+		if csTri > cs2Tri {
+			return cs
+		}
+	}
+	return cs2
 }
 
-//高牌
-func (cs CardSlice) IsHighCard() (bool, CardSlice) {
-	return false, cs
+//同花-6
+func (cs CardSlice) IsFlush() bool {
+	if len(cs) != gGroupCardCount {
+		return false
+	}
+
+	countMap := make(map[uint8]int)
+	for _, v := range cs {
+		countMap[v.Color]++
+	}
+	for _, v := range countMap {
+		if v == 5 {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (cs CardSlice) FlushCompare(cs2 CardSlice) CardSlice {
+	for i := 0; i < gGroupCardCount; i++ {
+		if cs[i].Num > cs2[i].Num {
+			return cs
+		} else if cs[i].Num < cs2[i].Num {
+			return cs2
+		} //else 一样大continue
+	}
+	//每个都一样大,随意return
+	return cs
+}
+
+//顺子-5
+func (cs CardSlice) IsStraight() bool {
+	if len(cs) != gGroupCardCount {
+		return false
+	}
+
+	//有A特殊处理
+	if cs[0].Num == 14 {
+		if cs[1].Num == 5 || cs[1].Num == 13 {
+			for i := 1; i < gGroupCardCount-1; i++ {
+				if cs[i].Num-cs[i+1].Num != 1 {
+					return false
+				}
+			}
+			return true
+		} else {
+			return false
+		}
+	} else {
+		for i := 0; i < gGroupCardCount-1; i++ {
+			if cs[i].Num-cs[i+1].Num != 1 {
+				return false
+			}
+		}
+		return true
+	}
+
+	return false
+}
+
+func (cs CardSlice) StraightCompare(cs2 CardSlice) CardSlice {
+	//A特例处理
+	if cs[0].Num == 14 || cs2[0].Num == 14 {
+		//第二张是5,是最小,返回另一个
+		if cs[1].Num == 5 {
+			return cs2
+		}
+		if cs2[1].Num == 5 {
+			return cs
+		}
+	}
+
+	//特例之外比第二大那张
+	if cs[1].Num > cs2[1].Num {
+		return cs
+	} else {
+		return cs2
+	}
+}
+
+//三条-4
+func (cs CardSlice) IsTriOfAKind() bool {
+	if len(cs) < 3 {
+		return false
+	}
+
+	countMap := make(map[uint8]int)
+	for _, v := range cs {
+		countMap[v.Num]++
+	}
+	for _, v := range countMap {
+		if v == 3 {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (cs CardSlice) TriOfAKindCompare(cs2 CardSlice) CardSlice {
+	csTri := cs.GetNOfAKindNum(3)
+	cs2Tri := cs2.GetNOfAKindNum(3)
+
+	if csTri == cs2Tri {
+		return cs.HighCardCompare(cs2)
+	} else if csTri > cs2Tri {
+		return cs
+	}
+	return cs2
+}
+
+//两对-3
+func (cs CardSlice) IsTwoPair() bool {
+	if len(cs) < 4 {
+		return false
+	}
+
+	countMap := make(map[uint8]int)
+	for _, v := range cs {
+		countMap[v.Num]++
+	}
+	var count int
+	for _, v := range countMap {
+		if v == 2 {
+			count++
+		}
+	}
+	if count == 2 {
+		return true
+	}
+
+	return false
+}
+
+func (cs CardSlice) TwoPairCompare(cs2 CardSlice) CardSlice {
+	var csBig, cs2Big uint8
+	var csOne, cs2One uint8
+	countMap := make(map[uint8]int)
+	for _, v := range cs {
+		countMap[v.Num]++
+	}
+	for k, v := range countMap {
+		if v == 2 && k > csBig {
+			csBig = k
+		} else if v == 1 {
+			csOne = k
+		}
+	}
+	countMap = make(map[uint8]int)
+	for _, v := range cs2 {
+		countMap[v.Num]++
+	}
+	for k, v := range countMap {
+		if v == 2 && k > cs2Big {
+			cs2Big = k
+		} else if v == 1 {
+			cs2One = k
+		}
+	}
+
+	if csBig == cs2Big {
+		if csOne > cs2One {
+			return cs
+		}
+	} else if csBig > cs2Big {
+		return cs
+	}
+	return cs2
+}
+
+//一对-2
+func (cs CardSlice) IsOnePair() bool {
+	if len(cs) < 2 {
+		return false
+	}
+
+	countMap := make(map[uint8]int)
+	for _, v := range cs {
+		countMap[v.Num]++
+	}
+	for _, v := range countMap {
+		if v == 2 {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (cs CardSlice) OnePairCompare(cs2 CardSlice) CardSlice {
+	csTwo := cs.GetNOfAKindNum(2)
+	cs2Two := cs2.GetNOfAKindNum(2)
+
+	if csTwo == cs2Two {
+		return cs.HighCardCompare(cs2)
+	} else if csTwo > cs2Two {
+		return cs
+	}
+	return cs2
+}
+
+//高牌-1
+//func (cs CardSlice) IsHighCard() bool {
+//	return true
+//}
+
+func (cs CardSlice) HighCardCompare(cs2 CardSlice) CardSlice {
+	for i := 0; i < cs.Len(); i++ {
+		if cs[i].Num > cs2[i].Num {
+			return cs
+		} else if cs[i].Num < cs2[i].Num {
+			return cs2
+		} //else == continue
+	}
+	return cs
+}
+
+func (cs CardSlice) GetNOfAKindNum(n int) uint8 {
+	var csN uint8
+	countMap := make(map[uint8]int)
+	for _, v := range cs {
+		countMap[v.Num]++
+	}
+	for k, v := range countMap {
+		if v == n {
+			csN = k
+		}
+	}
+	if csN == 0 {
+		log.Error("GetNOfAKindNum failed")
+	}
+	return csN
 }

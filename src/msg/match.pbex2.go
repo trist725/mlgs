@@ -20,6 +20,8 @@ It has these top-level messages:
 	C2S_AutoAction
 	BestCombo
 	S2C_GameOver
+	Balance
+	S2C_Balance
 */
 
 package msg
@@ -753,6 +755,7 @@ func (m *S2C_GameStart) ResetEx() {
 	}
 	m.Cards = []*Card{}
 	m.SmallBlind = 0
+	m.Best.ResetEx()
 
 }
 
@@ -777,6 +780,7 @@ func (m S2C_GameStart) Clone() *S2C_GameStart {
 	}
 
 	n.SmallBlind = m.SmallBlind
+	n.Best = m.Best.Clone()
 
 	return n
 }
@@ -797,6 +801,7 @@ func Clone_S2C_GameStart_Slice(dst []*S2C_GameStart, src []*S2C_GameStart) []*S2
 func New_S2C_GameStart() *S2C_GameStart {
 	m := &S2C_GameStart{
 		Cards: []*Card{},
+		Best:  New_BestCombo(),
 	}
 	return m
 }
@@ -1025,6 +1030,7 @@ func (m *S2C_PublicCard) ResetEx() {
 		Put_Card(i)
 	}
 	m.Cards = []*Card{}
+	m.Best.ResetEx()
 
 }
 
@@ -1046,6 +1052,8 @@ func (m S2C_PublicCard) Clone() *S2C_PublicCard {
 		n.Cards = []*Card{}
 	}
 
+	n.Best = m.Best.Clone()
+
 	return n
 }
 
@@ -1065,6 +1073,7 @@ func Clone_S2C_PublicCard_Slice(dst []*S2C_PublicCard, src []*S2C_PublicCard) []
 func New_S2C_PublicCard() *S2C_PublicCard {
 	m := &S2C_PublicCard{
 		Cards: []*Card{},
+		Best:  New_BestCombo(),
 	}
 	return m
 }
@@ -1291,4 +1300,168 @@ func Put_S2C_GameOver(i interface{}) {
 }
 
 // message [S2C_GameOver] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [Balance] begin
+func (m *Balance) ResetEx() {
+	m.UserId = 0
+	m.BestCombo.ResetEx()
+	m.Gain = 0
+	m.Refund = 0
+
+	for _, i := range m.Cards {
+		Put_Card(i)
+	}
+	m.Cards = []*Card{}
+
+}
+
+func (m Balance) Clone() *Balance {
+	n, ok := g_Balance_Pool.Get().(*Balance)
+	if !ok || n == nil {
+		n = &Balance{}
+	}
+
+	n.UserId = m.UserId
+	n.BestCombo = m.BestCombo.Clone()
+	n.Gain = m.Gain
+	n.Refund = m.Refund
+
+	if len(m.Cards) > 0 {
+		for _, i := range m.Cards {
+			if i != nil {
+				n.Cards = append(n.Cards, i.Clone())
+			} else {
+				n.Cards = append(n.Cards, nil)
+			}
+		}
+	} else {
+		n.Cards = []*Card{}
+	}
+
+	return n
+}
+
+func Clone_Balance_Slice(dst []*Balance, src []*Balance) []*Balance {
+	for _, i := range dst {
+		Put_Balance(i)
+	}
+	dst = []*Balance{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_Balance() *Balance {
+	m := &Balance{
+		BestCombo: New_BestCombo(),
+		Cards:     []*Card{},
+	}
+	return m
+}
+
+var g_Balance_Pool = sync.Pool{}
+
+func Get_Balance() *Balance {
+	m, ok := g_Balance_Pool.Get().(*Balance)
+	if !ok {
+		m = New_Balance()
+	} else {
+		if m == nil {
+			m = New_Balance()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_Balance(i interface{}) {
+	if m, ok := i.(*Balance); ok && m != nil {
+		g_Balance_Pool.Put(i)
+	}
+}
+
+// message [Balance] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_Balance] begin
+func (m *S2C_Balance) ResetEx() {
+
+	for _, i := range m.Balances {
+		Put_Balance(i)
+	}
+	m.Balances = []*Balance{}
+
+}
+
+func (m S2C_Balance) Clone() *S2C_Balance {
+	n, ok := g_S2C_Balance_Pool.Get().(*S2C_Balance)
+	if !ok || n == nil {
+		n = &S2C_Balance{}
+	}
+
+	if len(m.Balances) > 0 {
+		for _, i := range m.Balances {
+			if i != nil {
+				n.Balances = append(n.Balances, i.Clone())
+			} else {
+				n.Balances = append(n.Balances, nil)
+			}
+		}
+	} else {
+		n.Balances = []*Balance{}
+	}
+
+	return n
+}
+
+func Clone_S2C_Balance_Slice(dst []*S2C_Balance, src []*S2C_Balance) []*S2C_Balance {
+	for _, i := range dst {
+		Put_S2C_Balance(i)
+	}
+	dst = []*S2C_Balance{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_S2C_Balance() *S2C_Balance {
+	m := &S2C_Balance{
+		Balances: []*Balance{},
+	}
+	return m
+}
+
+var g_S2C_Balance_Pool = sync.Pool{}
+
+func Get_S2C_Balance() *S2C_Balance {
+	m, ok := g_S2C_Balance_Pool.Get().(*S2C_Balance)
+	if !ok {
+		m = New_S2C_Balance()
+	} else {
+		if m == nil {
+			m = New_S2C_Balance()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_Balance(i interface{}) {
+	if m, ok := i.(*S2C_Balance); ok && m != nil {
+		g_S2C_Balance_Pool.Put(i)
+	}
+}
+
+// message [S2C_Balance] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
