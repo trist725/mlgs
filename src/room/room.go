@@ -484,7 +484,7 @@ REACT:
 		})
 	}
 	log.Debug("player pos:[%d]-----do act:[%d]------bet:[%d]", ta.p.Pos(), ta.act.Act, bet)
-	//todo:广播
+	ta.act.Bet = bet
 	r.BoardCastTA(ta)
 }
 
@@ -567,10 +567,10 @@ func (r *Room) FirstStageBlindBet() bool {
 		Stage: 1,
 	})
 
-	r.players[r.bbPos].Bet(r.bb - r.sb)
+	r.players[r.bbPos].Bet(r.bb)
 	r.players[r.bbPos].AddOp(cache.Op{
 		Op:    6,
-		Bet:   r.bb - r.sb,
+		Bet:   r.bb,
 		Stage: 1,
 	})
 

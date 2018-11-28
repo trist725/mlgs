@@ -280,9 +280,9 @@ func (p *Player) CalNuts(pc CardSlice) {
 		log.Error("impossible")
 	default:
 		//>=3
-		for i := 0; i < gGroupCardCount; i++ {
-			for j := i + 1; j < gGroupCardCount; j++ {
-				for k := j + 1; k < gGroupCardCount; k++ {
+		for i := 0; i < pc.Len()-2; i++ {
+			for j := i + 1; j < pc.Len()-1; j++ {
+				for k := j + 1; k < pc.Len(); k++ {
 					var cards CardSlice
 					cards = append(cards, p.cards...)
 					cards = append(cards, pc[i])
@@ -305,7 +305,6 @@ func (p *Player) CalNuts(pc CardSlice) {
 			}
 		}
 	}
-
 }
 
 func (p *Player) CompareCards(cs2 CardSlice) {
