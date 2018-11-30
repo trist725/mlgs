@@ -1,7 +1,7 @@
 package login
 
 import (
-	"login/internal"
+	"mlgs/src/login/internal"
 )
 
 var (

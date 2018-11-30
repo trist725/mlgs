@@ -7,7 +7,7 @@ XLSX_DIR=$(WORK_DIR)/xlsx
 ########################################################################################################################
 .PHONY: all clean clean-log glide-up unzip-vendor zip-vendor publish rpc model gateway login-msg login game-sd game-msg game-cache game robot
 ########################################################################################################################
-all: gateway login game
+all: server
 ########################################################################################################################
 clean:
 	rm -rf $(WORK_DIR)/pkg
@@ -79,9 +79,9 @@ game-cache:
 	@echo $(shell date "+%F %R:%S")
 	cd $(WORK_DIR)/src/game/cache; go generate; go test
 
-game:
+server:
 	@echo $(shell date "+%F %R:%S")
-	go build -o $(OUTPUT_DIR)/game game
+	cd $(WORK_DIR)/src;go build -o $(OUTPUT_DIR)/server
 
 robot:
 	@echo $(shell date "+%F %R:%S")

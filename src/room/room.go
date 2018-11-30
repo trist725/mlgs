@@ -8,8 +8,8 @@ import (
 	q "github.com/yireyun/go-queue"
 	"mlgs/src/cache"
 	"mlgs/src/msg"
+	"mlgs/src/sd"
 	s "mlgs/src/session"
-	"sd"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -111,7 +111,7 @@ func (r *Room) loop(args []interface{}) {
 
 	//准备阶段
 GAME_READY:
-	r.stage = 0
+	r.SetStage(0)
 	for {
 		select {
 		//todo: 可优化,手动timer.stop
@@ -138,7 +138,7 @@ GAME_READY:
 	}
 
 GAME_STAGE1:
-	r.stage = 1
+	r.SetStage(1)
 
 	//不要直接用sleep
 	//等待客户端发手牌动作
@@ -152,7 +152,6 @@ GAME_STAGE1:
 	case <-r.stopSig:
 		return
 	}
-	//todo: 最大牌型计算
 	for {
 		curPlayer := r.CurPlayer()
 		//没人了去结算
@@ -197,10 +196,10 @@ GAME_STAGE1:
 		}
 	}
 GAME_STAGE2:
-	r.stage = 2
-	r.NewStage(skeleton)
+	r.SetStage(2)
 	//发三张公共牌
 	r.DealCommunityCard(3)
+	r.NewStage(skeleton)
 	for {
 		curPlayer := r.CurPlayer()
 		if curPlayer == nil {
@@ -242,10 +241,10 @@ GAME_STAGE2:
 		}
 	}
 GAME_STAGE3:
-	r.stage = 3
-	r.NewStage(skeleton)
+	r.SetStage(3)
 	//发1张公共牌
 	r.DealCommunityCard(1)
+	r.NewStage(skeleton)
 	for {
 		curPlayer := r.CurPlayer()
 		if curPlayer == nil {
@@ -287,10 +286,10 @@ GAME_STAGE3:
 		}
 	}
 GAME_STAGE4:
-	r.stage = 4
-	r.NewStage(skeleton)
+	r.SetStage(4)
 	//发1张公共牌
 	r.DealCommunityCard(1)
+	r.NewStage(skeleton)
 	for {
 		curPlayer := r.CurPlayer()
 		if curPlayer == nil {
@@ -336,9 +335,12 @@ GAME_STAGE5:
 	r.stage = 5
 	//发剩下牌
 	if r.GameStat() == 4 {
-		r.DealCommunityCard(gCommunityCardCount - len(r.pc))
+		if len(r.pc) < gCommunityCardCount {
+			r.DealCommunityCard(gCommunityCardCount - len(r.pc))
+		}
 	}
 	//todo:结算
+	r.Balance()
 	r.GameOver()
 	goto GAME_READY
 
@@ -432,6 +434,7 @@ REACT:
 			goto REACT
 		}
 		bet = r.maxBet - ta.p.GetBetByStage(r.stage) + ta.act.Bet
+		log.Debug("xxxxxxxxxxx------r.maxbet:[%d]---ta.p.GetBetByStage[%d]-[%d]---stage:[%d]", r.maxBet, ta.p.GetBetByStage(r.stage), ta.act.Bet, r.stage)
 		//筹码不够,allin
 		if ta.p.Chip() < bet {
 			ta.act.Act = 5
@@ -733,6 +736,7 @@ func (r *Room) ResetPlayers(stat uint32) {
 		player.SetAutoAct(0)
 		player.ClearNuts()
 		player.SetNutsLevel(0)
+		player.SetTotalBet(0)
 	})
 }
 
@@ -987,13 +991,13 @@ func (r *Room) NewStage(skeleton *module.Skeleton) {
 		return
 	}
 
-	r.curPos = r.sbPos
-	r.maxBet = 0
-	r.raisePos = 0
+	r.SetCurPos(r.sbPos)
+	r.ResetMaxBet()
+	r.ResetRaisePos()
 	skeleton.ChanRPCServer.Go("Turn", r)
 }
 
-//todo:结算,保存记录
+//todo:保存记录
 func (r *Room) GameOver() {
 	r.BoardCastGO()
 	r.SetStage(0)
@@ -1031,4 +1035,16 @@ func (r *Room) StageEnd() bool {
 		}
 	}
 	return false
+}
+
+func (r *Room) ResetMaxBet() {
+	atomic.StoreInt64(&r.maxBet, 0)
+}
+
+func (r *Room) ResetRaisePos() {
+	atomic.StoreUint32(&r.raisePos, 0)
+}
+
+func (r *Room) SetCurPos(cp uint32) {
+	atomic.StoreUint32(&r.curPos, cp)
 }

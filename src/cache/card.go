@@ -119,7 +119,7 @@ func (cs CardSlice) IsRoyalFlush() bool {
 
 //返回大的
 func (cs CardSlice) RoyalFlushCompare() CardSlice {
-	return cs
+	return nil
 }
 
 //同花顺-9
@@ -163,8 +163,10 @@ func (cs CardSlice) FourOfAKindCompare(cs2 CardSlice) CardSlice {
 
 	if csNum > cs2Num {
 		return cs
+	} else if csNum < cs2Num {
+		return cs2
 	}
-	return cs2
+	return nil
 }
 
 //葫芦-7
@@ -201,14 +203,18 @@ func (cs CardSlice) FullHouseCompare(cs2 CardSlice) CardSlice {
 	if csTri == cs2Tri {
 		if csTwo > cs2Two {
 			return cs
+		} else if csTwo < cs2Two {
+			return cs2
 		}
-		return cs2
+		return nil
 	} else {
 		if csTri > cs2Tri {
 			return cs
+		} else if csTri < cs2Tri {
+			return cs2
 		}
 	}
-	return cs2
+	return nil
 }
 
 //同花-6
@@ -238,8 +244,8 @@ func (cs CardSlice) FlushCompare(cs2 CardSlice) CardSlice {
 			return cs2
 		} //else 一样大continue
 	}
-	//每个都一样大,随意return
-	return cs
+	//每个都一样大
+	return nil
 }
 
 //顺子-5
@@ -275,21 +281,27 @@ func (cs CardSlice) IsStraight() bool {
 func (cs CardSlice) StraightCompare(cs2 CardSlice) CardSlice {
 	//A特例处理
 	if cs[0].Num == 14 || cs2[0].Num == 14 {
-		//第二张是5,是最小,返回另一个
+		//第二张是5,是最小
 		if cs[1].Num == 5 {
-			return cs2
-		}
-		if cs2[1].Num == 5 {
-			return cs
+			if cs2[1].Num == 5 {
+				return nil
+			} else {
+				return cs2
+			}
+		} else {
+			if cs2[1].Num == 5 {
+				return cs
+			}
 		}
 	}
 
 	//特例之外比第二大那张
 	if cs[1].Num > cs2[1].Num {
 		return cs
-	} else {
+	} else if cs[1].Num < cs2[1].Num {
 		return cs2
 	}
+	return nil
 }
 
 //三条-4
@@ -319,8 +331,9 @@ func (cs CardSlice) TriOfAKindCompare(cs2 CardSlice) CardSlice {
 		return cs.HighCardCompare(cs2)
 	} else if csTri > cs2Tri {
 		return cs
+	} else {
+		return cs2
 	}
-	return cs2
 }
 
 //两对-3
@@ -375,11 +388,16 @@ func (cs CardSlice) TwoPairCompare(cs2 CardSlice) CardSlice {
 	if csBig == cs2Big {
 		if csOne > cs2One {
 			return cs
+		} else if csOne < cs2One {
+			return cs2
+		} else {
+			return nil
 		}
 	} else if csBig > cs2Big {
 		return cs
+	} else { //if csBig < cs2Big
+		return cs2
 	}
-	return cs2
 }
 
 //一对-2
@@ -426,7 +444,7 @@ func (cs CardSlice) HighCardCompare(cs2 CardSlice) CardSlice {
 			return cs2
 		} //else == continue
 	}
-	return cs
+	return nil
 }
 
 func (cs CardSlice) GetNOfAKindNum(n int) uint8 {

@@ -151,7 +151,6 @@ func (r *Room) BoardCastGS() {
 			bc.Cards = append(bc.Cards, card)
 		}
 		send.Best = bc
-
 		session.Agent().WriteMsg(send)
 	})
 

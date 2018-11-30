@@ -1,10 +1,10 @@
 package internal
 
 import (
-	"game"
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
 	"gopkg.in/mgo.v2/bson"
+	"mlgs/src/game"
 	"mlgs/src/model"
 	"mlgs/src/msg"
 	s "mlgs/src/session"

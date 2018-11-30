@@ -1,15 +1,15 @@
 package main
 
 import (
-	"conf"
-	"game"
-	"gate"
 	"github.com/trist725/myleaf"
 	lconf "github.com/trist725/myleaf/conf"
-	"login"
+	"mlgs/src/conf"
+	"mlgs/src/game"
+	"mlgs/src/gate"
+	"mlgs/src/login"
 	"mlgs/src/model"
-	"room"
-	"session"
+	"mlgs/src/room"
+	"mlgs/src/session"
 )
 
 func main() {

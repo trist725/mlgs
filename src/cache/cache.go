@@ -3,6 +3,7 @@ package cache
 import (
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/sd"
+	"reflect"
 	"sort"
 	"sync/atomic"
 )
@@ -307,10 +308,10 @@ func (p *Player) CalNuts(pc CardSlice) {
 	}
 }
 
-func (p *Player) CompareCards(cs2 CardSlice) {
+func (p *Player) CompareCards(cs2 CardSlice) CardSlice {
 	if p.nuts.Len() != cs2.Len() {
 		log.Error("diff len CardSlice can't compare")
-		return
+		return nil
 	}
 
 	var bigger CardSlice
@@ -337,5 +338,55 @@ func (p *Player) CompareCards(cs2 CardSlice) {
 		bigger = p.nuts.HighCardCompare(cs2)
 	}
 
-	p.UpdateNuts(bigger)
+	if bigger != nil {
+		p.UpdateNuts(bigger)
+	}
+	return bigger
+}
+
+type PlayerSlice []Player
+
+func (ps PlayerSlice) Len() int { // 重写 Len() 方法
+	return len(ps)
+}
+func (ps PlayerSlice) Swap(i, j int) { // 重写 Swap() 方法
+	ps[i], ps[j] = ps[j], ps[i]
+}
+
+// 重写 Less() 方法，以牌型大小排序
+// 从大到小排,i大就是true
+func (ps PlayerSlice) Less(i, j int) bool {
+	if ps[j].nutsLevel < ps[i].nutsLevel {
+		return true
+	} else if ps[j].nutsLevel > ps[i].nutsLevel {
+		return false
+	} else {
+		cs := ps[i].CompareCards(ps[j].Nuts())
+		//平牌,比位置
+		if cs == nil {
+			//小盲位先行动
+			if ps[i].Role() == 2 {
+				return true
+			} else if ps[j].Role() == 2 {
+				return false
+			} else {
+				//1,6特例
+				if ps[i].Pos() == 1 && ps[j].Pos() == 6 {
+					return false
+				} else if ps[i].Pos() == 6 && ps[j].Pos() == 1 {
+					return true
+				} else { //pos小的先行动,吃亏
+					if ps[i].Pos() < ps[j].Pos() {
+						return true
+					} else {
+						return false
+					}
+				}
+			}
+		} else if reflect.DeepEqual(cs, ps[i].Nuts()) {
+			return true
+		} else { //if reflect.DeepEqual(cs, ps[j].Nuts())
+			return false
+		}
+	}
 }
