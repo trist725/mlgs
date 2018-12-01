@@ -402,6 +402,7 @@ REACT:
 			ta.act.Act = 2
 			goto REACT
 		}
+		log.Debug("yyyyyyyyyy------r.maxbet:[%d]---ta.p.GetBetByStage[%d]-[%d]---stage:[%d]", r.maxBet, ta.p.GetBetByStage(r.stage), ta.act.Bet, r.stage)
 		bet = 0
 	case 2:
 		ta.p.SetStat(2)
@@ -737,6 +738,8 @@ func (r *Room) ResetPlayers(stat uint32) {
 		player.ClearNuts()
 		player.SetNutsLevel(0)
 		player.SetTotalBet(0)
+		player.SetGain(0)
+		player.SetRefundBet(0)
 	})
 }
 

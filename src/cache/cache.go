@@ -10,6 +10,7 @@ import (
 
 var (
 	gHandCardCount int
+	gPlayerLimit   uint32
 )
 
 func init() {
@@ -19,6 +20,7 @@ func init() {
 		return
 	}
 	gHandCardCount = roomSd.Handcard
+	gPlayerLimit = uint32(roomSd.Chairlimit)
 }
 
 type Op struct {
@@ -62,6 +64,10 @@ type Player struct {
 	//当前勾选的自动操作
 	//0-无勾选,1-让牌,2-弃牌,3-跟注num,4-跟任何注
 	autoAct int32
+	//结算用,赢的筹码,负数为输
+	gain int64
+	//结算用,可被赢走的筹码
+	refundBet int64
 
 	//操作集
 	ops []Op
@@ -69,6 +75,26 @@ type Player struct {
 
 func (p *Player) AddOp(op Op) {
 	p.ops = append(p.ops, op)
+}
+
+func (p *Player) RefundBet() int64 {
+	return atomic.LoadInt64(&p.refundBet)
+}
+
+func (p *Player) SetRefundBet(b int64) {
+	atomic.StoreInt64(&p.refundBet, b)
+}
+
+func (p *Player) Gain() int64 {
+	return atomic.LoadInt64(&p.gain)
+}
+
+func (p *Player) SetGain(g int64) {
+	atomic.StoreInt64(&p.gain, g)
+}
+
+func (p *Player) AddGain(g int64) {
+	atomic.StoreInt64(&p.gain, p.gain+g)
 }
 
 func (p *Player) ClearOps() {
@@ -344,7 +370,7 @@ func (p *Player) CompareCards(cs2 CardSlice) CardSlice {
 	return bigger
 }
 
-type PlayerSlice []Player
+type PlayerSlice []*Player
 
 func (ps PlayerSlice) Len() int { // 重写 Len() 方法
 	return len(ps)
@@ -371,9 +397,9 @@ func (ps PlayerSlice) Less(i, j int) bool {
 				return false
 			} else {
 				//1,6特例
-				if ps[i].Pos() == 1 && ps[j].Pos() == 6 {
+				if ps[i].Pos() == 1 && ps[j].Pos() == gPlayerLimit {
 					return false
-				} else if ps[i].Pos() == 6 && ps[j].Pos() == 1 {
+				} else if ps[i].Pos() == gPlayerLimit && ps[j].Pos() == 1 {
 					return true
 				} else { //pos小的先行动,吃亏
 					if ps[i].Pos() < ps[j].Pos() {

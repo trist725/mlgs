@@ -156,7 +156,7 @@ message BestCombo{
 }
 
 ///游戏结束
-message S2C_GameOver{
+message S2C_GameOver {
 
 }
 

@@ -228,3 +228,50 @@ func (r *Room) BoardCastGO() {
 
 	return
 }
+
+//广播结算
+func (r *Room) BoardCastBalance() {
+	send := msg.Get_S2C_Balance()
+
+	r.PlayerEach(func(player *cache.Player) {
+		if player.Stat() != 1 || player.Stat() != 3 {
+			return
+		}
+
+		b := msg.Get_Balance()
+		//手牌
+		for _, c := range player.Cards() {
+			handCard := msg.Get_Card()
+			handCard.Num = int32(c.Num)
+			handCard.Color = int32(c.Color)
+			b.Cards = append(b.Cards, handCard)
+		}
+		//最大牌
+		b.BestCombo = msg.Get_BestCombo()
+		for _, n := range player.Nuts() {
+			nutCard := msg.Get_Card()
+			nutCard.Num = int32(n.Num)
+			nutCard.Color = int32(n.Color)
+			b.BestCombo.Cards = append(b.BestCombo.Cards, nutCard)
+			b.BestCombo.Type = player.NutsLevel()
+		}
+
+		b.Gain = player.Gain()
+		b.Refund = player.RefundBet()
+		b.UserId = player.UserId()
+
+		send.Balances = append(send.Balances, b)
+	})
+
+	r.PlayerEach(func(player *cache.Player) {
+		session := s.Mgr().GetSession(player.SessionId())
+		if session == nil {
+			log.Debug("use nil session on BoardCastGO")
+			return
+		}
+
+		session.Agent().WriteMsg(send)
+	})
+
+	return
+}
