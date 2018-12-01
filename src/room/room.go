@@ -341,6 +341,7 @@ GAME_STAGE5:
 	}
 	//todo:结算
 	r.Balance()
+	time.Sleep(4 * time.Second)
 	r.GameOver()
 	goto GAME_READY
 
