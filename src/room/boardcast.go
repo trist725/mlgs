@@ -234,7 +234,7 @@ func (r *Room) BoardCastBalance() {
 	send := msg.Get_S2C_Balance()
 
 	r.PlayerEach(func(player *cache.Player) {
-		if player.Stat() != 1 || player.Stat() != 3 {
+		if player.Stat() != 1 && player.Stat() != 3 {
 			return
 		}
 
