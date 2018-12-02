@@ -8,57 +8,85 @@ import (
 
 //结算
 func (r *Room) Balance() {
-	var ps cache.PlayerSlice
+	var ps, psFold cache.PlayerSlice
 	r.PlayerEach(func(player *cache.Player) {
 		if player == nil {
 			log.Error("Balance: invalid player")
 			return
 		}
-		if player.Stat() != 3 || player.Stat() != 1 {
-			return
+
+		//下过注但弃牌的
+		if player.Stat() == 2 && player.TotalBet() > 0 {
+			psFold = append(psFold, player)
 		}
-
+		//最后留下的和allin的
+		if player.Stat() == 3 || player.Stat() == 1 {
+			ps = append(ps, player)
+		}
 		player.SetRefundBet(player.TotalBet())
-		ps = append(ps, player)
 	})
-	//要结算的玩家排序
+	//非弃牌的玩家排序
 	sort.Sort(cache.PlayerSlice(ps))
+	//非弃牌的先分了弃牌的钱
+	r.DivideLoser(ps, psFold, true)
 
-	for i := 0; i < ps.Len(); i++ {
-		for j := i + 1; j < ps.Len(); j++ {
-			//n人平牌
-			var psDraw cache.PlayerSlice = nil
-			if ps[i].CompareCards(ps[j].Nuts()) == nil {
-				psDraw = append(psDraw, ps[i])
-				psDraw = append(psDraw, ps[j])
-				for k := j + 1; k < ps.Len(); k++ {
-					if ps[j].CompareCards(ps[k].Nuts()) == nil {
-						psDraw = append(psDraw, ps[k])
-					}
+	r.DivideLoser(ps, nil, false)
+
+	r.BoardCastBalance()
+}
+
+func (r *Room) DivideLoser(winners cache.PlayerSlice, losers cache.PlayerSlice, flop bool) {
+	for i := 0; i < winners.Len(); i++ {
+		//n人平牌
+		var psDraw cache.PlayerSlice = nil
+		if i+1 < winners.Len() && winners[i].CompareCards(winners[i+1].Nuts()) == nil {
+			psDraw = append(psDraw, winners[i])
+			psDraw = append(psDraw, winners[i+1])
+			for k := i + 2; k < winners.Len(); k++ {
+				if winners[k].CompareCards(winners[k].Nuts()) == nil {
+					psDraw = append(psDraw, winners[k])
 				}
-				//平分剩下人的筹码
-				r.DivideChip(psDraw, ps[psDraw.Len():])
-				ps = ps[psDraw.Len():]
-				if ps.Len() >= 2 {
-					i = -1
-					j = 0
-
-				} else { //结算结束
-					i = ps.Len()
-					j = ps.Len()
+			}
+			if !flop {
+				for j := i + 1; j < winners.Len(); j++ {
+					losers = append(losers, winners[j])
 				}
-				continue
 			}
-
-			//没钱的孩子
-			if ps[j].RefundBet() == 0 {
-				continue
+			//平分失败者的筹码
+			r.DivideChip(psDraw, losers)
+			//截取剩余的
+			if psDraw.Len()+i >= winners.Len() {
+				return
 			}
-			r.GainBet(ps[i], ps[j])
+			winners = winners[psDraw.Len()+i:]
+			i = -1
+		} else {
+			//非平牌
+			if flop {
+				for _, loser := range losers {
+					r.GainBet(winners[i], loser)
+				}
+			} else {
+				for j := i + 1; j < winners.Len(); j++ {
+					r.GainBet(winners[i], winners[j])
+				}
+			}
 		}
 	}
 
-	r.BoardCastBalance()
+	if !flop {
+		return
+	}
+	//弃牌的人还有钱,递归继续分
+	var newLosers cache.PlayerSlice = nil
+	for _, loser := range losers {
+		if loser.RefundBet() > 0 {
+			newLosers = append(newLosers, loser)
+		}
+	}
+	if newLosers.Len() > 0 {
+		r.DivideLoser(winners, newLosers, true)
+	}
 }
 
 func (r *Room) DivideChip(winners cache.PlayerSlice, losers cache.PlayerSlice) {
@@ -96,6 +124,9 @@ func (r *Room) GainDivide(big *cache.Player, small *cache.Player, divide int64, 
 }
 
 func (r *Room) GainBet(big *cache.Player, small *cache.Player) {
+	if small.RefundBet() == 0 {
+		return
+	}
 	if big.TotalBet() < small.RefundBet() {
 		big.AddGain(big.TotalBet())
 		small.AddGain(big.TotalBet() * -1)

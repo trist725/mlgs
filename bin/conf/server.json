@@ -5,7 +5,7 @@
 	"MaxConnNum": 10000,
 	"ConsolePort": 3333,
 
-	"MgoUrl": "mongodb://admin:admin111@192.168.101.100:27017/admin",
+	"MgoUrl": "mongodb://admin:admin@47.110.73.211:27017/admin",
 	"MgoSessionNum": 100,
 	"MgoName": "dzpk",
 

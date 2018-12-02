@@ -124,7 +124,7 @@ func (p *Player) Bet(b int64) {
 		return
 	}
 	atomic.StoreInt64(&p.chip, p.chip-b)
-	atomic.StoreInt64(&p.totalBet, p.chip+b)
+	atomic.StoreInt64(&p.totalBet, p.totalBet+b)
 	if p.chip == 0 {
 		p.stat = 3
 	}

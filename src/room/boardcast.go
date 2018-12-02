@@ -234,10 +234,6 @@ func (r *Room) BoardCastBalance() {
 	send := msg.Get_S2C_Balance()
 
 	r.PlayerEach(func(player *cache.Player) {
-		if player.Stat() != 1 && player.Stat() != 3 {
-			return
-		}
-
 		b := msg.Get_Balance()
 		//手牌
 		for _, c := range player.Cards() {
