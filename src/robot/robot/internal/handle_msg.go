@@ -98,7 +98,7 @@ func handleGameOver(args []interface{}) {
 
 func handleBalance(args []interface{}) {
 	// 收到的消息
-	recv := args[0].(*msg.S2C_GameStart)
+	recv := args[0].(*msg.S2C_Balance)
 
 	log.Debug("handleBalance, %v", recv)
 

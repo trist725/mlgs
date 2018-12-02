@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/trist725/myleaf"
 	"github.com/trist725/myleaf/network"
-	a "robot/agent"
-	"robot/conf"
-	"robot/robot"
+	a "mlgs/src/robot/agent"
+	"mlgs/src/robot/conf"
+	"mlgs/src/robot/robot"
 )
 
 var gTcpClient network.TCPClient

@@ -6,8 +6,8 @@ import (
 	"github.com/trist725/myleaf/network"
 	"github.com/trist725/myleaf/network/protobuf"
 	"mlgs/src/msg"
+	"mlgs/src/robot/robot"
 	"reflect"
-	"robot/robot"
 	"time"
 )
 

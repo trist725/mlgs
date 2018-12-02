@@ -1,6 +1,5 @@
 WORK_DIR=$(shell pwd)
 OUTPUT_DIR=$(WORK_DIR)/bin
-GOPATH=$(WORK_DIR)
 VENDOR_DIR=$(WORK_DIR)/src/vendor
 LOG_DIR=$(WORK_DIR)/log
 XLSX_DIR=$(WORK_DIR)/xlsx
@@ -37,13 +36,11 @@ zip-vendor:
 publish:
 	rm -rf $(WORK_DIR)/publish/bin
 	mkdir -p $(WORK_DIR)/publish/bin
-	cp $(OUTPUT_DIR)/gateway $(WORK_DIR)/publish/bin/gateway
-	cp $(OUTPUT_DIR)/game $(WORK_DIR)/publish/bin/game
-	cp $(OUTPUT_DIR)/login $(WORK_DIR)/publish/bin/login
+	cp $(OUTPUT_DIR)/mlgs $(WORK_DIR)/publish/bin/mlgs
 	rm -rf $(WORK_DIR)/publish/xlsx
 	mkdir -p $(WORK_DIR)/publish/xlsx
 	cp $(XLSX_DIR)/*.xlsx $(WORK_DIR)/publish/xlsx
-	cd $(WORK_DIR)/publish;tar czf hh-server.$(shell date "+%Y%m%d%k%M").tar.gz ./bin ./xlsx;rm -rf ./bin ./xlsx
+	cd $(WORK_DIR)/publish;tar czf mlgs.$(shell date "+%Y%m%d%k%M").tar.gz ./bin ./xlsx;rm -rf ./bin ./xlsx
 	rm -rf $(WORK_DIR)/publish/bin
 	rm -rf $(WORK_DIR)/publish/xlsx
 
@@ -81,7 +78,7 @@ game-cache:
 
 server:
 	@echo $(shell date "+%F %R:%S")
-	cd $(WORK_DIR)/src;go build -o $(OUTPUT_DIR)/server
+	cd $(WORK_DIR)/src;go build -o $(OUTPUT_DIR)/mlgs.$(shell date "+%Y%m%d%k%M")
 
 robot:
 	@echo $(shell date "+%F %R:%S")
