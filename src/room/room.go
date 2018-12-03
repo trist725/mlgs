@@ -989,15 +989,15 @@ func (r *Room) NewStage(skeleton *module.Skeleton) {
 		log.Error("invalid pos on NewStage")
 		return
 	}
+	r.SetCurPos(r.sbPos)
+	r.ResetMaxBet()
+	r.ResetRaisePos()
 	//小盲不在对局中,下一个
 	if p.Stat() != 1 {
 		r.Turn(skeleton)
 		return
 	}
 
-	r.SetCurPos(r.sbPos)
-	r.ResetMaxBet()
-	r.ResetRaisePos()
 	skeleton.ChanRPCServer.Go("Turn", r)
 }
 
