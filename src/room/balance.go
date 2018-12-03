@@ -48,9 +48,10 @@ func (r *Room) DivideLoser(winners cache.PlayerSlice, losers cache.PlayerSlice, 
 				}
 			}
 			if !flop {
-				for j := i + 1; j < winners.Len(); j++ {
-					losers = append(losers, winners[j])
+				if psDraw.Len()+i >= winners.Len() {
+					return
 				}
+				losers = winners[psDraw.Len()+i:]
 			}
 			//平分失败者的筹码
 			r.DivideChip(psDraw, losers)

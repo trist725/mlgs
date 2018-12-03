@@ -307,27 +307,36 @@ func (p *Player) CalNuts(pc CardSlice) {
 		log.Error("impossible")
 	default:
 		//>=3
-		for i := 0; i < pc.Len()-2; i++ {
-			for j := i + 1; j < pc.Len()-1; j++ {
-				for k := j + 1; k < pc.Len(); k++ {
-					var cards CardSlice
-					cards = append(cards, p.cards...)
-					cards = append(cards, pc[i])
-					cards = append(cards, pc[j])
-					cards = append(cards, pc[k])
-					//先排序,降序
-					sort.Sort(CardSlice(cards))
-					//计算牌型等级
-					newLvl := cards.CalLevel()
-					curLvl := p.nutsLevel
-					if curLvl < newLvl ||
-						(p.nuts.Len() == 2 && pc.Len() == 3) {
-						p.SetNutsLevel(newLvl)
-						p.UpdateNuts(cards)
-					} else if curLvl == newLvl {
-						//只有同级比较才有意义
-						p.CompareCards(cards)
-					} //else next
+		//7选5
+		var calCards CardSlice
+		calCards = append(calCards, p.cards...)
+		calCards = append(calCards, pc...)
+		for i := 0; i < calCards.Len()-2; i++ {
+			for j := i + 1; j < calCards.Len()-1; j++ {
+				for k := j + 1; k < calCards.Len(); k++ {
+					for m := k + 1; m < calCards.Len(); m++ {
+						for n := m + 1; n < calCards.Len(); n++ {
+							var cards CardSlice
+							cards = append(cards, calCards[i])
+							cards = append(cards, calCards[j])
+							cards = append(cards, calCards[k])
+							cards = append(cards, calCards[m])
+							cards = append(cards, calCards[n])
+							//先排序,降序
+							sort.Sort(CardSlice(cards))
+							//计算牌型等级
+							newLvl := cards.CalLevel()
+							curLvl := p.nutsLevel
+							if curLvl < newLvl ||
+								(p.nuts.Len() == 2 && pc.Len() == 3) {
+								p.SetNutsLevel(newLvl)
+								p.UpdateNuts(cards)
+							} else if curLvl == newLvl {
+								//只有同级比较才有意义
+								p.CompareCards(cards)
+							} //else next
+						}
+					}
 				}
 			}
 		}

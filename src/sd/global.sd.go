@@ -3,10 +3,7 @@
 
 package sd
 
-import (
-	"encoding/json"
-	"strconv"
-)
+import "encoding/json"
 import "fmt"
 import "log"
 import "path/filepath"
