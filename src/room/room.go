@@ -403,7 +403,6 @@ REACT:
 			ta.act.Act = 2
 			goto REACT
 		}
-		log.Debug("yyyyyyyyyy------r.maxbet:[%d]---ta.p.GetBetByStage[%d]-[%d]---stage:[%d]", r.maxBet, ta.p.GetBetByStage(r.stage), ta.act.Bet, r.stage)
 		bet = 0
 	case 2:
 		ta.p.SetStat(2)
@@ -436,7 +435,6 @@ REACT:
 			goto REACT
 		}
 		bet = r.maxBet - ta.p.GetBetByStage(r.stage) + ta.act.Bet
-		log.Debug("xxxxxxxxxxx------r.maxbet:[%d]---ta.p.GetBetByStage[%d]-[%d]---stage:[%d]", r.maxBet, ta.p.GetBetByStage(r.stage), ta.act.Bet, r.stage)
 		//筹码不够,allin
 		if ta.p.Chip() < bet {
 			ta.act.Act = 5

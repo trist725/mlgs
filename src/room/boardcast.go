@@ -98,6 +98,17 @@ func (r *Room) BoardCastPL(id int64) {
 
 //广播轮到谁
 func (r *Room) BoardCastTurn() {
+	p, ok := r.players[r.curPos]
+	if !ok {
+		log.Error("BoardCastTurn: invalid curPos:[%d]", r.curPos)
+		return
+	}
+	send := msg.Get_S2C_Turn()
+	send.Pos = r.curPos
+	if p.AutoAct() != 0 {
+		send.Auto = 1
+	}
+
 	r.PlayerEach(func(player *cache.Player) {
 		//已掉线
 		if player.SessionId() == 0 {
@@ -107,12 +118,6 @@ func (r *Room) BoardCastTurn() {
 		if session == nil {
 			log.Error("use nil session on BoardCastTurn")
 			return
-		}
-
-		send := msg.Get_S2C_Turn()
-		send.Pos = r.curPos
-		if player.AutoAct() != 0 {
-			send.Auto = 1
 		}
 
 		session.Agent().WriteMsg(send)
