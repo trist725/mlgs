@@ -75,19 +75,19 @@ func (r *Room) DivideLoser(winners cache.PlayerSlice, losers cache.PlayerSlice, 
 		}
 	}
 
-	if !flop {
-		return
-	}
-	//弃牌的人还有钱,递归继续分
-	var newLosers cache.PlayerSlice = nil
-	for _, loser := range losers {
-		if loser.RefundBet() > 0 {
-			newLosers = append(newLosers, loser)
-		}
-	}
-	if newLosers.Len() > 0 {
-		r.DivideLoser(winners, newLosers, true)
-	}
+	//if !flop {
+	//	return
+	//}
+	////弃牌的人还有钱,递归继续分
+	//var newLosers cache.PlayerSlice = nil
+	//for _, loser := range losers {
+	//	if loser.RefundBet() > 0 {
+	//		newLosers = append(newLosers, loser)
+	//	}
+	//}
+	//if newLosers.Len() > 0 {
+	//	r.DivideLoser(winners, newLosers, true)
+	//}
 }
 
 func (r *Room) DivideChip(winners cache.PlayerSlice, losers cache.PlayerSlice) {
@@ -106,13 +106,19 @@ func (r *Room) DivideChip(winners cache.PlayerSlice, losers cache.PlayerSlice) {
 		divide := loser.RefundBet() / int64(wLen)
 		remainder := loser.RefundBet() % int64(wLen)
 
-		for _, winner := range winners {
-			r.GainDivide(winner, loser, divide, &remainder)
+		for i := 0; i < winners.Len(); i++ {
+			if remainder > 0 {
+				//前面的人多给1
+				r.GainDivide(winners[i], loser, divide, 1)
+				remainder--
+			} else {
+				r.GainDivide(winners[i], loser, divide, 0)
+			}
 		}
 	}
 }
 
-func (r *Room) GainDivide(big *cache.Player, small *cache.Player, divide int64, remainder *int64) int64 {
+func (r *Room) GainDivide(big *cache.Player, small *cache.Player, divide int64, remainder int64) int64 {
 	if big.TotalBet() < divide {
 		big.AddGain(big.TotalBet())
 		small.AddGain(big.TotalBet() * -1)
@@ -121,6 +127,13 @@ func (r *Room) GainDivide(big *cache.Player, small *cache.Player, divide int64, 
 
 	big.AddGain(divide)
 	small.AddGain(divide * -1)
+	small.SetRefundBet(small.RefundBet() - divide)
+
+	if remainder > 0 {
+		big.AddGain(remainder)
+		small.AddGain(remainder * -1)
+		small.SetRefundBet(small.RefundBet() - remainder)
+	}
 	return 0
 }
 

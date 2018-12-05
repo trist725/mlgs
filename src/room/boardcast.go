@@ -1,11 +1,47 @@
 package room
 
 import (
+	"github.com/trist725/mgsu/util"
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/cache"
 	"mlgs/src/msg"
 	s "mlgs/src/session"
 )
+
+//广播机器人玩家加入
+func (r *Room) BoardCastRPJ(players []*cache.Player) {
+	r.PlayerEach(func(player *cache.Player) {
+		if player.Robot() {
+			return
+		}
+		session := s.Mgr().GetSession(player.SessionId())
+		if session == nil {
+			log.Error("use nil session on BoardCastPJ")
+			return
+		}
+
+		send := msg.Get_S2C_UpdatePlayerJoinRoom()
+		for _, p := range players {
+			if !p.Robot() {
+				continue
+			}
+
+			np := msg.Get_Player()
+			np.NickName = util.GenRandomString(6)
+			np.Pos = p.Pos()
+			np.Chip = p.Chip()
+			np.AvatarURL = "http"
+			np.UserId = p.UserId()
+			np.Sex = "1"
+
+			send.Players = append(send.Players, np)
+		}
+
+		session.Agent().WriteMsg(send)
+	})
+
+	return
+}
 
 //广播玩家加入
 func (r *Room) BoardCastPJ(players []*cache.Player) {

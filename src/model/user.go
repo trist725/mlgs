@@ -14,7 +14,7 @@ func CreateUser(accountID int64, recv *msg.C2S_Login) (m *User, err error) {
 	}
 	now := time.Now()
 	m = Get_User()
-	m.ID = int64(nextSeq) * 10000 //+ int64(serverID)
+	m.ID = int64(nextSeq) * UserIdTimes //+ int64(serverID)
 	m.AccountID = accountID
 	m.NickName = recv.NickName
 	m.Sex = recv.Sex

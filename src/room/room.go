@@ -108,6 +108,10 @@ func (r *Room) loop(args []interface{}) {
 	//暂写死1,策划蛋疼的配表
 	//游戏准备时间
 	timeSd := sd.TimeMgr.Get(1)
+	if timeSd == nil {
+		log.Error("room loop: read time xlsx failed..")
+		return
+	}
 
 	//准备阶段
 GAME_READY:
@@ -116,6 +120,9 @@ GAME_READY:
 		select {
 		//todo: 可优化,手动timer.stop
 		case <-time.After(time.Duration(timeSd.Value) * time.Second):
+			if len(r.players) <= sd.InitMinStartGamePlayer() {
+				r.AddTestRobot()
+			}
 			//是否满足最少开局人数
 			if len(r.players) >= sd.InitMinStartGamePlayer() {
 				if !r.NewGame(skeleton) {
@@ -160,7 +167,7 @@ GAME_STAGE1:
 			goto GAME_STAGE5
 		}
 
-		if curPlayer.AutoAct() == 0 {
+		if curPlayer.AutoAct() == 0 && !curPlayer.Robot() {
 			select {
 			case <-time.After(time.Duration(sd.InitActionTime_S1()) * time.Second):
 				//超时没动作,弃牌处理
@@ -205,7 +212,7 @@ GAME_STAGE2:
 		if curPlayer == nil {
 			goto GAME_STAGE5
 		}
-		if curPlayer.AutoAct() == 0 {
+		if curPlayer.AutoAct() == 0 && !curPlayer.Robot() {
 			select {
 			case <-time.After(time.Duration(sd.InitActionTime_S2()) * time.Second):
 				//超时没动作,弃牌处理
@@ -250,7 +257,7 @@ GAME_STAGE3:
 		if curPlayer == nil {
 			goto GAME_STAGE5
 		}
-		if curPlayer.AutoAct() == 0 {
+		if curPlayer.AutoAct() == 0 && !curPlayer.Robot() {
 			select {
 			case <-time.After(time.Duration(sd.InitActionTime_S3()) * time.Second):
 				//超时没动作,弃牌处理
@@ -295,7 +302,7 @@ GAME_STAGE4:
 		if curPlayer == nil {
 			goto GAME_STAGE5
 		}
-		if curPlayer.AutoAct() == 0 {
+		if curPlayer.AutoAct() == 0 && !curPlayer.Robot() {
 			select {
 			case <-time.After(time.Duration(sd.InitActionTime_S4()) * time.Second):
 				//超时没动作,弃牌处理
@@ -341,7 +348,7 @@ GAME_STAGE5:
 	}
 	//todo:结算
 	r.Balance()
-	time.Sleep(4 * time.Second)
+	time.Sleep(6 * time.Second)
 	r.GameOver()
 	goto GAME_READY
 
@@ -358,6 +365,16 @@ func (r *Room) DoAutoAct(player *cache.Player) bool {
 	//		p: player,
 	//	})
 	//}
+	if player.Robot() {
+		time.Sleep(util.RandomTimeDuration(1, 6) * time.Second)
+		ta.Act = util.RandomInt32(1, 5)
+		ta.Bet = util.RandomInt64(1, 40)
+		r.DoAct(TurnAction{
+			act: ta,
+			p:   player,
+		})
+		return true
+	}
 
 	if player.AutoAct() == 4 {
 		//跟任何注符合allin条件,让玩家确认
@@ -365,7 +382,6 @@ func (r *Room) DoAutoAct(player *cache.Player) bool {
 			player.SetAutoAct(0)
 			return false
 		}
-
 		ta.Act = 3
 	} else {
 		ta.Act = player.AutoAct()
@@ -396,10 +412,8 @@ func (r *Room) DoAct(ta TurnAction) {
 REACT:
 	switch ta.act.Act {
 	case 1:
-		//本轮有下过注,不能让牌,错误操作当弃牌
-		//第一轮特殊
-		if r.maxBet != 0 &&
-			r.stage != 1 {
+		//本轮下的注不是最大,不能让牌
+		if r.maxBet > ta.p.GetBetByStage(r.stage) {
 			ta.act.Act = 2
 			goto REACT
 		}
@@ -1003,13 +1017,16 @@ func (r *Room) NewStage(skeleton *module.Skeleton) {
 func (r *Room) GameOver() {
 	r.BoardCastGO()
 	r.SetStage(0)
-	r.KickOfflinePlayer()
+
+	r.ResetPlayers(0)
+	r.KickOffPlayers()
 }
 
-func (r *Room) KickOfflinePlayer() {
+func (r *Room) KickOffPlayers() {
 	r.PlayerEach(func(player *cache.Player) {
 		player.SetStat(0)
-		if player.SessionId() == 0 {
+		// 掉线的/机器人/筹码不够的 踢
+		if player.SessionId() == 0 || player.Robot() || player.Chip() < r.bb {
 			r.PlayerLeave(player)
 			r.BoardCastPL(player.UserId())
 		}

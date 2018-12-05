@@ -8,6 +8,13 @@ import (
 )
 
 const (
+	UserIdTimes   = 10000 //真人用户Id倍数
+	UserIdOffset  = 0     //真人用户Id偏移,也可用服务器id
+	RobotIdTimes  = 1000  //机器人用户Id倍数
+	RobotIdOffset = 1     //机器人用户Id偏移
+)
+
+const (
 	TblCounters = "counters" // 用来生成递增序列的表
 	TblAccount  = "account"  // 帐号表
 	TblUser     = "user"     // 角色表

@@ -68,6 +68,8 @@ type Player struct {
 	gain int64
 	//结算用,可被赢走的筹码
 	refundBet int64
+	//机器人
+	robot bool
 
 	//操作集
 	ops []Op
@@ -83,6 +85,14 @@ func (p *Player) RefundBet() int64 {
 
 func (p *Player) SetRefundBet(b int64) {
 	atomic.StoreInt64(&p.refundBet, b)
+}
+
+func (p *Player) Robot() bool {
+	return p.robot
+}
+
+func (p *Player) SetRobot(r bool) {
+	p.robot = r
 }
 
 func (p *Player) Gain() int64 {
@@ -171,6 +181,28 @@ func NewPlayer(sid uint64, uid int64, t int64) *Player {
 		uid:  uid,
 		chip: rommSd.Chip,
 	}
+	//todo:扣款
+
+	return p
+}
+
+func NewRobotPlayer(rid int64, t int64) *Player {
+	//todo:根据t进入不同房间类型
+	var rommSd *sd.Room
+	switch t {
+	default:
+		rommSd = sd.RoomMgr.Get(t)
+		if rommSd == nil {
+			log.Fatal("策划坑爹了,读room表有误，id: [%d]", t)
+			return nil
+		}
+	}
+
+	p := &Player{
+		uid:  rid,
+		chip: rommSd.Chip,
+	}
+	p.SetRobot(true)
 	//todo:扣款
 
 	return p

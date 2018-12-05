@@ -90,7 +90,7 @@ func handleGameStart(args []interface{}) {
 
 func handleGameOver(args []interface{}) {
 	// 收到的消息
-	recv := args[0].(*msg.S2C_GameStart)
+	recv := args[0].(*msg.S2C_GameOver)
 
 	log.Debug("handleGameOver, %v", recv)
 
