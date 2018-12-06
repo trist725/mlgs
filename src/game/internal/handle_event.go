@@ -64,7 +64,7 @@ func OnPlayerJoinRoom(args []interface{}) {
 	room.PlayerEach(func(player *cache.Player) {
 		session := s.Mgr().GetSession(player.SessionId())
 		//todo: 断线session被销毁但等待重连?
-		if session == nil {
+		if session == nil && !player.Robot() {
 			log.Error("use nil session, on OnPlayerJoinRoom")
 			return
 		}

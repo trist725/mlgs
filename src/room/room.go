@@ -121,7 +121,11 @@ GAME_READY:
 		//todo: 可优化,手动timer.stop
 		case <-time.After(time.Duration(timeSd.Value) * time.Second):
 			if len(r.players) <= sd.InitMinStartGamePlayer() {
-				r.AddTestRobot()
+				random := util.RandomInt(1, gPlayerLimit-len(r.players))
+				for i := 0; i < random; i++ {
+					r.AddTestRobot()
+				}
+				continue
 			}
 			//是否满足最少开局人数
 			if len(r.players) >= sd.InitMinStartGamePlayer() {
