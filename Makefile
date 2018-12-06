@@ -3,6 +3,9 @@ OUTPUT_DIR=$(WORK_DIR)/bin
 VENDOR_DIR=$(WORK_DIR)/src/vendor
 LOG_DIR=$(OUTPUT_DIR)/log
 XLSX_DIR=$(WORK_DIR)/xlsx
+
+date = (shell date "+%Y%m%d%k%M")
+pid = (shell ps -ef | grep mlgs.* | head -n 1 | awk '{print $2}')
 ########################################################################################################################
 .PHONY: all clean clean-log glide-up unzip-vendor zip-vendor publish rpc model gateway login-msg login game-sd game-msg game-cache game robot
 ########################################################################################################################
@@ -71,8 +74,6 @@ game-cache:
 	cd $(WORK_DIR)/src/game/cache; go generate; go test
 
 server:
-    date = (shell date "+%Y%m%d%k%M")
-    pid = (shell ps -ef | grep mlgs.* | head -n 1 | awk '{print $2}')
 	@echo $(shell date "+%F %R:%S")
 	cd $(WORK_DIR)/src;go build -o $(OUTPUT_DIR)/mlgs.$date;kill -9 $pid;(./mlgs.$date &)
 
