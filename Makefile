@@ -1,7 +1,7 @@
 WORK_DIR=$(shell pwd)
 OUTPUT_DIR=$(WORK_DIR)/bin
 VENDOR_DIR=$(WORK_DIR)/src/vendor
-LOG_DIR=$(WORK_DIR)/log
+LOG_DIR=$(OUTPUT_DIR)/log
 XLSX_DIR=$(WORK_DIR)/xlsx
 ########################################################################################################################
 .PHONY: all clean clean-log glide-up unzip-vendor zip-vendor publish rpc model gateway login-msg login game-sd game-msg game-cache game robot
@@ -10,16 +10,10 @@ all: server
 ########################################################################################################################
 clean:
 	rm -rf $(WORK_DIR)/pkg
-	rm -f $(OUTPUT_DIR)/gateway
-	rm -f $(OUTPUT_DIR)/game
-	rm -f $(OUTPUT_DIR)/login
-	rm -f $(OUTPUT_DIR)/robot
+	rm -f $(OUTPUT_DIR)/mlgs*
 
 clean-log:
-	rm -rf $(LOG_DIR)/gateway*/*.log
-	rm -rf $(LOG_DIR)/game*/*.log
-	rm -rf $(LOG_DIR)/login*/*.log
-	rm -rf $(LOG_DIR)/robot*/*.log
+	rm -f $(LOG_DIR)/*.log
 
 glide-up:
 	go_tool.sh glide-up
@@ -77,10 +71,12 @@ game-cache:
 	cd $(WORK_DIR)/src/game/cache; go generate; go test
 
 server:
+    date = (shell date "+%Y%m%d%k%M")
+    pid = (shell ps -ef | grep mlgs.* | head -n 1 | awk '{print $2}')
 	@echo $(shell date "+%F %R:%S")
-	cd $(WORK_DIR)/src;go build -o $(OUTPUT_DIR)/mlgs.$(shell date "+%Y%m%d%k%M")
+	cd $(WORK_DIR)/src;go build -o $(OUTPUT_DIR)/mlgs.$date;kill -9 $pid;(./mlgs.$date &)
 
 robot:
 	@echo $(shell date "+%F %R:%S")
-	go build -o $(OUTPUT_DIR)/robot robot
+	cd $(WORK_DIR)/src;go build -o $(OUTPUT_DIR)/robot.$(shell date "+%Y%m%d%k%M")
 ########################################################################################################################
