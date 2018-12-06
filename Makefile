@@ -72,7 +72,7 @@ game-cache:
 
 server:
 	@echo $(shell date "+%F %R:%S")
-	cd $(WORK_DIR)/src;go build -o $(OUTPUT_DIR)/mlgs.$(shell date "+%Y%m%d%H%M");cd $(WORK_DIR); ./up.sh
+	cd $(WORK_DIR)/src;go build -o $(OUTPUT_DIR)/mlgs.$(shell date "+%Y%m%d%H%M")
 
 robot:
 	@echo $(shell date "+%F %R:%S")
