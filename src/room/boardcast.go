@@ -1,7 +1,6 @@
 package room
 
 import (
-	"github.com/trist725/mgsu/util"
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/cache"
 	"mlgs/src/msg"
@@ -27,12 +26,12 @@ func (r *Room) BoardCastRPJ(players []*cache.Player) {
 			}
 
 			np := msg.Get_Player()
-			np.NickName = util.GenRandomString(6)
+			np.NickName = p.UserData().NickName
 			np.Pos = p.Pos()
 			np.Chip = p.Chip()
-			np.AvatarURL = "http"
+			np.AvatarURL = p.UserData().AvatarURL
 			np.UserId = p.UserId()
-			np.Sex = "1"
+			np.Sex = p.UserData().Sex
 
 			send.Players = append(send.Players, np)
 		}
@@ -235,8 +234,6 @@ func (r *Room) BoardCastDC(cards []cache.Card) {
 			send.Cards = append(send.Cards, card)
 		}
 
-		//最大牌型
-		player.CalNuts(r.pc)
 		bc := msg.Get_BestCombo()
 		bc.Type = player.NutsLevel()
 		for _, c := range player.Nuts() {

@@ -70,10 +70,15 @@ func OnPlayerJoinRoom(args []interface{}) {
 		}
 		p := msg.Get_Player()
 		p.Chip = player.Chip()
-		p.NickName = session.UserData().NickName
-		p.UserId = session.UserData().ID
+		p.UserId = player.UserId()
 		p.Pos = player.Pos()
-		p.AvatarURL = session.UserData().AvatarURL
+		if player.Robot() {
+			p.AvatarURL = player.UserData().AvatarURL
+			p.NickName = player.UserData().NickName
+		} else {
+			p.AvatarURL = session.UserData().AvatarURL
+			p.NickName = session.UserData().NickName
+		}
 		send.Room.Players = append(send.Room.Players, p)
 	})
 	send.Err = msg.S2C_QuickMatchStart_E_Err_Success

@@ -474,6 +474,8 @@ REACT:
 		if ta.act.Bet > r.maxBet {
 			r.maxBet = ta.act.Bet
 		}
+		//更新上次加注位
+		r.raisePos = ta.p.Pos()
 		r.SetPot(r.pot + ta.act.Bet)
 		ta.p.Bet(ta.act.Bet)
 		bet = ta.act.Bet
@@ -882,6 +884,11 @@ func (r *Room) DealCommunityCard(count int) {
 		sendCards = append(sendCards, card.(cache.Card))
 	}
 
+	//最大牌型
+	r.PlayerEach(func(player *cache.Player) {
+		player.CalNuts(r.pc)
+	})
+
 	//广播
 	r.BoardCastDC(sendCards)
 
@@ -1031,8 +1038,8 @@ func (r *Room) KickOffPlayers() {
 		player.SetStat(0)
 		// 掉线的/机器人/筹码不够的 踢
 		if player.SessionId() == 0 || player.Robot() || player.Chip() < r.bb {
-			r.PlayerLeave(player)
 			r.BoardCastPL(player.UserId())
+			r.PlayerLeave(player)
 		}
 	})
 }

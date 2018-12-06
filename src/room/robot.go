@@ -16,6 +16,10 @@ func (r *Room) AddTestRobot() {
 	}
 	rid := int64(ns)*model.RobotIdTimes + model.RobotIdOffset
 	player := cache.NewRobotPlayer(rid, sd.InitQuickMatchRoomId())
+	if player == nil {
+		log.Error("AddTestRobot failed")
+		return
+	}
 
 	r.PlayerJoin(player)
 	var players []*cache.Player

@@ -1,7 +1,10 @@
 package cache
 
 import (
+	"gitee.com/nggs/util"
 	"github.com/trist725/myleaf/log"
+	"mlgs/src/model"
+	"mlgs/src/msg"
 	"mlgs/src/sd"
 	"reflect"
 	"sort"
@@ -70,6 +73,8 @@ type Player struct {
 	refundBet int64
 	//机器人
 	robot bool
+	//用户信息
+	userData *model.User
 
 	//操作集
 	ops []Op
@@ -186,6 +191,10 @@ func NewPlayer(sid uint64, uid int64, t int64) *Player {
 	return p
 }
 
+func (p *Player) UserData() *model.User {
+	return p.userData
+}
+
 func NewRobotPlayer(rid int64, t int64) *Player {
 	//todo:根据t进入不同房间类型
 	var rommSd *sd.Room
@@ -198,9 +207,19 @@ func NewRobotPlayer(rid int64, t int64) *Player {
 		}
 	}
 
+	recv := msg.Get_C2S_Login()
+	recv.AvatarURL = "http..."
+	recv.NickName = util.GenRandomString(8)
+	recv.Sex = "1"
+	user, err := model.CreateUser(0, recv)
+	if err != nil {
+		log.Error("Create robot User failed")
+		return nil
+	}
 	p := &Player{
-		uid:  rid,
-		chip: rommSd.Chip,
+		uid:      rid,
+		chip:     rommSd.Chip,
+		userData: user,
 	}
 	p.SetRobot(true)
 	//todo:扣款
@@ -343,10 +362,10 @@ func (p *Player) CalNuts(pc CardSlice) {
 		var calCards CardSlice
 		calCards = append(calCards, p.cards...)
 		calCards = append(calCards, pc...)
-		for i := 0; i < calCards.Len()-2; i++ {
-			for j := i + 1; j < calCards.Len()-1; j++ {
-				for k := j + 1; k < calCards.Len(); k++ {
-					for m := k + 1; m < calCards.Len(); m++ {
+		for i := 0; i < calCards.Len()-4; i++ {
+			for j := i + 1; j < calCards.Len()-3; j++ {
+				for k := j + 1; k < calCards.Len()-2; k++ {
+					for m := k + 1; m < calCards.Len()-1; m++ {
 						for n := m + 1; n < calCards.Len(); n++ {
 							var cards CardSlice
 							cards = append(cards, calCards[i])
