@@ -91,7 +91,7 @@ func handleQuickMatchStart(args []interface{}) {
 	}
 
 	//创建游戏内数据
-	player = cache.NewPlayer(session.ID(), session.UserData().ID, sd.InitQuickMatchRoomId())
+	player = cache.NewPlayer(session.ID(), session.UserData().ID, sd.InitQuickMatchRoomId(), session.UserData())
 	session.SetPlayer(player)
 
 	success := room.Mgr().PlayerJoin(player)

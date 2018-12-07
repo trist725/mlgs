@@ -2,7 +2,7 @@
 
 pid=`ps -ef | grep mlgs.* | grep -v grep  | head -n 1 | awk '{print $2}'`
 
-if [ -n "$pid" ]
+if [-n "$pid"]
 then
 
     kill -9 ${pid}
@@ -12,3 +12,4 @@ fi
 
 cd bin
 ( ./mlgs* & )
+echo "mlgs has started"

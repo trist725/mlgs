@@ -32,6 +32,10 @@ func (r *Room) Balance() {
 
 	r.DivideLoser(ps, nil, false)
 
+	r.PlayerEach(func(player *cache.Player) {
+		player.SetChip(player.Chip() + player.Gain() + player.RefundBet())
+	})
+
 	r.BoardCastBalance()
 }
 

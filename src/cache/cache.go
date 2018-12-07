@@ -169,7 +169,7 @@ func (p *Player) Cards() []Card {
 	return p.cards
 }
 
-func NewPlayer(sid uint64, uid int64, t int64) *Player {
+func NewPlayer(sid uint64, uid int64, t int64, user *model.User) *Player {
 	//todo:根据t进入不同房间类型
 	var rommSd *sd.Room
 	switch t {
@@ -182,9 +182,10 @@ func NewPlayer(sid uint64, uid int64, t int64) *Player {
 	}
 
 	p := &Player{
-		sid:  sid,
-		uid:  uid,
-		chip: rommSd.Chip,
+		sid:      sid,
+		uid:      uid,
+		chip:     rommSd.Chip,
+		userData: user,
 	}
 	//todo:扣款
 
