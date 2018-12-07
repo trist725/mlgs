@@ -379,8 +379,7 @@ func (p *Player) CalNuts(pc CardSlice) {
 							//计算牌型等级
 							newLvl := cards.CalLevel()
 							curLvl := p.nutsLevel
-							if curLvl < newLvl ||
-								(p.nuts.Len() == 2 && pc.Len() == 3) {
+							if curLvl < newLvl || p.nuts.Len() == 2 {
 								p.SetNutsLevel(newLvl)
 								p.UpdateNuts(cards)
 							} else if curLvl == newLvl {

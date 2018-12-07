@@ -448,8 +448,13 @@ REACT:
 		ta.act.Bet = bet
 	case 4:
 		//加注错误(开挂)当弃牌
-		if ta.act.Bet <= 0 {
+		if ta.act.Bet < 0 {
 			ta.act.Act = 2
+			goto REACT
+		}
+		//大佬说加注0当跟注
+		if ta.act.Bet == 0 {
+			ta.act.Act = 3
 			goto REACT
 		}
 		bet = r.maxBet - ta.p.GetBetByStage(r.stage) + ta.act.Bet
