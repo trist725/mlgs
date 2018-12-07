@@ -458,6 +458,7 @@ REACT:
 			goto REACT
 		}
 		bet = r.maxBet - ta.p.GetBetByStage(r.stage) + ta.act.Bet
+		//log.Debug("jia zhu....... maxBat---%d,-------bet---%d", r.maxBet, bet)
 		//筹码不够,allin
 		if ta.p.Chip() < bet {
 			ta.act.Act = 5
@@ -475,12 +476,12 @@ REACT:
 		if ta.p.Chip() < ta.act.Bet {
 			ta.act.Bet = ta.p.Chip()
 		}
-		//更新最大下注
 		if ta.act.Bet > r.maxBet {
+			//更新最大下注
 			r.maxBet = ta.act.Bet
+			//更新上次加注位
+			r.raisePos = ta.p.Pos()
 		}
-		//更新上次加注位
-		r.raisePos = ta.p.Pos()
 		r.SetPot(r.pot + ta.act.Bet)
 		ta.p.Bet(ta.act.Bet)
 		bet = ta.act.Bet

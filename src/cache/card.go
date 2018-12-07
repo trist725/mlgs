@@ -228,7 +228,7 @@ func (cs CardSlice) IsFlush() bool {
 		countMap[v.Color]++
 	}
 	for _, v := range countMap {
-		if v == 5 {
+		if v == gGroupCardCount {
 			return true
 		}
 	}
