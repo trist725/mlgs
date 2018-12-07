@@ -13,3 +13,4 @@ fi
 cd bin
 ( ./mlgs* & )
 echo "mlgs has started"
+ps -ef | grep mlgs.* | grep -v grep

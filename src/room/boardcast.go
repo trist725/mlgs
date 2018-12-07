@@ -118,7 +118,7 @@ func (r *Room) BoardCastPL(id int64) {
 	r.PlayerEach(func(player *cache.Player) {
 		session := s.Mgr().GetSession(player.SessionId())
 		if session == nil {
-			log.Error("use nil session on BoardCastPL")
+			log.Debug("use nil session on BoardCastPL")
 			return
 		}
 
@@ -300,12 +300,15 @@ func (r *Room) BoardCastBalance() {
 	r.PlayerEach(func(player *cache.Player) {
 		session := s.Mgr().GetSession(player.SessionId())
 		if session == nil {
-			log.Debug("use nil session on BoardCastGO")
+			log.Debug("use nil session on BoardCastBalnce")
 			return
 		}
 
 		session.Agent().WriteMsg(send)
 	})
 
+	for _, b := range send.Balances {
+		log.Debug("=======================: %v", b)
+	}
 	return
 }

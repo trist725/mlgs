@@ -397,7 +397,7 @@ func (p *Player) CalNuts(pc CardSlice) {
 
 func (p *Player) CompareCards(cs2 CardSlice) CardSlice {
 	if p.nuts.Len() != cs2.Len() {
-		log.Error("diff len CardSlice can't compare")
+		log.Error("diff len CardSlice can't compare, %d : %d", p.nuts.Len(), cs2.Len())
 		return nil
 	}
 

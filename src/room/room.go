@@ -120,12 +120,12 @@ GAME_READY:
 		select {
 		//todo: 可优化,手动timer.stop
 		case <-time.After(time.Duration(timeSd.Value) * time.Second):
-			if len(r.players) <= sd.InitMinStartGamePlayer() {
+			if len(r.players) <= sd.InitMinStartGamePlayer() &&
+				r.GetPlayerCount() > 0 {
 				random := util.RandomInt(1, gPlayerLimit-len(r.players))
 				for i := 0; i < random; i++ {
 					r.AddTestRobot()
 				}
-				continue
 			}
 			//是否满足最少开局人数
 			if len(r.players) >= sd.InitMinStartGamePlayer() {
@@ -150,7 +150,7 @@ GAME_READY:
 
 GAME_STAGE1:
 	r.SetStage(1)
-
+	time.Sleep(2 * time.Second)
 	//不要直接用sleep
 	//等待客户端发手牌动作
 	select {
@@ -343,16 +343,16 @@ GAME_STAGE4:
 	}
 
 GAME_STAGE5:
-	r.stage = 5
 	//发剩下牌
 	if r.GameStat() == 4 {
 		if len(r.pc) < gCommunityCardCount {
 			r.DealCommunityCard(gCommunityCardCount - len(r.pc))
 		}
 	}
+	r.SetStage(5)
 	//todo:结算
 	r.Balance()
-	time.Sleep(6 * time.Second)
+	time.Sleep(10 * time.Second)
 	r.GameOver()
 	goto GAME_READY
 
@@ -902,7 +902,7 @@ func (r *Room) DealCommunityCard(count int) {
 	time.Sleep(time.Duration(timeSd.Value) * time.Second)
 }
 
-//return: 0-游戏未结束,阶段不结束,1-游戏未结束,阶段结束,2-有胜者,
+//return: 0-游戏未结束,阶段不结束,1-游戏未结束,阶段结束,2-有唯一胜者,不发牌不比牌
 //3-出现比牌,轮下一个,4-出现比牌,不轮下一个
 func (r *Room) GameStat() int {
 	var pRemain, aRemain int
@@ -932,6 +932,10 @@ func (r *Room) GameStat() int {
 			}
 		}
 	} else if pRemain == 0 {
+		//唯一allin,不发牌
+		if aRemain == 1 {
+			return 2
+		}
 		return 4
 	}
 
@@ -1077,4 +1081,26 @@ func (r *Room) ResetRaisePos() {
 
 func (r *Room) SetCurPos(cp uint32) {
 	atomic.StoreUint32(&r.curPos, cp)
+}
+
+func (r *Room) GetPlayerCount() int {
+	var count int
+	r.PlayerEach(func(player *cache.Player) {
+		if player.Robot() {
+			return
+		}
+		count++
+	})
+	return count
+}
+
+func (r *Room) GetRobotCount() int {
+	var count int
+	r.PlayerEach(func(player *cache.Player) {
+		if !player.Robot() {
+			return
+		}
+		count++
+	})
+	return count
 }
