@@ -96,7 +96,7 @@ func (r *Room) BoardCastPJ(players []*cache.Player) {
 //}
 
 //广播玩家掉线
-func (r *Room) BoardCastDisConn() {
+func (r *Room) BoardCastDisConn(uid int64) {
 	r.PlayerEach(func(player *cache.Player) {
 		session := s.Mgr().GetSession(player.SessionId())
 		if session == nil {
@@ -105,7 +105,7 @@ func (r *Room) BoardCastDisConn() {
 		}
 
 		send := msg.Get_S2C_DisConn()
-		send.UserId = session.UserData().ID
+		send.UserId = uid
 
 		session.Agent().WriteMsg(send)
 	})
@@ -309,6 +309,9 @@ func (r *Room) BoardCastBalance() {
 
 	for _, b := range send.Balances {
 		log.Debug("=======================: %v", b)
+	}
+	for _, p := range r.players {
+		log.Debug("######################id: %d : %v", p.UserId(), p.Nuts())
 	}
 	return
 }

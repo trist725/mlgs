@@ -20,6 +20,10 @@ const (
 	E_Global_InitMatchRoomId E_Global = 2
 
 	E_Global_MinStartGamePlayer E_Global = 3
+
+	E_Global_KickTimeOutClientTime E_Global = 4
+
+	E_Global_CheckTimeOutClientTime E_Global = 5
 )
 
 var E_Global_name = map[int32]string{
@@ -27,13 +31,17 @@ var E_Global_name = map[int32]string{
 	1: "E_Global_InitUserDataId",
 	2: "E_Global_InitMatchRoomId",
 	3: "E_Global_MinStartGamePlayer",
+	4: "E_Global_KickTimeOutClientTime",
+	5: "E_Global_CheckTimeOutClientTime",
 }
 
 var E_Global_value = map[string]int32{
-	"E_Global_":                   0,
-	"E_Global_InitUserDataId":     1,
-	"E_Global_InitMatchRoomId":    2,
-	"E_Global_MinStartGamePlayer": 3,
+	"E_Global_":                       0,
+	"E_Global_InitUserDataId":         1,
+	"E_Global_InitMatchRoomId":        2,
+	"E_Global_MinStartGamePlayer":     3,
+	"E_Global_KickTimeOutClientTime":  4,
+	"E_Global_CheckTimeOutClientTime": 5,
 }
 
 var E_Global_Slice = []int32{
@@ -41,6 +49,8 @@ var E_Global_Slice = []int32{
 	1,
 	2,
 	3,
+	4,
+	5,
 }
 
 func (x E_Global) String() string {

@@ -11,7 +11,6 @@ import (
 	"time"
 )
 
-//todo:心跳处理
 //非线程安全
 type Session struct {
 	id uint64
@@ -19,11 +18,12 @@ type Session struct {
 	timer *timer.Timer
 	sign  string // 日志标识
 
-	agent     gate.Agent
-	closeFlag int32
-	user      *model.User    // 需要保存到数据库的用户数据
-	account   *model.Account // 帐号数据
-	cache     *cache.Player  // 玩家游戏过程中的数据
+	agent          gate.Agent
+	closeFlag      int32
+	user           *model.User    // 需要保存到数据库的用户数据
+	account        *model.Account // 帐号数据
+	cache          *cache.Player  // 玩家游戏过程中的数据
+	lastActiveTime int64          //上次活动时间
 }
 
 var gSessionId uint64
@@ -135,4 +135,8 @@ func (s *Session) SetPlayer(p *cache.Player) {
 
 func (s *Session) Agent() gate.Agent {
 	return s.agent
+}
+
+func (s *Session) Update() {
+	s.lastActiveTime = time.Now().Unix()
 }

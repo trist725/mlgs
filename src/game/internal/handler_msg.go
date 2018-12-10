@@ -17,6 +17,7 @@ func init() {
 	regiserMsgHandle(&msg.C2S_PlayerLeaveRoom{}, handlePlayerLeaveRoom)
 	regiserMsgHandle(&msg.C2S_TurnAction{}, handleTurnAction)
 	regiserMsgHandle(&msg.C2S_AutoAction{}, handleAutoAction)
+	regiserMsgHandle(&msg.C2S_Ping{}, handlePong)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -61,6 +62,8 @@ func handlePlayerLeaveRoom(args []interface{}) {
 	ChanRPC.Go("PlayerLeaveRoom", session.UserData().ID, r)
 
 	send.Err = msg.S2C_PlayerLeaveRoom_E_Err_Success
+
+	session.Update()
 }
 
 func handleQuickMatchStart(args []interface{}) {
@@ -113,6 +116,8 @@ func handleQuickMatchStart(args []interface{}) {
 	send.Room.Name = r.Name()
 
 	ChanRPC.Go("PlayerJoinRoom", sender, r, send, player)
+
+	session.Update()
 }
 
 func handleDaySign(args []interface{}) {
@@ -168,6 +173,8 @@ func handleDaySign(args []interface{}) {
 	if user.SignedDays == signCountPerRound+1 {
 		user.SignedDays = 0
 	}
+
+	session.Update()
 }
 
 func handleTurnAction(args []interface{}) {
@@ -198,6 +205,8 @@ func handleTurnAction(args []interface{}) {
 		return
 	}
 	r.SendPlayerActionSig(recv, player)
+
+	session.Update()
 }
 
 func handleAutoAction(args []interface{}) {
@@ -225,4 +234,23 @@ func handleAutoAction(args []interface{}) {
 		log.Debug("[%s] invalid auto action", session.Sign())
 	}
 	player.SetAutoAct(recv.Act)
+
+	session.Update()
+}
+
+func handlePong(args []interface{}) {
+	//recv := args[0].(*msg.C2S_Ping)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handlePong return for nil session")
+		return
+	}
+	session.Update()
 }

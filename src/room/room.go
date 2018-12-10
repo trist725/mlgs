@@ -638,13 +638,14 @@ func (r *Room) PlayerLeave(p *cache.Player) error {
 	defer r.Unlock()
 
 	//已开局,不离开房间
-	if r.Stage() != 0 {
+	if r.Stage() != 0 && p.Stat() != 0 {
 		return nil
 	}
 
 	if player, ok := r.players[p.Pos()]; ok && player == p {
 		delete(r.players, p.Pos())
 		player.SetRoomId(0)
+		r.BoardCastPL(player.UserId())
 		return nil
 	}
 

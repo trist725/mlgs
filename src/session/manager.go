@@ -22,6 +22,7 @@ type Manager struct {
 	sessionMaps [sessionMapNum]sessionMap
 	disposeOnce sync.Once
 	disposeWait sync.WaitGroup
+	tickOnce    sync.Once
 }
 
 type sessionMap struct {

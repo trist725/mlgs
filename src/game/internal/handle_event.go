@@ -17,6 +17,7 @@ func init() {
 	skeleton.RegisterChanRPC("NewGame", OnNewGame)
 	skeleton.RegisterChanRPC("Turn", OnTurn)
 	skeleton.RegisterChanRPC("TurnAction", OnTurnAction)
+	skeleton.RegisterChanRPC("DisConn", OnDisConn)
 }
 
 //每轮签到天数
@@ -99,13 +100,6 @@ func OnPlayerLeaveRoom(args []interface{}) {
 	//var ids []int64
 	//ids = append(ids, id)
 
-	//已开局,不离开房间而广播掉线
-	//todo:掉线后执行自动操作
-	if room.Stage() != 0 {
-		room.BoardCastDisConn()
-		return
-	}
-
 	room.BoardCastPL(id)
 	room.SendRefreshReadyTimeSig()
 }
@@ -122,4 +116,11 @@ func OnTurn(args []interface{}) {
 
 func OnTurnAction(args []interface{}) {
 
+}
+
+func OnDisConn(args []interface{}) {
+	uid := args[0].(int64)
+	room := args[1].(*r.Room)
+
+	room.BoardCastDisConn(uid)
 }

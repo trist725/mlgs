@@ -37,12 +37,10 @@ func rpcCloseAgent(args []interface{}) {
 				r := room.Mgr().GetRoom(rid)
 				if r != nil {
 					r.PlayerLeave(session.Player())
-					//断线暂时直接发离开消息
 					//todo: 断线重连机制
-					ChanRPC.Go("PlayerLeaveRoom", session.UserData().ID, r)
+					ChanRPC.Go("DisConn", session.UserData().ID, r)
 				}
 			}
-
 			session.Close()
 			log.Debug("[%s] session id:[%d] closed", session.Sign(), sid)
 		}
@@ -67,7 +65,9 @@ func rpcHandleLoginAuthPass(args []interface{}) {
 		log.Error("invalid account or user")
 	}
 	ns := s.New(a, &account, &user)
-	log.Debug("current session count: %d", s.Mgr().Count())
+	sc := s.Mgr().Count()
+	log.Debug("current session count: %d", sc)
+	s.Mgr().CheckTick(skeleton)
 
 	//下发用户数据
 	ChanRPC.Go("AfterLoginAuthPass", a, &user)

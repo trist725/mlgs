@@ -248,12 +248,12 @@ func (mgr *GlobalManager) AfterLoadAll(excelFilePath string) (success bool) {
 		}
 		tid, err := strconv.Atoi(d.Value)
 		if err != nil {
-			log.Fatal("获取用户初始数据在person表id失败, %v", err)
+			log.Fatal("获取用户初始数据在person表id失败", err)
 			return false
 		}
 		gInitUserDataId = int64(tid)
 		if gInitUserDataId <= 0 {
-			log.Fatal("获取用户初始数据在person表id值有误, [%d]", tid)
+			log.Fatal("获取用户初始数据在person表id值有误", tid)
 			return false
 		}
 	}
@@ -276,10 +276,36 @@ func (mgr *GlobalManager) AfterLoadAll(excelFilePath string) (success bool) {
 		}
 		tid, err := strconv.Atoi(d.Value)
 		if err != nil {
-			log.Fatal("获取开始对局的最少人数失败, %v", err)
+			log.Fatal("获取开始对局的最少人数失败", err)
 			return false
 		}
 		gMinStartGamePlayer = tid
+	}
+	{
+		d, ok := mgr.dataMap[int64(E_Global_KickTimeOutClientTime)]
+		if !ok {
+			log.Fatal("获取服务端主动断开无活动客户端时间失败")
+			return false
+		}
+		tid, err := strconv.Atoi(d.Value)
+		if err != nil {
+			log.Fatal("获取服务端主动断开无活动客户端时间失败", err)
+			return false
+		}
+		gKickTimeOutClientTime = int64(tid)
+	}
+	{
+		d, ok := mgr.dataMap[int64(E_Global_CheckTimeOutClientTime)]
+		if !ok {
+			log.Fatal("获取无活动下服务端发送心跳包间隔时间失败")
+			return false
+		}
+		tid, err := strconv.Atoi(d.Value)
+		if err != nil {
+			log.Fatal("获取无活动下服务端发送心跳包间隔时间失败", err)
+			return false
+		}
+		gCheckTimeOutClientTime = int64(tid)
 	}
 	//after_load_all_end
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -316,6 +342,26 @@ func InitMinStartGamePlayer() int {
 		log.Fatal("开始对局的最少人数 配表有误")
 	}
 	return gMinStartGamePlayer
+}
+
+//服务端主动断开无活动客户端时间(单位:秒)
+var gKickTimeOutClientTime int64
+
+func InitKickTimeOutClientTime() int64 {
+	if gKickTimeOutClientTime < 1 {
+		log.Fatal("服务端主动断开无活动客户端时间 配表有误")
+	}
+	return gKickTimeOutClientTime
+}
+
+//无活动下服务端发送心跳包间隔时间(单位:秒)
+var gCheckTimeOutClientTime int64
+
+func InitCheckTimeOutClientTime() int64 {
+	if gCheckTimeOutClientTime < 1 {
+		log.Fatal("无活动下服务端发送心跳包间隔时间(单位:秒) 配表有误")
+	}
+	return gCheckTimeOutClientTime
 }
 
 //extend_end

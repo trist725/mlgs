@@ -14,4 +14,5 @@ func init() {
 	msg.Processor.SetRouter(&msg.C2S_PlayerLeaveRoom{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_AutoAction{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_TurnAction{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_Ping{}, game.ChanRPC)
 }
