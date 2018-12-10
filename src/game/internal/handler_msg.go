@@ -171,7 +171,7 @@ func handleDaySign(args []interface{}) {
 	user.DaySigned = true
 	user.SignedDays++
 	if user.SignedDays == signCountPerRound+1 {
-		user.SignedDays = 0
+		user.SignedDays = 1
 	}
 
 	session.Update()

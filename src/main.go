@@ -4,6 +4,7 @@ import (
 	"github.com/trist725/myleaf"
 	lconf "github.com/trist725/myleaf/conf"
 	"mlgs/src/conf"
+	"mlgs/src/cron"
 	"mlgs/src/game"
 	"mlgs/src/gate"
 	"mlgs/src/login"
@@ -23,6 +24,8 @@ func main() {
 		panic(err)
 	}
 	defer model.Release()
+
+	go cron.Init()
 
 	defer session.Mgr().Dispose()
 	defer room.Mgr().Dispose()

@@ -1,33 +1,46 @@
 package cron
 
 import (
-	"fmt"
-	"github.com/trist725/myleaf/timer"
+	"github.com/robfig/cron"
+	"github.com/trist725/myleaf/log"
+	"gopkg.in/mgo.v2/bson"
+	"mlgs/src/model"
 )
 
+//https://godoc.org/github.com/robfig/cron
+
 func init() {
-	fmt.Println("My name is Leaf")
 }
 
-func DaySign() {
-	d := timer.NewDispatcher(10)
+func Init() {
+	DaySign()
+}
 
-	// cron expr
-	cronExpr, err := timer.NewCronExpr("2 * * * * *")
-	if err != nil {
-		return
-	}
+func DaySign() *cron.Cron {
+	dbSession := model.GetSession()
+	defer model.PutSession(dbSession)
+	c := cron.New()
 
-	// cron
-	var c *timer.Cron
-	c = d.CronFunc(cronExpr, func() {
-		fmt.Println("My name is Leaf")
-		c.Stop()
+	err := c.AddFunc("@midnight", func() {
+		some, err := model.FindSome_User(dbSession, bson.M{"DaySigned": true})
+		if err != nil {
+			log.Error("cron DaySign: %s", err.Error())
+			return
+		}
+		for _, one := range some {
+			user := one
+			user.DaySigned = false
+			if err := user.UpdateByID(dbSession); err != nil {
+				log.Error("cron DaySign: UpdateByID error:[%s]", err)
+			}
+		}
 	})
 
-	// dispatch
-	(<-d.ChanTimer).Cb()
+	if err != nil {
+		log.Error("cron DaySign AddFunc..%s", err.Error())
+	}
 
-	// Output:
-	// My name is Leaf
+	c.Start()
+
+	return c
 }
