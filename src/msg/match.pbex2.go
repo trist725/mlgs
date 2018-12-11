@@ -22,6 +22,8 @@ It has these top-level messages:
 	S2C_GameOver
 	Balance
 	S2C_Balance
+	C2S_RoomChat
+	S2C_RoomChat
 */
 
 package msg
@@ -1464,4 +1466,134 @@ func Put_S2C_Balance(i interface{}) {
 }
 
 // message [S2C_Balance] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [C2S_RoomChat] begin
+func (m *C2S_RoomChat) ResetEx() {
+	m.SrcUserId = 0
+	m.DstUserId = 0
+	m.Content = ""
+
+}
+
+func (m C2S_RoomChat) Clone() *C2S_RoomChat {
+	n, ok := g_C2S_RoomChat_Pool.Get().(*C2S_RoomChat)
+	if !ok || n == nil {
+		n = &C2S_RoomChat{}
+	}
+
+	n.SrcUserId = m.SrcUserId
+	n.DstUserId = m.DstUserId
+	n.Content = m.Content
+
+	return n
+}
+
+func Clone_C2S_RoomChat_Slice(dst []*C2S_RoomChat, src []*C2S_RoomChat) []*C2S_RoomChat {
+	for _, i := range dst {
+		Put_C2S_RoomChat(i)
+	}
+	dst = []*C2S_RoomChat{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_C2S_RoomChat() *C2S_RoomChat {
+	m := &C2S_RoomChat{}
+	return m
+}
+
+var g_C2S_RoomChat_Pool = sync.Pool{}
+
+func Get_C2S_RoomChat() *C2S_RoomChat {
+	m, ok := g_C2S_RoomChat_Pool.Get().(*C2S_RoomChat)
+	if !ok {
+		m = New_C2S_RoomChat()
+	} else {
+		if m == nil {
+			m = New_C2S_RoomChat()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_C2S_RoomChat(i interface{}) {
+	if m, ok := i.(*C2S_RoomChat); ok && m != nil {
+		g_C2S_RoomChat_Pool.Put(i)
+	}
+}
+
+// message [C2S_RoomChat] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_RoomChat] begin
+func (m *S2C_RoomChat) ResetEx() {
+	m.SrcUserId = 0
+	m.DstUserId = 0
+	m.Content = ""
+
+}
+
+func (m S2C_RoomChat) Clone() *S2C_RoomChat {
+	n, ok := g_S2C_RoomChat_Pool.Get().(*S2C_RoomChat)
+	if !ok || n == nil {
+		n = &S2C_RoomChat{}
+	}
+
+	n.SrcUserId = m.SrcUserId
+	n.DstUserId = m.DstUserId
+	n.Content = m.Content
+
+	return n
+}
+
+func Clone_S2C_RoomChat_Slice(dst []*S2C_RoomChat, src []*S2C_RoomChat) []*S2C_RoomChat {
+	for _, i := range dst {
+		Put_S2C_RoomChat(i)
+	}
+	dst = []*S2C_RoomChat{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_S2C_RoomChat() *S2C_RoomChat {
+	m := &S2C_RoomChat{}
+	return m
+}
+
+var g_S2C_RoomChat_Pool = sync.Pool{}
+
+func Get_S2C_RoomChat() *S2C_RoomChat {
+	m, ok := g_S2C_RoomChat_Pool.Get().(*S2C_RoomChat)
+	if !ok {
+		m = New_S2C_RoomChat()
+	} else {
+		if m == nil {
+			m = New_S2C_RoomChat()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_RoomChat(i interface{}) {
+	if m, ok := i.(*S2C_RoomChat); ok && m != nil {
+		g_S2C_RoomChat_Pool.Put(i)
+	}
+}
+
+// message [S2C_RoomChat] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

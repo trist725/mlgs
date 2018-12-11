@@ -35,4 +35,6 @@ func init() {
 	Processor.Register(&S2C_PublicCard{})
 	Processor.Register(&S2C_GameOver{})
 	Processor.Register(&S2C_Balance{})
+	Processor.Register(&C2S_RoomChat{})
+	Processor.Register(&S2C_RoomChat{})
 }

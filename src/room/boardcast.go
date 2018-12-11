@@ -267,6 +267,26 @@ func (r *Room) BoardCastGO() {
 	return
 }
 
+//广播房间聊天
+func (r *Room) BoardCastRC(m *msg.C2S_RoomChat) {
+	send := msg.Get_S2C_RoomChat()
+	send.Content = m.Content
+	send.DstUserId = m.DstUserId
+	send.SrcUserId = m.SrcUserId
+
+	r.PlayerEach(func(player *cache.Player) {
+		session := s.Mgr().GetSession(player.SessionId())
+		if session == nil {
+			log.Debug("use nil session on BoardCastGO")
+			return
+		}
+
+		session.Agent().WriteMsg(send)
+	})
+
+	return
+}
+
 //广播结算
 func (r *Room) BoardCastBalance() {
 	send := msg.Get_S2C_Balance()

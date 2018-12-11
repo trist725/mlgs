@@ -9,11 +9,17 @@ import (
 
 //https://godoc.org/github.com/robfig/cron
 
-func init() {
-}
+var gCrons []*cron.Cron
 
 func Init() {
-	DaySign()
+	gCrons = append(gCrons, DaySign())
+}
+
+func Dispose() {
+	for _, c := range gCrons {
+		c.Stop()
+	}
+	gCrons = nil
 }
 
 func DaySign() *cron.Cron {

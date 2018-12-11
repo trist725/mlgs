@@ -179,3 +179,23 @@ message S2C_Balance{
     ///所有人的结算信息
     repeated Balance Balances = 1;
 }
+
+///聊天请求
+message C2S_RoomChat{
+    ///用户id
+    int64 SrcUserId = 1;
+    ///目标用户id
+    int64 DstUserId = 2;
+    ///内容
+    string Content = 3;
+}
+
+///聊天回复
+message S2C_RoomChat{
+    ///用户id
+    int64 SrcUserId = 1;
+    ///目标用户id
+    int64 DstUserId = 2;
+    ///内容
+    string Content = 3;
+}

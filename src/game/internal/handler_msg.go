@@ -18,6 +18,7 @@ func init() {
 	regiserMsgHandle(&msg.C2S_TurnAction{}, handleTurnAction)
 	regiserMsgHandle(&msg.C2S_AutoAction{}, handleAutoAction)
 	regiserMsgHandle(&msg.C2S_Ping{}, handlePong)
+	regiserMsgHandle(&msg.C2S_RoomChat{}, handleRoomChat)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -252,5 +253,34 @@ func handlePong(args []interface{}) {
 		log.Debug("handlePong return for nil session")
 		return
 	}
+	session.Update()
+}
+
+func handleRoomChat(args []interface{}) {
+	recv := args[0].(*msg.C2S_RoomChat)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleRoomChat return for nil session")
+		return
+	}
+	player := session.Player()
+	if player == nil {
+		log.Debug("handleRoomChat return for nil player")
+		return
+	}
+	r := room.Mgr().GetRoom(player.RoomId())
+	if r == nil {
+		log.Debug("player not in room")
+		return
+	}
+
+	ChanRPC.Go("RoomChat", r, recv)
 	session.Update()
 }

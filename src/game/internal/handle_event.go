@@ -18,6 +18,7 @@ func init() {
 	skeleton.RegisterChanRPC("Turn", OnTurn)
 	skeleton.RegisterChanRPC("TurnAction", OnTurnAction)
 	skeleton.RegisterChanRPC("DisConn", OnDisConn)
+	skeleton.RegisterChanRPC("RoomChat", OnRoomChat)
 }
 
 //每轮签到天数
@@ -123,4 +124,11 @@ func OnDisConn(args []interface{}) {
 	room := args[1].(*r.Room)
 
 	room.BoardCastDisConn(uid)
+}
+
+func OnRoomChat(args []interface{}) {
+	recv := args[1].(*msg.C2S_RoomChat)
+	room := args[0].(*r.Room)
+
+	room.BoardCastRC(recv)
 }

@@ -26,6 +26,7 @@ func main() {
 	defer model.Release()
 
 	go cron.Init()
+	defer cron.Dispose()
 
 	defer session.Mgr().Dispose()
 	defer room.Mgr().Dispose()
