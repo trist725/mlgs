@@ -392,7 +392,7 @@ func (cs CardSlice) TwoPairCompare(cs2 CardSlice) CardSlice {
 		countMap[v.Num]++
 	}
 	for k, v := range countMap {
-		if v == 2 && k > cs2Big {
+		if v == 2 {
 			if cs2Big == 0 {
 				cs2Big = k
 				cs2Small = k
