@@ -327,11 +327,11 @@ func (r *Room) BoardCastBalance() {
 		session.Agent().WriteMsg(send)
 	})
 
-	for _, b := range send.Balances {
-		log.Debug("=======================: %v", b)
-	}
-	for _, p := range r.players {
-		log.Debug("######################id: %d : %v", p.UserId(), p.Nuts())
-	}
-	return
+	//for _, b := range send.Balances {
+	//	log.Debug("=======================: %v", b)
+	//}
+	//for _, p := range r.players {
+	//	log.Debug("######################id: %d : %v", p.UserId(), p.Nuts())
+	//}
+	//return
 }

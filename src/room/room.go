@@ -458,7 +458,7 @@ REACT:
 			goto REACT
 		}
 		bet = r.maxBet - ta.p.GetBetByStage(r.stage) + ta.act.Bet
-		//log.Debug("jia zhu....... maxBat---%d,-------bet---%d", r.maxBet, bet)
+		log.Debug("jia zhu....... maxBat---%d,---%d----bet---%d", r.maxBet, ta.p.GetBetByStage(r.stage), bet)
 		//筹码不够,allin
 		if ta.p.Chip() < bet {
 			ta.act.Act = 5
@@ -472,8 +472,8 @@ REACT:
 		r.raisePos = ta.p.Pos()
 		log.Debug("raisePos:[%d]", r.raisePos)
 	case 5:
-		//钱不够allin,改为实际allin值
-		if ta.p.Chip() < ta.act.Bet {
+		//改为实际allin值
+		if ta.p.Chip() != ta.act.Bet {
 			ta.act.Bet = ta.p.Chip()
 		}
 		if ta.act.Bet > r.maxBet {

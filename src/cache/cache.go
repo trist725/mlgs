@@ -328,9 +328,9 @@ func (p *Player) GetBetByStage(stage uint32) int64 {
 		if op.Stage == stage {
 			bet += op.Bet
 		}
-		if op.Stage > stage {
-			break
-		}
+		//if op.Stage > stage {
+		//	break
+		//}
 	}
 	return bet
 }
@@ -368,7 +368,7 @@ func (p *Player) CalNuts(pc CardSlice) {
 				for k := j + 1; k < calCards.Len()-2; k++ {
 					for m := k + 1; m < calCards.Len()-1; m++ {
 						for n := m + 1; n < calCards.Len(); n++ {
-							var cards CardSlice
+							var cards CardSlice = nil
 							cards = append(cards, calCards[i])
 							cards = append(cards, calCards[j])
 							cards = append(cards, calCards[k])
@@ -383,8 +383,11 @@ func (p *Player) CalNuts(pc CardSlice) {
 								p.SetNutsLevel(newLvl)
 								p.UpdateNuts(cards)
 							} else if curLvl == newLvl {
+								log.Debug("len :len = %d : %d------------------", p.nuts.Len(), cards.Len())
 								//只有同级比较才有意义
-								p.CompareCards(cards)
+								if bigger := p.CompareCards(cards); bigger != nil {
+									p.UpdateNuts(bigger)
+								}
 							} //else next
 						}
 					}
@@ -424,9 +427,6 @@ func (p *Player) CompareCards(cs2 CardSlice) CardSlice {
 		bigger = p.nuts.HighCardCompare(cs2)
 	}
 
-	if bigger != nil {
-		p.UpdateNuts(bigger)
-	}
 	return bigger
 }
 

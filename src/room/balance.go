@@ -47,7 +47,7 @@ func (r *Room) DivideLoser(winners cache.PlayerSlice, losers cache.PlayerSlice, 
 			psDraw = append(psDraw, winners[i])
 			psDraw = append(psDraw, winners[i+1])
 			for k := i + 2; k < winners.Len(); k++ {
-				if winners[k].CompareCards(winners[k].Nuts()) == nil {
+				if winners[k].CompareCards(winners[i].Nuts()) == nil {
 					psDraw = append(psDraw, winners[k])
 				}
 			}
@@ -63,8 +63,8 @@ func (r *Room) DivideLoser(winners cache.PlayerSlice, losers cache.PlayerSlice, 
 			if psDraw.Len()+i >= winners.Len() {
 				return
 			}
-			winners = winners[psDraw.Len()+i:]
-			i = -1
+			//winners = winners[psDraw.Len()+i:]
+			i += psDraw.Len() - 1
 		} else {
 			//非平牌
 			if flop {

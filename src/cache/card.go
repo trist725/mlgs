@@ -1,6 +1,10 @@
 package cache
 
-import "github.com/trist725/myleaf/log"
+import (
+	"github.com/trist725/myleaf/log"
+	"reflect"
+	"sort"
+)
 
 //组牌数
 const gGroupCardCount int = 5
@@ -361,14 +365,24 @@ func (cs CardSlice) IsTwoPair() bool {
 
 func (cs CardSlice) TwoPairCompare(cs2 CardSlice) CardSlice {
 	var csBig, cs2Big uint8
+	var csSmall, cs2Small uint8
 	var csOne, cs2One uint8
 	countMap := make(map[uint8]int)
 	for _, v := range cs {
 		countMap[v.Num]++
 	}
 	for k, v := range countMap {
-		if v == 2 && k > csBig {
-			csBig = k
+		if v == 2 {
+			if csBig == 0 {
+				csBig = k
+				csSmall = k
+			} else {
+				if k > csBig {
+					csBig = k
+				} else {
+					csSmall = k
+				}
+			}
 		} else if v == 1 {
 			csOne = k
 		}
@@ -379,19 +393,34 @@ func (cs CardSlice) TwoPairCompare(cs2 CardSlice) CardSlice {
 	}
 	for k, v := range countMap {
 		if v == 2 && k > cs2Big {
-			cs2Big = k
+			if cs2Big == 0 {
+				cs2Big = k
+				cs2Small = k
+			} else {
+				if k > cs2Big {
+					cs2Big = k
+				} else {
+					cs2Small = k
+				}
+			}
 		} else if v == 1 {
 			cs2One = k
 		}
 	}
 
 	if csBig == cs2Big {
-		if csOne > cs2One {
+		if csSmall == cs2Small {
+			if csOne > cs2One {
+				return cs
+			} else if csOne < cs2One {
+				return cs2
+			} else {
+				return nil
+			}
+		} else if csSmall > cs2Small {
 			return cs
-		} else if csOne < cs2One {
-			return cs2
 		} else {
-			return nil
+			return cs2
 		}
 	} else if csBig > cs2Big {
 		return cs
@@ -424,7 +453,26 @@ func (cs CardSlice) OnePairCompare(cs2 CardSlice) CardSlice {
 	cs2Two := cs2.GetNOfAKindNum(2)
 
 	if csTwo == cs2Two {
-		return cs.HighCardCompare(cs2)
+		var hc, hc2 CardSlice
+		for _, v := range cs {
+			if v.Num != csTwo {
+				hc = append(hc, v)
+			}
+		}
+		for _, v := range cs2 {
+			if v.Num != cs2Two {
+				hc2 = append(hc2, v)
+			}
+		}
+		sort.Sort(hc)
+		sort.Sort(hc2)
+		if nil == hc.HighCardCompare(hc2) {
+			return nil
+		} else if reflect.DeepEqual(hc, hc.HighCardCompare(hc2)) {
+			return cs
+		} else {
+			return cs2
+		}
 	} else if csTwo > cs2Two {
 		return cs
 	}
