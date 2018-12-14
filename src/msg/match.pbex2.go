@@ -4,6 +4,7 @@
 /*
 It has these top-level messages:
 	Card
+	BestCombo
 	Player
 	Room
 	C2S_QuickMatchStart
@@ -18,7 +19,6 @@ It has these top-level messages:
 	S2C_TurnAction
 	S2C_PublicCard
 	C2S_AutoAction
-	BestCombo
 	S2C_GameOver
 	Balance
 	S2C_Balance
@@ -42,6 +42,7 @@ var S2C_QuickMatchStart_E_Err_QuickMatchStart_Slice = []int32{
 	1,
 	2,
 	3,
+	4,
 }
 
 func S2C_QuickMatchStart_E_Err_QuickMatchStart_Len() int {
@@ -183,6 +184,86 @@ func Put_Card(i interface{}) {
 }
 
 // message [Card] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [BestCombo] begin
+func (m *BestCombo) ResetEx() {
+
+	for _, i := range m.Cards {
+		Put_Card(i)
+	}
+	m.Cards = []*Card{}
+	m.Type = 0
+
+}
+
+func (m BestCombo) Clone() *BestCombo {
+	n, ok := g_BestCombo_Pool.Get().(*BestCombo)
+	if !ok || n == nil {
+		n = &BestCombo{}
+	}
+
+	if len(m.Cards) > 0 {
+		for _, i := range m.Cards {
+			if i != nil {
+				n.Cards = append(n.Cards, i.Clone())
+			} else {
+				n.Cards = append(n.Cards, nil)
+			}
+		}
+	} else {
+		n.Cards = []*Card{}
+	}
+
+	n.Type = m.Type
+
+	return n
+}
+
+func Clone_BestCombo_Slice(dst []*BestCombo, src []*BestCombo) []*BestCombo {
+	for _, i := range dst {
+		Put_BestCombo(i)
+	}
+	dst = []*BestCombo{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_BestCombo() *BestCombo {
+	m := &BestCombo{
+		Cards: []*Card{},
+	}
+	return m
+}
+
+var g_BestCombo_Pool = sync.Pool{}
+
+func Get_BestCombo() *BestCombo {
+	m, ok := g_BestCombo_Pool.Get().(*BestCombo)
+	if !ok {
+		m = New_BestCombo()
+	} else {
+		if m == nil {
+			m = New_BestCombo()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_BestCombo(i interface{}) {
+	if m, ok := i.(*BestCombo); ok && m != nil {
+		g_BestCombo_Pool.Put(i)
+	}
+}
+
+// message [BestCombo] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1164,86 +1245,6 @@ func Put_C2S_AutoAction(i interface{}) {
 }
 
 // message [C2S_AutoAction] end
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// message [BestCombo] begin
-func (m *BestCombo) ResetEx() {
-
-	for _, i := range m.Cards {
-		Put_Card(i)
-	}
-	m.Cards = []*Card{}
-	m.Type = 0
-
-}
-
-func (m BestCombo) Clone() *BestCombo {
-	n, ok := g_BestCombo_Pool.Get().(*BestCombo)
-	if !ok || n == nil {
-		n = &BestCombo{}
-	}
-
-	if len(m.Cards) > 0 {
-		for _, i := range m.Cards {
-			if i != nil {
-				n.Cards = append(n.Cards, i.Clone())
-			} else {
-				n.Cards = append(n.Cards, nil)
-			}
-		}
-	} else {
-		n.Cards = []*Card{}
-	}
-
-	n.Type = m.Type
-
-	return n
-}
-
-func Clone_BestCombo_Slice(dst []*BestCombo, src []*BestCombo) []*BestCombo {
-	for _, i := range dst {
-		Put_BestCombo(i)
-	}
-	dst = []*BestCombo{}
-
-	for _, i := range src {
-		dst = append(dst, i.Clone())
-	}
-
-	return dst
-}
-
-func New_BestCombo() *BestCombo {
-	m := &BestCombo{
-		Cards: []*Card{},
-	}
-	return m
-}
-
-var g_BestCombo_Pool = sync.Pool{}
-
-func Get_BestCombo() *BestCombo {
-	m, ok := g_BestCombo_Pool.Get().(*BestCombo)
-	if !ok {
-		m = New_BestCombo()
-	} else {
-		if m == nil {
-			m = New_BestCombo()
-		} else {
-			m.ResetEx()
-		}
-	}
-	return m
-}
-
-func Put_BestCombo(i interface{}) {
-	if m, ok := i.(*BestCombo); ok && m != nil {
-		g_BestCombo_Pool.Put(i)
-	}
-}
-
-// message [BestCombo] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

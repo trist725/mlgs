@@ -4,7 +4,7 @@ package msg;
 
 import "item.proto";
 import "money.proto";
-
+import "match.proto";
 
 /// 用户数据
 message User {
@@ -13,7 +13,7 @@ message User {
     /// 名字
     string NickName = 2;
     /// 性别
-    int32 Sex = 3;
+    string Sex = 3;
     /// 物品
     repeated Item Items = 4;
     /// 货币
@@ -22,12 +22,14 @@ message User {
     int32 Level = 21;
     ///经验
     int64 Exp = 22;
+    ///历史最大牌型
+    BestCombo BestCombo = 32;
     ///当前任务进度
 }
 
 /// 服务端下发用户信息
 //@msg
-message S2C_UserData {
+message S2C_UpdateUserData {
     /// 下发用户数据错误枚举
     enum E_Error {
         Error_ = 0;
@@ -47,4 +49,13 @@ message S2C_UserData {
 message C2S_UpdateUserData {
     /// 用户id
     string ID = 1;
+}
+
+/// 服务端通知用户更新item
+//@msg
+message S2C_UpdateItems {
+    ///获得的
+    repeated Item GainItems = 1;
+    ///失去的
+    repeated Item LostItems = 2;
 }

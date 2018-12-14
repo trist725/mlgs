@@ -7,9 +7,9 @@ message Item {
     /// 唯一id
     string UID = 1;
     /// 类型id, item.xlsx中的id字段
-    int32 TID = 2;
+    int64 TID = 2;
     /// 数量
-    int32 Num = 3;
+    int64 Num = 3;
 }
 
 /// 获得物品

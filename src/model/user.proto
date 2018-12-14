@@ -4,6 +4,7 @@ package model;
 
 import "money.proto";
 import "item.proto";
+import "card.proto";
 
 /// 用户数据
 //@collection
@@ -40,5 +41,7 @@ message User {
     ///已签到天数
     int32 SignedDays = 14;
     ///每日签到奖励,数组第几个代表第几天
-    repeated Item SignRewards = 15;
+    //repeated Item SignRewards = 15;
+    ///历史最大牌型
+    BestCombo BestCombo = 15;
 }

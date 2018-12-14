@@ -8,6 +8,9 @@ enum E_Item {
     E_Item_ = 0;
     ///货币
     E_Item_Money = 1;
+    ///表情
+    ///道具
+    ///皮肤
 }
 
 ///货币类型枚举
@@ -19,4 +22,21 @@ enum E_Money {
     E_Money_Diamond = 2;
     ///积分
     E_Money_Point = 3;
+    ///筹码
+    E_Money_Chip = 4;
+}
+
+///奖励组物品的字段枚举
+enum E_RewardGroupItemField {
+    E_RewardGroupItemField_TID = 0;
+    E_RewardGroupItemField_Num = 1;
+    E_RewardGroupItemField_Weight = 2;
+    E_RewardGroupItemField_Count = 3;
+}
+
+///消耗物品的字段枚举
+enum E_CostItemField {
+    E_CostItemField_TID = 0;
+    E_CostItemField_Num = 1;
+    E_CostItemField_Count = 2;
 }

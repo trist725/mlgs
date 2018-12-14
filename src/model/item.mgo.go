@@ -28,11 +28,11 @@ type Item struct {
 	/// 唯一id
 	UID string `bson:"UID"`
 	/// 类型id, item.xlsx中的id字段
-	TID int32 `bson:"TID"`
+	TID int64 `bson:"TID"`
 	/// 创建时刻
 	CreateTime int64 `bson:"CreateTime"`
 	/// 数量
-	Num int32 `bson:"Num"`
+	Num int64 `bson:"Num"`
 }
 
 func New_Item() *Item {

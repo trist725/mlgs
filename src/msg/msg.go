@@ -37,4 +37,7 @@ func init() {
 	Processor.Register(&S2C_Balance{})
 	Processor.Register(&C2S_RoomChat{})
 	Processor.Register(&S2C_RoomChat{})
+	Processor.Register(&S2C_UpdateUserData{})
+	Processor.Register(&C2S_UpdateUserData{})
+	Processor.Register(&S2C_UpdateItems{})
 }

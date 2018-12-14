@@ -19,6 +19,7 @@ func init() {
 	regiserMsgHandle(&msg.C2S_AutoAction{}, handleAutoAction)
 	regiserMsgHandle(&msg.C2S_Ping{}, handlePong)
 	regiserMsgHandle(&msg.C2S_RoomChat{}, handleRoomChat)
+	regiserMsgHandle(&msg.C2S_UpdateUserData{}, handleUpdateUserData)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -102,7 +103,9 @@ func handleQuickMatchStart(args []interface{}) {
 	//无空房,新建
 	if !success {
 		nr := room.Mgr().NewRoom(1, 1, sd.InitQuickMatchRoomId())
-		success = nr.PlayerJoin(player)
+		if err := nr.PlayerJoin(player); err == nil {
+			success = true
+		}
 	}
 	//新建房间加入还是有可能失败
 	if !success {
@@ -283,4 +286,24 @@ func handleRoomChat(args []interface{}) {
 
 	ChanRPC.Go("RoomChat", r, recv)
 	session.Update()
+}
+
+func handleUpdateUserData(args []interface{}) {
+	//recv := args[0].(*msg.C2S_UpdateUserData)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleUpdateUserData return for nil session")
+		return
+	}
+	send := msg.Get_S2C_UpdateUserData()
+	defer sender.WriteMsg(send)
+
+	send.Data = session.UserData().ToMsg(msg.Get_User())
+	send.Err = msg.S2C_UpdateUserData_OK
 }

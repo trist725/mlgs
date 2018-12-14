@@ -10,6 +10,14 @@ message Card{
     int32 Num = 2;
 }
 
+///当前最大牌型
+message BestCombo{
+    repeated Card Cards = 1;
+    ///10-皇家同花顺,9-同花顺,8-四条(金刚),7-葫芦,6-通话
+    ///5-顺子,4-三条,3-两队,2-对子,1-高牌
+    int32 Type = 2;
+}
+
 /// 玩家
 message Player{
     ///用户Id
@@ -55,12 +63,14 @@ message C2S_QuickMatchStart {
 message S2C_QuickMatchStart {
     enum E_Err_QuickMatchStart{
         E_Err_ = 0;
-        //成功
+        ///成功
         E_Err_Success = 1;
-        //分配房间失败
+        ///分配房间失败
         E_Err_Room = 2;
-        //其它错误
+        ///其它错误
         E_Err_UnKnown = 3;
+        ///钱不够
+        E_Err_NotEnoughMoney = 4;
     }
     E_Err_QuickMatchStart Err = 1;
     Room Room = 2;
@@ -145,14 +155,6 @@ message S2C_PublicCard{
 message C2S_AutoAction{
     ///0-无勾选,1-让牌,2-弃牌,3-跟注,4-跟任何注
     int32 Act = 1;
-}
-
-///当前最大牌型
-message BestCombo{
-    repeated Card Cards = 1;
-    ///10-皇家同花顺,9-同花顺,8-四条(金刚),7-葫芦,6-通话
-    ///5-顺子,4-三条,3-两队,2-对子,1-高牌
-    int32 Type = 2;
 }
 
 ///游戏结束

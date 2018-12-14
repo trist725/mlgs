@@ -89,6 +89,8 @@ const (
 	E_Money_Diamond E_Money = 2
 	///积分
 	E_Money_Point E_Money = 3
+	///筹码
+	E_Money_Chip E_Money = 4
 )
 
 var E_Money_name = map[int32]string{
@@ -96,6 +98,7 @@ var E_Money_name = map[int32]string{
 	1: "E_Money_Gold",
 	2: "E_Money_Diamond",
 	3: "E_Money_Point",
+	4: "E_Money_Chip",
 }
 
 var E_Money_value = map[string]int32{
@@ -103,6 +106,7 @@ var E_Money_value = map[string]int32{
 	"E_Money_Gold":    1,
 	"E_Money_Diamond": 2,
 	"E_Money_Point":   3,
+	"E_Money_Chip":    4,
 }
 
 var E_Money_Slice = []int32{
@@ -110,6 +114,7 @@ var E_Money_Slice = []int32{
 	1,
 	2,
 	3,
+	4,
 }
 
 func (x E_Money) String() string {
@@ -151,4 +156,155 @@ func Each_E_Money_I(f func(int32) bool) {
 }
 
 // enum [E_Money] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// enum [E_RewardGroupItemField] begin
+
+///奖励组物品的字段枚举
+type E_RewardGroupItemField int32
+
+const (
+	E_RewardGroupItemField_TID E_RewardGroupItemField = 0
+
+	E_RewardGroupItemField_Num E_RewardGroupItemField = 1
+
+	E_RewardGroupItemField_Weight E_RewardGroupItemField = 2
+
+	E_RewardGroupItemField_Count E_RewardGroupItemField = 3
+)
+
+var E_RewardGroupItemField_name = map[int32]string{
+	0: "E_RewardGroupItemField_TID",
+	1: "E_RewardGroupItemField_Num",
+	2: "E_RewardGroupItemField_Weight",
+	3: "E_RewardGroupItemField_Count",
+}
+
+var E_RewardGroupItemField_value = map[string]int32{
+	"E_RewardGroupItemField_TID":    0,
+	"E_RewardGroupItemField_Num":    1,
+	"E_RewardGroupItemField_Weight": 2,
+	"E_RewardGroupItemField_Count":  3,
+}
+
+var E_RewardGroupItemField_Slice = []int32{
+	0,
+	1,
+	2,
+	3,
+}
+
+func (x E_RewardGroupItemField) String() string {
+	if name, ok := E_RewardGroupItemField_name[int32(x)]; ok {
+		return name
+	}
+	return ""
+}
+
+func E_RewardGroupItemField_Len() int {
+	return len(E_RewardGroupItemField_Slice)
+}
+
+func Check_E_RewardGroupItemField_I(value int32) bool {
+	if _, ok := E_RewardGroupItemField_name[value]; ok && value != 0 {
+		return true
+	}
+	return false
+}
+
+func Check_E_RewardGroupItemField(value E_RewardGroupItemField) bool {
+	return Check_E_RewardGroupItemField_I(int32(value))
+}
+
+func Each_E_RewardGroupItemField(f func(E_RewardGroupItemField) bool) {
+	for _, value := range E_RewardGroupItemField_Slice {
+		if !f(E_RewardGroupItemField(value)) {
+			break
+		}
+	}
+}
+
+func Each_E_RewardGroupItemField_I(f func(int32) bool) {
+	for _, value := range E_RewardGroupItemField_Slice {
+		if !f(value) {
+			break
+		}
+	}
+}
+
+// enum [E_RewardGroupItemField] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// enum [E_CostItemField] begin
+
+///消耗物品的字段枚举
+type E_CostItemField int32
+
+const (
+	E_CostItemField_TID E_CostItemField = 0
+
+	E_CostItemField_Num E_CostItemField = 1
+
+	E_CostItemField_Count E_CostItemField = 2
+)
+
+var E_CostItemField_name = map[int32]string{
+	0: "E_CostItemField_TID",
+	1: "E_CostItemField_Num",
+	2: "E_CostItemField_Count",
+}
+
+var E_CostItemField_value = map[string]int32{
+	"E_CostItemField_TID":   0,
+	"E_CostItemField_Num":   1,
+	"E_CostItemField_Count": 2,
+}
+
+var E_CostItemField_Slice = []int32{
+	0,
+	1,
+	2,
+}
+
+func (x E_CostItemField) String() string {
+	if name, ok := E_CostItemField_name[int32(x)]; ok {
+		return name
+	}
+	return ""
+}
+
+func E_CostItemField_Len() int {
+	return len(E_CostItemField_Slice)
+}
+
+func Check_E_CostItemField_I(value int32) bool {
+	if _, ok := E_CostItemField_name[value]; ok && value != 0 {
+		return true
+	}
+	return false
+}
+
+func Check_E_CostItemField(value E_CostItemField) bool {
+	return Check_E_CostItemField_I(int32(value))
+}
+
+func Each_E_CostItemField(f func(E_CostItemField) bool) {
+	for _, value := range E_CostItemField_Slice {
+		if !f(E_CostItemField(value)) {
+			break
+		}
+	}
+}
+
+func Each_E_CostItemField_I(f func(int32) bool) {
+	for _, value := range E_CostItemField_Slice {
+		if !f(value) {
+			break
+		}
+	}
+}
+
+// enum [E_CostItemField] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -53,15 +53,15 @@ type User struct {
 	DaySigned bool `bson:"DaySigned"`
 	///已签到天数
 	SignedDays int32 `bson:"SignedDays"`
-	///每日签到奖励,数组第几个代表第几天
-	SignRewards []*Item `bson:"SignRewards"`
+	///每日签到奖励,数组第几个代表第几天 repeated Item SignRewards = 15; /历史最大牌型
+	BestCombo *BestCombo `bson:"BestCombo"`
 }
 
 func New_User() *User {
 	m := &User{
-		Monies:      []*Money{},
-		Items:       []*Item{},
-		SignRewards: []*Item{},
+		Monies:    []*Money{},
+		Items:     []*Item{},
+		BestCombo: New_BestCombo(),
 	}
 	return m
 }
@@ -94,11 +94,7 @@ func (m *User) Reset() {
 	m.Exp = 0
 	m.DaySigned = false
 	m.SignedDays = 0
-
-	for _, i := range m.SignRewards {
-		Put_Item(i)
-	}
-	m.SignRewards = []*Item{}
+	m.BestCombo.Reset()
 
 }
 
@@ -145,18 +141,7 @@ func (m User) Clone() *User {
 	n.Exp = m.Exp
 	n.DaySigned = m.DaySigned
 	n.SignedDays = m.SignedDays
-
-	if len(m.SignRewards) > 0 {
-		for _, i := range m.SignRewards {
-			if i != nil {
-				n.SignRewards = append(n.SignRewards, i.Clone())
-			} else {
-				n.SignRewards = append(n.SignRewards, nil)
-			}
-		}
-	} else {
-		n.SignRewards = []*Item{}
-	}
+	n.BestCombo = m.BestCombo.Clone()
 
 	return n
 }

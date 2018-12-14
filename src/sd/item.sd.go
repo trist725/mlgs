@@ -20,27 +20,31 @@ import "github.com/trist725/mgsu/util"
 type Item struct {
 	ID int64 `excel_column:"0" excel_name:"id"` // 编号
 
-	Des string `excel_column:"3" excel_name:"des"` // 描述
+	Type int32 `excel_column:"2" excel_name:"type"` // 大类型
 
-	Level int `excel_column:"4" excel_name:"level"` // 等级
+	SubType int32 `excel_column:"3" excel_name:"sub_type"` // 小类型
 
-	BuyNeed int `excel_column:"5" excel_name:"buy_need"` // 花费所需
+	Des string `excel_column:"4" excel_name:"des"` // 描述
 
-	BuyCost int64 `excel_column:"6" excel_name:"buy_cost"` // 花费
+	Level int `excel_column:"5" excel_name:"level"` // 等级
 
-	IncomeNeed int `excel_column:"7" excel_name:"Income_need"` // 收入所需
+	BuyNeed int `excel_column:"6" excel_name:"buy_need"` // 花费所需
 
-	Income int64 `excel_column:"8" excel_name:"Income"` // 收入
+	BuyCost int64 `excel_column:"7" excel_name:"buy_cost"` // 花费
 
-	Usetimes int `excel_column:"9" excel_name:"usetimes"` // 使用次数
+	IncomeNeed int `excel_column:"8" excel_name:"Income_need"` // 收入所需
 
-	Timeliness int `excel_column:"10" excel_name:"timeliness"` // 时效性（小时）
+	Income int64 `excel_column:"9" excel_name:"Income"` // 收入
 
-	Sound int `excel_column:"13" excel_name:"sound"` // 音效
+	Usetimes int `excel_column:"10" excel_name:"usetimes"` // 使用次数
 
-	Anima int `excel_column:"14" excel_name:"anima"` // 动效
+	Timeliness int `excel_column:"11" excel_name:"timeliness"` // 时效性（小时）
 
-	Skill int `excel_column:"15" excel_name:"skill"` // 技能
+	Sound int `excel_column:"14" excel_name:"sound"` // 音效
+
+	Anima int `excel_column:"15" excel_name:"anima"` // 动效
+
+	Skill int `excel_column:"16" excel_name:"skill"` // 技能
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体扩展字段

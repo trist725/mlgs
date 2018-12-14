@@ -7,6 +7,7 @@ import (
 	"github.com/trist725/myleaf/module"
 	q "github.com/yireyun/go-queue"
 	"mlgs/src/cache"
+	"mlgs/src/cost"
 	"mlgs/src/msg"
 	"mlgs/src/sd"
 	s "mlgs/src/session"
@@ -533,14 +534,12 @@ func (r *Room) Stage() uint32 {
 	return atomic.LoadUint32(&r.stage)
 }
 
-func (r *Room) PlayerJoin(p *cache.Player) bool {
+func (r *Room) PlayerJoin(p *cache.Player) error {
 	if p == nil {
-		log.Error("addPlayer failed, invalid player")
-		return false
+		return fmt.Errorf("addPlayer failed, invalid player")
 	}
 	if !r.PlayerIdle() {
-		log.Debug("room id:[%d] not idle", r.id)
-		return false
+		return fmt.Errorf("addPlayer failed, invalid player")
 	}
 	//if int(p.Pos()) > gPlayerLimit{
 	//	log.Error("failed to join player, invalid pos")
@@ -553,14 +552,30 @@ func (r *Room) PlayerJoin(p *cache.Player) bool {
 	for i := 1; i <= gPlayerLimit; i++ {
 		//座位没人,可分配
 		if _, ok := r.players[uint32(i)]; !ok {
+			if p.UserData() == nil {
+				return fmt.Errorf("nil userData on PlayerJoin")
+			}
+			roomSd := sd.RoomMgr.Get(sd.InitQuickMatchRoomId())
+			if roomSd == nil {
+				return fmt.Errorf("get room sd failed on NewGame")
+			}
+			var costs cost.Costs
+			costs = append(costs, cost.CostItem{1, roomSd.Chip})
+			if err := cost.CanCost(p.UserData(), costs, 1); err == nil {
+				cost.Cost(p.UserData(), costs, 1, false, nil)
+			} else {
+				return fmt.Errorf("can not cost")
+			}
+
 			r.players[uint32(i)] = p
 			p.SetPos(uint32(i))
 			p.SetRoomId(r.id)
-			return true
+
+			return nil
 		}
 	}
 
-	return false
+	return fmt.Errorf("room id:[%d] no seat", r.id)
 }
 
 func (r *Room) FirstStageBlindBet() bool {
@@ -643,6 +658,10 @@ func (r *Room) PlayerLeave(p *cache.Player) error {
 	}
 
 	if player, ok := r.players[p.Pos()]; ok && player == p {
+		if p.UserData() == nil {
+			return fmt.Errorf("nil userdata on playerLeave")
+		}
+		p.UserData().Gain(1, p.Chip(), false, nil)
 		delete(r.players, p.Pos())
 		player.SetRoomId(0)
 		r.BoardCastPL(player.UserId())

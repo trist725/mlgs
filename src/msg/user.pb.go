@@ -21,32 +21,32 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
 // / 下发用户数据错误枚举
-type S2C_UserData_E_Error int32
+type S2C_UpdateUserData_E_Error int32
 
 const (
-	S2C_UserData_Error_ S2C_UserData_E_Error = 0
+	S2C_UpdateUserData_Error_ S2C_UpdateUserData_E_Error = 0
 	// / OK
-	S2C_UserData_OK S2C_UserData_E_Error = 1
+	S2C_UpdateUserData_OK S2C_UpdateUserData_E_Error = 1
 	// / 没有用户数据
-	S2C_UserData_NotExist S2C_UserData_E_Error = 2
+	S2C_UpdateUserData_NotExist S2C_UpdateUserData_E_Error = 2
 )
 
-var S2C_UserData_E_Error_name = map[int32]string{
+var S2C_UpdateUserData_E_Error_name = map[int32]string{
 	0: "Error_",
 	1: "OK",
 	2: "NotExist",
 }
-var S2C_UserData_E_Error_value = map[string]int32{
+var S2C_UpdateUserData_E_Error_value = map[string]int32{
 	"Error_":   0,
 	"OK":       1,
 	"NotExist": 2,
 }
 
-func (x S2C_UserData_E_Error) String() string {
-	return proto.EnumName(S2C_UserData_E_Error_name, int32(x))
+func (x S2C_UpdateUserData_E_Error) String() string {
+	return proto.EnumName(S2C_UpdateUserData_E_Error_name, int32(x))
 }
-func (S2C_UserData_E_Error) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_user_3f5b4c2770ed452d, []int{1, 0}
+func (S2C_UpdateUserData_E_Error) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_user_487e0b73321ed270, []int{1, 0}
 }
 
 // / 用户数据
@@ -56,7 +56,7 @@ type User struct {
 	// / 名字
 	NickName string `protobuf:"bytes,2,opt,name=NickName,proto3" json:"NickName,omitempty"`
 	// / 性别
-	Sex int32 `protobuf:"varint,3,opt,name=Sex,proto3" json:"Sex,omitempty"`
+	Sex string `protobuf:"bytes,3,opt,name=Sex,proto3" json:"Sex,omitempty"`
 	// / 物品
 	Items []*Item `protobuf:"bytes,4,rep,name=Items" json:"Items,omitempty"`
 	// / 货币
@@ -65,13 +65,15 @@ type User struct {
 	Level int32 `protobuf:"varint,21,opt,name=Level,proto3" json:"Level,omitempty"`
 	// /经验
 	Exp int64 `protobuf:"varint,22,opt,name=Exp,proto3" json:"Exp,omitempty"`
+	// /历史最大牌型
+	BestCombo *BestCombo `protobuf:"bytes,32,opt,name=BestCombo" json:"BestCombo,omitempty"`
 }
 
 func (m *User) Reset()         { *m = User{} }
 func (m *User) String() string { return proto.CompactTextString(m) }
 func (*User) ProtoMessage()    {}
 func (*User) Descriptor() ([]byte, []int) {
-	return fileDescriptor_user_3f5b4c2770ed452d, []int{0}
+	return fileDescriptor_user_487e0b73321ed270, []int{0}
 }
 func (m *User) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -114,11 +116,11 @@ func (m *User) GetNickName() string {
 	return ""
 }
 
-func (m *User) GetSex() int32 {
+func (m *User) GetSex() string {
 	if m != nil {
 		return m.Sex
 	}
-	return 0
+	return ""
 }
 
 func (m *User) GetItems() []*Item {
@@ -149,27 +151,34 @@ func (m *User) GetExp() int64 {
 	return 0
 }
 
+func (m *User) GetBestCombo() *BestCombo {
+	if m != nil {
+		return m.BestCombo
+	}
+	return nil
+}
+
 // / 服务端下发用户信息
 // @msg
-type S2C_UserData struct {
+type S2C_UpdateUserData struct {
 	// / 错误枚举
-	Err S2C_UserData_E_Error `protobuf:"varint,1,opt,name=Err,proto3,enum=msg.S2C_UserData_E_Error" json:"Err,omitempty"`
+	Err S2C_UpdateUserData_E_Error `protobuf:"varint,1,opt,name=Err,proto3,enum=msg.S2C_UpdateUserData_E_Error" json:"Err,omitempty"`
 	// / 用户数据
 	Data *User `protobuf:"bytes,2,opt,name=Data" json:"Data,omitempty"`
 }
 
-func (m *S2C_UserData) Reset()         { *m = S2C_UserData{} }
-func (m *S2C_UserData) String() string { return proto.CompactTextString(m) }
-func (*S2C_UserData) ProtoMessage()    {}
-func (*S2C_UserData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_user_3f5b4c2770ed452d, []int{1}
+func (m *S2C_UpdateUserData) Reset()         { *m = S2C_UpdateUserData{} }
+func (m *S2C_UpdateUserData) String() string { return proto.CompactTextString(m) }
+func (*S2C_UpdateUserData) ProtoMessage()    {}
+func (*S2C_UpdateUserData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_user_487e0b73321ed270, []int{1}
 }
-func (m *S2C_UserData) XXX_Unmarshal(b []byte) error {
+func (m *S2C_UpdateUserData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *S2C_UserData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *S2C_UpdateUserData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_S2C_UserData.Marshal(b, m, deterministic)
+		return xxx_messageInfo_S2C_UpdateUserData.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalTo(b)
@@ -179,26 +188,26 @@ func (m *S2C_UserData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return b[:n], nil
 	}
 }
-func (dst *S2C_UserData) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_UserData.Merge(dst, src)
+func (dst *S2C_UpdateUserData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_UpdateUserData.Merge(dst, src)
 }
-func (m *S2C_UserData) XXX_Size() int {
+func (m *S2C_UpdateUserData) XXX_Size() int {
 	return m.Size()
 }
-func (m *S2C_UserData) XXX_DiscardUnknown() {
-	xxx_messageInfo_S2C_UserData.DiscardUnknown(m)
+func (m *S2C_UpdateUserData) XXX_DiscardUnknown() {
+	xxx_messageInfo_S2C_UpdateUserData.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_S2C_UserData proto.InternalMessageInfo
+var xxx_messageInfo_S2C_UpdateUserData proto.InternalMessageInfo
 
-func (m *S2C_UserData) GetErr() S2C_UserData_E_Error {
+func (m *S2C_UpdateUserData) GetErr() S2C_UpdateUserData_E_Error {
 	if m != nil {
 		return m.Err
 	}
-	return S2C_UserData_Error_
+	return S2C_UpdateUserData_Error_
 }
 
-func (m *S2C_UserData) GetData() *User {
+func (m *S2C_UpdateUserData) GetData() *User {
 	if m != nil {
 		return m.Data
 	}
@@ -216,7 +225,7 @@ func (m *C2S_UpdateUserData) Reset()         { *m = C2S_UpdateUserData{} }
 func (m *C2S_UpdateUserData) String() string { return proto.CompactTextString(m) }
 func (*C2S_UpdateUserData) ProtoMessage()    {}
 func (*C2S_UpdateUserData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_user_3f5b4c2770ed452d, []int{2}
+	return fileDescriptor_user_487e0b73321ed270, []int{2}
 }
 func (m *C2S_UpdateUserData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -252,11 +261,68 @@ func (m *C2S_UpdateUserData) GetID() string {
 	return ""
 }
 
+// / 服务端通知用户更新item
+// @msg
+type S2C_UpdateItems struct {
+	// /获得的
+	GainItems []*Item `protobuf:"bytes,1,rep,name=GainItems" json:"GainItems,omitempty"`
+	// /失去的
+	LostItems []*Item `protobuf:"bytes,2,rep,name=LostItems" json:"LostItems,omitempty"`
+}
+
+func (m *S2C_UpdateItems) Reset()         { *m = S2C_UpdateItems{} }
+func (m *S2C_UpdateItems) String() string { return proto.CompactTextString(m) }
+func (*S2C_UpdateItems) ProtoMessage()    {}
+func (*S2C_UpdateItems) Descriptor() ([]byte, []int) {
+	return fileDescriptor_user_487e0b73321ed270, []int{3}
+}
+func (m *S2C_UpdateItems) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *S2C_UpdateItems) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_S2C_UpdateItems.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *S2C_UpdateItems) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_UpdateItems.Merge(dst, src)
+}
+func (m *S2C_UpdateItems) XXX_Size() int {
+	return m.Size()
+}
+func (m *S2C_UpdateItems) XXX_DiscardUnknown() {
+	xxx_messageInfo_S2C_UpdateItems.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_S2C_UpdateItems proto.InternalMessageInfo
+
+func (m *S2C_UpdateItems) GetGainItems() []*Item {
+	if m != nil {
+		return m.GainItems
+	}
+	return nil
+}
+
+func (m *S2C_UpdateItems) GetLostItems() []*Item {
+	if m != nil {
+		return m.LostItems
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*User)(nil), "msg.User")
-	proto.RegisterType((*S2C_UserData)(nil), "msg.S2C_UserData")
+	proto.RegisterType((*S2C_UpdateUserData)(nil), "msg.S2C_UpdateUserData")
 	proto.RegisterType((*C2S_UpdateUserData)(nil), "msg.C2S_UpdateUserData")
-	proto.RegisterEnum("msg.S2C_UserData_E_Error", S2C_UserData_E_Error_name, S2C_UserData_E_Error_value)
+	proto.RegisterType((*S2C_UpdateItems)(nil), "msg.S2C_UpdateItems")
+	proto.RegisterEnum("msg.S2C_UpdateUserData_E_Error", S2C_UpdateUserData_E_Error_name, S2C_UpdateUserData_E_Error_value)
 }
 func (m *User) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
@@ -284,10 +350,11 @@ func (m *User) MarshalTo(dAtA []byte) (int, error) {
 		i = encodeVarintUser(dAtA, i, uint64(len(m.NickName)))
 		i += copy(dAtA[i:], m.NickName)
 	}
-	if m.Sex != 0 {
-		dAtA[i] = 0x18
+	if len(m.Sex) > 0 {
+		dAtA[i] = 0x1a
 		i++
-		i = encodeVarintUser(dAtA, i, uint64(m.Sex))
+		i = encodeVarintUser(dAtA, i, uint64(len(m.Sex)))
+		i += copy(dAtA[i:], m.Sex)
 	}
 	if len(m.Items) > 0 {
 		for _, msg := range m.Items {
@@ -327,10 +394,22 @@ func (m *User) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintUser(dAtA, i, uint64(m.Exp))
 	}
+	if m.BestCombo != nil {
+		dAtA[i] = 0x82
+		i++
+		dAtA[i] = 0x2
+		i++
+		i = encodeVarintUser(dAtA, i, uint64(m.BestCombo.Size()))
+		n1, err := m.BestCombo.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n1
+	}
 	return i, nil
 }
 
-func (m *S2C_UserData) Marshal() (dAtA []byte, err error) {
+func (m *S2C_UpdateUserData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -340,7 +419,7 @@ func (m *S2C_UserData) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *S2C_UserData) MarshalTo(dAtA []byte) (int, error) {
+func (m *S2C_UpdateUserData) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -354,11 +433,11 @@ func (m *S2C_UserData) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x12
 		i++
 		i = encodeVarintUser(dAtA, i, uint64(m.Data.Size()))
-		n1, err := m.Data.MarshalTo(dAtA[i:])
+		n2, err := m.Data.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n1
+		i += n2
 	}
 	return i, nil
 }
@@ -387,6 +466,48 @@ func (m *C2S_UpdateUserData) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
+func (m *S2C_UpdateItems) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *S2C_UpdateItems) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.GainItems) > 0 {
+		for _, msg := range m.GainItems {
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintUser(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if len(m.LostItems) > 0 {
+		for _, msg := range m.LostItems {
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintUser(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	return i, nil
+}
+
 func encodeVarintUser(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -409,8 +530,9 @@ func (m *User) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovUser(uint64(l))
 	}
-	if m.Sex != 0 {
-		n += 1 + sovUser(uint64(m.Sex))
+	l = len(m.Sex)
+	if l > 0 {
+		n += 1 + l + sovUser(uint64(l))
 	}
 	if len(m.Items) > 0 {
 		for _, e := range m.Items {
@@ -430,10 +552,14 @@ func (m *User) Size() (n int) {
 	if m.Exp != 0 {
 		n += 2 + sovUser(uint64(m.Exp))
 	}
+	if m.BestCombo != nil {
+		l = m.BestCombo.Size()
+		n += 2 + l + sovUser(uint64(l))
+	}
 	return n
 }
 
-func (m *S2C_UserData) Size() (n int) {
+func (m *S2C_UpdateUserData) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -458,6 +584,27 @@ func (m *C2S_UpdateUserData) Size() (n int) {
 	l = len(m.ID)
 	if l > 0 {
 		n += 1 + l + sovUser(uint64(l))
+	}
+	return n
+}
+
+func (m *S2C_UpdateItems) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.GainItems) > 0 {
+		for _, e := range m.GainItems {
+			l = e.Size()
+			n += 1 + l + sovUser(uint64(l))
+		}
+	}
+	if len(m.LostItems) > 0 {
+		for _, e := range m.LostItems {
+			l = e.Size()
+			n += 1 + l + sovUser(uint64(l))
+		}
 	}
 	return n
 }
@@ -553,10 +700,10 @@ func (m *User) Unmarshal(dAtA []byte) error {
 			m.NickName = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Sex", wireType)
 			}
-			m.Sex = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowUser
@@ -566,11 +713,21 @@ func (m *User) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Sex |= (int32(b) & 0x7F) << shift
+				stringLen |= (uint64(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Sex = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Items", wireType)
@@ -671,6 +828,39 @@ func (m *User) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		case 32:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BestCombo", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.BestCombo == nil {
+				m.BestCombo = &BestCombo{}
+			}
+			if err := m.BestCombo.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipUser(dAtA[iNdEx:])
@@ -692,7 +882,7 @@ func (m *User) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *S2C_UserData) Unmarshal(dAtA []byte) error {
+func (m *S2C_UpdateUserData) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -715,10 +905,10 @@ func (m *S2C_UserData) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: S2C_UserData: wiretype end group for non-group")
+			return fmt.Errorf("proto: S2C_UpdateUserData: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: S2C_UserData: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: S2C_UpdateUserData: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -735,7 +925,7 @@ func (m *S2C_UserData) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Err |= (S2C_UserData_E_Error(b) & 0x7F) << shift
+				m.Err |= (S2C_UpdateUserData_E_Error(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -873,6 +1063,118 @@ func (m *C2S_UpdateUserData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *S2C_UpdateItems) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowUser
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: S2C_UpdateItems: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: S2C_UpdateItems: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field GainItems", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.GainItems = append(m.GainItems, &Item{})
+			if err := m.GainItems[len(m.GainItems)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field LostItems", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.LostItems = append(m.LostItems, &Item{})
+			if err := m.LostItems[len(m.LostItems)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipUser(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthUser
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func skipUser(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
@@ -978,29 +1280,33 @@ var (
 	ErrIntOverflowUser   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("user.proto", fileDescriptor_user_3f5b4c2770ed452d) }
+func init() { proto.RegisterFile("user.proto", fileDescriptor_user_487e0b73321ed270) }
 
-var fileDescriptor_user_3f5b4c2770ed452d = []byte{
-	// 333 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x91, 0xc1, 0x4a, 0xf3, 0x40,
-	0x14, 0x85, 0x33, 0x49, 0x9b, 0xbf, 0xbd, 0x2d, 0x25, 0x5c, 0x7e, 0x65, 0x2c, 0x18, 0x43, 0x70,
-	0x11, 0x28, 0x64, 0x11, 0xdf, 0xc0, 0x36, 0x8b, 0xa2, 0xad, 0x30, 0xa5, 0xeb, 0x10, 0x75, 0x28,
-	0x41, 0xd3, 0x94, 0x99, 0x51, 0xea, 0x13, 0xb8, 0xf5, 0x55, 0x7c, 0x0b, 0x97, 0x5d, 0xba, 0x94,
-	0xf6, 0x45, 0x64, 0x26, 0xb5, 0xba, 0x3b, 0xe7, 0xdc, 0xc3, 0xcd, 0x97, 0x3b, 0x00, 0x4f, 0x92,
-	0x8b, 0x78, 0x25, 0x2a, 0x55, 0xa1, 0x53, 0xca, 0x45, 0x1f, 0x0a, 0xc5, 0xcb, 0x3a, 0xe8, 0x77,
-	0xca, 0x6a, 0xc9, 0x5f, 0x6a, 0x13, 0xbe, 0x13, 0x68, 0xcc, 0x25, 0x17, 0xd8, 0x03, 0x7b, 0x3c,
-	0xa2, 0x24, 0x20, 0x91, 0xc3, 0xec, 0xf1, 0x08, 0xfb, 0xd0, 0x9a, 0x16, 0x77, 0x0f, 0xd3, 0xbc,
-	0xe4, 0xd4, 0x0e, 0x48, 0xd4, 0x66, 0x07, 0x8f, 0x1e, 0x38, 0x33, 0xbe, 0xa6, 0x4e, 0x40, 0xa2,
-	0x26, 0xd3, 0x12, 0xcf, 0xa0, 0x39, 0x56, 0xbc, 0x94, 0xb4, 0x11, 0x38, 0x51, 0x27, 0x69, 0xc7,
-	0xa5, 0x5c, 0xc4, 0x3a, 0x61, 0x75, 0x8e, 0x21, 0xb8, 0x93, 0x6a, 0x59, 0x70, 0x49, 0x5d, 0xd3,
-	0x00, 0xd3, 0x98, 0x68, 0x12, 0xb6, 0x9f, 0xe0, 0x7f, 0x68, 0x5e, 0xf3, 0x67, 0xfe, 0x48, 0x8f,
-	0xcc, 0xe2, 0xda, 0xe8, 0x8f, 0xa5, 0xeb, 0x15, 0x3d, 0x36, 0x64, 0x5a, 0x86, 0xaf, 0x04, 0xba,
-	0xb3, 0x64, 0x98, 0x69, 0xee, 0x51, 0xae, 0x72, 0x1c, 0x80, 0x93, 0x0a, 0x61, 0xe0, 0x7b, 0xc9,
-	0x89, 0xd9, 0xfc, 0x77, 0x1e, 0xa7, 0x59, 0x2a, 0x44, 0x25, 0x98, 0x6e, 0xe1, 0x29, 0x34, 0x74,
-	0x68, 0x7e, 0xea, 0x87, 0x54, 0x37, 0x99, 0x89, 0xc3, 0x01, 0xfc, 0xdb, 0xd7, 0x11, 0xc0, 0x35,
-	0x22, 0xf3, 0x2c, 0x74, 0xc1, 0xbe, 0xb9, 0xf2, 0x08, 0x76, 0xa1, 0x35, 0xad, 0x54, 0xba, 0x2e,
-	0xa4, 0xf2, 0xec, 0xf0, 0x1c, 0x70, 0x98, 0xcc, 0xb2, 0xf9, 0xea, 0x3e, 0x57, 0xfc, 0x80, 0xf3,
-	0x7b, 0xca, 0xb6, 0x3e, 0xe5, 0x25, 0xfd, 0xd8, 0xfa, 0x64, 0xb3, 0xf5, 0xc9, 0xd7, 0xd6, 0x27,
-	0x6f, 0x3b, 0xdf, 0xda, 0xec, 0x7c, 0xeb, 0x73, 0xe7, 0x5b, 0xb7, 0xae, 0x79, 0x84, 0x8b, 0xef,
-	0x00, 0x00, 0x00, 0xff, 0xff, 0x44, 0x30, 0xce, 0x30, 0xb0, 0x01, 0x00, 0x00,
+var fileDescriptor_user_487e0b73321ed270 = []byte{
+	// 391 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0x92, 0xd1, 0xaa, 0xda, 0x40,
+	0x10, 0x86, 0xb3, 0x89, 0xa6, 0x66, 0x2c, 0x36, 0x2c, 0x6d, 0x59, 0x84, 0xc6, 0x10, 0x0a, 0x0d,
+	0xb4, 0x04, 0x9a, 0xbe, 0x81, 0x1a, 0x8a, 0x54, 0x2d, 0xac, 0x78, 0x2d, 0xd1, 0x2e, 0x36, 0xb4,
+	0x71, 0x65, 0x77, 0x5b, 0xec, 0x5b, 0x14, 0xfa, 0x52, 0xbd, 0xf4, 0xf2, 0xdc, 0x9d, 0x83, 0xbe,
+	0xc8, 0x61, 0x37, 0x9e, 0x04, 0xf4, 0x6e, 0xe6, 0x9f, 0x2f, 0xc9, 0x3f, 0xff, 0x04, 0xe0, 0x97,
+	0x64, 0x22, 0xd9, 0x0b, 0xae, 0x38, 0x76, 0x4a, 0xb9, 0xed, 0x43, 0xa1, 0x58, 0x59, 0x09, 0xfd,
+	0x6e, 0xc9, 0x77, 0xec, 0x4f, 0xdd, 0xe4, 0x6a, 0xf3, 0xbd, 0x6a, 0xa2, 0x7b, 0x04, 0xad, 0xa5,
+	0x64, 0x02, 0xf7, 0xc0, 0x9e, 0x8c, 0x09, 0x0a, 0x51, 0xec, 0x50, 0x7b, 0x32, 0xc6, 0x7d, 0xe8,
+	0xcc, 0x8b, 0xcd, 0x8f, 0x79, 0x5e, 0x32, 0x62, 0x87, 0x28, 0xf6, 0x68, 0xdd, 0x63, 0x1f, 0x9c,
+	0x05, 0x3b, 0x10, 0xc7, 0xc8, 0xba, 0xc4, 0x03, 0x68, 0x4f, 0x14, 0x2b, 0x25, 0x69, 0x85, 0x4e,
+	0xdc, 0x4d, 0xbd, 0xa4, 0x94, 0xdb, 0x44, 0x2b, 0xb4, 0xd2, 0x71, 0x04, 0xee, 0x8c, 0xef, 0x0a,
+	0x26, 0x89, 0x6b, 0x08, 0x30, 0xc4, 0x4c, 0xdb, 0xa2, 0x97, 0x09, 0x7e, 0x09, 0xed, 0x29, 0xfb,
+	0xcd, 0x7e, 0x92, 0x57, 0x21, 0x8a, 0xdb, 0xb4, 0x6a, 0xf4, 0xc7, 0xb2, 0xc3, 0x9e, 0xbc, 0x36,
+	0xce, 0x74, 0x89, 0x3f, 0x80, 0x37, 0x64, 0x52, 0x8d, 0x78, 0xb9, 0xe6, 0x24, 0x0c, 0x51, 0xdc,
+	0x4d, 0x7b, 0xe6, 0x75, 0xb5, 0x4a, 0x1b, 0x20, 0xfa, 0x87, 0x00, 0x2f, 0xd2, 0xd1, 0x6a, 0xb9,
+	0xff, 0x96, 0x2b, 0xa6, 0x77, 0x1d, 0xe7, 0x2a, 0xc7, 0x1f, 0xc1, 0xc9, 0x84, 0x30, 0x0b, 0xf7,
+	0xd2, 0x81, 0x79, 0xfc, 0x96, 0x4a, 0xb2, 0x55, 0x26, 0x04, 0x17, 0x54, 0xb3, 0xf8, 0x0d, 0xb4,
+	0xb4, 0x68, 0xe2, 0x78, 0xda, 0x51, 0x93, 0xd4, 0xc8, 0xd1, 0x7b, 0x78, 0x76, 0xc1, 0x31, 0x80,
+	0x6b, 0x8a, 0x95, 0x6f, 0x61, 0x17, 0xec, 0xaf, 0x5f, 0x7c, 0x84, 0x9f, 0x43, 0x67, 0xce, 0x55,
+	0x76, 0x28, 0xa4, 0xf2, 0xed, 0xe8, 0x2d, 0xe0, 0x51, 0xba, 0xb8, 0x36, 0xd5, 0x1c, 0xc1, 0xd3,
+	0x47, 0x88, 0x36, 0xf0, 0xa2, 0x31, 0x55, 0x05, 0xf9, 0x0e, 0xbc, 0xcf, 0x79, 0xb1, 0xab, 0xd2,
+	0x46, 0xd7, 0x69, 0x37, 0x33, 0x0d, 0x4e, 0xb9, 0x54, 0x15, 0x68, 0xdf, 0x80, 0xf5, 0x6c, 0x48,
+	0xfe, 0x9f, 0x02, 0x74, 0x3c, 0x05, 0xe8, 0xe1, 0x14, 0xa0, 0xbf, 0xe7, 0xc0, 0x3a, 0x9e, 0x03,
+	0xeb, 0xee, 0x1c, 0x58, 0x6b, 0xd7, 0xfc, 0x23, 0x9f, 0x1e, 0x03, 0x00, 0x00, 0xff, 0xff, 0x79,
+	0xbc, 0x22, 0xf6, 0x5c, 0x02, 0x00, 0x00,
 }

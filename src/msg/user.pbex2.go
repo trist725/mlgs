@@ -4,8 +4,9 @@
 /*
 It has these top-level messages:
 	User
-	S2C_UserData
+	S2C_UpdateUserData
 	C2S_UpdateUserData
+	S2C_UpdateItems
 */
 
 package msg
@@ -17,46 +18,46 @@ var _ *sync.Pool
 var _ = protocol.PH
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// enum [S2C_UserData_E_Error] begin
+// enum [S2C_UpdateUserData_E_Error] begin
 
-var S2C_UserData_E_Error_Slice = []int32{
+var S2C_UpdateUserData_E_Error_Slice = []int32{
 	0,
 	1,
 	2,
 }
 
-func S2C_UserData_E_Error_Len() int {
-	return len(S2C_UserData_E_Error_Slice)
+func S2C_UpdateUserData_E_Error_Len() int {
+	return len(S2C_UpdateUserData_E_Error_Slice)
 }
 
-func Check_S2C_UserData_E_Error_I(value int32) bool {
-	if _, ok := S2C_UserData_E_Error_name[value]; ok && value != 0 {
+func Check_S2C_UpdateUserData_E_Error_I(value int32) bool {
+	if _, ok := S2C_UpdateUserData_E_Error_name[value]; ok && value != 0 {
 		return true
 	}
 	return false
 }
 
-func Check_S2C_UserData_E_Error(value S2C_UserData_E_Error) bool {
-	return Check_S2C_UserData_E_Error_I(int32(value))
+func Check_S2C_UpdateUserData_E_Error(value S2C_UpdateUserData_E_Error) bool {
+	return Check_S2C_UpdateUserData_E_Error_I(int32(value))
 }
 
-func Each_S2C_UserData_E_Error(f func(S2C_UserData_E_Error) bool) {
-	for _, value := range S2C_UserData_E_Error_Slice {
-		if !f(S2C_UserData_E_Error(value)) {
+func Each_S2C_UpdateUserData_E_Error(f func(S2C_UpdateUserData_E_Error) bool) {
+	for _, value := range S2C_UpdateUserData_E_Error_Slice {
+		if !f(S2C_UpdateUserData_E_Error(value)) {
 			break
 		}
 	}
 }
 
-func Each_S2C_UserData_E_Error_I(f func(int32) bool) {
-	for _, value := range S2C_UserData_E_Error_Slice {
+func Each_S2C_UpdateUserData_E_Error_I(f func(int32) bool) {
+	for _, value := range S2C_UpdateUserData_E_Error_Slice {
 		if !f(value) {
 			break
 		}
 	}
 }
 
-// enum [S2C_UserData_E_Error] end
+// enum [S2C_UpdateUserData_E_Error] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,7 +65,7 @@ func Each_S2C_UserData_E_Error_I(f func(int32) bool) {
 func (m *User) ResetEx() {
 	m.ID = 0
 	m.NickName = ""
-	m.Sex = 0
+	m.Sex = ""
 
 	for _, i := range m.Items {
 		Put_Item(i)
@@ -77,6 +78,7 @@ func (m *User) ResetEx() {
 	m.Monies = []*Money{}
 	m.Level = 0
 	m.Exp = 0
+	m.BestCombo.ResetEx()
 
 }
 
@@ -116,6 +118,7 @@ func (m User) Clone() *User {
 
 	n.Level = m.Level
 	n.Exp = m.Exp
+	n.BestCombo = m.BestCombo.Clone()
 
 	return n
 }
@@ -135,8 +138,9 @@ func Clone_User_Slice(dst []*User, src []*User) []*User {
 
 func New_User() *User {
 	m := &User{
-		Items:  []*Item{},
-		Monies: []*Money{},
+		Items:     []*Item{},
+		Monies:    []*Money{},
+		BestCombo: New_BestCombo(),
 	}
 	return m
 }
@@ -167,17 +171,17 @@ func Put_User(i interface{}) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// message [S2C_UserData] begin
-func (m *S2C_UserData) ResetEx() {
+// message [S2C_UpdateUserData] begin
+func (m *S2C_UpdateUserData) ResetEx() {
 	m.Err = 0
 	m.Data.ResetEx()
 
 }
 
-func (m S2C_UserData) Clone() *S2C_UserData {
-	n, ok := g_S2C_UserData_Pool.Get().(*S2C_UserData)
+func (m S2C_UpdateUserData) Clone() *S2C_UpdateUserData {
+	n, ok := g_S2C_UpdateUserData_Pool.Get().(*S2C_UpdateUserData)
 	if !ok || n == nil {
-		n = &S2C_UserData{}
+		n = &S2C_UpdateUserData{}
 	}
 
 	n.Err = m.Err
@@ -186,11 +190,11 @@ func (m S2C_UserData) Clone() *S2C_UserData {
 	return n
 }
 
-func Clone_S2C_UserData_Slice(dst []*S2C_UserData, src []*S2C_UserData) []*S2C_UserData {
+func Clone_S2C_UpdateUserData_Slice(dst []*S2C_UpdateUserData, src []*S2C_UpdateUserData) []*S2C_UpdateUserData {
 	for _, i := range dst {
-		Put_S2C_UserData(i)
+		Put_S2C_UpdateUserData(i)
 	}
-	dst = []*S2C_UserData{}
+	dst = []*S2C_UpdateUserData{}
 
 	for _, i := range src {
 		dst = append(dst, i.Clone())
@@ -199,33 +203,33 @@ func Clone_S2C_UserData_Slice(dst []*S2C_UserData, src []*S2C_UserData) []*S2C_U
 	return dst
 }
 
-func (S2C_UserData) V2() {
+func (S2C_UpdateUserData) V2() {
 }
 
-func (S2C_UserData) MessageID() protocol.MessageID {
-	return "msg.S2C_UserData"
+func (S2C_UpdateUserData) MessageID() protocol.MessageID {
+	return "msg.S2C_UpdateUserData"
 }
 
-func S2C_UserData_MessageID() protocol.MessageID {
-	return "msg.S2C_UserData"
+func S2C_UpdateUserData_MessageID() protocol.MessageID {
+	return "msg.S2C_UpdateUserData"
 }
 
-func New_S2C_UserData() *S2C_UserData {
-	m := &S2C_UserData{
+func New_S2C_UpdateUserData() *S2C_UpdateUserData {
+	m := &S2C_UpdateUserData{
 		Data: New_User(),
 	}
 	return m
 }
 
-var g_S2C_UserData_Pool = sync.Pool{}
+var g_S2C_UpdateUserData_Pool = sync.Pool{}
 
-func Get_S2C_UserData() *S2C_UserData {
-	m, ok := g_S2C_UserData_Pool.Get().(*S2C_UserData)
+func Get_S2C_UpdateUserData() *S2C_UpdateUserData {
+	m, ok := g_S2C_UpdateUserData_Pool.Get().(*S2C_UpdateUserData)
 	if !ok {
-		m = New_S2C_UserData()
+		m = New_S2C_UpdateUserData()
 	} else {
 		if m == nil {
-			m = New_S2C_UserData()
+			m = New_S2C_UpdateUserData()
 		} else {
 			m.ResetEx()
 		}
@@ -233,21 +237,21 @@ func Get_S2C_UserData() *S2C_UserData {
 	return m
 }
 
-func Put_S2C_UserData(i interface{}) {
-	if m, ok := i.(*S2C_UserData); ok && m != nil {
-		g_S2C_UserData_Pool.Put(i)
+func Put_S2C_UpdateUserData(i interface{}) {
+	if m, ok := i.(*S2C_UpdateUserData); ok && m != nil {
+		g_S2C_UpdateUserData_Pool.Put(i)
 	}
 }
 
 func init() {
 	Protocol.Register(
-		&S2C_UserData{},
-		func() protocol.IMessage { return Get_S2C_UserData() },
-		func(msg protocol.IMessage) { Put_S2C_UserData(msg) },
+		&S2C_UpdateUserData{},
+		func() protocol.IMessage { return Get_S2C_UpdateUserData() },
+		func(msg protocol.IMessage) { Put_S2C_UpdateUserData(msg) },
 	)
 }
 
-// message [S2C_UserData] end
+// message [S2C_UpdateUserData] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -328,4 +332,118 @@ func init() {
 }
 
 // message [C2S_UpdateUserData] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_UpdateItems] begin
+func (m *S2C_UpdateItems) ResetEx() {
+
+	for _, i := range m.GainItems {
+		Put_Item(i)
+	}
+	m.GainItems = []*Item{}
+
+	for _, i := range m.LostItems {
+		Put_Item(i)
+	}
+	m.LostItems = []*Item{}
+
+}
+
+func (m S2C_UpdateItems) Clone() *S2C_UpdateItems {
+	n, ok := g_S2C_UpdateItems_Pool.Get().(*S2C_UpdateItems)
+	if !ok || n == nil {
+		n = &S2C_UpdateItems{}
+	}
+
+	if len(m.GainItems) > 0 {
+		for _, i := range m.GainItems {
+			if i != nil {
+				n.GainItems = append(n.GainItems, i.Clone())
+			} else {
+				n.GainItems = append(n.GainItems, nil)
+			}
+		}
+	} else {
+		n.GainItems = []*Item{}
+	}
+
+	if len(m.LostItems) > 0 {
+		for _, i := range m.LostItems {
+			if i != nil {
+				n.LostItems = append(n.LostItems, i.Clone())
+			} else {
+				n.LostItems = append(n.LostItems, nil)
+			}
+		}
+	} else {
+		n.LostItems = []*Item{}
+	}
+
+	return n
+}
+
+func Clone_S2C_UpdateItems_Slice(dst []*S2C_UpdateItems, src []*S2C_UpdateItems) []*S2C_UpdateItems {
+	for _, i := range dst {
+		Put_S2C_UpdateItems(i)
+	}
+	dst = []*S2C_UpdateItems{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func (S2C_UpdateItems) V2() {
+}
+
+func (S2C_UpdateItems) MessageID() protocol.MessageID {
+	return "msg.S2C_UpdateItems"
+}
+
+func S2C_UpdateItems_MessageID() protocol.MessageID {
+	return "msg.S2C_UpdateItems"
+}
+
+func New_S2C_UpdateItems() *S2C_UpdateItems {
+	m := &S2C_UpdateItems{
+		GainItems: []*Item{},
+		LostItems: []*Item{},
+	}
+	return m
+}
+
+var g_S2C_UpdateItems_Pool = sync.Pool{}
+
+func Get_S2C_UpdateItems() *S2C_UpdateItems {
+	m, ok := g_S2C_UpdateItems_Pool.Get().(*S2C_UpdateItems)
+	if !ok {
+		m = New_S2C_UpdateItems()
+	} else {
+		if m == nil {
+			m = New_S2C_UpdateItems()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_UpdateItems(i interface{}) {
+	if m, ok := i.(*S2C_UpdateItems); ok && m != nil {
+		g_S2C_UpdateItems_Pool.Put(i)
+	}
+}
+
+func init() {
+	Protocol.Register(
+		&S2C_UpdateItems{},
+		func() protocol.IMessage { return Get_S2C_UpdateItems() },
+		func(msg protocol.IMessage) { Put_S2C_UpdateItems(msg) },
+	)
+}
+
+// message [S2C_UpdateItems] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

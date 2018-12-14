@@ -191,6 +191,27 @@
           </table>
         
           
+          <a href="#card.proto">card.proto</a>
+          <table class="card.proto-message-table">
+            <thead>
+              <tr><td>Message</td><td>Comment</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr id="tr-model.BestCombo">
+                  <td><a href="#model.BestCombo">BestCombo</a></td>
+                  <td><a href="#model.BestCombo">最大牌型</a></td>
+                </tr>
+              
+                <tr id="tr-model.Card">
+                  <td><a href="#model.Card">Card</a></td>
+                  <td><a href="#model.Card">牌</a></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+          
           <a href="#item.proto">item.proto</a>
           <table class="item.proto-message-table">
             <thead>
@@ -336,6 +357,81 @@ string ChannelAccount = 11;
     
       
       <div class="file-heading">
+        <h2 id="card.proto">card.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="model.BestCombo">BestCombo</h3>
+        <p>最大牌型</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Cards</td>
+                  <td><a href="#model.Card">Card</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Type</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>10-皇家同花顺,9-同花顺,8-四条(金刚),7-葫芦,6-通话
+5-顺子,4-三条,3-两队,2-对子,1-高牌 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="model.Card">Card</h3>
+        <p>牌</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Color</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>花色,1-黑桃(Spade),2-红桃(Heart),3-方块(Diamond),4-梅花(Club) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Num</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>牌值,2-14 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+
+      
+
+      
+
+      
+    
+      
+      <div class="file-heading">
         <h2 id="item.proto">item.proto</h2><a href="#title">Top</a>
       </div>
       <p></p>
@@ -360,7 +456,7 @@ string ChannelAccount = 11;
               
                 <tr>
                   <td>TID</td>
-                  <td><a href="#int32">int32</a></td>
+                  <td><a href="#int64">int64</a></td>
                   <td></td>
                   <td><p>类型id, item.xlsx中的id字段 </p></td>
                 </tr>
@@ -374,7 +470,7 @@ string ChannelAccount = 11;
               
                 <tr>
                   <td>Num</td>
-                  <td><a href="#int32">int32</a></td>
+                  <td><a href="#int64">int64</a></td>
                   <td></td>
                   <td><p>数量 </p></td>
                 </tr>
@@ -555,10 +651,12 @@ int32 ServerID = 3;
                 </tr>
               
                 <tr>
-                  <td>SignRewards</td>
-                  <td><a href="#model.Item">Item</a></td>
-                  <td>repeated</td>
-                  <td><p>每日签到奖励,数组第几个代表第几天 </p></td>
+                  <td>BestCombo</td>
+                  <td><a href="#model.BestCombo">BestCombo</a></td>
+                  <td></td>
+                  <td><p>每日签到奖励,数组第几个代表第几天
+repeated Item SignRewards = 15;
+历史最大牌型 </p></td>
                 </tr>
               
             </tbody>

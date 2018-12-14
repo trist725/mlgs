@@ -19,6 +19,7 @@ func init() {
 	skeleton.RegisterChanRPC("TurnAction", OnTurnAction)
 	skeleton.RegisterChanRPC("DisConn", OnDisConn)
 	skeleton.RegisterChanRPC("RoomChat", OnRoomChat)
+	skeleton.RegisterChanRPC("UpdateUserData", OnUpdateUserData)
 }
 
 //每轮签到天数
@@ -46,7 +47,7 @@ func OnAfterLoginAuthPass(args []interface{}) {
 	for i := 1; i <= signCountPerRound; i++ {
 		item := &msg.Item{
 			TID: 1,
-			Num: int32(1000 * i),
+			Num: 1000 * int64(i),
 		}
 		send.SignRewards = append(send.SignRewards, item)
 	}
@@ -131,4 +132,12 @@ func OnRoomChat(args []interface{}) {
 	room := args[0].(*r.Room)
 
 	room.BoardCastRC(recv)
+}
+
+//todo:
+func OnUpdateUserData(args []interface{}) {
+	//recv := args[1].(*msg.C2S_RoomChat)
+	//room := args[0].(*r.Room)
+	//
+	//room.BoardCastRC(recv)
 }
