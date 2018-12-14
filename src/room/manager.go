@@ -128,6 +128,10 @@ func (manager *Manager) PlayerJoin(p *cache.Player) bool {
 			if r.Stage() > 0 {
 				continue
 			}
+			if p.RoomId() != 0 {
+				log.Debug("[%s] already in room:[%d]", p.UserId(), p.RoomId())
+				return false
+			}
 			if err := r.PlayerJoin(p); err == nil {
 				//r.BoardCast(p)
 				return true

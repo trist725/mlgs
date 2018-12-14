@@ -107,6 +107,12 @@ func (s *Session) Close() error {
 		}
 		if s.cache != nil {
 			s.cache.SetSessionId(0)
+			//游戏中,不删session
+			//todo:重连 GetByUserId
+			if s.cache.InRoom() && s.cache.Stat() != 0 {
+				s.cache.SetPreSessionId(s.id)
+				return nil
+			}
 		}
 		gSessionManager.delSession(s)
 	}

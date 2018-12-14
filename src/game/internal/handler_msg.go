@@ -306,4 +306,5 @@ func handleUpdateUserData(args []interface{}) {
 
 	send.Data = session.UserData().ToMsg(msg.Get_User())
 	send.Err = msg.S2C_UpdateUserData_OK
+	session.Update()
 }

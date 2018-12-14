@@ -9,6 +9,7 @@ import (
 	"reflect"
 	"sort"
 	"sync/atomic"
+	"time"
 )
 
 var (
@@ -40,6 +41,8 @@ type Player struct {
 	//session id
 	//sid为0表示掉线
 	sid uint64
+	//上次sid
+	preSid uint64
 	// user id
 	//todo:掉线后根据uid操作
 	//todo:重连后判断有无快照数据,是否在对局中
@@ -290,8 +293,16 @@ func (p *Player) SetSessionId(sid uint64) {
 	atomic.StoreUint64(&p.sid, sid)
 }
 
+func (p *Player) SetPreSessionId(sid uint64) {
+	atomic.StoreUint64(&p.preSid, sid)
+}
+
 func (p *Player) SessionId() uint64 {
 	return atomic.LoadUint64(&p.sid)
+}
+
+func (p *Player) PreSessionId() uint64 {
+	return atomic.LoadUint64(&p.preSid)
 }
 
 func (p *Player) TotalBet() int64 {
@@ -383,7 +394,6 @@ func (p *Player) CalNuts(pc CardSlice) {
 								p.SetNutsLevel(newLvl)
 								p.UpdateNuts(cards)
 							} else if curLvl == newLvl {
-								log.Debug("len :len = %d : %d------------------", p.nuts.Len(), cards.Len())
 								//只有同级比较才有意义
 								if bigger := p.CompareCards(cards); bigger != nil {
 									p.UpdateNuts(bigger)
@@ -474,5 +484,17 @@ func (ps PlayerSlice) Less(i, j int) bool {
 		} else { //if reflect.DeepEqual(cs, ps[j].Nuts())
 			return false
 		}
+	}
+}
+
+func (p *Player) SaveData() {
+	if p.userData != nil {
+		// 保存用户数据
+		log.Debug("[%d] save data on [%v]", p.UserId(), time.Now())
+		dbSession := model.GetSession()
+		if err := p.userData.UpdateByID(dbSession); err != nil {
+			log.Error("[%d], save data error:[%s]", p.UserId(), err)
+		}
+		model.PutSession(dbSession)
 	}
 }

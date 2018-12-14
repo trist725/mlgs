@@ -88,6 +88,14 @@ func (manager *Manager) delSession(session *Session) {
 	manager.disposeWait.Done()
 }
 
+func (manager *Manager) DelSessionById(sessionID uint64) {
+	session := manager.GetSession(sessionID)
+	if session == nil {
+		return
+	}
+	manager.delSession(session)
+}
+
 func (manager *Manager) GetByUserId(id int64) *Session {
 	for i := 0; i < sessionMapNum; i++ {
 		smap := &manager.sessionMaps[i]

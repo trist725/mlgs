@@ -662,9 +662,13 @@ func (r *Room) PlayerLeave(p *cache.Player) error {
 			return fmt.Errorf("nil userdata on playerLeave")
 		}
 		p.UserData().Gain(1, p.Chip(), false, nil)
-		delete(r.players, p.Pos())
 		player.SetRoomId(0)
 		r.BoardCastPL(player.UserId())
+		if p.SessionId() == 0 {
+			p.SaveData()
+			s.Mgr().DelSessionById(p.PreSessionId())
+		}
+		delete(r.players, p.Pos())
 		return nil
 	}
 
