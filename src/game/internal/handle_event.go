@@ -100,10 +100,11 @@ func OnPlayerJoinRoom(args []interface{}) {
 func OnPlayerLeaveRoom(args []interface{}) {
 	id := args[0].(int64)
 	room := args[1].(*r.Room)
+	err := args[2].(msg.S2C_UpdatePlayerLeaveRoom_E_Err)
 	//var ids []int64
 	//ids = append(ids, id)
 
-	room.BoardCastPL(id)
+	room.BoardCastPL(id, err)
 	room.SendRefreshReadyTimeSig()
 }
 

@@ -124,6 +124,51 @@ func Each_S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_I(f func(int32) bool) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// enum [S2C_UpdatePlayerLeaveRoom_E_Err] begin
+
+var S2C_UpdatePlayerLeaveRoom_E_Err_Slice = []int32{
+	0,
+	1,
+	2,
+	3,
+	4,
+}
+
+func S2C_UpdatePlayerLeaveRoom_E_Err_Len() int {
+	return len(S2C_UpdatePlayerLeaveRoom_E_Err_Slice)
+}
+
+func Check_S2C_UpdatePlayerLeaveRoom_E_Err_I(value int32) bool {
+	if _, ok := S2C_UpdatePlayerLeaveRoom_E_Err_name[value]; ok && value != 0 {
+		return true
+	}
+	return false
+}
+
+func Check_S2C_UpdatePlayerLeaveRoom_E_Err(value S2C_UpdatePlayerLeaveRoom_E_Err) bool {
+	return Check_S2C_UpdatePlayerLeaveRoom_E_Err_I(int32(value))
+}
+
+func Each_S2C_UpdatePlayerLeaveRoom_E_Err(f func(S2C_UpdatePlayerLeaveRoom_E_Err) bool) {
+	for _, value := range S2C_UpdatePlayerLeaveRoom_E_Err_Slice {
+		if !f(S2C_UpdatePlayerLeaveRoom_E_Err(value)) {
+			break
+		}
+	}
+}
+
+func Each_S2C_UpdatePlayerLeaveRoom_E_Err_I(f func(int32) bool) {
+	for _, value := range S2C_UpdatePlayerLeaveRoom_E_Err_Slice {
+		if !f(value) {
+			break
+		}
+	}
+}
+
+// enum [S2C_UpdatePlayerLeaveRoom_E_Err] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // message [Card] begin
 func (m *Card) ResetEx() {
 	m.Color = 0
@@ -771,6 +816,7 @@ func Put_S2C_UpdatePlayerJoinRoom(i interface{}) {
 // message [S2C_UpdatePlayerLeaveRoom] begin
 func (m *S2C_UpdatePlayerLeaveRoom) ResetEx() {
 	m.UserId = 0
+	m.Reason = 0
 
 }
 
@@ -781,6 +827,7 @@ func (m S2C_UpdatePlayerLeaveRoom) Clone() *S2C_UpdatePlayerLeaveRoom {
 	}
 
 	n.UserId = m.UserId
+	n.Reason = m.Reason
 
 	return n
 }

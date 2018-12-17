@@ -103,6 +103,19 @@ message S2C_UpdatePlayerJoinRoom {
 message S2C_UpdatePlayerLeaveRoom {
     ///离开的玩家的用户id
     int64 UserId = 1;
+    ///离开原因
+    enum E_Err{
+        E_Err_ = 0;
+        ///正常离开
+        E_Err_Normal = 1;
+        ///钱不够被踢
+        E_Err_Kick_NoMoney = 2;
+        ///失败,其它
+        E_Err_UnKnown = 3;
+        ///掉线
+        E_Err_DisConn = 4;
+    }
+    E_Err Reason = 4;
 }
 
 /// 开局

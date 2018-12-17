@@ -31,5 +31,4 @@ pkg
 vendor
 .DS_Store
 ~*.xlsx
-xlsx/robot-15
-xlsx/robot-120
+xlsx

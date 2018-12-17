@@ -212,7 +212,7 @@ func NewRobotPlayer(rid int64, t int64) *Player {
 	}
 
 	recv := msg.Get_C2S_Login()
-	recv.AvatarURL = "http..."
+	recv.AvatarURL = "http://www.005.tv/uploads/allimg/160616/21-1606161H61K13.jpg"
 	recv.NickName = util.GenRandomString(8)
 	recv.Sex = "1"
 	user, err := model.CreateUser(0, recv)
@@ -411,6 +411,15 @@ func (p *Player) CompareCards(cs2 CardSlice) CardSlice {
 	if p.nuts.Len() != cs2.Len() {
 		log.Error("diff len CardSlice can't compare, %d : %d", p.nuts.Len(), cs2.Len())
 		return nil
+	}
+
+	l := cs2.CalLevel()
+	if p.nutsLevel != l {
+		if p.nutsLevel > l {
+			return p.nuts
+		} else {
+			return cs2
+		}
 	}
 
 	var bigger CardSlice

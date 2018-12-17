@@ -114,7 +114,7 @@ func (r *Room) BoardCastDisConn(uid int64) {
 }
 
 //广播玩家离开
-func (r *Room) BoardCastPL(id int64) {
+func (r *Room) BoardCastPL(id int64, reason msg.S2C_UpdatePlayerLeaveRoom_E_Err) {
 	r.PlayerEach(func(player *cache.Player) {
 		session := s.Mgr().GetSession(player.SessionId())
 		if session == nil {
@@ -124,6 +124,7 @@ func (r *Room) BoardCastPL(id int64) {
 
 		send := msg.Get_S2C_UpdatePlayerLeaveRoom()
 		send.UserId = id
+		send.Reason = reason
 
 		session.Agent().WriteMsg(send)
 	})

@@ -40,6 +40,7 @@ func handlePlayerLeaveRoom(args []interface{}) {
 	session := s.Mgr().GetSession(sid)
 	if session == nil {
 		log.Debug("handlePlayerLeaveRoom return for nil session")
+		send.Err = msg.S2C_PlayerLeaveRoom_E_Err_UnKnown
 		return
 	}
 
@@ -47,6 +48,7 @@ func handlePlayerLeaveRoom(args []interface{}) {
 	player := session.Player()
 	if player == nil {
 		log.Error("session[%d] without player on handlePlayerLeaveRoom", session.ID())
+		send.Err = msg.S2C_PlayerLeaveRoom_E_Err_UnKnown
 		return
 	}
 	if player.InTheGame() {
@@ -56,14 +58,13 @@ func handlePlayerLeaveRoom(args []interface{}) {
 	}
 
 	r := room.Mgr().GetRoom(session.Player().RoomId())
-	if err := r.PlayerLeave(session.Player()); err != nil {
+	if err := r.PlayerLeave(session.Player(), msg.S2C_UpdatePlayerLeaveRoom_E_Err_Normal); err != nil {
 		send.Err = msg.S2C_PlayerLeaveRoom_E_Err_UnKnown
 		return
 	}
 
-	ChanRPC.Go("PlayerLeaveRoom", session.UserData().ID, r)
-
 	send.Err = msg.S2C_PlayerLeaveRoom_E_Err_Success
+	//ChanRPC.Go("PlayerLeaveRoom", session.UserData().ID, r, msg.S2C_UpdatePlayerLeaveRoom_E_Err_Normal)
 
 	session.Update()
 }

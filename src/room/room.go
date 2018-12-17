@@ -428,6 +428,7 @@ REACT:
 		bet = 0
 	case 3:
 		bet = r.maxBet - ta.p.GetBetByStage(r.stage)
+		//log.Debug("gen zhu....... maxBat---%d,---%d----ta.act.bet---%d", r.maxBet, ta.p.GetBetByStage(r.stage), ta.act.Bet)
 		//此时可以让或加,优先让牌
 		if bet == 0 {
 			ta.act.Act = 1
@@ -459,7 +460,7 @@ REACT:
 			goto REACT
 		}
 		bet = r.maxBet - ta.p.GetBetByStage(r.stage) + ta.act.Bet
-		log.Debug("jia zhu....... maxBat---%d,---%d----bet---%d", r.maxBet, ta.p.GetBetByStage(r.stage), bet)
+		//log.Debug("jia zhu....... maxBat---%d,---%d----ta.act.bet---%d", r.maxBet, ta.p.GetBetByStage(r.stage), ta.act.Bet)
 		//筹码不够,allin
 		if ta.p.Chip() < bet {
 			ta.act.Act = 5
@@ -645,7 +646,7 @@ func (r *Room) bystanderJoin(p *cache.Player) bool {
 	return true
 }
 
-func (r *Room) PlayerLeave(p *cache.Player) error {
+func (r *Room) PlayerLeave(p *cache.Player, reason msg.S2C_UpdatePlayerLeaveRoom_E_Err) error {
 	if p == nil {
 		return fmt.Errorf("PlayerLeave failed, invalid player")
 	}
@@ -663,7 +664,7 @@ func (r *Room) PlayerLeave(p *cache.Player) error {
 		}
 		p.UserData().Gain(1, p.Chip(), false, nil)
 		player.SetRoomId(0)
-		r.BoardCastPL(player.UserId())
+		r.BoardCastPL(player.UserId(), reason)
 		if p.SessionId() == 0 {
 			p.SaveData()
 			s.Mgr().DelSessionById(p.PreSessionId())
@@ -1072,8 +1073,7 @@ func (r *Room) KickOffPlayers() {
 		player.SetStat(0)
 		// 掉线的/机器人/筹码不够的 踢
 		if player.SessionId() == 0 || player.Robot() || player.Chip() < r.bb {
-			r.BoardCastPL(player.UserId())
-			r.PlayerLeave(player)
+			r.PlayerLeave(player, msg.S2C_UpdatePlayerLeaveRoom_E_Err_Kick_NoMoney)
 		}
 	})
 }
