@@ -480,7 +480,7 @@ REACT:
 		}
 		if ta.act.Bet > r.maxBet {
 			//更新最大下注
-			r.maxBet = ta.act.Bet
+			r.maxBet = ta.act.Bet + ta.p.GetBetByStage(r.stage)
 			//更新上次加注位
 			r.raisePos = ta.p.Pos()
 		}
