@@ -25,6 +25,11 @@ func handleLoginAuth(args []interface{}) {
 	// 消息的发送者
 	sender := args[1].(gate.Agent)
 	send := &msg.S2C_Login{}
+	//close必须在send之后
+	closeFlag := false
+	if closeFlag {
+		defer sender.Close()
+	}
 	defer sender.WriteMsg(send)
 	dbSession := model.GetSession()
 	defer model.PutSession(dbSession)
@@ -34,6 +39,7 @@ func handleLoginAuth(args []interface{}) {
 		if err = checkLoginInfo(account, recv); err != nil {
 			send.Reason = msg.S2C_Login_E_Err_LoginInfoNotMatch
 			log.Debug("login err: [%s]", err)
+			closeFlag = true
 			return
 		}
 
@@ -53,7 +59,7 @@ func handleLoginAuth(args []interface{}) {
 				log.Error("find user by accountID=%d fail, err:%#v", account.ID, err)
 				//加载用户数据失败, 断开连接
 				send.Reason = msg.S2C_Login_E_Err_Unknown
-				sender.Close()
+				closeFlag = true
 				return
 			}
 			log.Debug("not found user by accountID=%d", account.ID)
@@ -66,7 +72,7 @@ func handleLoginAuth(args []interface{}) {
 		if session != nil {
 			log.Debug("[%d-%s] already online", user.ID, user.NickName)
 			send.Reason = msg.S2C_Login_E_Err_AlreadyLogin
-			sender.Close()
+			closeFlag = true
 			return
 		}
 
@@ -83,7 +89,7 @@ func handleLoginAuth(args []interface{}) {
 	newAccount, err := createAccount(dbSession, recv)
 	if err != nil {
 		send.Reason = msg.S2C_Login_E_Err_Unknown
-		sender.Close()
+		closeFlag = true
 		return
 	}
 	defer model.Put_Account(newAccount)
@@ -92,7 +98,7 @@ func handleLoginAuth(args []interface{}) {
 	newUser, err := createUser(dbSession, newAccount.ID, recv)
 	if err != nil {
 		send.Reason = msg.S2C_Login_E_Err_Unknown
-		sender.Close()
+		closeFlag = true
 		return
 	}
 	defer model.Put_User(newUser)
