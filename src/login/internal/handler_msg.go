@@ -27,10 +27,13 @@ func handleLoginAuth(args []interface{}) {
 	send := &msg.S2C_Login{}
 	//close必须在send之后
 	closeFlag := false
-	if closeFlag {
-		defer sender.Close()
-	}
-	defer sender.WriteMsg(send)
+	defer func() {
+		sender.WriteMsg(send)
+		if closeFlag {
+			log.Debug("close agent...[%v]", sender.RemoteAddr())
+			sender.Close()
+		}
+	}()
 	dbSession := model.GetSession()
 	defer model.PutSession(dbSession)
 
