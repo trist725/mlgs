@@ -37,6 +37,17 @@ func handleLoginAuth(args []interface{}) {
 	dbSession := model.GetSession()
 	defer model.PutSession(dbSession)
 
+	if !CheckCltVer(&CltVer{
+		recv.BigVer,
+		recv.SmallVer,
+		recv.FixVer,
+	}, recv.CltType) {
+		log.Debug("client version not match...")
+		closeFlag = true
+		send.Reason = msg.S2C_Login_E_Err_LowVersion
+		return
+	}
+
 	if account, err := checkAccountExist(dbSession, recv.UID); err != nil {
 		//登陆
 		if err = checkLoginInfo(account, recv); err != nil {

@@ -29,8 +29,12 @@ message C2S_Login{
         E_LoginType_WanBo = 2;
     }
     E_LoginType logintype = 7;
-    ///客户端版本号
-    string CltVer = 8;
+    ///客户端设备类型,1-android,2-ios,3-h5
+    int32 CltType = 8;
+    ///客户端版本号: BigVer.SmallVer.FixVer
+    int32 BigVer = 9;
+    int32 SmallVer = 10;
+    int32 FixVer = 11;
 }
 
 ///登陆回复

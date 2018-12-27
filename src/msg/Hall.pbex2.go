@@ -164,7 +164,10 @@ func (m *C2S_Login) ResetEx() {
 	m.Password = ""
 	m.Location = ""
 	m.Logintype = 0
-	m.CltVer = ""
+	m.CltType = 0
+	m.BigVer = 0
+	m.SmallVer = 0
+	m.FixVer = 0
 
 }
 
@@ -181,7 +184,10 @@ func (m C2S_Login) Clone() *C2S_Login {
 	n.Password = m.Password
 	n.Location = m.Location
 	n.Logintype = m.Logintype
-	n.CltVer = m.CltVer
+	n.CltType = m.CltType
+	n.BigVer = m.BigVer
+	n.SmallVer = m.SmallVer
+	n.FixVer = m.FixVer
 
 	return n
 }
