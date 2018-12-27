@@ -3,7 +3,9 @@ package room
 import (
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/cache"
+	"mlgs/src/sd"
 	"sort"
+	"time"
 )
 
 //结算
@@ -40,6 +42,7 @@ func (r *Room) Balance() {
 	})
 
 	r.BoardCastBalance()
+	time.Sleep(time.Duration(sd.InitBalanceTime()) * time.Second)
 }
 
 func (r *Room) DivideLoser(winners cache.PlayerSlice, losers cache.PlayerSlice, flop bool) {

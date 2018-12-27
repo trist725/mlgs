@@ -24,6 +24,7 @@ var _ = protocol.PH
 var C2S_Login_E_LoginType_Slice = []int32{
 	0,
 	1,
+	2,
 }
 
 func C2S_Login_E_LoginType_Len() int {
@@ -72,6 +73,7 @@ var S2C_Login_E_ErrReason_Slice = []int32{
 	5,
 	6,
 	7,
+	8,
 }
 
 func S2C_Login_E_ErrReason_Len() int {
@@ -162,6 +164,7 @@ func (m *C2S_Login) ResetEx() {
 	m.Password = ""
 	m.Location = ""
 	m.Logintype = 0
+	m.CltVer = ""
 
 }
 
@@ -178,6 +181,7 @@ func (m C2S_Login) Clone() *C2S_Login {
 	n.Password = m.Password
 	n.Location = m.Location
 	n.Logintype = m.Logintype
+	n.CltVer = m.CltVer
 
 	return n
 }
@@ -248,6 +252,7 @@ func init() {
 // message [S2C_Login] begin
 func (m *S2C_Login) ResetEx() {
 	m.Reason = 0
+	m.WanboRes = 0
 
 }
 
@@ -258,6 +263,7 @@ func (m S2C_Login) Clone() *S2C_Login {
 	}
 
 	n.Reason = m.Reason
+	n.WanboRes = m.WanboRes
 
 	return n
 }

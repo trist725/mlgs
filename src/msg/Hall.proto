@@ -7,7 +7,7 @@ import "item.proto";
 ///登陆请求
 //@msg
 message C2S_Login{
-    ///微信登陆时是微信uid,游客登陆时是手机唯一标识
+    ///微信登陆时是微信uid,游客登陆时是手机唯一标识,万博登陆是playerid
     string UID=1;
     ///用户昵称
     string NickName = 2;
@@ -21,12 +21,16 @@ message C2S_Login{
     string location = 6;
     ///登陆类型
     enum E_LoginType {
-        //微信登陆
+        ///微信登陆
         E_LoginType_WeChat=0;
-        //游客登陆
+        ///游客登陆
         E_LoginType_Guest=1;
+        ///万博登陆
+        E_LoginType_WanBo = 2;
     }
     E_LoginType logintype = 7;
+    ///客户端版本号
+    string CltVer = 8;
 }
 
 ///登陆回复
@@ -49,8 +53,12 @@ message S2C_Login{
         E_Err_AlreadyLogin = 6;
         ///其它错误
         E_Err_Unknown = 7;
+        ///客户端版本过低
+        E_Err_LowVersion = 8;
     }
     E_ErrReason reason=1;
+    ///万博响应码
+    int32 WanboRes = 2;
 }
 
 ///登陆成功后下发信息

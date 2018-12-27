@@ -272,6 +272,42 @@ func (mgr *TimeManager) AfterLoadAll(excelFilePath string) (success bool) {
 		timeSd := TimeMgr.Get(9)
 		gActionTime_S4 = timeSd.Value
 	}
+	//结算动画时间
+	//菜鸡策划真心教不会配表，先写死了
+	{
+		timeSd := TimeMgr.Get(10)
+		gBalanceTime = timeSd.Value
+	}
+	//一次性发5张牌后等待时间,等完再发结算信息
+	//菜鸡策划真心教不会配表，先写死了
+	{
+		timeSd := TimeMgr.Get(11)
+		gDealFiveWaitTime = timeSd.Value
+	}
+	//弹出“本局结束”字样时间
+	//菜鸡策划真心教不会配表，先写死了
+	{
+		timeSd := TimeMgr.Get(15)
+		gGameFinActTime = timeSd.Value
+	}
+	//弹出“本局开始”字样时间
+	//菜鸡策划真心教不会配表，先写死了
+	{
+		timeSd := TimeMgr.Get(14)
+		gGameStartActTime = timeSd.Value
+	}
+	//每一局结束后的等待时间
+	//菜鸡策划真心教不会配表，先写死了
+	{
+		timeSd := TimeMgr.Get(12)
+		gAfterGameWaitTime = timeSd.Value
+	}
+	//每一局开始前的等待时间
+	//菜鸡策划真心教不会配表，先写死了
+	{
+		timeSd := TimeMgr.Get(13)
+		gBeforeGameWaitTime = timeSd.Value
+	}
 	//after_load_all_end
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	return
@@ -289,6 +325,66 @@ func InitDealCardTime() int {
 		log.Fatal("开局发牌时间 配表有误")
 	}
 	return gMinStartGamePlayer
+}
+
+//结算动画时间
+var gBalanceTime int
+
+func InitBalanceTime() int {
+	if gBalanceTime < 1 {
+		log.Fatal("结算动画时间 配表有误")
+	}
+	return gBalanceTime
+}
+
+//弹出“本局结束”字样时间
+var gGameFinActTime int
+
+func InitGameFinActTime() int {
+	if gGameFinActTime < 1 {
+		log.Fatal("弹出 本局结束 字样时间 配表有误")
+	}
+	return gGameFinActTime
+}
+
+//一次性发5张牌后等待时间
+var gDealFiveWaitTime int
+
+func InitDealFiveWaitTime() int {
+	if gDealFiveWaitTime < 1 {
+		log.Fatal("一次性发5张牌后等待时间 配表有误")
+	}
+	return gDealFiveWaitTime
+}
+
+//弹出“本局开始”字样时间
+var gGameStartActTime int
+
+func InitGameStartActTime() int {
+	if gGameStartActTime < 1 {
+		log.Fatal("弹出 本局开始 字样时间 配表有误")
+	}
+	return gGameStartActTime
+}
+
+//每一局结束后的等待时间
+var gAfterGameWaitTime int
+
+func InitAfterGameWaitTime() int {
+	if gAfterGameWaitTime < 1 {
+		log.Fatal("每一局结束后的等待时间 配表有误")
+	}
+	return gAfterGameWaitTime
+}
+
+//每一局开始前的等待时间
+var gBeforeGameWaitTime int
+
+func InitBeforeGameWaitTime() int {
+	if gBeforeGameWaitTime < 1 {
+		log.Fatal("每一局开始前的等待时间 配表有误")
+	}
+	return gBeforeGameWaitTime
 }
 
 //第1阶段行动时间

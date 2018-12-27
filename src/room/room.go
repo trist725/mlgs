@@ -108,8 +108,8 @@ func (r *Room) loop(args []interface{}) {
 
 	//暂写死1,策划蛋疼的配表
 	//游戏准备时间
-	timeSd := sd.TimeMgr.Get(1)
-	if timeSd == nil {
+	readyTimeSd := sd.TimeMgr.Get(1)
+	if readyTimeSd == nil {
 		log.Error("room loop: read time xlsx failed..")
 		return
 	}
@@ -120,7 +120,7 @@ GAME_READY:
 	for {
 		select {
 		//todo: 可优化,手动timer.stop
-		case <-time.After(time.Duration(timeSd.Value) * time.Second):
+		case <-time.After(time.Duration(readyTimeSd.Value) * time.Second):
 			if len(r.players) <= sd.InitMinStartGamePlayer() &&
 				r.GetPlayerCount() > 0 {
 				random := util.RandomInt(1, gPlayerLimit-len(r.players))
@@ -130,6 +130,7 @@ GAME_READY:
 			}
 			//是否满足最少开局人数
 			if len(r.players) >= sd.InitMinStartGamePlayer() {
+				time.Sleep(time.Duration(sd.InitBeforeGameWaitTime()) * time.Second)
 				if !r.NewGame(skeleton) {
 					continue
 				}
@@ -151,8 +152,7 @@ GAME_READY:
 
 GAME_STAGE1:
 	r.SetStage(1)
-	time.Sleep(2 * time.Second)
-	//不要直接用sleep
+	//尽量不要直接用sleep
 	//等待客户端发手牌动作
 	select {
 	case <-time.After(time.Duration(sd.InitDealCardTime()) * time.Second):
@@ -351,9 +351,9 @@ GAME_STAGE5:
 		}
 	}
 	r.SetStage(5)
-	//todo:结算
+	//结算
 	r.Balance()
-	time.Sleep(10 * time.Second)
+	time.Sleep(time.Duration(sd.InitAfterGameWaitTime()) * time.Second)
 	r.GameOver()
 	goto GAME_READY
 
@@ -754,7 +754,6 @@ func (r *Room) NewGame(args ...interface{}) bool {
 
 	//确定庄家
 	if !r.AllocRole(1, r.dPos) {
-
 		return false
 	}
 	//发手牌
@@ -771,6 +770,7 @@ func (r *Room) NewGame(args ...interface{}) bool {
 	r.ResetPlayers(1)
 	//异步发
 	skeleton.ChanRPCServer.Go("NewGame", r)
+	time.Sleep(time.Duration(sd.InitGameStartActTime()) * time.Second)
 	return true
 }
 
@@ -1062,6 +1062,7 @@ func (r *Room) NewStage(skeleton *module.Skeleton) {
 //todo:保存记录
 func (r *Room) GameOver() {
 	r.BoardCastGO()
+	time.Sleep(time.Duration(sd.InitGameFinActTime()) * time.Second)
 	r.SetStage(0)
 
 	r.ResetPlayers(0)
