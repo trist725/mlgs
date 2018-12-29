@@ -47,6 +47,9 @@ func GetAllowCltVer(dt int32, ver *CltVer) error {
 }
 
 func CheckCltVer(loginVer *CltVer, dt int32) bool {
+	//暂时不用
+	return true
+
 	if err := GetAllowCltVer(dt, &gAllowCltVer); err != nil {
 		log.Error("GetAllowCltVer failed: %v", err)
 		return false
