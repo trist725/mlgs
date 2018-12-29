@@ -55,6 +55,14 @@ type User struct {
 	SignedDays int32 `bson:"SignedDays"`
 	///每日签到奖励,数组第几个代表第几天 repeated Item SignRewards = 15; /历史最大牌型
 	BestCombo *BestCombo `bson:"BestCombo"`
+	///是否已分配每日任务
+	AllocDayQuest bool `bson:"AllocDayQuest"`
+	///成就
+	Achieves []*Achievement `bson:"Achieves"`
+	///任务
+	Quests []*Quest `bson:"Quests"`
+	///累计获得过的金币
+	GainCoin int64 `bson:"GainCoin"`
 }
 
 func New_User() *User {
@@ -62,6 +70,8 @@ func New_User() *User {
 		Monies:    []*Money{},
 		Items:     []*Item{},
 		BestCombo: New_BestCombo(),
+		Achieves:  []*Achievement{},
+		Quests:    []*Quest{},
 	}
 	return m
 }
@@ -95,6 +105,18 @@ func (m *User) Reset() {
 	m.DaySigned = false
 	m.SignedDays = 0
 	m.BestCombo.Reset()
+	m.AllocDayQuest = false
+
+	for _, i := range m.Achieves {
+		Put_Achievement(i)
+	}
+	m.Achieves = []*Achievement{}
+
+	for _, i := range m.Quests {
+		Put_Quest(i)
+	}
+	m.Quests = []*Quest{}
+	m.GainCoin = 0
 
 }
 
@@ -142,6 +164,33 @@ func (m User) Clone() *User {
 	n.DaySigned = m.DaySigned
 	n.SignedDays = m.SignedDays
 	n.BestCombo = m.BestCombo.Clone()
+	n.AllocDayQuest = m.AllocDayQuest
+
+	if len(m.Achieves) > 0 {
+		for _, i := range m.Achieves {
+			if i != nil {
+				n.Achieves = append(n.Achieves, i.Clone())
+			} else {
+				n.Achieves = append(n.Achieves, nil)
+			}
+		}
+	} else {
+		n.Achieves = []*Achievement{}
+	}
+
+	if len(m.Quests) > 0 {
+		for _, i := range m.Quests {
+			if i != nil {
+				n.Quests = append(n.Quests, i.Clone())
+			} else {
+				n.Quests = append(n.Quests, nil)
+			}
+		}
+	} else {
+		n.Quests = []*Quest{}
+	}
+
+	n.GainCoin = m.GainCoin
 
 	return n
 }

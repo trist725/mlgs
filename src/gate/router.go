@@ -17,4 +17,7 @@ func init() {
 	msg.Processor.SetRouter(&msg.C2S_Ping{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_RoomChat{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_UpdateUserData{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_GetCompletedAchievements{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_GetAllQuests{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_GetQuestReward{}, game.ChanRPC)
 }

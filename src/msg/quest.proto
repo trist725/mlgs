@@ -1,0 +1,47 @@
+syntax="proto3";
+
+package msg;
+
+message Quest {
+    ///在任务表中的id
+    int64 Id = 1;
+    ///完成进度
+    int64 Progress = 2;
+    ///是否已领取奖励
+    bool Received = 3;
+}
+
+///获取所有任务
+message C2S_GetAllQuests {
+}
+
+message S2C_GetAllQuests {
+    repeated Quest Quests = 1;
+}
+
+///领取任务奖励
+message C2S_GetQuestReward {
+    ///要领取的任务Id
+    int64 Id = 1;
+    ///大佬要加的标记
+    string CltPath = 2;
+}
+
+message S2C_GetQuestReward {
+    enum E_Err {
+        E_Err_ = 0;
+        ///成功
+        E_Err_Success = 1;
+        ///失败,已领取过
+        E_Err_Received = 2;
+        ///失败,任务未完成
+        E_Err_Not_Completed = 3;
+        ///失败
+        E_Err_UnKnown = 4;
+    }
+    E_Err Err = 1;
+    ///任务id
+    int64 Id = 2;
+    ///大佬要加的标记
+    string CltPath = 3;
+}

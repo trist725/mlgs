@@ -3,10 +3,7 @@
 
 package sd
 
-import (
-	"encoding/json"
-	"strconv"
-)
+import "encoding/json"
 import "fmt"
 import "log"
 import "path/filepath"
@@ -20,10 +17,28 @@ import "github.com/trist725/mgsu/util"
 //import_extend_end
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-type Global struct {
-	ID int64 `excel_column:"0" excel_name:"id"` // 公共配置表ID
+type Task struct {
+	ID int64 `excel_column:"0" excel_name:"id"` // 编号
 
-	Value string `excel_column:"1" excel_name:"value"` // 配置值
+	Name string `excel_column:"1" excel_name:"name"` // 名称
+
+	Type int32 `excel_column:"2" excel_name:"type"` // 类别
+
+	Des string `excel_column:"4" excel_name:"des"` // 描述
+
+	Need int64 `excel_column:"5" excel_name:"need"` // 完成条件
+
+	TypeNeed int32 `excel_column:"6" excel_name:"type_need"` // 完成条件类别
+
+	Room []int `excel_column:"8" excel_name:"room"` // 任务生效房间
+
+	Reward int64 `excel_column:"9" excel_name:"reward"` // 奖励物品
+
+	Rewardnum int64 `excel_column:"11" excel_name:"rewardnum"` // 奖励个数
+
+	Timeliness int32 `excel_column:"12" excel_name:"timeliness"` // 时效性
+
+	Icon string `excel_column:"13" excel_name:"icon"` // 图标
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体扩展字段
@@ -32,8 +47,8 @@ type Global struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func NewGlobal() *Global {
-	sd := &Global{}
+func NewTask() *Task {
+	sd := &Task{}
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体New代码
 	//struct_new_begin
@@ -42,14 +57,17 @@ func NewGlobal() *Global {
 	return sd
 }
 
-func (sd Global) String() string {
+func (sd Task) String() string {
 	ba, _ := json.Marshal(sd)
 	return string(ba)
 }
 
-func (sd Global) Clone() *Global {
-	n := NewGlobal()
+func (sd Task) Clone() *Task {
+	n := NewTask()
 	*n = sd
+
+	n.Room = make([]int, len(sd.Room))
+	copy(n.Room, sd.Room)
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体Clone代码
@@ -60,14 +78,14 @@ func (sd Global) Clone() *Global {
 	return n
 }
 
-func (sd *Global) load(row *xlsx.Row) error {
+func (sd *Task) load(row *xlsx.Row) error {
 	return util.DeserializeStructFromXlsxRow(sd, row)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-type GlobalManager struct {
-	dataArray []*Global
-	dataMap   map[int64]*Global
+type TaskManager struct {
+	dataArray []*Task
+	dataMap   map[int64]*Task
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加manager扩展字段
@@ -76,10 +94,10 @@ type GlobalManager struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func newGlobalManager() *GlobalManager {
-	mgr := &GlobalManager{
-		dataArray: []*Global{},
-		dataMap:   make(map[int64]*Global),
+func newTaskManager() *TaskManager {
+	mgr := &TaskManager{
+		dataArray: []*Task{},
+		dataMap:   make(map[int64]*Task),
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +109,7 @@ func newGlobalManager() *GlobalManager {
 	return mgr
 }
 
-func (mgr *GlobalManager) Load(excelFilePath string) (success bool) {
+func (mgr *TaskManager) Load(excelFilePath string) (success bool) {
 	success = true
 
 	absExcelFilePath, err := filepath.Abs(excelFilePath)
@@ -137,7 +155,7 @@ func (mgr *GlobalManager) Load(excelFilePath string) (success bool) {
 			}
 		}
 
-		sd := NewGlobal()
+		sd := NewTask()
 		err = sd.load(row)
 		if err != nil {
 			log.Printf("%s 加载第%d行失败, %s\n", excelFilePath, i+1, err)
@@ -174,11 +192,11 @@ func (mgr *GlobalManager) Load(excelFilePath string) (success bool) {
 	return
 }
 
-func (mgr GlobalManager) Size() int {
+func (mgr TaskManager) Size() int {
 	return len(mgr.dataArray)
 }
 
-func (mgr GlobalManager) Get(id int64) *Global {
+func (mgr TaskManager) Get(id int64) *Task {
 	sd, ok := mgr.dataMap[id]
 	if !ok {
 		return nil
@@ -186,7 +204,7 @@ func (mgr GlobalManager) Get(id int64) *Global {
 	return sd.Clone()
 }
 
-func (mgr GlobalManager) Each(f func(sd *Global) bool) {
+func (mgr TaskManager) Each(f func(sd *Task) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd.Clone()) {
 			break
@@ -194,7 +212,7 @@ func (mgr GlobalManager) Each(f func(sd *Global) bool) {
 	}
 }
 
-func (mgr *GlobalManager) each(f func(sd *Global) bool) {
+func (mgr *TaskManager) each(f func(sd *Task) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd) {
 			break
@@ -202,7 +220,7 @@ func (mgr *GlobalManager) each(f func(sd *Global) bool) {
 	}
 }
 
-func (mgr GlobalManager) findIf(f func(sd *Global) bool) *Global {
+func (mgr TaskManager) findIf(f func(sd *Task) bool) *Task {
 	for _, sd := range mgr.dataArray {
 		if f(sd) {
 			return sd
@@ -211,7 +229,7 @@ func (mgr GlobalManager) findIf(f func(sd *Global) bool) *Global {
 	return nil
 }
 
-func (mgr GlobalManager) FindIf(f func(sd *Global) bool) *Global {
+func (mgr TaskManager) FindIf(f func(sd *Task) bool) *Task {
 	for _, sd := range mgr.dataArray {
 		n := sd.Clone()
 		if f(n) {
@@ -221,7 +239,7 @@ func (mgr GlobalManager) FindIf(f func(sd *Global) bool) *Global {
 	return nil
 }
 
-func (mgr GlobalManager) check(excelFilePath string, row int, sd *Global) error {
+func (mgr TaskManager) check(excelFilePath string, row int, sd *Task) error {
 	if _, ok := mgr.dataMap[sd.ID]; ok {
 		return fmt.Errorf("%s 第%d行的id重复", excelFilePath, row)
 	}
@@ -235,78 +253,11 @@ func (mgr GlobalManager) check(excelFilePath string, row int, sd *Global) error 
 	return nil
 }
 
-func (mgr *GlobalManager) AfterLoadAll(excelFilePath string) (success bool) {
+func (mgr *TaskManager) AfterLoadAll(excelFilePath string) (success bool) {
 	success = true
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加加载后处理代码
 	//after_load_all_begin
-	{
-		d, ok := mgr.dataMap[int64(E_Global_InitUserDataId)]
-		if !ok {
-			log.Fatal("获取用户初始数据在person表id失败")
-			return false
-		}
-		tid, err := strconv.Atoi(d.Value)
-		if err != nil {
-			log.Fatal("获取用户初始数据在person表id失败", err)
-			return false
-		}
-		gInitUserDataId = int64(tid)
-		if gInitUserDataId <= 0 {
-			log.Fatal("获取用户初始数据在person表id值有误", tid)
-			return false
-		}
-	}
-	{
-		d, ok := mgr.dataMap[int64(E_Global_InitMatchRoomId)]
-		if !ok {
-			log.Fatal("获取匹配房间数据在room表的id数组失败")
-			return false
-		}
-		if err := json.Unmarshal([]byte(d.Value), &gInitQuickMatchRoomId); err != nil {
-			log.Fatal("获取匹配房间数据在room表的id数组有误", err)
-			return false
-		}
-	}
-	{
-		d, ok := mgr.dataMap[int64(E_Global_MinStartGamePlayer)]
-		if !ok {
-			log.Fatal("获取开始对局的最少人数失败")
-			return false
-		}
-		tid, err := strconv.Atoi(d.Value)
-		if err != nil {
-			log.Fatal("获取开始对局的最少人数失败", err)
-			return false
-		}
-		gMinStartGamePlayer = tid
-	}
-	{
-		d, ok := mgr.dataMap[int64(E_Global_KickTimeOutClientTime)]
-		if !ok {
-			log.Fatal("获取服务端主动断开无活动客户端时间失败")
-			return false
-		}
-		tid, err := strconv.Atoi(d.Value)
-		if err != nil {
-			log.Fatal("获取服务端主动断开无活动客户端时间失败", err)
-			return false
-		}
-		gKickTimeOutClientTime = int64(tid)
-	}
-	{
-		d, ok := mgr.dataMap[int64(E_Global_CheckTimeOutClientTime)]
-		if !ok {
-			log.Fatal("获取无活动下服务端发送心跳包间隔时间失败")
-			return false
-		}
-		tid, err := strconv.Atoi(d.Value)
-		if err != nil {
-			log.Fatal("获取无活动下服务端发送心跳包间隔时间失败", err)
-			return false
-		}
-		gCheckTimeOutClientTime = int64(tid)
-	}
 	//after_load_all_end
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	return
@@ -315,54 +266,5 @@ func (mgr *GlobalManager) AfterLoadAll(excelFilePath string) (success bool) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // TODO 添加扩展代码
 //extend_begin
-
-//用户初始化数据在person表的id
-var gInitUserDataId int64
-
-func InitUserDataId() int64 {
-	return gInitUserDataId
-}
-
-//快速匹配房间数据在room表的id数组
-var gInitQuickMatchRoomId []int64
-
-//快速匹配房间数据在room表的id
-func InitQuickMatchRoomId() int64 {
-	if len(gInitQuickMatchRoomId) < 1 {
-		log.Fatal("匹配房间数据在room表的id数组 配表有误")
-	}
-	return gInitQuickMatchRoomId[0]
-}
-
-//开始对局的最少人数
-var gMinStartGamePlayer int
-
-func InitMinStartGamePlayer() int {
-	if gMinStartGamePlayer < 1 {
-		log.Fatal("开始对局的最少人数 配表有误")
-	}
-	return gMinStartGamePlayer
-}
-
-//服务端主动断开无活动客户端时间(单位:秒)
-var gKickTimeOutClientTime int64
-
-func InitKickTimeOutClientTime() int64 {
-	if gKickTimeOutClientTime < 1 {
-		log.Fatal("服务端主动断开无活动客户端时间 配表有误")
-	}
-	return gKickTimeOutClientTime
-}
-
-//无活动下服务端发送心跳包间隔时间(单位:秒)
-var gCheckTimeOutClientTime int64
-
-func InitCheckTimeOutClientTime() int64 {
-	if gCheckTimeOutClientTime < 1 {
-		log.Fatal("无活动下服务端发送心跳包间隔时间(单位:秒) 配表有误")
-	}
-	return gCheckTimeOutClientTime
-}
-
 //extend_end
 //////////////////////////////////////////////////////////////////////////////////////////////////

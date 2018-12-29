@@ -55,7 +55,7 @@ type Room struct {
 	maxBet int64
 
 	//局数
-	//对局类型,1-普通赛,2-积分赛
+	//对局类型,1-快速比赛,2-练习场,3-赛事场
 	pType uint32
 	//游戏类型,1-德州扑克
 	gType uint32
@@ -662,6 +662,14 @@ func (r *Room) PlayerLeave(p *cache.Player, reason msg.S2C_UpdatePlayerLeaveRoom
 		if p.UserData() == nil {
 			return fmt.Errorf("nil userdata on playerLeave")
 		}
+		roomSd := sd.RoomMgr.Get(int64(r.pType))
+		if roomSd == nil {
+			return fmt.Errorf("read room.xlsx failed on PlayerLeave")
+		}
+		//赢钱了
+		if p.Chip() > roomSd.Chip {
+			r.UpdateCoinQuests(p.Chip() - roomSd.Chip)
+		}
 		p.UserData().Gain(1, p.Chip(), false, nil)
 		player.SetRoomId(0)
 		r.BoardCastPL(player.UserId(), reason)
@@ -1065,6 +1073,7 @@ func (r *Room) GameOver() {
 	time.Sleep(time.Duration(sd.InitGameFinActTime()) * time.Second)
 	r.SetStage(0)
 
+	r.UpdateMatchQuests()
 	r.ResetPlayers(0)
 	r.KickOffPlayers()
 }

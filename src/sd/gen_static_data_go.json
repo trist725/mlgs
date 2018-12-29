@@ -3,5 +3,5 @@
   "SourceCodeDir": ".",
   "Debug": true,
   "WhiteList": [],
-  "BlackList": []
+  "BlackList": ["sound"]
 }

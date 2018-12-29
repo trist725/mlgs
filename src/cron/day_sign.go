@@ -7,21 +7,6 @@ import (
 	"mlgs/src/model"
 )
 
-//https://godoc.org/github.com/robfig/cron
-
-var gCrons []*cron.Cron
-
-func Init() {
-	gCrons = append(gCrons, DaySign())
-}
-
-func Dispose() {
-	for _, c := range gCrons {
-		c.Stop()
-	}
-	gCrons = nil
-}
-
 func DaySign() *cron.Cron {
 	dbSession := model.GetSession()
 	defer model.PutSession(dbSession)

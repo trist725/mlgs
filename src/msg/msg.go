@@ -40,4 +40,10 @@ func init() {
 	Processor.Register(&S2C_UpdateUserData{})
 	Processor.Register(&C2S_UpdateUserData{})
 	Processor.Register(&S2C_UpdateItems{})
+	Processor.Register(&C2S_GetAllQuests{})
+	Processor.Register(&S2C_GetAllQuests{})
+	Processor.Register(&C2S_GetQuestReward{})
+	Processor.Register(&S2C_GetQuestReward{})
+	Processor.Register(&C2S_GetCompletedAchievements{})
+	Processor.Register(&S2C_GetCompletedAchievements{})
 }

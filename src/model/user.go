@@ -24,6 +24,7 @@ func CreateUser(accountID int64, recv *msg.C2S_Login) (m *User, err error) {
 	m.LastLoginTime = now.Unix()
 	m.AvatarURL = recv.AvatarURL
 	m.Level = 1
+	m.AllocDayQuest = false
 
 	//todo:根据玩家类别初始化
 	personSd := sd.PersonMgr.Get(sd.InitUserDataId())
@@ -31,6 +32,7 @@ func CreateUser(accountID int64, recv *msg.C2S_Login) (m *User, err error) {
 		log.Fatal("策划坑爹了,读person表有误，id: [%d]", sd.InitUserDataId())
 		return
 	}
+	m.GainCoin = personSd.Coin
 
 	money := Get_Money()
 	money.Type = 1
@@ -45,7 +47,66 @@ func CreateUser(accountID int64, recv *msg.C2S_Login) (m *User, err error) {
 	money.Num = personSd.Point
 	m.Monies = append(m.Monies, money)
 
+	//任务
+	sd.TaskMgr.Each(func(sd *sd.Task) bool {
+		//过滤每日任务
+		if sd.Type == 2 {
+			return true
+		}
+		q := Get_Quest()
+		q.Id = sd.ID
+		q.Received = false
+		q.Type = sd.Type
+		m.Quests = append(m.Quests, q)
+		return true
+	})
+	//成就
+	sd.AchieveMgr.Each(func(sd *sd.Achieve) bool {
+		a := Get_Achievement()
+		a.Id = sd.ID
+		a.Completed = false
+		a.TaskId = sd.Taskid
+		a.Type = sd.Type
+		m.Achieves = append(m.Achieves, a)
+		return true
+	})
+
 	return
+}
+
+func (m *User) AllocDayQuests() {
+	if m.AllocDayQuest {
+		return
+	}
+	var exist = false
+	//重置上次的每日任务
+	for i := 0; i < len(m.Quests); i++ {
+		if m.Quests[i].Type == 2 {
+			m.Quests[i].Progress = 0
+			m.Quests[i].Received = false
+			m.Quests[i].Completed = false
+			i-- // maintain the correct index
+			exist = true
+		}
+	}
+	if exist {
+		m.AllocDayQuest = true
+		return
+	}
+
+	sd.TaskMgr.Each(func(sd *sd.Task) bool {
+		if sd.Type == 2 {
+			q := Get_Quest()
+			q.Id = sd.ID
+			q.Received = false
+			q.Progress = 0
+			q.Completed = false
+			q.Type = sd.Type
+			m.Quests = append(m.Quests, q)
+			m.AllocDayQuest = true
+		}
+		return true
+	})
 }
 
 func (m User) ToMsg(nm *msg.User) *msg.User {

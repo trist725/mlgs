@@ -5,6 +5,8 @@ package model;
 import "money.proto";
 import "item.proto";
 import "card.proto";
+import "achievement.proto";
+import "quest.proto";
 
 /// 用户数据
 //@collection
@@ -44,4 +46,12 @@ message User {
     //repeated Item SignRewards = 15;
     ///历史最大牌型
     BestCombo BestCombo = 15;
+    ///是否已分配每日任务
+    bool AllocDayQuest = 16;
+    ///成就
+    repeated Achievement Achieves = 17;
+    ///任务
+    repeated Quest Quests = 18;
+    ///累计获得过的金币
+    int64 GainCoin = 19;
 }

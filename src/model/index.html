@@ -191,6 +191,22 @@
           </table>
         
           
+          <a href="#achievement.proto">achievement.proto</a>
+          <table class="achievement.proto-message-table">
+            <thead>
+              <tr><td>Message</td><td>Comment</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr id="tr-model.Achievement">
+                  <td><a href="#model.Achievement">Achievement</a></td>
+                  <td><a href="#model.Achievement"></a></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+          
           <a href="#card.proto">card.proto</a>
           <table class="card.proto-message-table">
             <thead>
@@ -238,6 +254,22 @@
                 <tr id="tr-model.Money">
                   <td><a href="#model.Money">Money</a></td>
                   <td><a href="#model.Money">用户货币信息</a></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+          
+          <a href="#quest.proto">quest.proto</a>
+          <table class="quest.proto-message-table">
+            <thead>
+              <tr><td>Message</td><td>Comment</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr id="tr-model.Quest">
+                  <td><a href="#model.Quest">Quest</a></td>
+                  <td><a href="#model.Quest"></a></td>
                 </tr>
               
             </tbody>
@@ -340,6 +372,64 @@ string ChannelName = 10;
 渠道帐号
 string ChannelAccount = 11;
 封号标记,1为被封 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+
+      
+
+      
+
+      
+    
+      
+      <div class="file-heading">
+        <h2 id="achievement.proto">achievement.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="model.Achievement">Achievement</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>在成就表中的id </p></td>
+                </tr>
+              
+                <tr>
+                  <td>TaskId</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>对应成就任务在任务表中的id </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Completed</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>是否已完成 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Type</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>成就表中的类型 </p></td>
                 </tr>
               
             </tbody>
@@ -534,6 +624,71 @@ string ChannelAccount = 11;
     
       
       <div class="file-heading">
+        <h2 id="quest.proto">quest.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="model.Quest">Quest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>在任务表中的id </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Progress</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>完成进度 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Received</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>是否已领取奖励 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Completed</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>是否已完成 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Type</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>任务类型 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+
+      
+
+      
+
+      
+    
+      
+      <div class="file-heading">
         <h2 id="user.proto">user.proto</h2><a href="#title">Top</a>
       </div>
       <p></p>
@@ -657,6 +812,34 @@ int32 ServerID = 3;
                   <td><p>每日签到奖励,数组第几个代表第几天
 repeated Item SignRewards = 15;
 历史最大牌型 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>AllocDayQuest</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>是否已分配每日任务 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Achieves</td>
+                  <td><a href="#model.Achievement">Achievement</a></td>
+                  <td>repeated</td>
+                  <td><p>成就 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Quests</td>
+                  <td><a href="#model.Quest">Quest</a></td>
+                  <td>repeated</td>
+                  <td><p>任务 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>GainCoin</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>累计获得过的金币 </p></td>
                 </tr>
               
             </tbody>

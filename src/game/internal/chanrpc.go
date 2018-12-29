@@ -70,6 +70,9 @@ func rpcHandleLoginAuthPass(args []interface{}) {
 	log.Debug("current session count: %d", sc)
 	s.Mgr().CheckTick(skeleton)
 
+	//分配每日任务
+	user.AllocDayQuests()
+
 	//下发用户数据
 	ChanRPC.Go("AfterLoginAuthPass", a, &user)
 

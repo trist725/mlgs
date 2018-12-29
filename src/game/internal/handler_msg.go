@@ -20,6 +20,9 @@ func init() {
 	regiserMsgHandle(&msg.C2S_Ping{}, handlePong)
 	regiserMsgHandle(&msg.C2S_RoomChat{}, handleRoomChat)
 	regiserMsgHandle(&msg.C2S_UpdateUserData{}, handleUpdateUserData)
+	regiserMsgHandle(&msg.C2S_GetAllQuests{}, handleGetAllQuests)
+	regiserMsgHandle(&msg.C2S_GetQuestReward{}, handleGetQuestReward)
+	regiserMsgHandle(&msg.C2S_GetCompletedAchievements{}, handleGetCompletedAchievements)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -307,5 +310,120 @@ func handleUpdateUserData(args []interface{}) {
 
 	send.Data = session.UserData().ToMsg(msg.Get_User())
 	send.Err = msg.S2C_UpdateUserData_OK
+	session.Update()
+}
+
+func handleGetAllQuests(args []interface{}) {
+	// recv := args[0].(*msg.C2S_GetAllQuests)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleGetAllQuests return for nil session")
+		return
+	}
+
+	send := msg.Get_S2C_GetAllQuests()
+	defer sender.WriteMsg(send)
+
+	ud := session.UserData()
+	if ud == nil {
+		log.Error("[%s] userData in session:[%d] is nil", session.Sign(), session.ID())
+		return
+	}
+
+	for _, q := range ud.Quests {
+		send.Quests = append(send.Quests, q.ToMsg(msg.Get_Quest()))
+	}
+
+	session.Update()
+}
+
+func handleGetQuestReward(args []interface{}) {
+	recv := args[0].(*msg.C2S_GetQuestReward)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleGetAllQuests return for nil session")
+		return
+	}
+
+	send := msg.Get_S2C_GetQuestReward()
+	send.CltPath = recv.CltPath
+	send.Id = recv.Id
+	defer sender.WriteMsg(send)
+
+	ud := session.UserData()
+	if ud == nil {
+		log.Error("[%s] userData in session:[%d] is nil", session.Sign(), session.ID())
+		return
+	}
+
+	for _, q := range ud.Quests {
+		if recv.Id == q.Id {
+			if q.Completed {
+				if q.Received {
+					send.Err = msg.S2C_GetQuestReward_E_Err_Received
+				} else {
+					taskSd := sd.TaskMgr.Get(q.Id)
+					if taskSd == nil {
+						send.Err = msg.S2C_GetQuestReward_E_Err_UnKnown
+						return
+					}
+					//获得奖励
+					if _, _, err := ud.Gain(taskSd.Reward, taskSd.Rewardnum, false, nil); err != nil {
+						send.Err = msg.S2C_GetQuestReward_E_Err_UnKnown
+						return
+					}
+					send.Err = msg.S2C_GetQuestReward_E_Err_Success
+					q.Received = true
+				}
+			} else {
+				send.Err = msg.S2C_GetQuestReward_E_Err_Not_Completed
+			}
+		}
+	}
+
+	session.Update()
+}
+
+func handleGetCompletedAchievements(args []interface{}) {
+	//recv := args[0].(*msg.C2S_GetCompletedAchievements)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleGetCompletedAchievements return for nil session")
+		return
+	}
+
+	send := msg.Get_S2C_GetCompletedAchievements()
+	defer sender.WriteMsg(send)
+
+	ud := session.UserData()
+	if ud == nil {
+		log.Error("[%s] userData in session:[%d] is nil", session.Sign(), session.ID())
+		return
+	}
+
+	for _, a := range ud.Achieves {
+		if a.Completed {
+			send.Achievements = append(send.Achievements, a.ToMsg(msg.Get_Achievement()))
+		}
+	}
+
 	session.Update()
 }
