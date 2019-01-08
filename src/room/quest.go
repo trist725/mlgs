@@ -36,6 +36,7 @@ func (r *Room) UpdateMatchQuests() {
 								for _, a := range ud.Achieves {
 									if a.TaskId == q.Id {
 										a.Completed = true
+										q.Completed = true
 									}
 								}
 							} else {
@@ -81,6 +82,7 @@ func (r *Room) UpdateCoinQuests(gain int64) {
 								for _, a := range ud.Achieves {
 									if a.TaskId == q.Id {
 										a.Completed = true
+										q.Completed = true
 									}
 								}
 							} else {
