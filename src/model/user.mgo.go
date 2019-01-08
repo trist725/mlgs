@@ -63,6 +63,10 @@ type User struct {
 	Quests []*Quest `bson:"Quests"`
 	///累计获得过的金币
 	GainCoin int64 `bson:"GainCoin"`
+	///邮件
+	Mails []*Mail `bson:"Mails"`
+	///使用中的荷官在item表中的id,0是默认皮肤
+	UsingDealer int64 `bson:"UsingDealer"`
 }
 
 func New_User() *User {
@@ -72,6 +76,7 @@ func New_User() *User {
 		BestCombo: New_BestCombo(),
 		Achieves:  []*Achievement{},
 		Quests:    []*Quest{},
+		Mails:     []*Mail{},
 	}
 	return m
 }
@@ -117,6 +122,12 @@ func (m *User) Reset() {
 	}
 	m.Quests = []*Quest{}
 	m.GainCoin = 0
+
+	for _, i := range m.Mails {
+		Put_Mail(i)
+	}
+	m.Mails = []*Mail{}
+	m.UsingDealer = 0
 
 }
 
@@ -191,6 +202,20 @@ func (m User) Clone() *User {
 	}
 
 	n.GainCoin = m.GainCoin
+
+	if len(m.Mails) > 0 {
+		for _, i := range m.Mails {
+			if i != nil {
+				n.Mails = append(n.Mails, i.Clone())
+			} else {
+				n.Mails = append(n.Mails, nil)
+			}
+		}
+	} else {
+		n.Mails = []*Mail{}
+	}
+
+	n.UsingDealer = m.UsingDealer
 
 	return n
 }

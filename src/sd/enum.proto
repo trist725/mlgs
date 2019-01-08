@@ -3,14 +3,17 @@ syntax="proto3";
 package sd;
 
 
-///物品类型枚举
+///物品大类型枚举
 enum E_Item {
     E_Item_ = 0;
     ///货币
     E_Item_Money = 1;
-    ///表情
-    ///道具
-    ///皮肤
+    ///金币补给包
+    E_Item_Coin_SupplyBag = 2;
+    ///荷官皮肤
+    E_Item_DealerSkin = 3;
+    ///钻石补给包
+    E_Item_Diamond_SupplyBag = 4;
 }
 
 ///货币类型枚举
@@ -24,6 +27,15 @@ enum E_Money {
     E_Money_Point = 3;
     ///筹码
     E_Money_Chip = 4;
+}
+
+
+///荷官皮肤类型枚举
+enum E_DealerSkin {
+    E_DealerSkin_ = 0;
+    E_DealerSkin_1 = 1;
+    E_DealerSkin_2 = 2;
+    E_DealerSkin_3 = 3;
 }
 
 ///奖励组物品的字段枚举

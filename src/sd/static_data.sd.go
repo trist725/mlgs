@@ -8,6 +8,7 @@ import "path/filepath"
 
 var (
 	AchieveMgr = newAchieveManager()
+	EmailMgr   = newEmailManager()
 	GlobalMgr  = newGlobalManager()
 	ItemMgr    = newItemManager()
 	PersonMgr  = newPersonManager()
@@ -27,6 +28,8 @@ func LoadAll(excelDir string) (success bool) {
 	success = true
 
 	success = AchieveMgr.Load(filepath.Join(absExcelDir, "achieve.xlsx")) && success
+
+	success = EmailMgr.Load(filepath.Join(absExcelDir, "email.xlsx")) && success
 
 	success = GlobalMgr.Load(filepath.Join(absExcelDir, "global.xlsx")) && success
 
@@ -55,6 +58,8 @@ func AfterLoadAll(excelDir string) (success bool) {
 	success = true
 
 	success = AchieveMgr.AfterLoadAll(filepath.Join(absExcelDir, "achieve.xlsx")) && success
+
+	success = EmailMgr.AfterLoadAll(filepath.Join(absExcelDir, "email.xlsx")) && success
 
 	success = GlobalMgr.AfterLoadAll(filepath.Join(absExcelDir, "global.xlsx")) && success
 

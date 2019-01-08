@@ -70,8 +70,32 @@ func CreateUser(accountID int64, recv *msg.C2S_Login) (m *User, err error) {
 		m.Achieves = append(m.Achieves, a)
 		return true
 	})
+	//邮件
+	sd.EmailMgr.Each(func(sd *sd.Email) bool {
+		mail := Get_Mail()
+		mail.Id = sd.ID
+		mail.Received = false
+		m.Mails = append(m.Mails, mail)
+		return true
+	})
 
 	return
+}
+
+func (m *User) UpdateMails() {
+	sd.EmailMgr.Each(func(sd *sd.Email) bool {
+		for _, v := range m.Mails {
+			if v.Id == sd.ID {
+				return true
+			}
+		}
+
+		mail := Get_Mail()
+		mail.Id = sd.ID
+		mail.Received = false
+		m.Mails = append(m.Mails, mail)
+		return true
+	})
 }
 
 func (m *User) AllocDayQuests() {
@@ -219,13 +243,14 @@ func (user *User) Lost(tid int64, num int64, notify bool, skeleton *module.Skele
 func (user *User) Gain(tid int64, num int64, notify bool, skeleton *module.Skeleton) (lostItems []*Item, updateItems []*Item, err error) {
 	itemSD := sd.ItemMgr.Get(tid)
 	if itemSD == nil {
-		err = fmt.Errorf("item static data [%d] not exist", tid)
+		log.Error("[%d-%s] item static data dose not exist, [%v]", user.ID, user.NickName, tid)
+		err = fmt.Errorf("get sd failed")
 		return
 	}
 
 	if num <= 0 {
 		log.Error("[%d-%s] gain money invalid num [%v]", user.ID, user.NickName, num)
-		err = fmt.Errorf("invalid num [%v]", num)
+		err = fmt.Errorf("invalid num")
 		return
 	}
 
@@ -234,7 +259,7 @@ func (user *User) Gain(tid int64, num int64, notify bool, skeleton *module.Skele
 		st := sd.E_Money(itemSD.SubType)
 		if !sd.Check_E_Money(st) || st == sd.E_Money_ {
 			log.Error("[%d-%s] gain money invalid type [%v]", user.ID, user.NickName, tid)
-			err = fmt.Errorf("invalid type [%v]", tid)
+			err = fmt.Errorf("invalid type")
 			return
 		}
 		money := user.GetMoney(itemSD.SubType)
@@ -248,9 +273,29 @@ func (user *User) Gain(tid int64, num int64, notify bool, skeleton *module.Skele
 			// 通知客户端更新
 			//skeleton.ChanRPCServer.Go("UpdateUserData", )
 		}
-
 		log.Debug("[%d-%s] gain money, subtype=[%v], num=[%d]", user.ID, user.NickName, st, num)
-		return
+
+	case sd.E_Item_DealerSkin:
+		st := sd.E_DealerSkin(itemSD.SubType)
+		if !sd.Check_E_DealerSkin(st) || st == sd.E_DealerSkin_ {
+			log.Error("[%d-%s] gain dealer skin invalid type [%v]", user.ID, user.NickName, tid)
+			err = fmt.Errorf("invalid type")
+			return
+		}
+		skin := CreateItem(tid)
+		skin.Num = 1
+		for _, i := range user.Items {
+			if i.TID == tid {
+				log.Error("[%d-%s] gain dealer skin failed, already exist, tid:[%v]", user.ID, user.NickName, tid)
+				err = fmt.Errorf("DealerSkin already exist")
+				return
+			}
+		}
+		user.Items = append(user.Items, skin)
+		log.Debug("[%d-%s] gain DealerSkin, subtype=[%v]", user.ID, user.NickName, st)
+
+	case sd.E_Item_Coin_SupplyBag:
+	case sd.E_Item_Diamond_SupplyBag:
 	}
 
 	return

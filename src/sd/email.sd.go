@@ -17,22 +17,12 @@ import "github.com/trist725/mgsu/util"
 //import_extend_end
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-type Item struct {
+type Email struct {
 	ID int64 `excel_column:"0" excel_name:"id"` // 编号
 
-	Type int32 `excel_column:"2" excel_name:"type"` // 大类型
+	Reward int64 `excel_column:"1" excel_name:"reward"` // 类别
 
-	SubType int32 `excel_column:"3" excel_name:"sub_type"` // 小类型
-
-	Des string `excel_column:"4" excel_name:"des"` // 描述
-
-	BuyNeedID int64 `excel_column:"7" excel_name:"buy_need_id"` // 花费所需类型
-
-	BuyCost int64 `excel_column:"8" excel_name:"buy_cost"` // 花费
-
-	IncomeID int64 `excel_column:"9" excel_name:"Income_id"` // 收入类型
-
-	Income int64 `excel_column:"10" excel_name:"Income"` // 收入
+	RewardNumber int64 `excel_column:"3" excel_name:"reward_number"` // 奖励数量
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体扩展字段
@@ -41,8 +31,8 @@ type Item struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func NewItem() *Item {
-	sd := &Item{}
+func NewEmail() *Email {
+	sd := &Email{}
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体New代码
 	//struct_new_begin
@@ -51,13 +41,13 @@ func NewItem() *Item {
 	return sd
 }
 
-func (sd Item) String() string {
+func (sd Email) String() string {
 	ba, _ := json.Marshal(sd)
 	return string(ba)
 }
 
-func (sd Item) Clone() *Item {
-	n := NewItem()
+func (sd Email) Clone() *Email {
+	n := NewEmail()
 	*n = sd
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,14 +59,14 @@ func (sd Item) Clone() *Item {
 	return n
 }
 
-func (sd *Item) load(row *xlsx.Row) error {
+func (sd *Email) load(row *xlsx.Row) error {
 	return util.DeserializeStructFromXlsxRow(sd, row)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-type ItemManager struct {
-	dataArray []*Item
-	dataMap   map[int64]*Item
+type EmailManager struct {
+	dataArray []*Email
+	dataMap   map[int64]*Email
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加manager扩展字段
@@ -85,10 +75,10 @@ type ItemManager struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func newItemManager() *ItemManager {
-	mgr := &ItemManager{
-		dataArray: []*Item{},
-		dataMap:   make(map[int64]*Item),
+func newEmailManager() *EmailManager {
+	mgr := &EmailManager{
+		dataArray: []*Email{},
+		dataMap:   make(map[int64]*Email),
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,7 +90,7 @@ func newItemManager() *ItemManager {
 	return mgr
 }
 
-func (mgr *ItemManager) Load(excelFilePath string) (success bool) {
+func (mgr *EmailManager) Load(excelFilePath string) (success bool) {
 	success = true
 
 	absExcelFilePath, err := filepath.Abs(excelFilePath)
@@ -146,7 +136,7 @@ func (mgr *ItemManager) Load(excelFilePath string) (success bool) {
 			}
 		}
 
-		sd := NewItem()
+		sd := NewEmail()
 		err = sd.load(row)
 		if err != nil {
 			log.Printf("%s 加载第%d行失败, %s\n", excelFilePath, i+1, err)
@@ -183,11 +173,11 @@ func (mgr *ItemManager) Load(excelFilePath string) (success bool) {
 	return
 }
 
-func (mgr ItemManager) Size() int {
+func (mgr EmailManager) Size() int {
 	return len(mgr.dataArray)
 }
 
-func (mgr ItemManager) Get(id int64) *Item {
+func (mgr EmailManager) Get(id int64) *Email {
 	sd, ok := mgr.dataMap[id]
 	if !ok {
 		return nil
@@ -195,7 +185,7 @@ func (mgr ItemManager) Get(id int64) *Item {
 	return sd.Clone()
 }
 
-func (mgr ItemManager) Each(f func(sd *Item) bool) {
+func (mgr EmailManager) Each(f func(sd *Email) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd.Clone()) {
 			break
@@ -203,7 +193,7 @@ func (mgr ItemManager) Each(f func(sd *Item) bool) {
 	}
 }
 
-func (mgr *ItemManager) each(f func(sd *Item) bool) {
+func (mgr *EmailManager) each(f func(sd *Email) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd) {
 			break
@@ -211,7 +201,7 @@ func (mgr *ItemManager) each(f func(sd *Item) bool) {
 	}
 }
 
-func (mgr ItemManager) findIf(f func(sd *Item) bool) *Item {
+func (mgr EmailManager) findIf(f func(sd *Email) bool) *Email {
 	for _, sd := range mgr.dataArray {
 		if f(sd) {
 			return sd
@@ -220,7 +210,7 @@ func (mgr ItemManager) findIf(f func(sd *Item) bool) *Item {
 	return nil
 }
 
-func (mgr ItemManager) FindIf(f func(sd *Item) bool) *Item {
+func (mgr EmailManager) FindIf(f func(sd *Email) bool) *Email {
 	for _, sd := range mgr.dataArray {
 		n := sd.Clone()
 		if f(n) {
@@ -230,7 +220,7 @@ func (mgr ItemManager) FindIf(f func(sd *Item) bool) *Item {
 	return nil
 }
 
-func (mgr ItemManager) check(excelFilePath string, row int, sd *Item) error {
+func (mgr EmailManager) check(excelFilePath string, row int, sd *Email) error {
 	if _, ok := mgr.dataMap[sd.ID]; ok {
 		return fmt.Errorf("%s 第%d行的id重复", excelFilePath, row)
 	}
@@ -244,7 +234,7 @@ func (mgr ItemManager) check(excelFilePath string, row int, sd *Item) error {
 	return nil
 }
 
-func (mgr *ItemManager) AfterLoadAll(excelFilePath string) (success bool) {
+func (mgr *EmailManager) AfterLoadAll(excelFilePath string) (success bool) {
 	success = true
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加加载后处理代码

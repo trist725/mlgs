@@ -1,0 +1,9 @@
+syntax="proto3";
+
+package model;
+
+message Mail {
+    int64 Id = 1;
+    ///是否已领取奖励
+    bool Received = 2;
+}

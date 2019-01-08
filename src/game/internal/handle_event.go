@@ -31,11 +31,12 @@ func OnAfterLoginAuthPass(args []interface{}) {
 	user := args[1].(*model.User)
 
 	send := &msg.S2C_LoginInfo{
-		ID:         user.ID,
-		NickName:   user.NickName,
-		AvatarURL:  user.AvatarURL,
-		DaySigned:  user.DaySigned,
-		SignedDays: user.SignedDays,
+		ID:          user.ID,
+		NickName:    user.NickName,
+		AvatarURL:   user.AvatarURL,
+		DaySigned:   user.DaySigned,
+		SignedDays:  user.SignedDays,
+		UsingDealer: user.UsingDealer,
 	}
 
 	for _, m := range user.Monies {
@@ -52,6 +53,11 @@ func OnAfterLoginAuthPass(args []interface{}) {
 		}
 		send.SignRewards = append(send.SignRewards, item)
 	}
+
+	//分配每日任务
+	user.AllocDayQuests()
+	//更新邮件列表
+	user.UpdateMails()
 
 	sender.WriteMsg(send)
 }

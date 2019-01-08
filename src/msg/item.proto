@@ -33,15 +33,6 @@ message S2C_UpdateItem {
     repeated Item Items = 1;
 }
 
-///购买物品请求
-//@msg
-message C2S_BuyItem {
-    ///物品类型id
-    int32 TID = 1;
-    ///购买数量
-    int32 Num = 2;
-}
-
 ///使用物品请求
 //@msg
 message C2S_UseItem {

@@ -10,28 +10,43 @@ package sd
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // enum [E_Item] begin
 
-///物品类型枚举
+///物品大类型枚举
 type E_Item int32
 
 const (
 	E_Item_ E_Item = 0
 	///货币
 	E_Item_Money E_Item = 1
+	///金币补给包
+	E_Item_Coin_SupplyBag E_Item = 2
+	///荷官皮肤
+	E_Item_DealerSkin E_Item = 3
+	///钻石补给包
+	E_Item_Diamond_SupplyBag E_Item = 4
 )
 
 var E_Item_name = map[int32]string{
 	0: "E_Item_",
 	1: "E_Item_Money",
+	2: "E_Item_Coin_SupplyBag",
+	3: "E_Item_DealerSkin",
+	4: "E_Item_Diamond_SupplyBag",
 }
 
 var E_Item_value = map[string]int32{
-	"E_Item_":      0,
-	"E_Item_Money": 1,
+	"E_Item_":                  0,
+	"E_Item_Money":             1,
+	"E_Item_Coin_SupplyBag":    2,
+	"E_Item_DealerSkin":        3,
+	"E_Item_Diamond_SupplyBag": 4,
 }
 
 var E_Item_Slice = []int32{
 	0,
 	1,
+	2,
+	3,
+	4,
 }
 
 func (x E_Item) String() string {
@@ -156,6 +171,84 @@ func Each_E_Money_I(f func(int32) bool) {
 }
 
 // enum [E_Money] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// enum [E_DealerSkin] begin
+
+///荷官皮肤类型枚举
+type E_DealerSkin int32
+
+const (
+	E_DealerSkin_ E_DealerSkin = 0
+
+	E_DealerSkin_1 E_DealerSkin = 1
+
+	E_DealerSkin_2 E_DealerSkin = 2
+
+	E_DealerSkin_3 E_DealerSkin = 3
+)
+
+var E_DealerSkin_name = map[int32]string{
+	0: "E_DealerSkin_",
+	1: "E_DealerSkin_1",
+	2: "E_DealerSkin_2",
+	3: "E_DealerSkin_3",
+}
+
+var E_DealerSkin_value = map[string]int32{
+	"E_DealerSkin_":  0,
+	"E_DealerSkin_1": 1,
+	"E_DealerSkin_2": 2,
+	"E_DealerSkin_3": 3,
+}
+
+var E_DealerSkin_Slice = []int32{
+	0,
+	1,
+	2,
+	3,
+}
+
+func (x E_DealerSkin) String() string {
+	if name, ok := E_DealerSkin_name[int32(x)]; ok {
+		return name
+	}
+	return ""
+}
+
+func E_DealerSkin_Len() int {
+	return len(E_DealerSkin_Slice)
+}
+
+func Check_E_DealerSkin_I(value int32) bool {
+	if _, ok := E_DealerSkin_name[value]; ok && value != 0 {
+		return true
+	}
+	return false
+}
+
+func Check_E_DealerSkin(value E_DealerSkin) bool {
+	return Check_E_DealerSkin_I(int32(value))
+}
+
+func Each_E_DealerSkin(f func(E_DealerSkin) bool) {
+	for _, value := range E_DealerSkin_Slice {
+		if !f(E_DealerSkin(value)) {
+			break
+		}
+	}
+}
+
+func Each_E_DealerSkin_I(f func(int32) bool) {
+	for _, value := range E_DealerSkin_Slice {
+		if !f(value) {
+			break
+		}
+	}
+}
+
+// enum [E_DealerSkin] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -244,6 +244,22 @@
           </table>
         
           
+          <a href="#mail.proto">mail.proto</a>
+          <table class="mail.proto-message-table">
+            <thead>
+              <tr><td>Message</td><td>Comment</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr id="tr-model.Mail">
+                  <td><a href="#model.Mail">Mail</a></td>
+                  <td><a href="#model.Mail"></a></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+          
           <a href="#money.proto">money.proto</a>
           <table class="money.proto-message-table">
             <thead>
@@ -580,6 +596,50 @@ string ChannelAccount = 11;
     
       
       <div class="file-heading">
+        <h2 id="mail.proto">mail.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="model.Mail">Mail</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Received</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>是否已领取奖励 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+
+      
+
+      
+
+      
+    
+      
+      <div class="file-heading">
         <h2 id="money.proto">money.proto</h2><a href="#title">Top</a>
       </div>
       <p></p>
@@ -840,6 +900,20 @@ repeated Item SignRewards = 15;
                   <td><a href="#int64">int64</a></td>
                   <td></td>
                   <td><p>累计获得过的金币 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Mails</td>
+                  <td><a href="#model.Mail">Mail</a></td>
+                  <td>repeated</td>
+                  <td><p>邮件 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>UsingDealer</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>使用中的荷官在item表中的id,0是默认皮肤 </p></td>
                 </tr>
               
             </tbody>

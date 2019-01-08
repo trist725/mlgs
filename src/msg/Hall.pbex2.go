@@ -354,6 +354,7 @@ func (m *S2C_LoginInfo) ResetEx() {
 		Put_Item(i)
 	}
 	m.SignRewards = []*Item{}
+	m.UsingDealer = 0
 
 }
 
@@ -393,6 +394,8 @@ func (m S2C_LoginInfo) Clone() *S2C_LoginInfo {
 	} else {
 		n.SignRewards = []*Item{}
 	}
+
+	n.UsingDealer = m.UsingDealer
 
 	return n
 }

@@ -7,6 +7,7 @@ import "item.proto";
 import "card.proto";
 import "achievement.proto";
 import "quest.proto";
+import "mail.proto";
 
 /// 用户数据
 //@collection
@@ -54,4 +55,8 @@ message User {
     repeated Quest Quests = 18;
     ///累计获得过的金币
     int64 GainCoin = 19;
+    ///邮件
+    repeated Mail Mails = 20;
+    ///使用中的荷官在item表中的id,0是默认皮肤
+    int64 UsingDealer = 21;
 }

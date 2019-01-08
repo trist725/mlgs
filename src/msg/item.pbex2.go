@@ -7,7 +7,6 @@ It has these top-level messages:
 	S2C_GainItem
 	S2C_LostItem
 	S2C_UpdateItem
-	C2S_BuyItem
 	C2S_UseItem
 */
 
@@ -361,88 +360,6 @@ func init() {
 }
 
 // message [S2C_UpdateItem] end
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// message [C2S_BuyItem] begin
-func (m *C2S_BuyItem) ResetEx() {
-	m.TID = 0
-	m.Num = 0
-
-}
-
-func (m C2S_BuyItem) Clone() *C2S_BuyItem {
-	n, ok := g_C2S_BuyItem_Pool.Get().(*C2S_BuyItem)
-	if !ok || n == nil {
-		n = &C2S_BuyItem{}
-	}
-
-	n.TID = m.TID
-	n.Num = m.Num
-
-	return n
-}
-
-func Clone_C2S_BuyItem_Slice(dst []*C2S_BuyItem, src []*C2S_BuyItem) []*C2S_BuyItem {
-	for _, i := range dst {
-		Put_C2S_BuyItem(i)
-	}
-	dst = []*C2S_BuyItem{}
-
-	for _, i := range src {
-		dst = append(dst, i.Clone())
-	}
-
-	return dst
-}
-
-func (C2S_BuyItem) V2() {
-}
-
-func (C2S_BuyItem) MessageID() protocol.MessageID {
-	return "msg.C2S_BuyItem"
-}
-
-func C2S_BuyItem_MessageID() protocol.MessageID {
-	return "msg.C2S_BuyItem"
-}
-
-func New_C2S_BuyItem() *C2S_BuyItem {
-	m := &C2S_BuyItem{}
-	return m
-}
-
-var g_C2S_BuyItem_Pool = sync.Pool{}
-
-func Get_C2S_BuyItem() *C2S_BuyItem {
-	m, ok := g_C2S_BuyItem_Pool.Get().(*C2S_BuyItem)
-	if !ok {
-		m = New_C2S_BuyItem()
-	} else {
-		if m == nil {
-			m = New_C2S_BuyItem()
-		} else {
-			m.ResetEx()
-		}
-	}
-	return m
-}
-
-func Put_C2S_BuyItem(i interface{}) {
-	if m, ok := i.(*C2S_BuyItem); ok && m != nil {
-		g_C2S_BuyItem_Pool.Put(i)
-	}
-}
-
-func init() {
-	Protocol.Register(
-		&C2S_BuyItem{},
-		func() protocol.IMessage { return Get_C2S_BuyItem() },
-		func(msg protocol.IMessage) { Put_C2S_BuyItem(msg) },
-	)
-}
-
-// message [C2S_BuyItem] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

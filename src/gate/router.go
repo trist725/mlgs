@@ -20,4 +20,11 @@ func init() {
 	msg.Processor.SetRouter(&msg.C2S_GetCompletedAchievements{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_GetAllQuests{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_GetQuestReward{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_GetMailList{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_GetMailReward{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_GetAllMailReward{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_GetOwnItems{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_GetOwnDealerSkins{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_UsingOwnDealerSkins{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_BuyItem{}, game.ChanRPC)
 }

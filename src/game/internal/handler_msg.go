@@ -4,11 +4,14 @@ import (
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/cache"
+	"mlgs/src/cost"
 	"mlgs/src/msg"
 	"mlgs/src/room"
 	"mlgs/src/sd"
 	s "mlgs/src/session"
 	"reflect"
+	"sort"
+	"strconv"
 )
 
 func init() {
@@ -23,6 +26,13 @@ func init() {
 	regiserMsgHandle(&msg.C2S_GetAllQuests{}, handleGetAllQuests)
 	regiserMsgHandle(&msg.C2S_GetQuestReward{}, handleGetQuestReward)
 	regiserMsgHandle(&msg.C2S_GetCompletedAchievements{}, handleGetCompletedAchievements)
+	regiserMsgHandle(&msg.C2S_GetMailList{}, handleGetMailList)
+	regiserMsgHandle(&msg.C2S_GetMailReward{}, handleGetMailReward)
+	regiserMsgHandle(&msg.C2S_GetAllMailReward{}, handleGetAllMailReward)
+
+	regiserMsgHandle(&msg.C2S_GetOwnDealerSkins{}, handleGetOwnDealerSkins)
+	regiserMsgHandle(&msg.C2S_UsingOwnDealerSkins{}, handleUsingOwnDealerSkins)
+	regiserMsgHandle(&msg.C2S_BuyItem{}, handleBuyItem)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -339,6 +349,7 @@ func handleGetAllQuests(args []interface{}) {
 	for _, q := range ud.Quests {
 		send.Quests = append(send.Quests, q.ToMsg(msg.Get_Quest()))
 	}
+	sort.Sort(msg.QuestSlice(send.Quests))
 
 	session.Update()
 }
@@ -361,6 +372,7 @@ func handleGetQuestReward(args []interface{}) {
 	send.CltPath = recv.CltPath
 	send.Id = recv.Id
 	defer sender.WriteMsg(send)
+	defer session.Update()
 
 	ud := session.UserData()
 	if ud == nil {
@@ -373,6 +385,7 @@ func handleGetQuestReward(args []interface{}) {
 			if q.Completed {
 				if q.Received {
 					send.Err = msg.S2C_GetQuestReward_E_Err_Received
+					return
 				} else {
 					taskSd := sd.TaskMgr.Get(q.Id)
 					if taskSd == nil {
@@ -386,14 +399,14 @@ func handleGetQuestReward(args []interface{}) {
 					}
 					send.Err = msg.S2C_GetQuestReward_E_Err_Success
 					q.Received = true
+					return
 				}
 			} else {
 				send.Err = msg.S2C_GetQuestReward_E_Err_Not_Completed
+				return
 			}
 		}
 	}
-
-	session.Update()
 }
 
 func handleGetCompletedAchievements(args []interface{}) {
@@ -426,4 +439,264 @@ func handleGetCompletedAchievements(args []interface{}) {
 	}
 
 	session.Update()
+}
+
+func handleGetMailList(args []interface{}) {
+	//recv := args[0].(*msg.C2S_Get)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleGetMailList return for nil session")
+		return
+	}
+
+	send := msg.Get_S2C_GetMailList()
+	defer sender.WriteMsg(send)
+
+	ud := session.UserData()
+	if ud == nil {
+		log.Error("[%s] userData in session:[%d] is nil", session.Sign(), session.ID())
+		return
+	}
+
+	for _, mail := range ud.Mails {
+		if mail.Received == false {
+			send.Ids = append(send.Ids, strconv.FormatInt(mail.Id, 10))
+		}
+	}
+
+	session.Update()
+}
+
+func handleGetMailReward(args []interface{}) {
+	recv := args[0].(*msg.C2S_GetMailReward)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleGetMailList return for nil session")
+		return
+	}
+
+	send := msg.Get_S2C_GetMailReward()
+	defer sender.WriteMsg(send)
+
+	ud := session.UserData()
+	if ud == nil {
+		log.Error("[%s] userData in session:[%d] is nil", session.Sign(), session.ID())
+		return
+	}
+
+	for _, mail := range ud.Mails {
+		if recv.Id == mail.Id {
+			if mail.Received == false {
+				//获得奖励
+				mailSd := sd.EmailMgr.Get(mail.Id)
+				if mailSd == nil {
+					log.Error("get mail sd failed on handleGetMailReward")
+					send.Err = msg.S2C_GetMailReward_E_Err_UnKnown
+					break
+				}
+				if _, _, err := ud.Gain(mailSd.Reward, mailSd.RewardNumber, false, nil); err != nil {
+					send.Err = msg.S2C_GetMailReward_E_Err_UnKnown
+					break
+				}
+				send.Err = msg.S2C_GetMailReward_E_Err_Succeed
+				mail.Received = true
+				break
+			} else {
+				send.Err = msg.S2C_GetMailReward_E_Err_Already_Receive
+				break
+			}
+		}
+	}
+	send.Id = recv.Id
+
+	session.Update()
+}
+
+func handleGetAllMailReward(args []interface{}) {
+	//recv := args[0].(*msg.C2S_GetAllMailReward)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleGetAllMailList return for nil session")
+		return
+	}
+
+	send := msg.Get_S2C_GetAllMailReward()
+	defer sender.WriteMsg(send)
+
+	ud := session.UserData()
+	if ud == nil {
+		log.Error("[%s] userData in session:[%d] is nil", session.Sign(), session.ID())
+		return
+	}
+
+	for _, mail := range ud.Mails {
+		if mail.Received == false {
+			//获得奖励
+			mailSd := sd.EmailMgr.Get(mail.Id)
+			if mailSd == nil {
+				log.Error("get mail sd failed on handleGetAllMailReward")
+				continue
+			}
+			if _, _, err := ud.Gain(mailSd.Reward, mailSd.RewardNumber, false, nil); err != nil {
+				continue
+			}
+			send.Ids = append(send.Ids, strconv.FormatInt(mail.Id, 10))
+			mail.Received = true
+		}
+	}
+
+	session.Update()
+}
+
+func handleGetOwnDealerSkins(args []interface{}) {
+	//recv := args[0].(*msg.C2S_Get)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleGetOwnDealerSkins return for nil session")
+		return
+	}
+
+	send := msg.Get_S2C_GetOwnDealerSkins()
+	defer sender.WriteMsg(send)
+	defer session.Update()
+
+	ud := session.UserData()
+	if ud == nil {
+		log.Error("[%s] userData in session:[%d] is nil", session.Sign(), session.ID())
+		return
+	}
+	send.Id = ud.UsingDealer
+	for _, i := range ud.Items {
+		itemSd := sd.ItemMgr.Get(i.TID)
+		if itemSd == nil {
+			log.Error("get item sd failed on handleGetOwnDealerSkins")
+			send.Err = msg.S2C_GetOwnDealerSkins_E_Err_UnKnown
+			return
+		}
+		if sd.E_Item(itemSd.Type) == sd.E_Item_DealerSkin {
+			send.Ids = append(send.Ids, strconv.FormatInt(i.TID, 10))
+		}
+	}
+	send.Err = msg.S2C_GetOwnDealerSkins_E_Err_Succeed
+}
+
+func handleUsingOwnDealerSkins(args []interface{}) {
+	recv := args[0].(*msg.C2S_UsingOwnDealerSkins)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleUsingOwnDealerSkins return for nil session")
+		return
+	}
+
+	send := msg.Get_S2C_UsingOwnDealerSkins()
+	defer sender.WriteMsg(send)
+	defer session.Update()
+
+	ud := session.UserData()
+	if ud == nil {
+		log.Error("[%s] userData in session:[%d] is nil", session.Sign(), session.ID())
+		return
+	}
+	if recv.Id < 0 {
+		send.Err = msg.S2C_UsingOwnDealerSkins_E_Err_UnKnown
+		return
+	}
+	for _, i := range ud.Items {
+		if i.TID != recv.Id {
+			continue
+		}
+
+		ud.UsingDealer = recv.Id
+		send.Id = recv.Id
+		send.Err = msg.S2C_UsingOwnDealerSkins_E_Err_Succeed
+	}
+	if send.Err == msg.S2C_UsingOwnDealerSkins_E_Err_ {
+		send.Err = msg.S2C_UsingOwnDealerSkins_E_Err_Not_Have
+	}
+}
+
+func handleBuyItem(args []interface{}) {
+	recv := args[0].(*msg.C2S_BuyItem)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleBuyItem return for nil session")
+		return
+	}
+
+	send := msg.Get_S2C_BuyItem()
+	defer sender.WriteMsg(send)
+	defer session.Update()
+
+	ud := session.UserData()
+	if ud == nil {
+		log.Error("[%s] userData in session:[%d] is nil", session.Sign(), session.ID())
+		return
+	}
+	if recv.Id < 0 || recv.Num <= 0 {
+		send.Err = msg.S2C_BuyItem_E_Err_UnKnown
+		return
+	}
+	itemSd := sd.ItemMgr.Get(recv.Id)
+	if itemSd == nil {
+		log.Error("get item sd failed on handleBuyItem")
+		send.Err = msg.S2C_BuyItem_E_Err_UnKnown
+		return
+	}
+
+	var costs cost.Costs
+	costs = append(costs, cost.CostItem{itemSd.BuyNeedID, itemSd.BuyCost})
+	if err := cost.CanCost(ud, costs, 1); err != nil {
+		send.Err = msg.S2C_BuyItem_E_Err_Not_Enough_Money
+		return
+	}
+	_, _, err := ud.Gain(itemSd.IncomeID, itemSd.Income, false, nil)
+	if err != nil {
+		if err.Error() == "DealerSkin already exist" {
+			send.Err = msg.S2C_BuyItem_E_Err_Already_Have
+			return
+		} else {
+			send.Err = msg.S2C_BuyItem_E_Err_UnKnown
+			return
+		}
+	}
+
+	send.Id = recv.Id
+	cost.Cost(ud, costs, 1, false, nil)
+	send.Err = msg.S2C_BuyItem_E_Err_Succeed
 }
