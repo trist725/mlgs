@@ -631,6 +631,13 @@ func handleUsingOwnDealerSkins(args []interface{}) {
 		send.Err = msg.S2C_UsingOwnDealerSkins_E_Err_UnKnown
 		return
 	}
+	//换回默认荷官
+	if recv.Id == 0 {
+		ud.UsingDealer = recv.Id
+		send.Id = recv.Id
+		send.Err = msg.S2C_UsingOwnDealerSkins_E_Err_Succeed
+		return
+	}
 	for _, i := range ud.Items {
 		if i.TID != recv.Id {
 			continue
