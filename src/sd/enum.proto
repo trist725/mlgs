@@ -23,10 +23,10 @@ enum E_Money {
     E_Money_Gold = 1;
     ///钻石
     E_Money_Diamond = 2;
-    ///积分
-    E_Money_Point = 3;
-    ///筹码
-    E_Money_Chip = 4;
+    ///皮肤
+    E_Money_DealerSkin = 3;
+    ///人民币
+    E_Money_RMB = 4;
 }
 
 

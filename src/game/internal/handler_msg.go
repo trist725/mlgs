@@ -397,6 +397,9 @@ func handleGetQuestReward(args []interface{}) {
 						send.Err = msg.S2C_GetQuestReward_E_Err_UnKnown
 						return
 					}
+					if sd.E_Money(taskSd.Reward) == sd.E_Money_Gold {
+						ud.GainCoin += taskSd.Rewardnum
+					}
 					send.Err = msg.S2C_GetQuestReward_E_Err_Success
 					q.Received = true
 					return
@@ -510,6 +513,9 @@ func handleGetMailReward(args []interface{}) {
 					send.Err = msg.S2C_GetMailReward_E_Err_UnKnown
 					break
 				}
+				if sd.E_Money(mailSd.Reward) == sd.E_Money_Gold {
+					ud.GainCoin += mailSd.RewardNumber
+				}
 				send.Err = msg.S2C_GetMailReward_E_Err_Succeed
 				mail.Received = true
 				break
@@ -557,6 +563,9 @@ func handleGetAllMailReward(args []interface{}) {
 			}
 			if _, _, err := ud.Gain(mailSd.Reward, mailSd.RewardNumber, false, nil); err != nil {
 				continue
+			}
+			if sd.E_Money(mailSd.Reward) == sd.E_Money_Gold {
+				ud.GainCoin += mailSd.RewardNumber
 			}
 			send.Ids = append(send.Ids, strconv.FormatInt(mail.Id, 10))
 			mail.Received = true
@@ -702,8 +711,10 @@ func handleBuyItem(args []interface{}) {
 			return
 		}
 	}
-
-	send.Id = recv.Id
 	cost.Cost(ud, costs, 1, false, nil)
+	if sd.E_Money(itemSd.IncomeID) == sd.E_Money_Gold {
+		ud.GainCoin += itemSd.Income
+	}
+	send.Id = recv.Id
 	send.Err = msg.S2C_BuyItem_E_Err_Succeed
 }

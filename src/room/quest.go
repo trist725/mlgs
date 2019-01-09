@@ -59,6 +59,7 @@ func (r *Room) UpdateCoinQuests(gain int64) {
 			log.Error("UpdateQuests failed, user data is nil")
 			return
 		}
+		ud.GainCoin += gain
 		for _, q := range ud.Quests {
 			taskSd := sd.TaskMgr.Get(q.Id)
 			if taskSd == nil {

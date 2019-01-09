@@ -102,26 +102,26 @@ const (
 	E_Money_Gold E_Money = 1
 	///钻石
 	E_Money_Diamond E_Money = 2
-	///积分
-	E_Money_Point E_Money = 3
-	///筹码
-	E_Money_Chip E_Money = 4
+	///皮肤
+	E_Money_DealerSkin E_Money = 3
+	///人民币
+	E_Money_RMB E_Money = 4
 )
 
 var E_Money_name = map[int32]string{
 	0: "E_Money_",
 	1: "E_Money_Gold",
 	2: "E_Money_Diamond",
-	3: "E_Money_Point",
-	4: "E_Money_Chip",
+	3: "E_Money_DealerSkin",
+	4: "E_Money_RMB",
 }
 
 var E_Money_value = map[string]int32{
-	"E_Money_":        0,
-	"E_Money_Gold":    1,
-	"E_Money_Diamond": 2,
-	"E_Money_Point":   3,
-	"E_Money_Chip":    4,
+	"E_Money_":           0,
+	"E_Money_Gold":       1,
+	"E_Money_Diamond":    2,
+	"E_Money_DealerSkin": 3,
+	"E_Money_RMB":        4,
 }
 
 var E_Money_Slice = []int32{
