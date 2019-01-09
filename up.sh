@@ -10,6 +10,7 @@ then
 
 fi
 
+make clean & make server
 cd bin
 ( ./mlgs* & )
 echo "mlgs has started"
