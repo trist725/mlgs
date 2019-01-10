@@ -31,7 +31,7 @@ func GetAllowCltVer(dt int32, ver *CltVer) error {
 	if time.Now().Unix()-gLastUpVerTime < gUpVerInterval {
 		return nil
 	}
-	uri := "http://192.168.101.230:8000/manage/game/client/version/" + strconv.Itoa(int(dt))
+	uri := "http://47.110.73.211:8000/manage/game/client/version/" + strconv.Itoa(int(dt))
 	resp, err := resty.R().Get(uri)
 	if err != nil {
 		return err
@@ -47,9 +47,6 @@ func GetAllowCltVer(dt int32, ver *CltVer) error {
 }
 
 func CheckCltVer(loginVer *CltVer, dt int32) bool {
-	//暂时不用
-	return true
-
 	if err := GetAllowCltVer(dt, &gAllowCltVer); err != nil {
 		log.Error("GetAllowCltVer failed: %v", err)
 		return false
