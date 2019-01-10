@@ -560,12 +560,15 @@ func (r *Room) PlayerJoin(p *cache.Player) error {
 			if roomSd == nil {
 				return fmt.Errorf("get room sd failed on NewGame")
 			}
-			var costs cost.Costs
-			costs = append(costs, cost.CostItem{1, roomSd.Chip})
-			if err := cost.CanCost(p.UserData(), costs, 1); err == nil {
-				cost.Cost(p.UserData(), costs, 1, false, nil)
-			} else {
-				return fmt.Errorf("can not cost")
+			//练习场不扣钱
+			if r.pType != uint32(sd.E_RoomType_Training) {
+				var costs cost.Costs
+				costs = append(costs, cost.CostItem{1, roomSd.Chip})
+				if err := cost.CanCost(p.UserData(), costs, 1); err == nil {
+					cost.Cost(p.UserData(), costs, 1, false, nil)
+				} else {
+					return fmt.Errorf("can not cost")
+				}
 			}
 
 			r.players[uint32(i)] = p
@@ -670,7 +673,10 @@ func (r *Room) PlayerLeave(p *cache.Player, reason msg.S2C_UpdatePlayerLeaveRoom
 		if p.Chip() > roomSd.Chip {
 			r.UpdateCoinQuests(p.Chip() - roomSd.Chip)
 		}
-		p.UserData().Gain(1, p.Chip(), false, nil)
+		//练习场不加钱
+		if r.pType != uint32(sd.E_RoomType_Training) {
+			p.UserData().Gain(1, p.Chip(), false, nil)
+		}
 		player.SetRoomId(0)
 		r.BoardCastPL(player.UserId(), reason)
 		if p.SessionId() == 0 {

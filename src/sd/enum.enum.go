@@ -401,3 +401,81 @@ func Each_E_CostItemField_I(f func(int32) bool) {
 
 // enum [E_CostItemField] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// enum [E_RoomType] begin
+
+///房间类型枚举
+type E_RoomType int32
+
+const (
+	E_RoomType_ E_RoomType = 0
+	///快速匹配
+	E_RoomType_Quick E_RoomType = 1
+	///练习场
+	E_RoomType_Training E_RoomType = 2
+	///赛事场
+	E_RoomType_Match E_RoomType = 3
+)
+
+var E_RoomType_name = map[int32]string{
+	0: "E_RoomType_",
+	1: "E_RoomType_Quick",
+	2: "E_RoomType_Training",
+	3: "E_RoomType_Match",
+}
+
+var E_RoomType_value = map[string]int32{
+	"E_RoomType_":         0,
+	"E_RoomType_Quick":    1,
+	"E_RoomType_Training": 2,
+	"E_RoomType_Match":    3,
+}
+
+var E_RoomType_Slice = []int32{
+	0,
+	1,
+	2,
+	3,
+}
+
+func (x E_RoomType) String() string {
+	if name, ok := E_RoomType_name[int32(x)]; ok {
+		return name
+	}
+	return ""
+}
+
+func E_RoomType_Len() int {
+	return len(E_RoomType_Slice)
+}
+
+func Check_E_RoomType_I(value int32) bool {
+	if _, ok := E_RoomType_name[value]; ok && value != 0 {
+		return true
+	}
+	return false
+}
+
+func Check_E_RoomType(value E_RoomType) bool {
+	return Check_E_RoomType_I(int32(value))
+}
+
+func Each_E_RoomType(f func(E_RoomType) bool) {
+	for _, value := range E_RoomType_Slice {
+		if !f(E_RoomType(value)) {
+			break
+		}
+	}
+}
+
+func Each_E_RoomType_I(f func(int32) bool) {
+	for _, value := range E_RoomType_Slice {
+		if !f(value) {
+			break
+		}
+	}
+}
+
+// enum [E_RoomType] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -57,6 +57,8 @@ message Room {
 
 /// 快速开始游戏请求
 message C2S_QuickMatchStart {
+    ///房间类型,room表里的id
+    int64 Type = 1;
 }
 
 /// 快速开始游戏回复

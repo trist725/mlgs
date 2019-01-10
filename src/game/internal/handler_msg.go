@@ -84,7 +84,7 @@ func handlePlayerLeaveRoom(args []interface{}) {
 
 func handleQuickMatchStart(args []interface{}) {
 	// 收到的消息
-	//recv := args[0].(*msg.C2S_QuickMatchStart)
+	recv := args[0].(*msg.C2S_QuickMatchStart)
 	// 消息的发送者
 	sender := args[1].(gate.Agent)
 	if sender.UserData() == nil {
@@ -104,7 +104,7 @@ func handleQuickMatchStart(args []interface{}) {
 	player := session.Player()
 	if player != nil {
 		if player.InRoom() {
-			log.Debug("player:[%d] already in room", player.UserId())
+			log.Debug("player:[%d] already in room:[%d]", player.UserId(), player.RoomId())
 			return
 		}
 	}
@@ -116,7 +116,7 @@ func handleQuickMatchStart(args []interface{}) {
 	success := room.Mgr().PlayerJoin(player)
 	//无空房,新建
 	if !success {
-		nr := room.Mgr().NewRoom(1, 1, sd.InitQuickMatchRoomId())
+		nr := room.Mgr().NewRoom(uint32(recv.Type), 1, sd.InitQuickMatchRoomId())
 		if err := nr.PlayerJoin(player); err == nil {
 			success = true
 		}

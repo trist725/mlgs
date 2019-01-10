@@ -496,6 +496,7 @@ func Put_Room(i interface{}) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // message [C2S_QuickMatchStart] begin
 func (m *C2S_QuickMatchStart) ResetEx() {
+	m.Type = 0
 
 }
 
@@ -504,6 +505,8 @@ func (m C2S_QuickMatchStart) Clone() *C2S_QuickMatchStart {
 	if !ok || n == nil {
 		n = &C2S_QuickMatchStart{}
 	}
+
+	n.Type = m.Type
 
 	return n
 }

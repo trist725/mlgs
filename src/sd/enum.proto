@@ -52,3 +52,14 @@ enum E_CostItemField {
     E_CostItemField_Num = 1;
     E_CostItemField_Count = 2;
 }
+
+///房间类型枚举
+enum E_RoomType {
+    E_RoomType_ = 0;
+    ///快速匹配
+    E_RoomType_Quick = 1;
+    ///练习场
+    E_RoomType_Training = 2;
+    ///赛事场
+    E_RoomType_Match = 3;
+}
