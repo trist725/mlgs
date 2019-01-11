@@ -109,7 +109,6 @@ func (m *User) AllocDayQuests() {
 			m.Quests[i].Progress = 0
 			m.Quests[i].Received = false
 			m.Quests[i].Completed = false
-			i-- // maintain the correct index
 			exist = true
 		}
 	}
