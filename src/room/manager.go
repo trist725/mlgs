@@ -120,12 +120,13 @@ func (manager *Manager) GetRoom(roomID uint64) *Room {
 	return room
 }
 
-func (manager *Manager) PlayerJoin(p *cache.Player) bool {
+func (manager *Manager) PlayerJoin(p *cache.Player, t uint32) bool {
 	for i := 0; i < roomMapNum; i++ {
 		rmap := &manager.roomMaps[i]
 		for _, r := range rmap.rooms {
 			//对局中的暂不允许加入
-			if r.Stage() > 0 {
+			//房间类型匹配
+			if r.Stage() > 0 || r.pType != t {
 				continue
 			}
 			if p.RoomId() != 0 {

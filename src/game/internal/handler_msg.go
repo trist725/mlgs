@@ -113,7 +113,7 @@ func handleQuickMatchStart(args []interface{}) {
 	player = cache.NewPlayer(session.ID(), session.UserData().ID, sd.InitQuickMatchRoomId(), session.UserData())
 	session.SetPlayer(player)
 
-	success := room.Mgr().PlayerJoin(player)
+	success := room.Mgr().PlayerJoin(player, uint32(recv.Type))
 	//无空房,新建
 	if !success {
 		nr := room.Mgr().NewRoom(uint32(recv.Type), 1, sd.InitQuickMatchRoomId())
@@ -124,6 +124,7 @@ func handleQuickMatchStart(args []interface{}) {
 	//新建房间加入还是有可能失败
 	if !success {
 		send.Err = msg.S2C_QuickMatchStart_E_Err_Room
+		log.Error("new room failed")
 		return
 	}
 	log.Debug("[%s] pos:[%d], room id:[%d]", session.Sign(), player.Pos(), player.RoomId())
