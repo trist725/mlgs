@@ -125,7 +125,7 @@ GAME_READY:
 				r.GetPlayerCount() > 0 {
 				random := util.RandomInt(1, gPlayerLimit-len(r.players))
 				for i := 0; i < random; i++ {
-					r.AddTestRobot()
+					r.AddTestRobot(r.pType)
 				}
 			}
 			//是否满足最少开局人数
@@ -556,7 +556,7 @@ func (r *Room) PlayerJoin(p *cache.Player) error {
 			if p.UserData() == nil {
 				return fmt.Errorf("nil userData on PlayerJoin")
 			}
-			roomSd := sd.RoomMgr.Get(sd.InitQuickMatchRoomId())
+			roomSd := sd.RoomMgr.Get(int64(r.pType))
 			if roomSd == nil {
 				return fmt.Errorf("get room sd failed on NewGame")
 			}
@@ -569,6 +569,11 @@ func (r *Room) PlayerJoin(p *cache.Player) error {
 				} else {
 					return fmt.Errorf("can not cost")
 				}
+			}
+			//重置赛事场战绩
+			if sd.E_RoomType(r.pType) == sd.E_RoomType_Match {
+				p.SetRound(0)
+				p.SetWinTimes(0)
 			}
 
 			r.players[uint32(i)] = p
@@ -673,8 +678,9 @@ func (r *Room) PlayerLeave(p *cache.Player, reason msg.S2C_UpdatePlayerLeaveRoom
 		if p.Chip() > roomSd.Chip {
 			r.UpdateCoinQuests(p.Chip() - roomSd.Chip)
 		}
-		//练习场不加钱
-		if r.pType != uint32(sd.E_RoomType_Training) {
+		//练习场/赛事场不加钱
+		if r.pType == uint32(sd.E_RoomType_Quick) ||
+			(r.pType == uint32(sd.E_RoomType_Match) && p.Round() == 0) {
 			p.UserData().Gain(1, p.Chip(), false, nil)
 		}
 		player.SetRoomId(0)
@@ -793,6 +799,9 @@ func (r *Room) ResetPlayers(stat uint32) {
 	r.PlayerEach(func(player *cache.Player) {
 		if stat == 1 {
 			player.SetStat(stat)
+			if sd.E_RoomType(r.pType) == sd.E_RoomType_Match {
+				player.SetRound(player.Round() + 1)
+			}
 			return
 		}
 		player.SetStat(0)
@@ -1076,17 +1085,64 @@ func (r *Room) NewStage(skeleton *module.Skeleton) {
 //todo:保存记录
 func (r *Room) GameOver() {
 	r.BoardCastGO()
-	time.Sleep(time.Duration(sd.InitGameFinActTime()) * time.Second)
 	r.SetStage(0)
+	time.Sleep(time.Duration(sd.InitGameFinActTime()) * time.Second)
+	r.CalMatchStat()
 
 	r.UpdateMatchQuests()
 	r.ResetPlayers(0)
 	r.KickOffPlayers()
 }
 
+func (r *Room) CalMatchStat() {
+	if sd.E_RoomType(r.pType) != sd.E_RoomType_Match {
+		return
+	}
+	competSd := sd.CompetitionMgr.Get(1)
+	if competSd == nil {
+		log.Error("get competition sd failed on CalMatchStat")
+		return
+	}
+	r.PlayerEach(func(player *cache.Player) {
+		//挑战失败
+		if competSd.RoundTotle-int64(player.Round())+int64(player.WinTimes()) < competSd.RoundWin || player.Chip() < r.bb {
+			time.Sleep(time.Duration(competSd.TimeChallenge) * time.Second)
+		} else if int64(player.WinTimes()) >= competSd.RoundWin {
+			//挑战成功
+			time.Sleep(time.Duration(competSd.TimeChallenge) * time.Second)
+			//恭喜字样
+			time.Sleep(time.Duration(competSd.TimeCongratula) * time.Second)
+			//获取奖励
+			if player.UserData() == nil {
+				log.Error("CalMatchStat(): player UserData is nil, [%#v]", player)
+				return
+			}
+			if _, _, err := player.UserData().Gain(competSd.AwardID, competSd.AwardNumber, false, nil); err != nil {
+				log.Error("CalMatchStat(): gain reward failed, err: [%s]", err.Error())
+				return
+			}
+		}
+	})
+}
+
 func (r *Room) KickOffPlayers() {
+	competSd := sd.CompetitionMgr.Get(1)
+	if competSd == nil {
+		log.Error("get competition sd failed on KickOffPlayers")
+		return
+	}
 	r.PlayerEach(func(player *cache.Player) {
 		player.SetStat(0)
+		//赛事场
+		if sd.E_RoomType(r.pType) == sd.E_RoomType_Match {
+			if int64(player.WinTimes()) >= competSd.RoundWin || player.Chip() < r.bb ||
+				competSd.RoundTotle == int64(player.Round()) ||
+				competSd.RoundTotle-int64(player.Round())+int64(player.WinTimes()) < competSd.RoundWin {
+				r.PlayerLeave(player, msg.S2C_UpdatePlayerLeaveRoom_E_Err_Match_Over)
+				return
+			}
+		}
+
 		// 掉线的/机器人/筹码不够的 踢
 		if player.SessionId() == 0 || player.Robot() || player.Chip() < r.bb {
 			r.PlayerLeave(player, msg.S2C_UpdatePlayerLeaveRoom_E_Err_Kick_NoMoney)

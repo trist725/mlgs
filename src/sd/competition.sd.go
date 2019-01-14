@@ -17,20 +17,22 @@ import "github.com/trist725/mgsu/util"
 //import_extend_end
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-type Item struct {
+type Competition struct {
 	ID int64 `excel_column:"0" excel_name:"id"` // 编号
 
-	Type int32 `excel_column:"2" excel_name:"type"` // 大类型
+	RoundTotle int64 `excel_column:"2" excel_name:"round_totle"` // 总局数
 
-	SubType int32 `excel_column:"3" excel_name:"sub_type"` // 小类型
+	RoundWin int64 `excel_column:"3" excel_name:"round_win"` // 胜利所需局数
 
-	BuyNeedID int64 `excel_column:"7" excel_name:"buy_need_id"` // 花费所需类型
+	RoundLose int64 `excel_column:"4" excel_name:"round_lose"` // 失败所需局数
 
-	BuyCost int64 `excel_column:"8" excel_name:"buy_cost"` // 花费
+	TimeChallenge int64 `excel_column:"5" excel_name:"time_challenge"` // 挑战成功/失败停留时长
 
-	IncomeID int64 `excel_column:"9" excel_name:"Income_id"` // 收入类型
+	TimeCongratula int64 `excel_column:"6" excel_name:"time_congratula"` // 恭喜获得停留时长
 
-	Income int64 `excel_column:"10" excel_name:"Income"` // 收入
+	AwardID int64 `excel_column:"8" excel_name:"award_id"` // 奖励对应item表ID
+
+	AwardNumber int64 `excel_column:"9" excel_name:"award_number"` // 奖励数量
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体扩展字段
@@ -39,8 +41,8 @@ type Item struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func NewItem() *Item {
-	sd := &Item{}
+func NewCompetition() *Competition {
+	sd := &Competition{}
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加结构体New代码
 	//struct_new_begin
@@ -49,13 +51,13 @@ func NewItem() *Item {
 	return sd
 }
 
-func (sd Item) String() string {
+func (sd Competition) String() string {
 	ba, _ := json.Marshal(sd)
 	return string(ba)
 }
 
-func (sd Item) Clone() *Item {
-	n := NewItem()
+func (sd Competition) Clone() *Competition {
+	n := NewCompetition()
 	*n = sd
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,14 +69,14 @@ func (sd Item) Clone() *Item {
 	return n
 }
 
-func (sd *Item) load(row *xlsx.Row) error {
+func (sd *Competition) load(row *xlsx.Row) error {
 	return util.DeserializeStructFromXlsxRow(sd, row)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-type ItemManager struct {
-	dataArray []*Item
-	dataMap   map[int64]*Item
+type CompetitionManager struct {
+	dataArray []*Competition
+	dataMap   map[int64]*Competition
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加manager扩展字段
@@ -83,10 +85,10 @@ type ItemManager struct {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
-func newItemManager() *ItemManager {
-	mgr := &ItemManager{
-		dataArray: []*Item{},
-		dataMap:   make(map[int64]*Item),
+func newCompetitionManager() *CompetitionManager {
+	mgr := &CompetitionManager{
+		dataArray: []*Competition{},
+		dataMap:   make(map[int64]*Competition),
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,7 +100,7 @@ func newItemManager() *ItemManager {
 	return mgr
 }
 
-func (mgr *ItemManager) Load(excelFilePath string) (success bool) {
+func (mgr *CompetitionManager) Load(excelFilePath string) (success bool) {
 	success = true
 
 	absExcelFilePath, err := filepath.Abs(excelFilePath)
@@ -144,7 +146,7 @@ func (mgr *ItemManager) Load(excelFilePath string) (success bool) {
 			}
 		}
 
-		sd := NewItem()
+		sd := NewCompetition()
 		err = sd.load(row)
 		if err != nil {
 			log.Printf("%s 加载第%d行失败, %s\n", excelFilePath, i+1, err)
@@ -181,11 +183,11 @@ func (mgr *ItemManager) Load(excelFilePath string) (success bool) {
 	return
 }
 
-func (mgr ItemManager) Size() int {
+func (mgr CompetitionManager) Size() int {
 	return len(mgr.dataArray)
 }
 
-func (mgr ItemManager) Get(id int64) *Item {
+func (mgr CompetitionManager) Get(id int64) *Competition {
 	sd, ok := mgr.dataMap[id]
 	if !ok {
 		return nil
@@ -193,7 +195,7 @@ func (mgr ItemManager) Get(id int64) *Item {
 	return sd.Clone()
 }
 
-func (mgr ItemManager) Each(f func(sd *Item) bool) {
+func (mgr CompetitionManager) Each(f func(sd *Competition) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd.Clone()) {
 			break
@@ -201,7 +203,7 @@ func (mgr ItemManager) Each(f func(sd *Item) bool) {
 	}
 }
 
-func (mgr *ItemManager) each(f func(sd *Item) bool) {
+func (mgr *CompetitionManager) each(f func(sd *Competition) bool) {
 	for _, sd := range mgr.dataArray {
 		if !f(sd) {
 			break
@@ -209,7 +211,7 @@ func (mgr *ItemManager) each(f func(sd *Item) bool) {
 	}
 }
 
-func (mgr ItemManager) findIf(f func(sd *Item) bool) *Item {
+func (mgr CompetitionManager) findIf(f func(sd *Competition) bool) *Competition {
 	for _, sd := range mgr.dataArray {
 		if f(sd) {
 			return sd
@@ -218,7 +220,7 @@ func (mgr ItemManager) findIf(f func(sd *Item) bool) *Item {
 	return nil
 }
 
-func (mgr ItemManager) FindIf(f func(sd *Item) bool) *Item {
+func (mgr CompetitionManager) FindIf(f func(sd *Competition) bool) *Competition {
 	for _, sd := range mgr.dataArray {
 		n := sd.Clone()
 		if f(n) {
@@ -228,7 +230,7 @@ func (mgr ItemManager) FindIf(f func(sd *Item) bool) *Item {
 	return nil
 }
 
-func (mgr ItemManager) check(excelFilePath string, row int, sd *Item) error {
+func (mgr CompetitionManager) check(excelFilePath string, row int, sd *Competition) error {
 	if _, ok := mgr.dataMap[sd.ID]; ok {
 		return fmt.Errorf("%s 第%d行的id重复", excelFilePath, row)
 	}
@@ -242,7 +244,7 @@ func (mgr ItemManager) check(excelFilePath string, row int, sd *Item) error {
 	return nil
 }
 
-func (mgr *ItemManager) AfterLoadAll(excelFilePath string) (success bool) {
+func (mgr *CompetitionManager) AfterLoadAll(excelFilePath string) (success bool) {
 	success = true
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	// TODO 添加加载后处理代码

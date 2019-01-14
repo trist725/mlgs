@@ -192,6 +192,7 @@ func (r *Room) BoardCastGS() {
 			bc.Cards = append(bc.Cards, card)
 		}
 		send.Best = bc
+		send.Round = int32(player.Round())
 		session.Agent().WriteMsg(send)
 	})
 
@@ -314,6 +315,7 @@ func (r *Room) BoardCastBalance() {
 		b.Gain = player.Gain()
 		b.Refund = player.RefundBet()
 		b.UserId = player.UserId()
+		b.WinRound = int32(player.WinTimes())
 
 		send.Balances = append(send.Balances, b)
 	})
@@ -328,9 +330,9 @@ func (r *Room) BoardCastBalance() {
 		session.Agent().WriteMsg(send)
 	})
 
-	//for _, b := range send.Balances {
-	//	log.Debug("=======================: %v", b)
-	//}
+	for _, b := range send.Balances {
+		log.Debug("=======================: %v", b)
+	}
 	//for _, p := range r.players {
 	//	log.Debug("######################id: %d : %v", p.UserId(), p.Nuts())
 	//}

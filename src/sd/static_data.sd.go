@@ -7,15 +7,16 @@ import "log"
 import "path/filepath"
 
 var (
-	AchieveMgr = newAchieveManager()
-	EmailMgr   = newEmailManager()
-	GlobalMgr  = newGlobalManager()
-	ItemMgr    = newItemManager()
-	PersonMgr  = newPersonManager()
-	RoomMgr    = newRoomManager()
-	ShopMgr    = newShopManager()
-	TaskMgr    = newTaskManager()
-	TimeMgr    = newTimeManager()
+	AchieveMgr     = newAchieveManager()
+	CompetitionMgr = newCompetitionManager()
+	EmailMgr       = newEmailManager()
+	GlobalMgr      = newGlobalManager()
+	ItemMgr        = newItemManager()
+	PersonMgr      = newPersonManager()
+	RoomMgr        = newRoomManager()
+	ShopMgr        = newShopManager()
+	TaskMgr        = newTaskManager()
+	TimeMgr        = newTimeManager()
 )
 
 func LoadAll(excelDir string) (success bool) {
@@ -28,6 +29,8 @@ func LoadAll(excelDir string) (success bool) {
 	success = true
 
 	success = AchieveMgr.Load(filepath.Join(absExcelDir, "achieve.xlsx")) && success
+
+	success = CompetitionMgr.Load(filepath.Join(absExcelDir, "competition.xlsx")) && success
 
 	success = EmailMgr.Load(filepath.Join(absExcelDir, "email.xlsx")) && success
 
@@ -58,6 +61,8 @@ func AfterLoadAll(excelDir string) (success bool) {
 	success = true
 
 	success = AchieveMgr.AfterLoadAll(filepath.Join(absExcelDir, "achieve.xlsx")) && success
+
+	success = CompetitionMgr.AfterLoadAll(filepath.Join(absExcelDir, "competition.xlsx")) && success
 
 	success = EmailMgr.AfterLoadAll(filepath.Join(absExcelDir, "email.xlsx")) && success
 

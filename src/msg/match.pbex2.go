@@ -132,6 +132,7 @@ var S2C_UpdatePlayerLeaveRoom_E_Err_Slice = []int32{
 	2,
 	3,
 	4,
+	5,
 }
 
 func S2C_UpdatePlayerLeaveRoom_E_Err_Len() int {
@@ -889,6 +890,7 @@ func (m *S2C_GameStart) ResetEx() {
 	m.Cards = []*Card{}
 	m.SmallBlind = 0
 	m.Best.ResetEx()
+	m.Round = 0
 
 }
 
@@ -914,6 +916,7 @@ func (m S2C_GameStart) Clone() *S2C_GameStart {
 
 	n.SmallBlind = m.SmallBlind
 	n.Best = m.Best.Clone()
+	n.Round = m.Round
 
 	return n
 }
@@ -1367,6 +1370,7 @@ func (m *Balance) ResetEx() {
 		Put_Card(i)
 	}
 	m.Cards = []*Card{}
+	m.WinRound = 0
 
 }
 
@@ -1392,6 +1396,8 @@ func (m Balance) Clone() *Balance {
 	} else {
 		n.Cards = []*Card{}
 	}
+
+	n.WinRound = m.WinRound
 
 	return n
 }

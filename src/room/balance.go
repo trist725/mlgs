@@ -41,6 +41,15 @@ func (r *Room) Balance() {
 		}
 	})
 
+	//赛事场
+	if sd.E_RoomType(r.pType) == sd.E_RoomType_Match {
+		//计算大赢家
+		psw := cache.PsWinners(ps).CalBigWinners()
+		for _, p := range psw {
+			p.SetWinTimes(p.WinTimes() + 1)
+		}
+	}
+
 	r.BoardCastBalance()
 	time.Sleep(time.Duration(sd.InitBalanceTime()) * time.Second)
 }

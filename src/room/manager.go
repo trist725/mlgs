@@ -41,7 +41,6 @@ func newManager() *Manager {
 }
 
 func (manager *Manager) NewRoom(pt uint32, gt uint32, t int64) *Room {
-	//todo:根据t创建不同房间类型
 	var rommSd *sd.Room
 	switch t {
 	default:

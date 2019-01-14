@@ -4,10 +4,9 @@ import (
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/cache"
 	"mlgs/src/model"
-	"mlgs/src/sd"
 )
 
-func (r *Room) AddTestRobot() {
+func (r *Room) AddTestRobot(t uint32) {
 	//机器人暂不用account,只用user
 	ns, err := model.NextSeq(model.TblUser)
 	if err != nil {
@@ -15,7 +14,7 @@ func (r *Room) AddTestRobot() {
 		return
 	}
 	rid := int64(ns)*model.RobotIdTimes + model.RobotIdOffset
-	player := cache.NewRobotPlayer(rid, sd.InitQuickMatchRoomId())
+	player := cache.NewRobotPlayer(rid, int64(t))
 	if player == nil {
 		log.Error("AddTestRobot failed")
 		return

@@ -102,21 +102,20 @@ func handleQuickMatchStart(args []interface{}) {
 	}
 
 	player := session.Player()
-	if player != nil {
-		if player.InRoom() {
-			log.Debug("player:[%d] already in room:[%d]", player.UserId(), player.RoomId())
-			return
-		}
-	}
-
 	//创建游戏内数据
-	player = cache.NewPlayer(session.ID(), session.UserData().ID, sd.InitQuickMatchRoomId(), session.UserData())
-	session.SetPlayer(player)
+	if player == nil {
+		player = cache.NewPlayer(session.ID(), session.UserData().ID, recv.Type, session.UserData())
+		session.SetPlayer(player)
+	} else if player.InRoom() {
+		log.Debug("player:[%d] already in room:[%d]", player.UserId(), player.RoomId())
+		send.Err = msg.S2C_QuickMatchStart_E_Err_UnKnown
+		return
+	}
 
 	success := room.Mgr().PlayerJoin(player, uint32(recv.Type))
 	//无空房,新建
 	if !success {
-		nr := room.Mgr().NewRoom(uint32(recv.Type), 1, sd.InitQuickMatchRoomId())
+		nr := room.Mgr().NewRoom(uint32(recv.Type), 1, recv.Type)
 		if err := nr.PlayerJoin(player); err == nil {
 			success = true
 		}
@@ -127,7 +126,7 @@ func handleQuickMatchStart(args []interface{}) {
 		log.Error("new room failed")
 		return
 	}
-	log.Debug("[%s] pos:[%d], room id:[%d]", session.Sign(), player.Pos(), player.RoomId())
+	log.Debug("[%s] roomId:[%d] type:[%d] pos:[%d]", session.Sign(), player.RoomId(), recv.Type, player.Pos())
 
 	r := room.Mgr().GetRoom(player.RoomId())
 	send.Room = msg.Get_Room()

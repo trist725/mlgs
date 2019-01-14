@@ -78,9 +78,29 @@ type Player struct {
 	robot bool
 	//用户信息
 	userData *model.User
+	//本次赛事场对局数
+	round uint32
+	//本次赛事场已获胜局数
+	winTimes uint32
 
 	//操作集
 	ops []Op
+}
+
+func (p *Player) Round() uint32 {
+	return atomic.LoadUint32(&p.round)
+}
+
+func (p *Player) SetRound(r uint32) {
+	atomic.StoreUint32(&p.round, r)
+}
+
+func (p *Player) WinTimes() uint32 {
+	return atomic.LoadUint32(&p.winTimes)
+}
+
+func (p *Player) SetWinTimes(wt uint32) {
+	atomic.StoreUint32(&p.winTimes, wt)
 }
 
 func (p *Player) AddOp(op Op) {
@@ -200,7 +220,6 @@ func (p *Player) UserData() *model.User {
 }
 
 func NewRobotPlayer(rid int64, t int64) *Player {
-	//todo:根据t进入不同房间类型
 	var rommSd *sd.Room
 	switch t {
 	default:
@@ -506,4 +525,42 @@ func (p *Player) SaveData() {
 		}
 		model.PutSession(dbSession)
 	}
+}
+
+type PsWinners PlayerSlice
+
+func (psw PsWinners) Len() int { // 重写 Len() 方法
+	return len(psw)
+}
+func (psw PsWinners) Swap(i, j int) { // 重写 Swap() 方法
+	psw[i], psw[j] = psw[j], psw[i]
+}
+
+//以gain从大到小排序
+func (psw PsWinners) Less(i, j int) bool {
+	if psw[i].gain > psw[j].gain {
+		return true
+	}
+	return false
+}
+
+//计算大赢家
+func (psw PsWinners) CalBigWinners() PsWinners {
+	if psw.Len() == 0 {
+		return nil
+	}
+	sort.Sort(PsWinners(psw))
+	var (
+		maxGain = psw[0].gain
+		ret     PsWinners
+	)
+
+	for i := 0; i < psw.Len(); i++ {
+		//可能有平局多个大赢家情况
+		if psw[i].gain == maxGain {
+			ret = append(ret, psw[i])
+		}
+	}
+
+	return ret
 }

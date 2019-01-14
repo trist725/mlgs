@@ -116,6 +116,8 @@ message S2C_UpdatePlayerLeaveRoom {
         E_Err_UnKnown = 3;
         ///掉线
         E_Err_DisConn = 4;
+        ///赛事场结束
+        E_Err_Match_Over = 5;
     }
     E_Err Reason = 4;
 }
@@ -130,6 +132,8 @@ message S2C_GameStart{
     int64 SmallBlind = 3;
     ///最大牌型
     BestCombo Best = 4;
+    ///本次赛事场第几局
+    int32 Round = 5;
 }
 
 ///当前轮到谁操作
@@ -178,7 +182,7 @@ message S2C_GameOver {
 }
 
 ///结算
-message Balance{
+message Balance {
     ///用户Id
     int64 UserId = 1;
     ///最大牌型
@@ -189,6 +193,8 @@ message Balance{
     int64 Refund = 4;
     ///手牌
     repeated Card Cards = 5;
+    ///本次赛事场胜场
+    int32 WinRound = 6;
 }
 
 ///下发结算消息
