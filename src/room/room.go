@@ -1206,3 +1206,11 @@ func (r *Room) GetRobotCount() int {
 	})
 	return count
 }
+
+func (r *Room) GetRoomType() uint32 {
+	return atomic.LoadUint32(&r.pType)
+}
+
+func (r *Room) SetRoomType(t uint32) {
+	atomic.StoreUint32(&r.pType, t)
+}

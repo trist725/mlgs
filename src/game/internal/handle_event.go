@@ -8,6 +8,7 @@ import (
 	"mlgs/src/msg"
 	r "mlgs/src/room"
 	s "mlgs/src/session"
+	"sd"
 )
 
 func init() {
@@ -69,6 +70,12 @@ func OnPlayerJoinRoom(args []interface{}) {
 	defer sender.WriteMsg(send)
 	player := args[3].(*cache.Player)
 
+	roomSd := sd.RoomMgr.Get(int64(room.GetRoomType()))
+	if roomSd == nil {
+		log.Error("OnPlayerJoinRoom(): get room sd failed")
+		return
+	}
+
 	//给自己发所有玩家信息
 	//todo:给自己发旁观者信息
 	room.PlayerEach(func(player *cache.Player) {
@@ -79,7 +86,7 @@ func OnPlayerJoinRoom(args []interface{}) {
 			return
 		}
 		p := msg.Get_Player()
-		p.Chip = player.Chip()
+		p.Chip = roomSd.Chip
 		p.UserId = player.UserId()
 		p.Pos = player.Pos()
 		if player.Robot() {
