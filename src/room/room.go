@@ -1106,15 +1106,20 @@ func (r *Room) CalMatchStat() {
 		log.Error("get competition sd failed on CalMatchStat")
 		return
 	}
+	//0-不停,1-挑战失败停,2-挑战成功停
+	var wait int32
 	r.PlayerEach(func(player *cache.Player) {
 		//挑战失败
 		if competSd.RoundTotle-int64(player.Round())+int64(player.WinTimes()) < competSd.RoundWin || player.Chip() < r.bb {
-			time.Sleep(time.Duration(competSd.TimeChallenge) * time.Second)
+			wait = 1
+			//log.Debug("challenge failed")
 		} else if int64(player.WinTimes()) >= competSd.RoundWin {
+			//log.Debug("challenge succeed")
 			//挑战成功
-			time.Sleep(time.Duration(competSd.TimeChallenge) * time.Second)
+			//time.Sleep(time.Duration(competSd.TimeChallenge) * time.Second)
 			//恭喜字样
-			time.Sleep(time.Duration(competSd.TimeCongratula) * time.Second)
+			//time.Sleep(time.Duration(competSd.TimeCongratula) * time.Second)
+			wait = 2
 			//获取奖励
 			if player.UserData() == nil {
 				log.Error("CalMatchStat(): player UserData is nil, [%#v]", player)
@@ -1126,6 +1131,13 @@ func (r *Room) CalMatchStat() {
 			}
 		}
 	})
+
+	if wait != 0 {
+		time.Sleep(time.Duration(competSd.TimeChallenge) * time.Second)
+		if wait == 2 {
+			time.Sleep(time.Duration(competSd.TimeCongratula) * time.Second)
+		}
+	}
 }
 
 func (r *Room) KickOffPlayers() {
