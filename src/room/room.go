@@ -579,6 +579,7 @@ func (r *Room) PlayerJoin(p *cache.Player) error {
 			r.players[uint32(i)] = p
 			p.SetPos(uint32(i))
 			p.SetRoomId(r.id)
+			p.SetChip(roomSd.Chip)
 
 			return nil
 		}
