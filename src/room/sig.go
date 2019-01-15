@@ -19,7 +19,7 @@ func (r *Room) SendPlayerActionSig(act *msg.C2S_TurnAction, player *cache.Player
 		return
 	}
 	select {
-	case r.actSig <- TurnAction{
+	case r.actCh <- TurnAction{
 		act: act,
 		p:   player,
 	}:
@@ -34,7 +34,7 @@ func (r *Room) SendRefreshReadyTimeSig() {
 		return
 	}
 	select {
-	case r.refreshReadyTimeSig <- struct{}{}:
+	case r.refreshReadyTimeCh <- struct{}{}:
 	default:
 		log.Debug("no RefreshReadyTimeSig sent")
 		return
@@ -44,7 +44,7 @@ func (r *Room) SendRefreshReadyTimeSig() {
 
 func (r *Room) SendStopLoopSig() {
 	select {
-	case r.stopSig <- struct{}{}:
+	case r.stopCh <- struct{}{}:
 	default:
 		log.Error("stop room:[%d] loop failed", r.id)
 	}

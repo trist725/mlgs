@@ -122,6 +122,7 @@ func OnNewGame(args []interface{}) {
 func OnTurn(args []interface{}) {
 	room := args[0].(*r.Room)
 	room.BoardCastTurn()
+	room.TurnCh() <- struct{}{}
 }
 
 func OnTurnAction(args []interface{}) {

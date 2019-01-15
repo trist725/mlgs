@@ -74,12 +74,14 @@ type Room struct {
 	//todo:对局循环，make chan
 	loopOnce sync.Once
 
-	//循环信号
-	stopSig chan struct{}
-	//更新准备时间信号
-	refreshReadyTimeSig chan struct{}
-	//玩家行动信号
-	actSig chan TurnAction
+	//循环信道
+	stopCh chan struct{}
+	//更新准备时间信道
+	refreshReadyTimeCh chan struct{}
+	//玩家行动信道
+	actCh chan TurnAction
+	//轮转信道
+	turnCh chan struct{}
 }
 
 func init() {
@@ -136,7 +138,7 @@ GAME_READY:
 				}
 				goto GAME_STAGE1
 			}
-		case <-r.refreshReadyTimeSig:
+		case <-r.refreshReadyTimeCh:
 			//人满开
 			if len(r.players) == gPlayerLimit {
 				if !r.NewGame(skeleton) {
@@ -145,7 +147,7 @@ GAME_READY:
 				goto GAME_STAGE1
 			}
 			continue
-		case <-r.stopSig:
+		case <-r.stopCh:
 			return
 		}
 	}
@@ -161,7 +163,7 @@ GAME_STAGE1:
 		//大盲下一位开始行动
 		r.curPos = r.bbPos
 		r.Turn(skeleton)
-	case <-r.stopSig:
+	case <-r.stopCh:
 		return
 	}
 	for {
@@ -182,9 +184,9 @@ GAME_STAGE1:
 					act: act,
 					p:   curPlayer,
 				})
-			case act := <-r.actSig:
+			case act := <-r.actCh:
 				r.DoAct(act)
-			case <-r.stopSig:
+			case <-r.stopCh:
 				return
 			}
 		} else {
@@ -227,9 +229,9 @@ GAME_STAGE2:
 					act: act,
 					p:   curPlayer,
 				})
-			case act := <-r.actSig:
+			case act := <-r.actCh:
 				r.DoAct(act)
-			case <-r.stopSig:
+			case <-r.stopCh:
 				return
 			}
 		} else {
@@ -272,9 +274,9 @@ GAME_STAGE3:
 					act: act,
 					p:   curPlayer,
 				})
-			case act := <-r.actSig:
+			case act := <-r.actCh:
 				r.DoAct(act)
-			case <-r.stopSig:
+			case <-r.stopCh:
 				return
 			}
 		} else {
@@ -317,9 +319,9 @@ GAME_STAGE4:
 					act: act,
 					p:   curPlayer,
 				})
-			case act := <-r.actSig:
+			case act := <-r.actCh:
 				r.DoAct(act)
-			case <-r.stopSig:
+			case <-r.stopCh:
 				return
 			}
 		} else {
@@ -373,7 +375,7 @@ func (r *Room) DoAutoAct(player *cache.Player) bool {
 	if player.Robot() {
 		time.Sleep(util.RandomTimeDuration(1, 6) * time.Second)
 		ta.Act = util.RandomInt32(1, 5)
-		ta.Bet = util.RandomInt64(1, 40)
+		ta.Bet = util.RandomInt64(1, 2500)
 		r.DoAct(TurnAction{
 			act: ta,
 			p:   player,
@@ -716,9 +718,9 @@ func (r *Room) bystanderLeave(p *cache.Player) {
 
 func (r *Room) Destroy() {
 	r.SendStopLoopSig()
-	close(r.refreshReadyTimeSig)
-	close(r.stopSig)
-	close(r.actSig)
+	close(r.refreshReadyTimeCh)
+	close(r.stopCh)
+	close(r.actCh)
 
 	Mgr().delRoom(r)
 }
@@ -1010,7 +1012,7 @@ func (r *Room) Turn(skeleton *module.Skeleton) bool {
 
 	r.curPos = pos
 	log.Debug("turn pos: .......%d", pos)
-	skeleton.ChanRPCServer.Go("Turn", r)
+	r.SendTurn(skeleton)
 	return true
 }
 
@@ -1080,7 +1082,7 @@ func (r *Room) NewStage(skeleton *module.Skeleton) {
 		return
 	}
 
-	skeleton.ChanRPCServer.Go("Turn", r)
+	r.SendTurn(skeleton)
 }
 
 //todo:保存记录
@@ -1214,4 +1216,13 @@ func (r *Room) GetRoomType() uint32 {
 
 func (r *Room) SetRoomType(t uint32) {
 	atomic.StoreUint32(&r.pType, t)
+}
+
+func (r *Room) SendTurn(skeleton *module.Skeleton) {
+	skeleton.ChanRPCServer.Go("Turn", r)
+	<-r.turnCh
+}
+
+func (r *Room) TurnCh() chan struct{} {
+	return r.turnCh
 }

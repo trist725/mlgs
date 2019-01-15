@@ -61,10 +61,10 @@ func (manager *Manager) NewRoom(pt uint32, gt uint32, t int64) *Room {
 		bystanders: make(map[int64]*cache.Player),
 	}
 
-	room.stopSig = make(chan struct{})
-
-	room.refreshReadyTimeSig = make(chan struct{})
-	room.actSig = make(chan TurnAction)
+	room.stopCh = make(chan struct{})
+	room.refreshReadyTimeCh = make(chan struct{})
+	room.actCh = make(chan TurnAction)
+	room.turnCh = make(chan struct{})
 
 	manager.putRoom(room)
 	return room
