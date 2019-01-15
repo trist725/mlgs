@@ -125,7 +125,7 @@ GAME_READY:
 		case <-time.After(time.Duration(readyTimeSd.Value) * time.Second):
 			if len(r.players) <= sd.InitMinStartGamePlayer() &&
 				r.GetPlayerCount() > 0 {
-				random := util.RandomInt(1, gPlayerLimit-len(r.players))
+				random := util.RandomInt(1, gPlayerLimit-len(r.players)+1)
 				for i := 0; i < random; i++ {
 					r.AddTestRobot(r.pType)
 				}
@@ -375,7 +375,7 @@ func (r *Room) DoAutoAct(player *cache.Player) bool {
 	if player.Robot() {
 		time.Sleep(util.RandomTimeDuration(1, 6) * time.Second)
 		ta.Act = util.RandomInt32(1, 5)
-		ta.Bet = util.RandomInt64(1, 2500)
+		ta.Bet = util.RandomInt64(1, 100)
 		r.DoAct(TurnAction{
 			act: ta,
 			p:   player,
