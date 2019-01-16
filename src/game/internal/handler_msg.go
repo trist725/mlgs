@@ -109,6 +109,7 @@ func handleQuickMatchStart(args []interface{}) {
 	} else if player.InRoom() {
 		log.Debug("player:[%d] already in room:[%d]", player.UserId(), player.RoomId())
 		send.Err = msg.S2C_QuickMatchStart_E_Err_UnKnown
+		sender.WriteMsg(send)
 		return
 	}
 
@@ -124,6 +125,7 @@ func handleQuickMatchStart(args []interface{}) {
 	if !success {
 		send.Err = msg.S2C_QuickMatchStart_E_Err_Room
 		log.Error("new room failed")
+		sender.WriteMsg(send)
 		return
 	}
 	log.Debug("[%s] roomId:[%d] type:[%d] pos:[%d]", session.Sign(), player.RoomId(), recv.Type, player.Pos())
