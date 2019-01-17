@@ -43,6 +43,7 @@ var S2C_QuickMatchStart_E_Err_QuickMatchStart_Slice = []int32{
 	2,
 	3,
 	4,
+	5,
 }
 
 func S2C_QuickMatchStart_E_Err_QuickMatchStart_Len() int {

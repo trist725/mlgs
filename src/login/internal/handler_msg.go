@@ -84,9 +84,20 @@ func handleLoginAuth(args []interface{}) {
 		//是否已在线
 		session := s.Mgr().GetByUserId(user.ID)
 		if session != nil {
-			log.Debug("[%d-%s] already online", user.ID, user.NickName)
-			send.Reason = msg.S2C_Login_E_Err_AlreadyLogin
-			closeFlag = true
+			send.Reason = msg.S2C_Login_E_Err_LoginSuccess
+			session.SetAgent(sender)
+			session.Agent().SetUserData(session.ID())
+			session.SetCloseFlag(0)
+			if p := session.Player(); p != nil {
+				if p.SessionId() == 0 {
+					p.SetSessionId(session.ID())
+					game.ChanRPC.Go("AfterLoginAuthPass", sender, user)
+				} else {
+					log.Debug("[%d-%s] already online", user.ID, user.NickName)
+					send.Reason = msg.S2C_Login_E_Err_AlreadyLogin
+					closeFlag = true
+				}
+			}
 			return
 		}
 

@@ -73,6 +73,8 @@ message S2C_QuickMatchStart {
         E_Err_UnKnown = 3;
         ///钱不够
         E_Err_NotEnoughMoney = 4;
+        ///已经在游戏中
+        E_Err_AlreadyInGame = 5;
     }
     E_Err_QuickMatchStart Err = 1;
     Room Room = 2;

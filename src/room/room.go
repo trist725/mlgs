@@ -1111,7 +1111,9 @@ func (r *Room) CalMatchStat() {
 	r.PlayerEach(func(player *cache.Player) {
 		//挑战失败
 		if competSd.RoundTotle-int64(player.Round())+int64(player.WinTimes()) < competSd.RoundWin || player.Chip() < r.bb {
-			wait = 1
+			if wait != 2 {
+				wait = 1
+			}
 			//log.Debug("challenge failed")
 		} else if int64(player.WinTimes()) >= competSd.RoundWin {
 			//log.Debug("challenge succeed")
@@ -1158,8 +1160,12 @@ func (r *Room) KickOffPlayers() {
 			}
 		}
 
-		// 掉线的/机器人/筹码不够的 踢
-		if player.SessionId() == 0 || player.Robot() || player.Chip() < r.bb {
+		// 掉线的/第一次断线重连的/机器人/筹码不够的 踢
+		if player.SessionId() == 0 || player.PreSessionId() != 0 || player.Robot() || player.Chip() < r.bb {
+			if player.PreSessionId() != 0 {
+				//确保对局中断线再登陆,原对局结束后只会被踢一次
+				player.SetPreSessionId(0)
+			}
 			r.PlayerLeave(player, msg.S2C_UpdatePlayerLeaveRoom_E_Err_Kick_NoMoney)
 		}
 	})

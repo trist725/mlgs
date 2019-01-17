@@ -108,7 +108,7 @@ func handleQuickMatchStart(args []interface{}) {
 		session.SetPlayer(player)
 	} else if player.InRoom() {
 		log.Debug("player:[%d] already in room:[%d]", player.UserId(), player.RoomId())
-		send.Err = msg.S2C_QuickMatchStart_E_Err_UnKnown
+		send.Err = msg.S2C_QuickMatchStart_E_Err_AlreadyInGame
 		sender.WriteMsg(send)
 		return
 	}

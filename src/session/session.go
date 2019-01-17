@@ -106,10 +106,9 @@ func (s *Session) Close() error {
 			s.timer.Stop()
 		}
 		if s.cache != nil {
-			s.cache.SetSessionId(0)
 			//游戏中,不删session
-			//todo:重连 GetByUserId
 			if s.cache.InRoom() && s.cache.Stat() != 0 {
+				s.cache.SetSessionId(0)
 				s.cache.SetPreSessionId(s.id)
 				return nil
 			}
@@ -145,4 +144,12 @@ func (s *Session) Agent() gate.Agent {
 
 func (s *Session) Update() {
 	s.lastActiveTime = time.Now().Unix()
+}
+
+func (s *Session) SetAgent(a gate.Agent) {
+	s.agent = a
+}
+
+func (s *Session) SetCloseFlag(f int32) {
+	atomic.StoreInt32(&s.closeFlag, f)
 }
