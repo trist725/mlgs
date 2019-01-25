@@ -84,6 +84,8 @@ message S2C_LoginInfo{
     repeated Item SignRewards = 7;
     ///使用中的荷官在item表中的id,0是默认皮肤
     int64 UsingDealer = 8;
+    ///大厅角色性别,0-女,1-男
+    int32 HallRoleSex = 9;
 }
 
 ///每日签到请求
@@ -109,4 +111,26 @@ message S2C_DaySign{
     E_Err_DaySign err = 1;
     ///签到后的货币信息
     repeated Money Monies = 2;
+}
+
+///切换大厅角色显示的性别
+//@msg
+message C2S_SwitchHallRoleSex{
+    ///要切换到的性别,0-女,1-男
+    int32 Sex = 1;
+}
+
+//@msg
+message S2C_SwitchHallRoleSex{
+    enum E_Err {
+        ///保留
+        E_Err_ = 0;
+        ///成功
+        E_Err_Success = 1;
+        ///参数不对
+        E_Err_Invalid_Param = 2;
+        ///其它错误
+        E_Err_Unknown = 3;
+    }
+    E_Err Err = 1;
 }

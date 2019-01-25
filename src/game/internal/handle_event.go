@@ -37,6 +37,7 @@ func OnAfterLoginAuthPass(args []interface{}) {
 		DaySigned:   user.DaySigned,
 		SignedDays:  user.SignedDays,
 		UsingDealer: user.UsingDealer,
+		HallRoleSex: user.HallRoleSex,
 	}
 
 	for _, m := range user.Monies {

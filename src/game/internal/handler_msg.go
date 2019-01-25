@@ -33,6 +33,8 @@ func init() {
 	regiserMsgHandle(&msg.C2S_GetOwnDealerSkins{}, handleGetOwnDealerSkins)
 	regiserMsgHandle(&msg.C2S_UsingOwnDealerSkins{}, handleUsingOwnDealerSkins)
 	regiserMsgHandle(&msg.C2S_BuyItem{}, handleBuyItem)
+
+	regiserMsgHandle(&msg.C2S_SwitchHallRoleSex{}, handleSwitchHallRoleSex)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -719,4 +721,36 @@ func handleBuyItem(args []interface{}) {
 	}
 	send.Id = recv.Id
 	send.Err = msg.S2C_BuyItem_E_Err_Succeed
+}
+
+func handleSwitchHallRoleSex(args []interface{}) {
+	recv := args[0].(*msg.C2S_SwitchHallRoleSex)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleSwitchHallRoleSex return for nil session")
+		return
+	}
+
+	send := msg.Get_S2C_SwitchHallRoleSex()
+	defer sender.WriteMsg(send)
+	defer session.Update()
+
+	ud := session.UserData()
+	if ud == nil {
+		log.Error("[%s] userData in session:[%d] is nil", session.Sign(), session.ID())
+		return
+	}
+
+	if recv.Sex < 0 || recv.Sex > 1 {
+		send.Err = msg.S2C_SwitchHallRoleSex_E_Err_Invalid_Param
+	}
+
+	ud.HallRoleSex = recv.Sex
+	send.Err = msg.S2C_SwitchHallRoleSex_E_Err_Success
 }

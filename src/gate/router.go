@@ -27,4 +27,5 @@ func init() {
 	msg.Processor.SetRouter(&msg.C2S_GetOwnDealerSkins{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_UsingOwnDealerSkins{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_BuyItem{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_SwitchHallRoleSex{}, game.ChanRPC)
 }

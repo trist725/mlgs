@@ -60,4 +60,6 @@ func init() {
 	Processor.Register(&S2C_UsingOwnDealerSkins{})
 	Processor.Register(&C2S_BuyItem{})
 	Processor.Register(&S2C_BuyItem{})
+	Processor.Register(&C2S_SwitchHallRoleSex{})
+	Processor.Register(&S2C_SwitchHallRoleSex{})
 }

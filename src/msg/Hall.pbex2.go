@@ -8,6 +8,8 @@ It has these top-level messages:
 	S2C_LoginInfo
 	C2S_DaySign
 	S2C_DaySign
+	C2S_SwitchHallRoleSex
+	S2C_SwitchHallRoleSex
 */
 
 package msg
@@ -152,6 +154,50 @@ func Each_S2C_DaySign_E_Err_DaySign_I(f func(int32) bool) {
 }
 
 // enum [S2C_DaySign_E_Err_DaySign] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// enum [S2C_SwitchHallRoleSex_E_Err] begin
+
+var S2C_SwitchHallRoleSex_E_Err_Slice = []int32{
+	0,
+	1,
+	2,
+	3,
+}
+
+func S2C_SwitchHallRoleSex_E_Err_Len() int {
+	return len(S2C_SwitchHallRoleSex_E_Err_Slice)
+}
+
+func Check_S2C_SwitchHallRoleSex_E_Err_I(value int32) bool {
+	if _, ok := S2C_SwitchHallRoleSex_E_Err_name[value]; ok && value != 0 {
+		return true
+	}
+	return false
+}
+
+func Check_S2C_SwitchHallRoleSex_E_Err(value S2C_SwitchHallRoleSex_E_Err) bool {
+	return Check_S2C_SwitchHallRoleSex_E_Err_I(int32(value))
+}
+
+func Each_S2C_SwitchHallRoleSex_E_Err(f func(S2C_SwitchHallRoleSex_E_Err) bool) {
+	for _, value := range S2C_SwitchHallRoleSex_E_Err_Slice {
+		if !f(S2C_SwitchHallRoleSex_E_Err(value)) {
+			break
+		}
+	}
+}
+
+func Each_S2C_SwitchHallRoleSex_E_Err_I(f func(int32) bool) {
+	for _, value := range S2C_SwitchHallRoleSex_E_Err_Slice {
+		if !f(value) {
+			break
+		}
+	}
+}
+
+// enum [S2C_SwitchHallRoleSex_E_Err] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -355,6 +401,7 @@ func (m *S2C_LoginInfo) ResetEx() {
 	}
 	m.SignRewards = []*Item{}
 	m.UsingDealer = 0
+	m.HallRoleSex = 0
 
 }
 
@@ -396,6 +443,7 @@ func (m S2C_LoginInfo) Clone() *S2C_LoginInfo {
 	}
 
 	n.UsingDealer = m.UsingDealer
+	n.HallRoleSex = m.HallRoleSex
 
 	return n
 }
@@ -642,4 +690,164 @@ func init() {
 }
 
 // message [S2C_DaySign] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [C2S_SwitchHallRoleSex] begin
+func (m *C2S_SwitchHallRoleSex) ResetEx() {
+	m.Sex = 0
+
+}
+
+func (m C2S_SwitchHallRoleSex) Clone() *C2S_SwitchHallRoleSex {
+	n, ok := g_C2S_SwitchHallRoleSex_Pool.Get().(*C2S_SwitchHallRoleSex)
+	if !ok || n == nil {
+		n = &C2S_SwitchHallRoleSex{}
+	}
+
+	n.Sex = m.Sex
+
+	return n
+}
+
+func Clone_C2S_SwitchHallRoleSex_Slice(dst []*C2S_SwitchHallRoleSex, src []*C2S_SwitchHallRoleSex) []*C2S_SwitchHallRoleSex {
+	for _, i := range dst {
+		Put_C2S_SwitchHallRoleSex(i)
+	}
+	dst = []*C2S_SwitchHallRoleSex{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func (C2S_SwitchHallRoleSex) V2() {
+}
+
+func (C2S_SwitchHallRoleSex) MessageID() protocol.MessageID {
+	return "msg.C2S_SwitchHallRoleSex"
+}
+
+func C2S_SwitchHallRoleSex_MessageID() protocol.MessageID {
+	return "msg.C2S_SwitchHallRoleSex"
+}
+
+func New_C2S_SwitchHallRoleSex() *C2S_SwitchHallRoleSex {
+	m := &C2S_SwitchHallRoleSex{}
+	return m
+}
+
+var g_C2S_SwitchHallRoleSex_Pool = sync.Pool{}
+
+func Get_C2S_SwitchHallRoleSex() *C2S_SwitchHallRoleSex {
+	m, ok := g_C2S_SwitchHallRoleSex_Pool.Get().(*C2S_SwitchHallRoleSex)
+	if !ok {
+		m = New_C2S_SwitchHallRoleSex()
+	} else {
+		if m == nil {
+			m = New_C2S_SwitchHallRoleSex()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_C2S_SwitchHallRoleSex(i interface{}) {
+	if m, ok := i.(*C2S_SwitchHallRoleSex); ok && m != nil {
+		g_C2S_SwitchHallRoleSex_Pool.Put(i)
+	}
+}
+
+func init() {
+	Protocol.Register(
+		&C2S_SwitchHallRoleSex{},
+		func() protocol.IMessage { return Get_C2S_SwitchHallRoleSex() },
+		func(msg protocol.IMessage) { Put_C2S_SwitchHallRoleSex(msg) },
+	)
+}
+
+// message [C2S_SwitchHallRoleSex] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_SwitchHallRoleSex] begin
+func (m *S2C_SwitchHallRoleSex) ResetEx() {
+	m.Err = 0
+
+}
+
+func (m S2C_SwitchHallRoleSex) Clone() *S2C_SwitchHallRoleSex {
+	n, ok := g_S2C_SwitchHallRoleSex_Pool.Get().(*S2C_SwitchHallRoleSex)
+	if !ok || n == nil {
+		n = &S2C_SwitchHallRoleSex{}
+	}
+
+	n.Err = m.Err
+
+	return n
+}
+
+func Clone_S2C_SwitchHallRoleSex_Slice(dst []*S2C_SwitchHallRoleSex, src []*S2C_SwitchHallRoleSex) []*S2C_SwitchHallRoleSex {
+	for _, i := range dst {
+		Put_S2C_SwitchHallRoleSex(i)
+	}
+	dst = []*S2C_SwitchHallRoleSex{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func (S2C_SwitchHallRoleSex) V2() {
+}
+
+func (S2C_SwitchHallRoleSex) MessageID() protocol.MessageID {
+	return "msg.S2C_SwitchHallRoleSex"
+}
+
+func S2C_SwitchHallRoleSex_MessageID() protocol.MessageID {
+	return "msg.S2C_SwitchHallRoleSex"
+}
+
+func New_S2C_SwitchHallRoleSex() *S2C_SwitchHallRoleSex {
+	m := &S2C_SwitchHallRoleSex{}
+	return m
+}
+
+var g_S2C_SwitchHallRoleSex_Pool = sync.Pool{}
+
+func Get_S2C_SwitchHallRoleSex() *S2C_SwitchHallRoleSex {
+	m, ok := g_S2C_SwitchHallRoleSex_Pool.Get().(*S2C_SwitchHallRoleSex)
+	if !ok {
+		m = New_S2C_SwitchHallRoleSex()
+	} else {
+		if m == nil {
+			m = New_S2C_SwitchHallRoleSex()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_SwitchHallRoleSex(i interface{}) {
+	if m, ok := i.(*S2C_SwitchHallRoleSex); ok && m != nil {
+		g_S2C_SwitchHallRoleSex_Pool.Put(i)
+	}
+}
+
+func init() {
+	Protocol.Register(
+		&S2C_SwitchHallRoleSex{},
+		func() protocol.IMessage { return Get_S2C_SwitchHallRoleSex() },
+		func(msg protocol.IMessage) { Put_S2C_SwitchHallRoleSex(msg) },
+	)
+}
+
+// message [S2C_SwitchHallRoleSex] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

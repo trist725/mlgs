@@ -67,6 +67,8 @@ type User struct {
 	Mails []*Mail `bson:"Mails"`
 	///使用中的荷官在item表中的id,0是默认皮肤
 	UsingDealer int64 `bson:"UsingDealer"`
+	///大厅显示的角色性别,0-女,1-男
+	HallRoleSex int32 `bson:"HallRoleSex"`
 }
 
 func New_User() *User {
@@ -128,6 +130,7 @@ func (m *User) Reset() {
 	}
 	m.Mails = []*Mail{}
 	m.UsingDealer = 0
+	m.HallRoleSex = 0
 
 }
 
@@ -216,6 +219,7 @@ func (m User) Clone() *User {
 	}
 
 	n.UsingDealer = m.UsingDealer
+	n.HallRoleSex = m.HallRoleSex
 
 	return n
 }

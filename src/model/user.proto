@@ -59,4 +59,6 @@ message User {
     repeated Mail Mails = 20;
     ///使用中的荷官在item表中的id,0是默认皮肤
     int64 UsingDealer = 21;
+    ///大厅显示的角色性别,0-女,1-男
+    int32 HallRoleSex = 22;
 }
