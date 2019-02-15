@@ -3,6 +3,7 @@
 
 /*
 It has these top-level messages:
+	Mail
 	C2S_GetMailList
 	S2C_GetMailList
 	C2S_GetMailReward
@@ -61,6 +62,73 @@ func Each_S2C_GetMailReward_E_Err_I(f func(int32) bool) {
 }
 
 // enum [S2C_GetMailReward_E_Err] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [Mail] begin
+func (m *Mail) ResetEx() {
+	m.Id = 0
+	m.RewardType = 0
+	m.RewardNum = 0
+	m.Content = ""
+
+}
+
+func (m Mail) Clone() *Mail {
+	n, ok := g_Mail_Pool.Get().(*Mail)
+	if !ok || n == nil {
+		n = &Mail{}
+	}
+
+	n.Id = m.Id
+	n.RewardType = m.RewardType
+	n.RewardNum = m.RewardNum
+	n.Content = m.Content
+
+	return n
+}
+
+func Clone_Mail_Slice(dst []*Mail, src []*Mail) []*Mail {
+	for _, i := range dst {
+		Put_Mail(i)
+	}
+	dst = []*Mail{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_Mail() *Mail {
+	m := &Mail{}
+	return m
+}
+
+var g_Mail_Pool = sync.Pool{}
+
+func Get_Mail() *Mail {
+	m, ok := g_Mail_Pool.Get().(*Mail)
+	if !ok {
+		m = New_Mail()
+	} else {
+		if m == nil {
+			m = New_Mail()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_Mail(i interface{}) {
+	if m, ok := i.(*Mail); ok && m != nil {
+		g_Mail_Pool.Put(i)
+	}
+}
+
+// message [Mail] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +192,11 @@ func Put_C2S_GetMailList(i interface{}) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // message [S2C_GetMailList] begin
 func (m *S2C_GetMailList) ResetEx() {
-	m.Ids = []string{}
+
+	for _, i := range m.Mails {
+		Put_Mail(i)
+	}
+	m.Mails = []*Mail{}
 
 }
 
@@ -134,11 +206,16 @@ func (m S2C_GetMailList) Clone() *S2C_GetMailList {
 		n = &S2C_GetMailList{}
 	}
 
-	if len(m.Ids) > 0 {
-		n.Ids = make([]string, len(m.Ids))
-		copy(n.Ids, m.Ids)
+	if len(m.Mails) > 0 {
+		for _, i := range m.Mails {
+			if i != nil {
+				n.Mails = append(n.Mails, i.Clone())
+			} else {
+				n.Mails = append(n.Mails, nil)
+			}
+		}
 	} else {
-		n.Ids = []string{}
+		n.Mails = []*Mail{}
 	}
 
 	return n
@@ -159,7 +236,7 @@ func Clone_S2C_GetMailList_Slice(dst []*S2C_GetMailList, src []*S2C_GetMailList)
 
 func New_S2C_GetMailList() *S2C_GetMailList {
 	m := &S2C_GetMailList{
-		Ids: []string{},
+		Mails: []*Mail{},
 	}
 	return m
 }

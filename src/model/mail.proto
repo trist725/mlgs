@@ -6,4 +6,10 @@ message Mail {
     int64 Id = 1;
     ///是否已领取奖励
     bool Received = 2;
+    ///奖励类型,对应item表id
+    int64 RewardType = 3;
+    ///奖励数量
+    int64 RewardNum = 4;
+    ///邮件内容
+    string Content = 5;
 }

@@ -2,13 +2,24 @@ syntax="proto3";
 
 package msg;
 
+message Mail {
+    ///邮件编号
+    int64 Id = 1;
+    ///奖励类型,对应item表id
+    int64 RewardType = 2;
+    ///奖励数量
+    int64 RewardNum = 3;
+    ///邮件内容
+    string Content = 4;
+}
+
 ///获取未领取奖励的邮件列表
 message C2S_GetMailList {
 }
 
 message S2C_GetMailList {
     ///大佬读不了int64数组,改成string数组
-    repeated string Ids = 1;
+    repeated Mail Mails = 1;
 }
 
 ///领取mail中的奖励

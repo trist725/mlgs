@@ -35,6 +35,8 @@ func init() {
 	regiserMsgHandle(&msg.C2S_BuyItem{}, handleBuyItem)
 
 	regiserMsgHandle(&msg.C2S_SwitchHallRoleSex{}, handleSwitchHallRoleSex)
+
+	regiserMsgHandle(&msg.C2S_GetNotices{}, handleGetNotices)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -471,9 +473,12 @@ func handleGetMailList(args []interface{}) {
 		return
 	}
 
+	UpdateMails(ud)
+
 	for _, mail := range ud.Mails {
 		if mail.Received == false {
-			send.Ids = append(send.Ids, strconv.FormatInt(mail.Id, 10))
+			nm := msg.Get_Mail()
+			send.Mails = append(send.Mails, mail.ToMsg(nm))
 		}
 	}
 
@@ -507,18 +512,12 @@ func handleGetMailReward(args []interface{}) {
 		if recv.Id == mail.Id {
 			if mail.Received == false {
 				//获得奖励
-				mailSd := sd.EmailMgr.Get(mail.Id)
-				if mailSd == nil {
-					log.Error("get mail sd failed on handleGetMailReward")
+				if _, _, err := ud.Gain(mail.RewardType, mail.RewardNum, false, nil); err != nil {
 					send.Err = msg.S2C_GetMailReward_E_Err_UnKnown
 					break
 				}
-				if _, _, err := ud.Gain(mailSd.Reward, mailSd.RewardNumber, false, nil); err != nil {
-					send.Err = msg.S2C_GetMailReward_E_Err_UnKnown
-					break
-				}
-				if sd.E_Money(mailSd.Reward) == sd.E_Money_Gold {
-					ud.GainCoin += mailSd.RewardNumber
+				if sd.E_Money(mail.RewardType) == sd.E_Money_Gold {
+					ud.GainCoin += mail.RewardNum
 				}
 				send.Err = msg.S2C_GetMailReward_E_Err_Succeed
 				mail.Received = true
@@ -560,16 +559,11 @@ func handleGetAllMailReward(args []interface{}) {
 	for _, mail := range ud.Mails {
 		if mail.Received == false {
 			//获得奖励
-			mailSd := sd.EmailMgr.Get(mail.Id)
-			if mailSd == nil {
-				log.Error("get mail sd failed on handleGetAllMailReward")
+			if _, _, err := ud.Gain(mail.RewardType, mail.RewardNum, false, nil); err != nil {
 				continue
 			}
-			if _, _, err := ud.Gain(mailSd.Reward, mailSd.RewardNumber, false, nil); err != nil {
-				continue
-			}
-			if sd.E_Money(mailSd.Reward) == sd.E_Money_Gold {
-				ud.GainCoin += mailSd.RewardNumber
+			if sd.E_Money(mail.RewardType) == sd.E_Money_Gold {
+				ud.GainCoin += mail.RewardNum
 			}
 			send.Ids = append(send.Ids, strconv.FormatInt(mail.Id, 10))
 			mail.Received = true
@@ -753,4 +747,28 @@ func handleSwitchHallRoleSex(args []interface{}) {
 
 	ud.HallRoleSex = recv.Sex
 	send.Err = msg.S2C_SwitchHallRoleSex_E_Err_Success
+}
+
+func handleGetNotices(args []interface{}) {
+	//recv := args[0].(*msg.C2S_GetNotices)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleGetNotices return for nil session")
+		return
+	}
+
+	send := msg.Get_S2C_GetNotices()
+	defer sender.WriteMsg(send)
+	defer session.Update()
+
+	GetNotices()
+
+	send.Notices = append(send.Notices, ConvertNotices()...)
+
 }

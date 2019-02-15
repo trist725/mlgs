@@ -62,4 +62,6 @@ func init() {
 	Processor.Register(&S2C_BuyItem{})
 	Processor.Register(&C2S_SwitchHallRoleSex{})
 	Processor.Register(&S2C_SwitchHallRoleSex{})
+	Processor.Register(&C2S_GetNotices{})
+	Processor.Register(&S2C_GetNotices{})
 }

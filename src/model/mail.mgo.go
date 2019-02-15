@@ -27,6 +27,12 @@ type Mail struct {
 	Id int64 `bson:"Id"`
 	///是否已领取奖励
 	Received bool `bson:"Received"`
+	///奖励类型,对应item表id
+	RewardType int64 `bson:"RewardType"`
+	///奖励数量
+	RewardNum int64 `bson:"RewardNum"`
+	///邮件内容
+	Content string `bson:"Content"`
 }
 
 func New_Mail() *Mail {
@@ -42,6 +48,9 @@ func (m Mail) String() string {
 func (m *Mail) Reset() {
 	m.Id = 0
 	m.Received = false
+	m.RewardType = 0
+	m.RewardNum = 0
+	m.Content = ""
 
 }
 
@@ -53,6 +62,9 @@ func (m Mail) Clone() *Mail {
 
 	n.Id = m.Id
 	n.Received = m.Received
+	n.RewardType = m.RewardType
+	n.RewardNum = m.RewardNum
+	n.Content = m.Content
 
 	return n
 }

@@ -49,7 +49,79 @@ func (x S2C_GetMailReward_E_Err) String() string {
 	return proto.EnumName(S2C_GetMailReward_E_Err_name, int32(x))
 }
 func (S2C_GetMailReward_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_mail_46bda3b6513ec66d, []int{3, 0}
+	return fileDescriptor_mail_0b6648635ece5973, []int{4, 0}
+}
+
+type Mail struct {
+	// /邮件编号
+	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
+	// /奖励类型,对应item表id
+	RewardType int64 `protobuf:"varint,2,opt,name=RewardType,proto3" json:"RewardType,omitempty"`
+	// /奖励数量
+	RewardNum int64 `protobuf:"varint,3,opt,name=RewardNum,proto3" json:"RewardNum,omitempty"`
+	// /邮件内容
+	Content string `protobuf:"bytes,4,opt,name=Content,proto3" json:"Content,omitempty"`
+}
+
+func (m *Mail) Reset()         { *m = Mail{} }
+func (m *Mail) String() string { return proto.CompactTextString(m) }
+func (*Mail) ProtoMessage()    {}
+func (*Mail) Descriptor() ([]byte, []int) {
+	return fileDescriptor_mail_0b6648635ece5973, []int{0}
+}
+func (m *Mail) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Mail) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Mail.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *Mail) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Mail.Merge(dst, src)
+}
+func (m *Mail) XXX_Size() int {
+	return m.Size()
+}
+func (m *Mail) XXX_DiscardUnknown() {
+	xxx_messageInfo_Mail.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Mail proto.InternalMessageInfo
+
+func (m *Mail) GetId() int64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+func (m *Mail) GetRewardType() int64 {
+	if m != nil {
+		return m.RewardType
+	}
+	return 0
+}
+
+func (m *Mail) GetRewardNum() int64 {
+	if m != nil {
+		return m.RewardNum
+	}
+	return 0
+}
+
+func (m *Mail) GetContent() string {
+	if m != nil {
+		return m.Content
+	}
+	return ""
 }
 
 // /获取未领取奖励的邮件列表
@@ -60,7 +132,7 @@ func (m *C2S_GetMailList) Reset()         { *m = C2S_GetMailList{} }
 func (m *C2S_GetMailList) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetMailList) ProtoMessage()    {}
 func (*C2S_GetMailList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_46bda3b6513ec66d, []int{0}
+	return fileDescriptor_mail_0b6648635ece5973, []int{1}
 }
 func (m *C2S_GetMailList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -91,14 +163,14 @@ var xxx_messageInfo_C2S_GetMailList proto.InternalMessageInfo
 
 type S2C_GetMailList struct {
 	// /大佬读不了int64数组,改成string数组
-	Ids []string `protobuf:"bytes,1,rep,name=Ids" json:"Ids,omitempty"`
+	Mails []*Mail `protobuf:"bytes,1,rep,name=Mails" json:"Mails,omitempty"`
 }
 
 func (m *S2C_GetMailList) Reset()         { *m = S2C_GetMailList{} }
 func (m *S2C_GetMailList) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetMailList) ProtoMessage()    {}
 func (*S2C_GetMailList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_46bda3b6513ec66d, []int{1}
+	return fileDescriptor_mail_0b6648635ece5973, []int{2}
 }
 func (m *S2C_GetMailList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -127,9 +199,9 @@ func (m *S2C_GetMailList) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_S2C_GetMailList proto.InternalMessageInfo
 
-func (m *S2C_GetMailList) GetIds() []string {
+func (m *S2C_GetMailList) GetMails() []*Mail {
 	if m != nil {
-		return m.Ids
+		return m.Mails
 	}
 	return nil
 }
@@ -144,7 +216,7 @@ func (m *C2S_GetMailReward) Reset()         { *m = C2S_GetMailReward{} }
 func (m *C2S_GetMailReward) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetMailReward) ProtoMessage()    {}
 func (*C2S_GetMailReward) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_46bda3b6513ec66d, []int{2}
+	return fileDescriptor_mail_0b6648635ece5973, []int{3}
 }
 func (m *C2S_GetMailReward) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -189,7 +261,7 @@ func (m *S2C_GetMailReward) Reset()         { *m = S2C_GetMailReward{} }
 func (m *S2C_GetMailReward) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetMailReward) ProtoMessage()    {}
 func (*S2C_GetMailReward) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_46bda3b6513ec66d, []int{3}
+	return fileDescriptor_mail_0b6648635ece5973, []int{4}
 }
 func (m *S2C_GetMailReward) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -240,7 +312,7 @@ func (m *C2S_GetAllMailReward) Reset()         { *m = C2S_GetAllMailReward{} }
 func (m *C2S_GetAllMailReward) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetAllMailReward) ProtoMessage()    {}
 func (*C2S_GetAllMailReward) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_46bda3b6513ec66d, []int{4}
+	return fileDescriptor_mail_0b6648635ece5973, []int{5}
 }
 func (m *C2S_GetAllMailReward) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -278,7 +350,7 @@ func (m *S2C_GetAllMailReward) Reset()         { *m = S2C_GetAllMailReward{} }
 func (m *S2C_GetAllMailReward) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetAllMailReward) ProtoMessage()    {}
 func (*S2C_GetAllMailReward) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_46bda3b6513ec66d, []int{5}
+	return fileDescriptor_mail_0b6648635ece5973, []int{6}
 }
 func (m *S2C_GetAllMailReward) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -315,6 +387,7 @@ func (m *S2C_GetAllMailReward) GetIds() []string {
 }
 
 func init() {
+	proto.RegisterType((*Mail)(nil), "msg.Mail")
 	proto.RegisterType((*C2S_GetMailList)(nil), "msg.C2S_GetMailList")
 	proto.RegisterType((*S2C_GetMailList)(nil), "msg.S2C_GetMailList")
 	proto.RegisterType((*C2S_GetMailReward)(nil), "msg.C2S_GetMailReward")
@@ -323,6 +396,45 @@ func init() {
 	proto.RegisterType((*S2C_GetAllMailReward)(nil), "msg.S2C_GetAllMailReward")
 	proto.RegisterEnum("msg.S2C_GetMailReward_E_Err", S2C_GetMailReward_E_Err_name, S2C_GetMailReward_E_Err_value)
 }
+func (m *Mail) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Mail) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Id != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintMail(dAtA, i, uint64(m.Id))
+	}
+	if m.RewardType != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintMail(dAtA, i, uint64(m.RewardType))
+	}
+	if m.RewardNum != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintMail(dAtA, i, uint64(m.RewardNum))
+	}
+	if len(m.Content) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintMail(dAtA, i, uint64(len(m.Content)))
+		i += copy(dAtA[i:], m.Content)
+	}
+	return i, nil
+}
+
 func (m *C2S_GetMailList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -356,19 +468,16 @@ func (m *S2C_GetMailList) MarshalTo(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.Ids) > 0 {
-		for _, s := range m.Ids {
+	if len(m.Mails) > 0 {
+		for _, msg := range m.Mails {
 			dAtA[i] = 0xa
 			i++
-			l = len(s)
-			for l >= 1<<7 {
-				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
-				l >>= 7
-				i++
+			i = encodeVarintMail(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
 			}
-			dAtA[i] = uint8(l)
-			i++
-			i += copy(dAtA[i:], s)
+			i += n
 		}
 	}
 	return i, nil
@@ -485,6 +594,28 @@ func encodeVarintMail(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return offset + 1
 }
+func (m *Mail) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Id != 0 {
+		n += 1 + sovMail(uint64(m.Id))
+	}
+	if m.RewardType != 0 {
+		n += 1 + sovMail(uint64(m.RewardType))
+	}
+	if m.RewardNum != 0 {
+		n += 1 + sovMail(uint64(m.RewardNum))
+	}
+	l = len(m.Content)
+	if l > 0 {
+		n += 1 + l + sovMail(uint64(l))
+	}
+	return n
+}
+
 func (m *C2S_GetMailList) Size() (n int) {
 	if m == nil {
 		return 0
@@ -500,9 +631,9 @@ func (m *S2C_GetMailList) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if len(m.Ids) > 0 {
-		for _, s := range m.Ids {
-			l = len(s)
+	if len(m.Mails) > 0 {
+		for _, e := range m.Mails {
+			l = e.Size()
 			n += 1 + l + sovMail(uint64(l))
 		}
 	}
@@ -572,6 +703,142 @@ func sovMail(x uint64) (n int) {
 }
 func sozMail(x uint64) (n int) {
 	return sovMail(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *Mail) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowMail
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Mail: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Mail: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMail
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RewardType", wireType)
+			}
+			m.RewardType = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMail
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.RewardType |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RewardNum", wireType)
+			}
+			m.RewardNum = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMail
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.RewardNum |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Content", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMail
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthMail
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Content = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipMail(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthMail
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *C2S_GetMailList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
@@ -654,9 +921,9 @@ func (m *S2C_GetMailList) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Ids", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Mails", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowMail
@@ -666,20 +933,22 @@ func (m *S2C_GetMailList) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				msglen |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthMail
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Ids = append(m.Ids, string(dAtA[iNdEx:postIndex]))
+			m.Mails = append(m.Mails, &Mail{})
+			if err := m.Mails[len(m.Mails)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1093,25 +1362,30 @@ var (
 	ErrIntOverflowMail   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("mail.proto", fileDescriptor_mail_46bda3b6513ec66d) }
+func init() { proto.RegisterFile("mail.proto", fileDescriptor_mail_0b6648635ece5973) }
 
-var fileDescriptor_mail_46bda3b6513ec66d = []byte{
-	// 272 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0xca, 0x4d, 0xcc, 0xcc,
-	0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0xce, 0x2d, 0x4e, 0x57, 0x12, 0xe4, 0xe2, 0x77,
-	0x36, 0x0a, 0x8e, 0x77, 0x4f, 0x2d, 0xf1, 0x4d, 0xcc, 0xcc, 0xf1, 0xc9, 0x2c, 0x2e, 0x51, 0x52,
-	0xe6, 0xe2, 0x0f, 0x36, 0x72, 0x46, 0x16, 0x12, 0x12, 0xe0, 0x62, 0xf6, 0x4c, 0x29, 0x96, 0x60,
-	0x54, 0x60, 0xd6, 0xe0, 0x0c, 0x02, 0x31, 0x95, 0x94, 0xb9, 0x04, 0x91, 0xf4, 0x05, 0xa5, 0x96,
-	0x27, 0x16, 0xa5, 0x08, 0xf1, 0x71, 0x31, 0x79, 0xa6, 0x48, 0x30, 0x2a, 0x30, 0x6a, 0x30, 0x07,
-	0x31, 0x79, 0xa6, 0x28, 0xad, 0x64, 0xe4, 0x12, 0x44, 0x32, 0x0a, 0xaa, 0x4a, 0x8f, 0x8b, 0xd9,
-	0xb5, 0xa8, 0x08, 0xac, 0x8c, 0xcf, 0x48, 0x46, 0x2f, 0xb7, 0x38, 0x5d, 0x0f, 0x43, 0x91, 0x9e,
-	0x6b, 0xbc, 0x6b, 0x51, 0x51, 0x10, 0x48, 0x21, 0xd4, 0x54, 0x26, 0xb8, 0xa9, 0x21, 0x5c, 0xac,
-	0x60, 0x59, 0x21, 0x2e, 0x2e, 0x36, 0x30, 0x23, 0x5e, 0x80, 0x41, 0x48, 0x90, 0x8b, 0x17, 0xc2,
-	0x0e, 0x2e, 0x4d, 0x4e, 0x4e, 0x4d, 0x4d, 0x11, 0x60, 0x14, 0x92, 0xe4, 0x12, 0x85, 0x08, 0x39,
-	0xe6, 0x14, 0xa5, 0x26, 0xa6, 0x54, 0xc6, 0x07, 0xa5, 0x26, 0xa7, 0x66, 0x96, 0xa5, 0x0a, 0x30,
-	0x21, 0x54, 0x87, 0xe6, 0x79, 0xe7, 0xe5, 0x97, 0xe7, 0x09, 0x30, 0x2b, 0x89, 0x71, 0x89, 0x40,
-	0x3d, 0xe4, 0x98, 0x93, 0x83, 0x70, 0x88, 0x92, 0x06, 0x97, 0x08, 0xd4, 0x75, 0x28, 0xe2, 0x98,
-	0x41, 0xe2, 0x24, 0x71, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e, 0xc9, 0x31,
-	0x4e, 0x78, 0x2c, 0xc7, 0x70, 0xe1, 0xb1, 0x1c, 0xc3, 0x8d, 0xc7, 0x72, 0x0c, 0x49, 0x6c, 0xe0,
-	0x00, 0x37, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x4c, 0xd9, 0x6d, 0xde, 0x7e, 0x01, 0x00, 0x00,
+var fileDescriptor_mail_0b6648635ece5973 = []byte{
+	// 337 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0x91, 0xcd, 0x4e, 0xfa, 0x40,
+	0x14, 0xc5, 0x3b, 0x2d, 0xf0, 0x4f, 0xef, 0x3f, 0x42, 0x3b, 0x41, 0x33, 0x26, 0x64, 0x24, 0xe3,
+	0xa6, 0xab, 0x2e, 0xea, 0x13, 0x20, 0x21, 0x86, 0xf8, 0xb1, 0x18, 0x70, 0xdd, 0x54, 0x3a, 0x21,
+	0x4d, 0xfa, 0x41, 0xa6, 0x45, 0xc2, 0x5b, 0xf8, 0x1a, 0xbe, 0x89, 0x4b, 0x96, 0x2e, 0x0d, 0xbc,
+	0x88, 0xe9, 0xb4, 0x4a, 0xd5, 0xdd, 0xb9, 0xbf, 0x7b, 0x72, 0xee, 0xbd, 0x33, 0x00, 0x49, 0x10,
+	0xc5, 0xee, 0x4a, 0x66, 0x45, 0x86, 0x8d, 0x24, 0x5f, 0xb2, 0x14, 0x5a, 0xf7, 0x41, 0x14, 0xe3,
+	0x2e, 0xe8, 0xd3, 0x90, 0xa0, 0x21, 0x72, 0x0c, 0xae, 0x4f, 0x43, 0x4c, 0x01, 0xb8, 0xd8, 0x04,
+	0x32, 0x9c, 0x6f, 0x57, 0x82, 0xe8, 0x8a, 0x37, 0x08, 0x1e, 0x80, 0x59, 0x55, 0x0f, 0xeb, 0x84,
+	0x18, 0xaa, 0x7d, 0x04, 0x98, 0xc0, 0xbf, 0x71, 0x96, 0x16, 0x22, 0x2d, 0x48, 0x6b, 0x88, 0x1c,
+	0x93, 0x7f, 0x95, 0xcc, 0x86, 0xde, 0xd8, 0x9b, 0xf9, 0x37, 0xa2, 0x28, 0xc7, 0xde, 0x45, 0x79,
+	0xc1, 0x3c, 0xe8, 0xcd, 0xbc, 0x71, 0x13, 0xe1, 0x0b, 0x68, 0x97, 0x3a, 0x27, 0x68, 0x68, 0x38,
+	0xff, 0x3d, 0xd3, 0x4d, 0xf2, 0xa5, 0x5b, 0x12, 0x5e, 0x71, 0x76, 0x09, 0x76, 0x23, 0xa6, 0x1a,
+	0xfc, 0xfb, 0x06, 0xf6, 0x8a, 0xc0, 0x6e, 0x24, 0xd7, 0x2e, 0x17, 0x8c, 0x89, 0x94, 0xca, 0xd6,
+	0xf5, 0x06, 0x2a, 0xf9, 0x8f, 0xc9, 0x9d, 0xf8, 0x13, 0x29, 0x79, 0x69, 0xac, 0x53, 0xf5, 0xef,
+	0xd4, 0x39, 0xb4, 0x55, 0x17, 0x03, 0x74, 0x94, 0xf0, 0x2d, 0x0d, 0xdb, 0x70, 0x52, 0xe9, 0xd9,
+	0x7a, 0xb1, 0x10, 0x22, 0xb4, 0x10, 0x3e, 0x87, 0xd3, 0x0a, 0x8d, 0x62, 0x29, 0x82, 0x70, 0xeb,
+	0x73, 0xb1, 0x10, 0xd1, 0xb3, 0xb0, 0xf4, 0xa3, 0xfb, 0x31, 0xbd, 0x4d, 0xb3, 0x4d, 0x6a, 0x19,
+	0xec, 0x0c, 0xfa, 0xf5, 0x41, 0xa3, 0x38, 0x3e, 0x2e, 0xc2, 0x1c, 0xe8, 0xd7, 0xdb, 0xfd, 0xe0,
+	0xd8, 0x02, 0x63, 0x1a, 0x56, 0xef, 0x63, 0xf2, 0x52, 0x5e, 0x93, 0xb7, 0x3d, 0x45, 0xbb, 0x3d,
+	0x45, 0x1f, 0x7b, 0x8a, 0x5e, 0x0e, 0x54, 0xdb, 0x1d, 0xa8, 0xf6, 0x7e, 0xa0, 0xda, 0x53, 0x47,
+	0xfd, 0xf7, 0xd5, 0x67, 0x00, 0x00, 0x00, 0xff, 0xff, 0x82, 0xef, 0x0d, 0x12, 0xfd, 0x01, 0x00,
+	0x00,
 }

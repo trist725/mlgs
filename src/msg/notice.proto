@@ -1,0 +1,22 @@
+syntax="proto3";
+
+package msg;
+
+message Notice {
+    ///公告类型,1-精彩公告，2-精彩活动
+    int32 Type = 1;
+    ///公告名称
+    string Name = 2;
+    ///正文标题
+    string Title = 3;
+    ///内容
+    string Content = 4;
+}
+
+message C2S_GetNotices {
+}
+
+message S2C_GetNotices {
+    repeated Notice Notices = 1;
+}
+

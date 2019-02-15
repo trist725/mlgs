@@ -58,7 +58,7 @@ func OnAfterLoginAuthPass(args []interface{}) {
 	//分配每日任务
 	user.AllocDayQuests()
 	//更新邮件列表
-	user.UpdateMails()
+	//user.UpdateMails()
 
 	sender.WriteMsg(send)
 }

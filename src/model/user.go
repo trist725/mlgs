@@ -71,31 +71,60 @@ func CreateUser(accountID int64, recv *msg.C2S_Login) (m *User, err error) {
 		return true
 	})
 	//邮件
-	sd.EmailMgr.Each(func(sd *sd.Email) bool {
-		mail := Get_Mail()
-		mail.Id = sd.ID
-		mail.Received = false
-		m.Mails = append(m.Mails, mail)
-		return true
-	})
+	//sd.EmailMgr.Each(func(sd *sd.Email) bool {
+	//	mail := Get_Mail()
+	//	mail.Id = sd.ID
+	//	mail.Received = false
+	//	m.Mails = append(m.Mails, mail)
+	//	return true
+	//})
 
 	return
 }
 
-func (m *User) UpdateMails() {
-	sd.EmailMgr.Each(func(sd *sd.Email) bool {
-		for _, v := range m.Mails {
-			if v.Id == sd.ID {
-				return true
+//func (m *User) UpdateMails() {
+//	sd.EmailMgr.Each(func(sd *sd.Email) bool {
+//		for _, v := range m.Mails {
+//			if v.Id == sd.ID {
+//				return true
+//			}
+//		}
+//
+//		mail := Get_Mail()
+//		mail.Id = sd.ID
+//		mail.Received = false
+//		m.Mails = append(m.Mails, mail)
+//		return true
+//	})
+//}
+
+func (m *User) AddMails(newMails []*Mail) {
+	for _, newMail := range newMails {
+		if !m.MailExist(newMail) {
+			m.Mails = append(m.Mails, newMail)
+		}
+	}
+}
+
+func (m *User) DelMails(ids []int64) {
+	for _, id := range ids {
+		for i := 0; i < len(m.Mails); i++ {
+			if m.Mails[i].Id == id {
+				m.Mails = append(m.Mails[:i], m.Mails[i+1:]...)
+				//i--
+				break
 			}
 		}
+	}
+}
 
-		mail := Get_Mail()
-		mail.Id = sd.ID
-		mail.Received = false
-		m.Mails = append(m.Mails, mail)
-		return true
-	})
+func (m *User) MailExist(nm *Mail) bool {
+	for _, mail := range m.Mails {
+		if nm.Id == mail.Id {
+			return true
+		}
+	}
+	return false
 }
 
 func (m *User) AllocDayQuests() {
