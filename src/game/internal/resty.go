@@ -4,16 +4,15 @@ import (
 	"encoding/json"
 	"github.com/trist725/myleaf/log"
 	"gopkg.in/resty.v1"
+	"mlgs/src/conf"
 	"mlgs/src/model"
 	"mlgs/src/msg"
 	"time"
 )
 
 var (
-	gLastUpTime   int64
-	gUpInterval   int64 = 3
-	gRestAddr           = "192.168.101.202:8004"
-	gRestProtocol       = "http://"
+	gLastUpTime int64
+	gUpInterval int64 = 3
 
 	gPubMails []MailInfo
 	gNotices  []NoticeInfo
@@ -110,7 +109,7 @@ func UpdateMails(ud *model.User) {
 }
 
 func GetNewMails() error {
-	uri := gRestProtocol + gRestAddr + "/manage/game/mail/rewardMails"
+	uri := conf.Server.WebUrl + "/manage/game/mail/rewardMails"
 	resp, err := resty.R().Get(uri)
 	if err != nil {
 		return err
@@ -128,7 +127,7 @@ func GetNewMails() error {
 }
 
 func GetOverdueMails(ids []int64) error {
-	uri := gRestProtocol + gRestAddr + "/manage/game/mail/dated"
+	uri := conf.Server.WebUrl + "/manage/game/mail/dated"
 	resp, err := resty.R().Get(uri)
 	if err != nil {
 		return err
@@ -166,7 +165,7 @@ func GetNotices() error {
 		return nil
 	}
 
-	uri := gRestProtocol + gRestAddr + "/manage/game/activity/info"
+	uri := conf.Server.WebUrl + "/manage/game/activity/info"
 	resp, err := resty.R().Get(uri)
 	if err != nil {
 		return err

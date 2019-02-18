@@ -17,6 +17,7 @@ var Server struct {
 	ConsolePort   int
 	ProfilePath   string
 	MgoUrl        string
+	WebUrl        string
 	MgoSessionNum int
 	MgoName       string
 	XlsxPath      string

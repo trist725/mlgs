@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/trist725/myleaf/log"
 	"gopkg.in/resty.v1"
+	"mlgs/src/conf"
 	"strconv"
 	"time"
 )
@@ -31,7 +32,7 @@ func GetAllowCltVer(dt int32, ver *CltVer) error {
 	if time.Now().Unix()-gLastUpVerTime < gUpVerInterval {
 		return nil
 	}
-	uri := "http://47.110.73.211:8000/manage/game/client/version/" + strconv.Itoa(int(dt))
+	uri := conf.Server.WebUrl + "/manage/game/client/version/" + strconv.Itoa(int(dt))
 	resp, err := resty.R().Get(uri)
 	if err != nil {
 		return err

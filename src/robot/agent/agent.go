@@ -57,9 +57,8 @@ func (a *Agent) SendSome() {
 		send := msg.Get_C2S_GetMailList()
 		a.WriteMsg(send)
 	}
-	//获取邮件列表
 	{
-		send := msg.Get_C2S_GetMailList()
+		send := msg.Get_S2C_GetAllMailReward()
 		a.WriteMsg(send)
 	}
 }
