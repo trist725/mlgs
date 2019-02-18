@@ -45,12 +45,22 @@ func (a *Agent) SendSome() {
 	}
 	//快速匹配
 	{
-		send := msg.Get_C2S_QuickMatchStart()
-		a.WriteMsg(send)
+		//send := msg.Get_C2S_QuickMatchStart()
+		//a.WriteMsg(send)
 	}
 	//玩家离开房间请求
 	{
 
+	}
+	//获取邮件列表
+	{
+		send := msg.Get_C2S_GetMailList()
+		a.WriteMsg(send)
+	}
+	//获取邮件列表
+	{
+		send := msg.Get_C2S_GetMailList()
+		a.WriteMsg(send)
 	}
 }
 
@@ -81,6 +91,35 @@ func (a *Agent) Init() {
 	a.Processor.(*protobuf.Processor).Register(&msg.S2C_PublicCard{})
 	a.Processor.(*protobuf.Processor).Register(&msg.S2C_GameOver{})
 	a.Processor.(*protobuf.Processor).Register(&msg.S2C_Balance{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_RoomChat{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_RoomChat{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_UpdateUserData{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_UpdateUserData{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_UpdateItems{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_GetAllQuests{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_GetAllQuests{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_GetQuestReward{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_GetQuestReward{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_GetCompletedAchievements{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_GetCompletedAchievements{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_GetMailList{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_GetMailList{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_GetMailReward{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_GetMailReward{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_GetAllMailReward{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_GetAllMailReward{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_GetOwnItems{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_GetOwnItems{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_GetOwnDealerSkins{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_GetOwnDealerSkins{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_UsingOwnDealerSkins{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_UsingOwnDealerSkins{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_BuyItem{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_BuyItem{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_SwitchHallRoleSex{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_SwitchHallRoleSex{})
+	a.Processor.(*protobuf.Processor).Register(&msg.C2S_GetNotices{})
+	a.Processor.(*protobuf.Processor).Register(&msg.S2C_GetNotices{})
 
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_LoginInfo{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_Login{}, robot.ChanRPC)
@@ -92,7 +131,21 @@ func (a *Agent) Init() {
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GameStart{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GameOver{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_Balance{}, robot.ChanRPC)
-
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_RoomChat{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_UpdateUserData{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_UpdateItems{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GetAllQuests{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GetQuestReward{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GetCompletedAchievements{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GetMailList{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GetMailReward{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GetAllMailReward{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GetOwnItems{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GetOwnDealerSkins{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_UsingOwnDealerSkins{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_BuyItem{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_SwitchHallRoleSex{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_GetNotices{}, robot.ChanRPC)
 }
 
 func (a *Agent) Run() {

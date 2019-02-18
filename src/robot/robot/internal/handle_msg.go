@@ -15,6 +15,7 @@ func init() {
 	regiserMsgHandle(&msg.S2C_GameStart{}, handleGameStart)
 	regiserMsgHandle(&msg.S2C_GameOver{}, handleGameOver)
 	regiserMsgHandle(&msg.S2C_Balance{}, handleBalance)
+	regiserMsgHandle(&msg.S2C_GetMailList{}, handleGetMailList)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -101,5 +102,13 @@ func handleBalance(args []interface{}) {
 	recv := args[0].(*msg.S2C_Balance)
 
 	log.Debug("handleBalance, %v", recv)
+
+}
+
+func handleGetMailList(args []interface{}) {
+	// 收到的消息
+	recv := args[0].(*msg.S2C_GetMailList)
+
+	log.Debug("handleGetMailList, %v", recv)
 
 }
