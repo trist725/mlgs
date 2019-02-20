@@ -402,6 +402,7 @@ func (m *S2C_LoginInfo) ResetEx() {
 	m.SignRewards = []*Item{}
 	m.UsingDealer = 0
 	m.HallRoleSex = 0
+	m.InTheGame = false
 
 }
 
@@ -444,6 +445,7 @@ func (m S2C_LoginInfo) Clone() *S2C_LoginInfo {
 
 	n.UsingDealer = m.UsingDealer
 	n.HallRoleSex = m.HallRoleSex
+	n.InTheGame = m.InTheGame
 
 	return n
 }

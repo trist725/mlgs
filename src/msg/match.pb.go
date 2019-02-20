@@ -57,7 +57,7 @@ func (x S2C_QuickMatchStart_E_Err_QuickMatchStart) String() string {
 	return proto.EnumName(S2C_QuickMatchStart_E_Err_QuickMatchStart_name, int32(x))
 }
 func (S2C_QuickMatchStart_E_Err_QuickMatchStart) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{5, 0}
+	return fileDescriptor_match_49c773136cb69df8, []int{5, 0}
 }
 
 type S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom int32
@@ -89,7 +89,7 @@ func (x S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom) String() string {
 	return proto.EnumName(S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_name, int32(x))
 }
 func (S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{7, 0}
+	return fileDescriptor_match_49c773136cb69df8, []int{7, 0}
 }
 
 // /离开原因
@@ -130,7 +130,7 @@ func (x S2C_UpdatePlayerLeaveRoom_E_Err) String() string {
 	return proto.EnumName(S2C_UpdatePlayerLeaveRoom_E_Err_name, int32(x))
 }
 func (S2C_UpdatePlayerLeaveRoom_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{9, 0}
+	return fileDescriptor_match_49c773136cb69df8, []int{9, 0}
 }
 
 // /牌
@@ -145,7 +145,7 @@ func (m *Card) Reset()         { *m = Card{} }
 func (m *Card) String() string { return proto.CompactTextString(m) }
 func (*Card) ProtoMessage()    {}
 func (*Card) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{0}
+	return fileDescriptor_match_49c773136cb69df8, []int{0}
 }
 func (m *Card) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -200,7 +200,7 @@ func (m *BestCombo) Reset()         { *m = BestCombo{} }
 func (m *BestCombo) String() string { return proto.CompactTextString(m) }
 func (*BestCombo) ProtoMessage()    {}
 func (*BestCombo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{1}
+	return fileDescriptor_match_49c773136cb69df8, []int{1}
 }
 func (m *BestCombo) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -263,13 +263,17 @@ type Player struct {
 	Cards []*Card `protobuf:"bytes,8,rep,name=Cards" json:"Cards,omitempty"`
 	// /性别
 	Sex string `protobuf:"bytes,9,opt,name=Sex,proto3" json:"Sex,omitempty"`
+	// /最大牌型
+	BestCombo *BestCombo `protobuf:"bytes,10,opt,name=BestCombo" json:"BestCombo,omitempty"`
+	// /玩家状态,1-对局中,2-弃牌,3-无筹码
+	Status int32 `protobuf:"varint,11,opt,name=Status,proto3" json:"Status,omitempty"`
 }
 
 func (m *Player) Reset()         { *m = Player{} }
 func (m *Player) String() string { return proto.CompactTextString(m) }
 func (*Player) ProtoMessage()    {}
 func (*Player) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{2}
+	return fileDescriptor_match_49c773136cb69df8, []int{2}
 }
 func (m *Player) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -361,6 +365,20 @@ func (m *Player) GetSex() string {
 	return ""
 }
 
+func (m *Player) GetBestCombo() *BestCombo {
+	if m != nil {
+		return m.BestCombo
+	}
+	return nil
+}
+
+func (m *Player) GetStatus() int32 {
+	if m != nil {
+		return m.Status
+	}
+	return 0
+}
+
 // / 房间
 type Room struct {
 	// /房间号
@@ -373,13 +391,15 @@ type Room struct {
 	Chip int64 `protobuf:"varint,4,opt,name=Chip,proto3" json:"Chip,omitempty"`
 	// /当前最大加注
 	MaxBet int64 `protobuf:"varint,5,opt,name=MaxBet,proto3" json:"MaxBet,omitempty"`
+	// /房间类型
+	RoomType int32 `protobuf:"varint,6,opt,name=RoomType,proto3" json:"RoomType,omitempty"`
 }
 
 func (m *Room) Reset()         { *m = Room{} }
 func (m *Room) String() string { return proto.CompactTextString(m) }
 func (*Room) ProtoMessage()    {}
 func (*Room) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{3}
+	return fileDescriptor_match_49c773136cb69df8, []int{3}
 }
 func (m *Room) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -443,6 +463,13 @@ func (m *Room) GetMaxBet() int64 {
 	return 0
 }
 
+func (m *Room) GetRoomType() int32 {
+	if m != nil {
+		return m.RoomType
+	}
+	return 0
+}
+
 // / 快速开始游戏请求
 type C2S_QuickMatchStart struct {
 	// /房间类型,room表里的id
@@ -453,7 +480,7 @@ func (m *C2S_QuickMatchStart) Reset()         { *m = C2S_QuickMatchStart{} }
 func (m *C2S_QuickMatchStart) String() string { return proto.CompactTextString(m) }
 func (*C2S_QuickMatchStart) ProtoMessage()    {}
 func (*C2S_QuickMatchStart) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{4}
+	return fileDescriptor_match_49c773136cb69df8, []int{4}
 }
 func (m *C2S_QuickMatchStart) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -499,7 +526,7 @@ func (m *S2C_QuickMatchStart) Reset()         { *m = S2C_QuickMatchStart{} }
 func (m *S2C_QuickMatchStart) String() string { return proto.CompactTextString(m) }
 func (*S2C_QuickMatchStart) ProtoMessage()    {}
 func (*S2C_QuickMatchStart) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{5}
+	return fileDescriptor_match_49c773136cb69df8, []int{5}
 }
 func (m *S2C_QuickMatchStart) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -550,7 +577,7 @@ func (m *C2S_PlayerLeaveRoom) Reset()         { *m = C2S_PlayerLeaveRoom{} }
 func (m *C2S_PlayerLeaveRoom) String() string { return proto.CompactTextString(m) }
 func (*C2S_PlayerLeaveRoom) ProtoMessage()    {}
 func (*C2S_PlayerLeaveRoom) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{6}
+	return fileDescriptor_match_49c773136cb69df8, []int{6}
 }
 func (m *C2S_PlayerLeaveRoom) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -588,7 +615,7 @@ func (m *S2C_PlayerLeaveRoom) Reset()         { *m = S2C_PlayerLeaveRoom{} }
 func (m *S2C_PlayerLeaveRoom) String() string { return proto.CompactTextString(m) }
 func (*S2C_PlayerLeaveRoom) ProtoMessage()    {}
 func (*S2C_PlayerLeaveRoom) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{7}
+	return fileDescriptor_match_49c773136cb69df8, []int{7}
 }
 func (m *S2C_PlayerLeaveRoom) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -633,7 +660,7 @@ func (m *S2C_UpdatePlayerJoinRoom) Reset()         { *m = S2C_UpdatePlayerJoinRo
 func (m *S2C_UpdatePlayerJoinRoom) String() string { return proto.CompactTextString(m) }
 func (*S2C_UpdatePlayerJoinRoom) ProtoMessage()    {}
 func (*S2C_UpdatePlayerJoinRoom) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{8}
+	return fileDescriptor_match_49c773136cb69df8, []int{8}
 }
 func (m *S2C_UpdatePlayerJoinRoom) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -680,7 +707,7 @@ func (m *S2C_UpdatePlayerLeaveRoom) Reset()         { *m = S2C_UpdatePlayerLeave
 func (m *S2C_UpdatePlayerLeaveRoom) String() string { return proto.CompactTextString(m) }
 func (*S2C_UpdatePlayerLeaveRoom) ProtoMessage()    {}
 func (*S2C_UpdatePlayerLeaveRoom) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{9}
+	return fileDescriptor_match_49c773136cb69df8, []int{9}
 }
 func (m *S2C_UpdatePlayerLeaveRoom) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -741,7 +768,7 @@ func (m *S2C_GameStart) Reset()         { *m = S2C_GameStart{} }
 func (m *S2C_GameStart) String() string { return proto.CompactTextString(m) }
 func (*S2C_GameStart) ProtoMessage()    {}
 func (*S2C_GameStart) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{10}
+	return fileDescriptor_match_49c773136cb69df8, []int{10}
 }
 func (m *S2C_GameStart) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -817,7 +844,7 @@ func (m *S2C_Turn) Reset()         { *m = S2C_Turn{} }
 func (m *S2C_Turn) String() string { return proto.CompactTextString(m) }
 func (*S2C_Turn) ProtoMessage()    {}
 func (*S2C_Turn) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{11}
+	return fileDescriptor_match_49c773136cb69df8, []int{11}
 }
 func (m *S2C_Turn) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -872,7 +899,7 @@ func (m *C2S_TurnAction) Reset()         { *m = C2S_TurnAction{} }
 func (m *C2S_TurnAction) String() string { return proto.CompactTextString(m) }
 func (*C2S_TurnAction) ProtoMessage()    {}
 func (*C2S_TurnAction) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{12}
+	return fileDescriptor_match_49c773136cb69df8, []int{12}
 }
 func (m *C2S_TurnAction) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -929,7 +956,7 @@ func (m *S2C_TurnAction) Reset()         { *m = S2C_TurnAction{} }
 func (m *S2C_TurnAction) String() string { return proto.CompactTextString(m) }
 func (*S2C_TurnAction) ProtoMessage()    {}
 func (*S2C_TurnAction) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{13}
+	return fileDescriptor_match_49c773136cb69df8, []int{13}
 }
 func (m *S2C_TurnAction) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -991,7 +1018,7 @@ func (m *S2C_PublicCard) Reset()         { *m = S2C_PublicCard{} }
 func (m *S2C_PublicCard) String() string { return proto.CompactTextString(m) }
 func (*S2C_PublicCard) ProtoMessage()    {}
 func (*S2C_PublicCard) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{14}
+	return fileDescriptor_match_49c773136cb69df8, []int{14}
 }
 func (m *S2C_PublicCard) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1044,7 +1071,7 @@ func (m *C2S_AutoAction) Reset()         { *m = C2S_AutoAction{} }
 func (m *C2S_AutoAction) String() string { return proto.CompactTextString(m) }
 func (*C2S_AutoAction) ProtoMessage()    {}
 func (*C2S_AutoAction) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{15}
+	return fileDescriptor_match_49c773136cb69df8, []int{15}
 }
 func (m *C2S_AutoAction) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1088,7 +1115,7 @@ func (m *S2C_GameOver) Reset()         { *m = S2C_GameOver{} }
 func (m *S2C_GameOver) String() string { return proto.CompactTextString(m) }
 func (*S2C_GameOver) ProtoMessage()    {}
 func (*S2C_GameOver) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{16}
+	return fileDescriptor_match_49c773136cb69df8, []int{16}
 }
 func (m *S2C_GameOver) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1137,7 +1164,7 @@ func (m *Balance) Reset()         { *m = Balance{} }
 func (m *Balance) String() string { return proto.CompactTextString(m) }
 func (*Balance) ProtoMessage()    {}
 func (*Balance) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{17}
+	return fileDescriptor_match_49c773136cb69df8, []int{17}
 }
 func (m *Balance) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1218,7 +1245,7 @@ func (m *S2C_Balance) Reset()         { *m = S2C_Balance{} }
 func (m *S2C_Balance) String() string { return proto.CompactTextString(m) }
 func (*S2C_Balance) ProtoMessage()    {}
 func (*S2C_Balance) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{18}
+	return fileDescriptor_match_49c773136cb69df8, []int{18}
 }
 func (m *S2C_Balance) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1268,7 +1295,7 @@ func (m *C2S_RoomChat) Reset()         { *m = C2S_RoomChat{} }
 func (m *C2S_RoomChat) String() string { return proto.CompactTextString(m) }
 func (*C2S_RoomChat) ProtoMessage()    {}
 func (*C2S_RoomChat) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{19}
+	return fileDescriptor_match_49c773136cb69df8, []int{19}
 }
 func (m *C2S_RoomChat) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1332,7 +1359,7 @@ func (m *S2C_RoomChat) Reset()         { *m = S2C_RoomChat{} }
 func (m *S2C_RoomChat) String() string { return proto.CompactTextString(m) }
 func (*S2C_RoomChat) ProtoMessage()    {}
 func (*S2C_RoomChat) Descriptor() ([]byte, []int) {
-	return fileDescriptor_match_15cb4d67518ea3ba, []int{20}
+	return fileDescriptor_match_49c773136cb69df8, []int{20}
 }
 func (m *S2C_RoomChat) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1382,6 +1409,142 @@ func (m *S2C_RoomChat) GetContent() string {
 	return ""
 }
 
+// / 同步游戏状态
+type C2S_SyncGameStatus struct {
+}
+
+func (m *C2S_SyncGameStatus) Reset()         { *m = C2S_SyncGameStatus{} }
+func (m *C2S_SyncGameStatus) String() string { return proto.CompactTextString(m) }
+func (*C2S_SyncGameStatus) ProtoMessage()    {}
+func (*C2S_SyncGameStatus) Descriptor() ([]byte, []int) {
+	return fileDescriptor_match_49c773136cb69df8, []int{21}
+}
+func (m *C2S_SyncGameStatus) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *C2S_SyncGameStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_C2S_SyncGameStatus.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *C2S_SyncGameStatus) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_SyncGameStatus.Merge(dst, src)
+}
+func (m *C2S_SyncGameStatus) XXX_Size() int {
+	return m.Size()
+}
+func (m *C2S_SyncGameStatus) XXX_DiscardUnknown() {
+	xxx_messageInfo_C2S_SyncGameStatus.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_C2S_SyncGameStatus proto.InternalMessageInfo
+
+type S2C_SyncGameStatus struct {
+	// /对局阶段,0-等待对局,1-4第1到4阶段,5-结算,6-不在房间(推送S2C_UpdateMoney)
+	GameStage int32 `protobuf:"varint,1,opt,name=GameStage,proto3" json:"GameStage,omitempty"`
+	// /公共牌
+	CommunityCards []*Card `protobuf:"bytes,2,rep,name=CommunityCards" json:"CommunityCards,omitempty"`
+	// /房间信息
+	Room *Room `protobuf:"bytes,3,opt,name=Room" json:"Room,omitempty"`
+	// /结算信息
+	Balances []*Balance `protobuf:"bytes,4,rep,name=Balances" json:"Balances,omitempty"`
+	// /初始小盲注
+	SmallBlind int64 `protobuf:"varint,7,opt,name=SmallBlind,proto3" json:"SmallBlind,omitempty"`
+	// /赛事场胜场
+	WinRound int32 `protobuf:"varint,12,opt,name=WinRound,proto3" json:"WinRound,omitempty"`
+	// /本次赛事场第几局
+	Round int32 `protobuf:"varint,13,opt,name=Round,proto3" json:"Round,omitempty"`
+}
+
+func (m *S2C_SyncGameStatus) Reset()         { *m = S2C_SyncGameStatus{} }
+func (m *S2C_SyncGameStatus) String() string { return proto.CompactTextString(m) }
+func (*S2C_SyncGameStatus) ProtoMessage()    {}
+func (*S2C_SyncGameStatus) Descriptor() ([]byte, []int) {
+	return fileDescriptor_match_49c773136cb69df8, []int{22}
+}
+func (m *S2C_SyncGameStatus) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *S2C_SyncGameStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_S2C_SyncGameStatus.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *S2C_SyncGameStatus) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_SyncGameStatus.Merge(dst, src)
+}
+func (m *S2C_SyncGameStatus) XXX_Size() int {
+	return m.Size()
+}
+func (m *S2C_SyncGameStatus) XXX_DiscardUnknown() {
+	xxx_messageInfo_S2C_SyncGameStatus.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_S2C_SyncGameStatus proto.InternalMessageInfo
+
+func (m *S2C_SyncGameStatus) GetGameStage() int32 {
+	if m != nil {
+		return m.GameStage
+	}
+	return 0
+}
+
+func (m *S2C_SyncGameStatus) GetCommunityCards() []*Card {
+	if m != nil {
+		return m.CommunityCards
+	}
+	return nil
+}
+
+func (m *S2C_SyncGameStatus) GetRoom() *Room {
+	if m != nil {
+		return m.Room
+	}
+	return nil
+}
+
+func (m *S2C_SyncGameStatus) GetBalances() []*Balance {
+	if m != nil {
+		return m.Balances
+	}
+	return nil
+}
+
+func (m *S2C_SyncGameStatus) GetSmallBlind() int64 {
+	if m != nil {
+		return m.SmallBlind
+	}
+	return 0
+}
+
+func (m *S2C_SyncGameStatus) GetWinRound() int32 {
+	if m != nil {
+		return m.WinRound
+	}
+	return 0
+}
+
+func (m *S2C_SyncGameStatus) GetRound() int32 {
+	if m != nil {
+		return m.Round
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Card)(nil), "msg.Card")
 	proto.RegisterType((*BestCombo)(nil), "msg.BestCombo")
@@ -1404,6 +1567,8 @@ func init() {
 	proto.RegisterType((*S2C_Balance)(nil), "msg.S2C_Balance")
 	proto.RegisterType((*C2S_RoomChat)(nil), "msg.C2S_RoomChat")
 	proto.RegisterType((*S2C_RoomChat)(nil), "msg.S2C_RoomChat")
+	proto.RegisterType((*C2S_SyncGameStatus)(nil), "msg.C2S_SyncGameStatus")
+	proto.RegisterType((*S2C_SyncGameStatus)(nil), "msg.S2C_SyncGameStatus")
 	proto.RegisterEnum("msg.S2C_QuickMatchStart_E_Err_QuickMatchStart", S2C_QuickMatchStart_E_Err_QuickMatchStart_name, S2C_QuickMatchStart_E_Err_QuickMatchStart_value)
 	proto.RegisterEnum("msg.S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom", S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_name, S2C_PlayerLeaveRoom_E_Err_PlayerLeaveRoom_value)
 	proto.RegisterEnum("msg.S2C_UpdatePlayerLeaveRoom_E_Err", S2C_UpdatePlayerLeaveRoom_E_Err_name, S2C_UpdatePlayerLeaveRoom_E_Err_value)
@@ -1541,6 +1706,21 @@ func (m *Player) MarshalTo(dAtA []byte) (int, error) {
 		i = encodeVarintMatch(dAtA, i, uint64(len(m.Sex)))
 		i += copy(dAtA[i:], m.Sex)
 	}
+	if m.BestCombo != nil {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintMatch(dAtA, i, uint64(m.BestCombo.Size()))
+		n1, err := m.BestCombo.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n1
+	}
+	if m.Status != 0 {
+		dAtA[i] = 0x58
+		i++
+		i = encodeVarintMatch(dAtA, i, uint64(m.Status))
+	}
 	return i, nil
 }
 
@@ -1592,6 +1772,11 @@ func (m *Room) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintMatch(dAtA, i, uint64(m.MaxBet))
 	}
+	if m.RoomType != 0 {
+		dAtA[i] = 0x30
+		i++
+		i = encodeVarintMatch(dAtA, i, uint64(m.RoomType))
+	}
 	return i, nil
 }
 
@@ -1642,11 +1827,11 @@ func (m *S2C_QuickMatchStart) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x12
 		i++
 		i = encodeVarintMatch(dAtA, i, uint64(m.Room.Size()))
-		n1, err := m.Room.MarshalTo(dAtA[i:])
+		n2, err := m.Room.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n1
+		i += n2
 	}
 	return i, nil
 }
@@ -1791,11 +1976,11 @@ func (m *S2C_GameStart) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x22
 		i++
 		i = encodeVarintMatch(dAtA, i, uint64(m.Best.Size()))
-		n2, err := m.Best.MarshalTo(dAtA[i:])
+		n3, err := m.Best.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n2
+		i += n3
 	}
 	if m.Round != 0 {
 		dAtA[i] = 0x28
@@ -1925,11 +2110,11 @@ func (m *S2C_PublicCard) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x1a
 		i++
 		i = encodeVarintMatch(dAtA, i, uint64(m.Best.Size()))
-		n3, err := m.Best.MarshalTo(dAtA[i:])
+		n4, err := m.Best.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n3
+		i += n4
 	}
 	return i, nil
 }
@@ -1999,11 +2184,11 @@ func (m *Balance) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x12
 		i++
 		i = encodeVarintMatch(dAtA, i, uint64(m.BestCombo.Size()))
-		n4, err := m.BestCombo.MarshalTo(dAtA[i:])
+		n5, err := m.BestCombo.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n4
+		i += n5
 	}
 	if m.Gain != 0 {
 		dAtA[i] = 0x18
@@ -2133,6 +2318,96 @@ func (m *S2C_RoomChat) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
+func (m *C2S_SyncGameStatus) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *C2S_SyncGameStatus) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	return i, nil
+}
+
+func (m *S2C_SyncGameStatus) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *S2C_SyncGameStatus) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.GameStage != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintMatch(dAtA, i, uint64(m.GameStage))
+	}
+	if len(m.CommunityCards) > 0 {
+		for _, msg := range m.CommunityCards {
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintMatch(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.Room != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintMatch(dAtA, i, uint64(m.Room.Size()))
+		n6, err := m.Room.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n6
+	}
+	if len(m.Balances) > 0 {
+		for _, msg := range m.Balances {
+			dAtA[i] = 0x22
+			i++
+			i = encodeVarintMatch(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.SmallBlind != 0 {
+		dAtA[i] = 0x38
+		i++
+		i = encodeVarintMatch(dAtA, i, uint64(m.SmallBlind))
+	}
+	if m.WinRound != 0 {
+		dAtA[i] = 0x60
+		i++
+		i = encodeVarintMatch(dAtA, i, uint64(m.WinRound))
+	}
+	if m.Round != 0 {
+		dAtA[i] = 0x68
+		i++
+		i = encodeVarintMatch(dAtA, i, uint64(m.Round))
+	}
+	return i, nil
+}
+
 func encodeVarintMatch(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -2214,6 +2489,13 @@ func (m *Player) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovMatch(uint64(l))
 	}
+	if m.BestCombo != nil {
+		l = m.BestCombo.Size()
+		n += 1 + l + sovMatch(uint64(l))
+	}
+	if m.Status != 0 {
+		n += 1 + sovMatch(uint64(m.Status))
+	}
 	return n
 }
 
@@ -2241,6 +2523,9 @@ func (m *Room) Size() (n int) {
 	}
 	if m.MaxBet != 0 {
 		n += 1 + sovMatch(uint64(m.MaxBet))
+	}
+	if m.RoomType != 0 {
+		n += 1 + sovMatch(uint64(m.RoomType))
 	}
 	return n
 }
@@ -2520,6 +2805,52 @@ func (m *S2C_RoomChat) Size() (n int) {
 	l = len(m.Content)
 	if l > 0 {
 		n += 1 + l + sovMatch(uint64(l))
+	}
+	return n
+}
+
+func (m *C2S_SyncGameStatus) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *S2C_SyncGameStatus) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.GameStage != 0 {
+		n += 1 + sovMatch(uint64(m.GameStage))
+	}
+	if len(m.CommunityCards) > 0 {
+		for _, e := range m.CommunityCards {
+			l = e.Size()
+			n += 1 + l + sovMatch(uint64(l))
+		}
+	}
+	if m.Room != nil {
+		l = m.Room.Size()
+		n += 1 + l + sovMatch(uint64(l))
+	}
+	if len(m.Balances) > 0 {
+		for _, e := range m.Balances {
+			l = e.Size()
+			n += 1 + l + sovMatch(uint64(l))
+		}
+	}
+	if m.SmallBlind != 0 {
+		n += 1 + sovMatch(uint64(m.SmallBlind))
+	}
+	if m.WinRound != 0 {
+		n += 1 + sovMatch(uint64(m.WinRound))
+	}
+	if m.Round != 0 {
+		n += 1 + sovMatch(uint64(m.Round))
 	}
 	return n
 }
@@ -2967,6 +3298,58 @@ func (m *Player) Unmarshal(dAtA []byte) error {
 			}
 			m.Sex = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BestCombo", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMatch
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthMatch
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.BestCombo == nil {
+				m.BestCombo = &BestCombo{}
+			}
+			if err := m.BestCombo.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 11:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
+			}
+			m.Status = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMatch
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Status |= (int32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipMatch(dAtA[iNdEx:])
@@ -3130,6 +3513,25 @@ func (m *Room) Unmarshal(dAtA []byte) error {
 				b := dAtA[iNdEx]
 				iNdEx++
 				m.MaxBet |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RoomType", wireType)
+			}
+			m.RoomType = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMatch
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.RoomType |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -4806,6 +5208,277 @@ func (m *S2C_RoomChat) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *C2S_SyncGameStatus) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowMatch
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: C2S_SyncGameStatus: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: C2S_SyncGameStatus: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipMatch(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthMatch
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *S2C_SyncGameStatus) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowMatch
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: S2C_SyncGameStatus: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: S2C_SyncGameStatus: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field GameStage", wireType)
+			}
+			m.GameStage = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMatch
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.GameStage |= (int32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CommunityCards", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMatch
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthMatch
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CommunityCards = append(m.CommunityCards, &Card{})
+			if err := m.CommunityCards[len(m.CommunityCards)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Room", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMatch
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthMatch
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Room == nil {
+				m.Room = &Room{}
+			}
+			if err := m.Room.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Balances", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMatch
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthMatch
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Balances = append(m.Balances, &Balance{})
+			if err := m.Balances[len(m.Balances)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 7:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SmallBlind", wireType)
+			}
+			m.SmallBlind = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMatch
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.SmallBlind |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 12:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WinRound", wireType)
+			}
+			m.WinRound = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMatch
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.WinRound |= (int32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 13:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Round", wireType)
+			}
+			m.Round = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowMatch
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Round |= (int32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipMatch(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthMatch
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func skipMatch(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
@@ -4911,68 +5584,74 @@ var (
 	ErrIntOverflowMatch   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("match.proto", fileDescriptor_match_15cb4d67518ea3ba) }
+func init() { proto.RegisterFile("match.proto", fileDescriptor_match_49c773136cb69df8) }
 
-var fileDescriptor_match_15cb4d67518ea3ba = []byte{
-	// 946 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x56, 0x41, 0x6f, 0xe3, 0x44,
-	0x14, 0xae, 0x63, 0x3b, 0x6d, 0x5e, 0xda, 0xc8, 0x4c, 0xbb, 0xc5, 0xac, 0x20, 0x54, 0x23, 0x90,
-	0x8a, 0x84, 0x22, 0x14, 0x90, 0xb8, 0x70, 0xd8, 0xc4, 0x5b, 0x56, 0x65, 0xb7, 0xa1, 0x4c, 0x36,
-	0xe2, 0x82, 0x54, 0x4d, 0x9d, 0xa1, 0xb5, 0x6a, 0xcf, 0x44, 0xb6, 0x53, 0x36, 0x07, 0x8e, 0xdc,
-	0x38, 0xf0, 0x03, 0xf8, 0x1b, 0x48, 0xfc, 0x04, 0x8e, 0x7b, 0xe4, 0x08, 0xed, 0x95, 0x1f, 0x81,
-	0xde, 0x8c, 0xed, 0x64, 0x43, 0xac, 0xe5, 0xb2, 0xb7, 0xf7, 0xbe, 0xf1, 0x9b, 0xf7, 0xbd, 0xef,
-	0xbd, 0xbc, 0x09, 0xb4, 0x13, 0x9e, 0x87, 0xd7, 0xbd, 0x59, 0xaa, 0x72, 0x45, 0xec, 0x24, 0xbb,
-	0xa2, 0x3d, 0x70, 0x02, 0x9e, 0x4e, 0xc9, 0x01, 0xb8, 0x81, 0x8a, 0x55, 0xea, 0x5b, 0x47, 0xd6,
-	0xb1, 0xcb, 0x8c, 0x43, 0x3c, 0xb0, 0x47, 0xf3, 0xc4, 0x6f, 0x68, 0x0c, 0x4d, 0xfa, 0x08, 0x5a,
-	0x43, 0x91, 0xe5, 0x81, 0x4a, 0x2e, 0x15, 0x79, 0x1f, 0x5c, 0x0c, 0xce, 0x7c, 0xeb, 0xc8, 0x3e,
-	0x6e, 0xf7, 0x5b, 0xbd, 0x24, 0xbb, 0xea, 0x21, 0xc2, 0x0c, 0x4e, 0x08, 0x38, 0xcf, 0x17, 0x33,
-	0x51, 0x5c, 0xa0, 0x6d, 0xfa, 0xb7, 0x05, 0xcd, 0xf3, 0x98, 0x2f, 0x44, 0x4a, 0x0e, 0xa1, 0x39,
-	0xc9, 0x44, 0x7a, 0x3a, 0xd5, 0x59, 0x6d, 0x56, 0x78, 0xe4, 0x21, 0xec, 0x8c, 0xa2, 0xf0, 0x66,
-	0xc4, 0x13, 0x13, 0xda, 0x62, 0x95, 0x4f, 0xde, 0x85, 0xd6, 0xe0, 0x96, 0xe7, 0x3c, 0x9d, 0xb0,
-	0x67, 0xbe, 0xad, 0x0f, 0x97, 0x00, 0x12, 0x3e, 0x57, 0x99, 0xef, 0x1c, 0x59, 0xc7, 0x7b, 0x0c,
-	0x4d, 0xa4, 0xc0, 0x54, 0x2c, 0x7c, 0xd7, 0x50, 0x40, 0x1b, 0xb1, 0xe0, 0x3a, 0x9a, 0xf9, 0x4d,
-	0x9d, 0x55, 0xdb, 0xc4, 0x87, 0xed, 0xa1, 0xc8, 0x35, 0xbc, 0xad, 0xe1, 0xd2, 0x5d, 0x56, 0xb9,
-	0x53, 0x53, 0xa5, 0x07, 0xf6, 0x58, 0xbc, 0xf0, 0x5b, 0x9a, 0x0c, 0x9a, 0xf4, 0x47, 0x4c, 0xaa,
-	0x12, 0xd2, 0x81, 0x46, 0x51, 0x9c, 0xc3, 0x1a, 0xa7, 0x53, 0x4c, 0xbc, 0x52, 0x94, 0xb6, 0xc9,
-	0x87, 0xb0, 0x6d, 0xe4, 0xc8, 0x7c, 0x5b, 0x27, 0x68, 0xeb, 0x04, 0x06, 0x63, 0xe5, 0x59, 0xc5,
-	0xd9, 0x59, 0xe1, 0x7c, 0x08, 0xcd, 0x33, 0xfe, 0x62, 0x28, 0x72, 0x5d, 0x9d, 0xcd, 0x0a, 0x8f,
-	0x7e, 0x04, 0xfb, 0x41, 0x7f, 0x7c, 0xf1, 0xcd, 0x3c, 0x0a, 0x6f, 0xce, 0xb0, 0xe3, 0xe3, 0x9c,
-	0xa7, 0x79, 0xd5, 0x0d, 0x23, 0xb6, 0xe9, 0xc6, 0x4f, 0x0d, 0xd8, 0x1f, 0xf7, 0x83, 0xff, 0x7c,
-	0xfb, 0x08, 0xec, 0x93, 0xd4, 0x4c, 0x43, 0xa7, 0xdf, 0xd3, 0x8c, 0x36, 0x7c, 0xd6, 0x3b, 0xb9,
-	0x38, 0x49, 0xd3, 0x75, 0x94, 0x61, 0x28, 0x79, 0xcf, 0x68, 0xa0, 0x6b, 0x2d, 0x55, 0x43, 0x80,
-	0x69, 0x98, 0xfe, 0x6c, 0xc1, 0x83, 0x8d, 0xd1, 0x04, 0xa0, 0x69, 0x0e, 0xbc, 0x2d, 0xf2, 0x16,
-	0xec, 0x19, 0x7b, 0x3c, 0x0f, 0x43, 0x91, 0x65, 0x9e, 0x45, 0x3a, 0x00, 0x06, 0xc2, 0x6b, 0xbc,
-	0xc6, 0xf2, 0x93, 0x89, 0x7c, 0x2a, 0xd5, 0x0f, 0xd2, 0xb3, 0x89, 0x0f, 0x07, 0x06, 0x1a, 0xa9,
-	0xfc, 0x44, 0xaa, 0xf9, 0xd5, 0xf5, 0x99, 0x92, 0x62, 0xe1, 0x39, 0xe4, 0x6d, 0xd8, 0x37, 0x27,
-	0x83, 0x38, 0x15, 0x7c, 0xba, 0x38, 0x95, 0x4f, 0x78, 0x22, 0x3c, 0x97, 0x3e, 0x30, 0x92, 0x19,
-	0xb5, 0x9f, 0x09, 0x7e, 0x2b, 0x34, 0xcb, 0xdf, 0x2c, 0x23, 0xcf, 0x1a, 0x5e, 0x27, 0xcf, 0xda,
-	0x67, 0x85, 0x3c, 0x6b, 0xa8, 0x96, 0x87, 0x7e, 0x57, 0x96, 0xbf, 0x7e, 0xf5, 0x6b, 0xca, 0xaf,
-	0x20, 0x8c, 0x8b, 0xe4, 0xd5, 0x46, 0x05, 0xe8, 0x00, 0x7c, 0xe4, 0x33, 0x99, 0x4d, 0x79, 0x2e,
-	0x4c, 0x86, 0xaf, 0x54, 0x24, 0x75, 0x82, 0x95, 0x81, 0xb3, 0xea, 0x07, 0x8e, 0xfe, 0x63, 0xc1,
-	0x3b, 0xeb, 0x77, 0x2c, 0x59, 0xd6, 0xfd, 0x74, 0xbf, 0x80, 0x26, 0x13, 0x3c, 0x53, 0x52, 0x0f,
-	0x6a, 0xa7, 0xff, 0x41, 0xa5, 0xcd, 0xc6, 0x7b, 0x8c, 0x42, 0xac, 0x88, 0xa1, 0x0b, 0x70, 0x35,
-	0xf0, 0x8a, 0x08, 0x1e, 0xec, 0x96, 0xdd, 0x4c, 0x13, 0x1e, 0x7b, 0x16, 0x39, 0x04, 0x62, 0x90,
-	0xa7, 0x51, 0x78, 0x73, 0x31, 0x52, 0xa6, 0xbb, 0x1b, 0x47, 0xa1, 0x82, 0x1e, 0x47, 0x59, 0xa0,
-	0xa4, 0xf4, 0x1c, 0x72, 0x00, 0x9e, 0x81, 0xf4, 0xcc, 0x5d, 0x7c, 0x7d, 0x2b, 0x52, 0xcf, 0xa5,
-	0xbf, 0x5a, 0xb0, 0x87, 0x34, 0x71, 0x1e, 0xcc, 0x1c, 0x16, 0xbb, 0xc4, 0x5a, 0xee, 0x92, 0x6a,
-	0x13, 0x34, 0x6a, 0x36, 0x41, 0x17, 0x60, 0x9c, 0xf0, 0x38, 0x1e, 0xc6, 0x91, 0x9c, 0xea, 0xed,
-	0x64, 0xb3, 0x15, 0x84, 0x50, 0x70, 0x70, 0x7b, 0x6a, 0x6d, 0xda, 0xfd, 0x8e, 0x8e, 0xaf, 0xd6,
-	0x29, 0xd3, 0x67, 0xb8, 0x89, 0x99, 0x9a, 0xcb, 0x69, 0xb1, 0xb1, 0x8c, 0x43, 0x3f, 0x81, 0x1d,
-	0x64, 0xf7, 0x7c, 0x9e, 0xca, 0x0d, 0xc4, 0x08, 0x38, 0x83, 0x79, 0xae, 0xca, 0x3d, 0x8b, 0x36,
-	0xfd, 0x0c, 0x3a, 0x38, 0xd1, 0x18, 0x31, 0x08, 0xf3, 0x48, 0xe9, 0xb8, 0x41, 0x98, 0x17, 0x1b,
-	0x1e, 0x4d, 0x44, 0x70, 0x7b, 0x34, 0x34, 0x51, 0x34, 0xe9, 0x97, 0xd0, 0x29, 0xf3, 0xfc, 0xff,
-	0x28, 0x44, 0x66, 0x2a, 0xd3, 0x05, 0xbb, 0x0c, 0x4d, 0x3a, 0x31, 0xf7, 0x9c, 0xcf, 0x2f, 0xe3,
-	0x28, 0xd4, 0x2f, 0xcc, 0x6b, 0x1f, 0x8b, 0x52, 0x1c, 0xbb, 0x5e, 0x1c, 0x4a, 0x4d, 0x51, 0x58,
-	0x60, 0x1d, 0x3d, 0xda, 0x81, 0xdd, 0xb2, 0x91, 0xd8, 0x5b, 0xfa, 0xbb, 0x05, 0xdb, 0x43, 0x1e,
-	0x73, 0x19, 0x8a, 0xda, 0xb1, 0xfd, 0x78, 0xe5, 0x59, 0x2b, 0x36, 0xd6, 0x3a, 0x81, 0x95, 0x77,
-	0x8f, 0x80, 0xf3, 0x84, 0x47, 0xb2, 0x68, 0xb0, 0xb6, 0xf1, 0x66, 0x26, 0xbe, 0xc7, 0xbe, 0x99,
-	0x0d, 0x5d, 0x78, 0xcb, 0xb2, 0xdd, 0x9a, 0xb2, 0x1f, 0xc2, 0xce, 0xb7, 0xf8, 0xcb, 0xc4, 0xd0,
-	0xa6, 0xae, 0xa2, 0xf2, 0xe9, 0xe7, 0xd0, 0xc6, 0x52, 0x4a, 0xf6, 0xc7, 0xb0, 0x53, 0x98, 0xa5,
-	0x8a, 0xbb, 0x86, 0xa4, 0x01, 0x59, 0x75, 0x4a, 0xa7, 0xb0, 0x8b, 0x3a, 0xe1, 0x4f, 0x2c, 0xb8,
-	0xe6, 0x39, 0xbe, 0x9a, 0xe3, 0x34, 0x7c, 0xa5, 0xf4, 0x25, 0x80, 0xa7, 0x8f, 0xb3, 0xbc, 0x38,
-	0x35, 0x6d, 0x5d, 0x02, 0xf8, 0x32, 0x06, 0x4a, 0xe6, 0x42, 0xe6, 0xc5, 0x7b, 0x5b, 0xba, 0x98,
-	0x05, 0xe9, 0xbd, 0xd9, 0x2c, 0x43, 0xff, 0x8f, 0xbb, 0xae, 0xf5, 0xf2, 0xae, 0x6b, 0xfd, 0x75,
-	0xd7, 0xb5, 0x7e, 0xb9, 0xef, 0x6e, 0xbd, 0xbc, 0xef, 0x6e, 0xfd, 0x79, 0xdf, 0xdd, 0xba, 0x6c,
-	0xea, 0x3f, 0x32, 0x9f, 0xfe, 0x1b, 0x00, 0x00, 0xff, 0xff, 0xa1, 0xe0, 0xf9, 0x45, 0xd7, 0x08,
-	0x00, 0x00,
+var fileDescriptor_match_49c773136cb69df8 = []byte{
+	// 1053 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x56, 0xcf, 0x6e, 0x23, 0xc5,
+	0x13, 0xce, 0x78, 0xc6, 0x4e, 0x52, 0x4e, 0xac, 0xf9, 0x75, 0xb2, 0xf9, 0x0d, 0x2b, 0x30, 0x51,
+	0x0b, 0xa4, 0x20, 0x21, 0x0b, 0x0c, 0x12, 0x17, 0x0e, 0x6b, 0x7b, 0xc3, 0x2a, 0xec, 0x26, 0x84,
+	0xf6, 0x46, 0x5c, 0x90, 0xa2, 0xce, 0xb8, 0x49, 0x46, 0xf1, 0x74, 0x5b, 0x33, 0xed, 0xb0, 0xbe,
+	0x71, 0xe1, 0xc6, 0x81, 0x2b, 0x12, 0x77, 0x9e, 0x00, 0x89, 0x47, 0xe0, 0xb8, 0x47, 0x8e, 0x28,
+	0xb9, 0xf2, 0x10, 0xa8, 0xba, 0xe7, 0x8f, 0xed, 0x78, 0x08, 0x17, 0x6e, 0x55, 0x5f, 0x4f, 0x77,
+	0x7d, 0xf5, 0x55, 0xb9, 0xca, 0xd0, 0x8c, 0xb9, 0x0e, 0xaf, 0x3a, 0x93, 0x44, 0x69, 0x45, 0xdc,
+	0x38, 0xbd, 0xa4, 0x1d, 0xf0, 0x06, 0x3c, 0x19, 0x91, 0x5d, 0xa8, 0x0f, 0xd4, 0x58, 0x25, 0x81,
+	0xb3, 0xef, 0x1c, 0xd4, 0x99, 0x75, 0x88, 0x0f, 0xee, 0xc9, 0x34, 0x0e, 0x6a, 0x06, 0x43, 0x93,
+	0x3e, 0x81, 0xcd, 0xbe, 0x48, 0xf5, 0x40, 0xc5, 0x17, 0x8a, 0xbc, 0x0d, 0x75, 0xbc, 0x9c, 0x06,
+	0xce, 0xbe, 0x7b, 0xd0, 0xec, 0x6e, 0x76, 0xe2, 0xf4, 0xb2, 0x83, 0x08, 0xb3, 0x38, 0x21, 0xe0,
+	0xbd, 0x9c, 0x4d, 0x44, 0xf6, 0x80, 0xb1, 0xe9, 0x2f, 0x35, 0x68, 0x9c, 0x8e, 0xf9, 0x4c, 0x24,
+	0x64, 0x0f, 0x1a, 0x67, 0xa9, 0x48, 0x8e, 0x46, 0x26, 0xaa, 0xcb, 0x32, 0x8f, 0x3c, 0x86, 0x8d,
+	0x93, 0x28, 0xbc, 0x3e, 0xe1, 0xb1, 0xbd, 0xba, 0xc9, 0x0a, 0x9f, 0xbc, 0x09, 0x9b, 0xbd, 0x1b,
+	0xae, 0x79, 0x72, 0xc6, 0x5e, 0x04, 0xae, 0x39, 0x2c, 0x01, 0x24, 0x7c, 0xaa, 0xd2, 0xc0, 0xdb,
+	0x77, 0x0e, 0xb6, 0x19, 0x9a, 0x48, 0x81, 0xa9, 0xb1, 0x08, 0xea, 0x96, 0x02, 0xda, 0x88, 0x0d,
+	0xae, 0xa2, 0x49, 0xd0, 0x30, 0x51, 0x8d, 0x4d, 0x02, 0x58, 0xef, 0x0b, 0x6d, 0xe0, 0x75, 0x03,
+	0xe7, 0x6e, 0x99, 0xe5, 0x46, 0x45, 0x96, 0x3e, 0xb8, 0x43, 0xf1, 0x2a, 0xd8, 0x34, 0x64, 0xd0,
+	0x24, 0xef, 0xcf, 0xa9, 0x14, 0xc0, 0xbe, 0x73, 0xd0, 0xec, 0xb6, 0xcc, 0xb5, 0x02, 0x65, 0x73,
+	0x32, 0xee, 0x41, 0x63, 0xa8, 0xb9, 0x9e, 0xa6, 0x41, 0xd3, 0x90, 0xcc, 0x3c, 0xfa, 0x93, 0x83,
+	0xdc, 0x55, 0x4c, 0x5a, 0x50, 0xcb, 0x34, 0xf2, 0x58, 0xed, 0x68, 0x84, 0xfc, 0xe7, 0xb4, 0x31,
+	0x36, 0x79, 0x17, 0xd6, 0xad, 0xaa, 0x69, 0xe0, 0x1a, 0x9e, 0x4d, 0x13, 0xd0, 0x62, 0x2c, 0x3f,
+	0x2b, 0x52, 0xf7, 0xe6, 0x52, 0xdf, 0x83, 0xc6, 0x31, 0x7f, 0xd5, 0x17, 0xda, 0x88, 0xe4, 0xb2,
+	0xcc, 0xc3, 0x32, 0x60, 0x78, 0x53, 0xc1, 0x86, 0x61, 0x56, 0xf8, 0xf4, 0x3d, 0xd8, 0x19, 0x74,
+	0x87, 0xe7, 0x5f, 0x4e, 0xa3, 0xf0, 0xfa, 0x18, 0x9b, 0x6a, 0xa8, 0x79, 0xa2, 0x8b, 0x82, 0xdb,
+	0x7a, 0xda, 0x82, 0x7f, 0x5f, 0x83, 0x9d, 0x61, 0x77, 0x70, 0xef, 0xdb, 0x27, 0xe0, 0x1e, 0x26,
+	0xb6, 0xe1, 0x5a, 0xdd, 0x8e, 0x61, 0xbb, 0xe2, 0xb3, 0xce, 0xe1, 0xf9, 0x61, 0x92, 0x2c, 0xa3,
+	0x0c, 0xaf, 0x92, 0xb7, 0xac, 0x3e, 0x46, 0x87, 0xbc, 0x30, 0x08, 0x30, 0x03, 0xd3, 0x1f, 0x1c,
+	0x78, 0xb4, 0xf2, 0x36, 0x01, 0x68, 0xd8, 0x03, 0x7f, 0x8d, 0xfc, 0x0f, 0xb6, 0xad, 0x3d, 0x9c,
+	0x86, 0xa1, 0x48, 0x53, 0xdf, 0x21, 0x2d, 0x00, 0x0b, 0xe1, 0x33, 0x7e, 0xad, 0xfc, 0xe4, 0x4c,
+	0x3e, 0x97, 0xea, 0x5b, 0xe9, 0xbb, 0x24, 0x80, 0x5d, 0x0b, 0x9d, 0x28, 0x7d, 0x28, 0xd5, 0xf4,
+	0xf2, 0xea, 0x58, 0x49, 0x31, 0xf3, 0x3d, 0xf2, 0x7f, 0xd8, 0xb1, 0x27, 0xbd, 0x71, 0x22, 0xf8,
+	0x68, 0x76, 0x24, 0x9f, 0xf1, 0x58, 0xf8, 0x75, 0xfa, 0xc8, 0x4a, 0x66, 0x2b, 0xf1, 0x42, 0xf0,
+	0x1b, 0x61, 0x58, 0xfe, 0xea, 0x58, 0x79, 0x96, 0xf0, 0x2a, 0x79, 0x96, 0x3e, 0xcb, 0xe4, 0x59,
+	0x42, 0x8d, 0x3c, 0xf4, 0xeb, 0x3c, 0xfd, 0xe5, 0xa7, 0x1f, 0x48, 0xbf, 0x80, 0xf0, 0x5e, 0x24,
+	0x2f, 0x57, 0x2a, 0x40, 0x7b, 0x10, 0x20, 0x9f, 0xb3, 0xc9, 0x88, 0x6b, 0x61, 0x23, 0x7c, 0xae,
+	0x22, 0x69, 0x02, 0xcc, 0x35, 0xa3, 0x53, 0xdd, 0x8c, 0xf4, 0x2f, 0x07, 0xde, 0x58, 0x7e, 0xa3,
+	0x64, 0x59, 0x35, 0x1d, 0x3e, 0x85, 0x06, 0x13, 0x3c, 0x55, 0xd2, 0x34, 0x71, 0xab, 0xfb, 0x4e,
+	0xa1, 0xcd, 0xca, 0x77, 0xac, 0x42, 0x2c, 0xbb, 0x43, 0x67, 0x50, 0x37, 0xc0, 0x82, 0x08, 0x3e,
+	0x6c, 0xe5, 0xd5, 0x4c, 0x62, 0x3e, 0xf6, 0x1d, 0xb2, 0x07, 0xc4, 0x22, 0xcf, 0xa3, 0xf0, 0xfa,
+	0xfc, 0x44, 0xd9, 0xea, 0xae, 0x6c, 0x85, 0x02, 0x7a, 0x1a, 0xa5, 0x03, 0x25, 0xa5, 0xef, 0x91,
+	0x5d, 0xf0, 0x2d, 0x64, 0x7a, 0xee, 0xfc, 0x8b, 0x1b, 0x91, 0xf8, 0x75, 0xfa, 0xb3, 0x03, 0xdb,
+	0x48, 0x13, 0xfb, 0xc1, 0xf6, 0x61, 0x36, 0xae, 0x9c, 0x72, 0x5c, 0x15, 0xc3, 0xa6, 0x56, 0x31,
+	0x6c, 0xda, 0x00, 0xc3, 0x98, 0x8f, 0xc7, 0xfd, 0x71, 0x24, 0x47, 0x66, 0x00, 0xba, 0x6c, 0x0e,
+	0x21, 0x14, 0x3c, 0x9c, 0x2c, 0x46, 0x9b, 0xfb, 0x53, 0xc7, 0x9c, 0xe1, 0xb0, 0x67, 0x6a, 0x2a,
+	0x47, 0xd9, 0x50, 0xb4, 0x0e, 0xfd, 0x00, 0x36, 0x90, 0xdd, 0xcb, 0x69, 0x22, 0x57, 0x10, 0x23,
+	0xe0, 0xf5, 0xa6, 0x5a, 0xe5, 0xa3, 0x1c, 0x6d, 0xfa, 0x31, 0xb4, 0xb0, 0xa3, 0xf1, 0x46, 0x2f,
+	0xd4, 0x91, 0x32, 0xf7, 0x7a, 0xa1, 0xce, 0x96, 0x08, 0x9a, 0x88, 0xe0, 0x64, 0xa9, 0x19, 0xa2,
+	0x68, 0xd2, 0xcf, 0xa0, 0x95, 0xc7, 0xf9, 0xf7, 0xb7, 0x10, 0x99, 0xa8, 0xd4, 0x24, 0x5c, 0x67,
+	0x68, 0xd2, 0x33, 0xfb, 0xce, 0xe9, 0xf4, 0x62, 0x1c, 0x85, 0x66, 0x89, 0x3d, 0xb8, 0x8f, 0x72,
+	0x71, 0xdc, 0x6a, 0x71, 0x28, 0xb5, 0x49, 0x61, 0x82, 0x55, 0xf4, 0x68, 0x0b, 0xb6, 0xf2, 0x42,
+	0x62, 0x6d, 0xe9, 0x6f, 0x0e, 0xac, 0xf7, 0xf9, 0x98, 0xcb, 0x50, 0x54, 0xb6, 0xed, 0xc2, 0x4e,
+	0xa8, 0x3d, 0xb4, 0x13, 0x08, 0x78, 0xcf, 0x78, 0x24, 0xb3, 0x02, 0x1b, 0x1b, 0x5f, 0x66, 0xe2,
+	0x1b, 0xac, 0x9b, 0x9d, 0xde, 0x99, 0x57, 0xa6, 0x5d, 0xaf, 0x48, 0xfb, 0x31, 0x6c, 0x7c, 0x85,
+	0xbf, 0x4c, 0xbc, 0x9a, 0x0d, 0xf2, 0xdc, 0xa7, 0x9f, 0x40, 0x13, 0x53, 0xc9, 0xd9, 0x1f, 0xc0,
+	0x46, 0x66, 0xe6, 0x2a, 0x6e, 0x59, 0x92, 0x16, 0x64, 0xc5, 0x29, 0x1d, 0xc1, 0x16, 0xea, 0x84,
+	0x3f, 0xb1, 0xc1, 0x15, 0xd7, 0xb8, 0x98, 0x87, 0x49, 0xb8, 0x90, 0x7a, 0x09, 0xe0, 0xe9, 0xd3,
+	0x54, 0x67, 0xa7, 0xb6, 0xac, 0x25, 0x80, 0xcb, 0x77, 0xa0, 0xa4, 0x16, 0x52, 0x67, 0x2b, 0x3d,
+	0x77, 0x31, 0x0a, 0xd2, 0xfb, 0x8f, 0xa3, 0xec, 0x02, 0xc1, 0x5c, 0x86, 0x33, 0x19, 0x66, 0x3f,
+	0x4e, 0xdc, 0xbf, 0xdf, 0xd5, 0x80, 0x60, 0xf0, 0x45, 0x18, 0x83, 0x64, 0xde, 0xa5, 0xc8, 0x9a,
+	0xa2, 0x04, 0xc8, 0x87, 0xd0, 0x1a, 0xa8, 0x38, 0x9e, 0xca, 0x48, 0xcf, 0x2a, 0x7e, 0xc9, 0x4b,
+	0x1f, 0x14, 0x6b, 0xcc, 0x5d, 0xb9, 0xc6, 0x16, 0x4a, 0xe2, 0xfd, 0x53, 0x49, 0x96, 0x66, 0xc3,
+	0xfa, 0xbd, 0xd9, 0x30, 0xdf, 0x07, 0x5b, 0x8b, 0x7d, 0x50, 0xce, 0x84, 0xed, 0xb9, 0x99, 0xd0,
+	0x0f, 0x7e, 0xbf, 0x6d, 0x3b, 0xaf, 0x6f, 0xdb, 0xce, 0x9f, 0xb7, 0x6d, 0xe7, 0xc7, 0xbb, 0xf6,
+	0xda, 0xeb, 0xbb, 0xf6, 0xda, 0x1f, 0x77, 0xed, 0xb5, 0x8b, 0x86, 0xf9, 0x13, 0xf9, 0xd1, 0xdf,
+	0x01, 0x00, 0x00, 0xff, 0xff, 0xec, 0xa4, 0x3a, 0xc0, 0x53, 0x0a, 0x00, 0x00,
 }

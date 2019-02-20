@@ -71,7 +71,7 @@ func rpcHandleLoginAuthPass(args []interface{}) {
 	s.Mgr().CheckTick(skeleton)
 
 	//下发用户数据
-	ChanRPC.Go("AfterLoginAuthPass", a, &user)
+	ChanRPC.Go("AfterLoginAuthPass", a, &user, false)
 
 	//定时写库
 	var f func()

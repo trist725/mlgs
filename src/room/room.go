@@ -1194,6 +1194,14 @@ func (r *Room) StageEnd() bool {
 	return false
 }
 
+func (r *Room) SmallBlind() int64 {
+	return atomic.LoadInt64(&r.sb)
+}
+
+func (r *Room) MaxBet() int64 {
+	return atomic.LoadInt64(&r.maxBet)
+}
+
 func (r *Room) ResetMaxBet() {
 	atomic.StoreInt64(&r.maxBet, 0)
 }
@@ -1228,7 +1236,11 @@ func (r *Room) GetRobotCount() int {
 	return count
 }
 
-func (r *Room) GetRoomType() uint32 {
+func (r *Room) CommunityCards() []cache.Card {
+	return r.pc
+}
+
+func (r *Room) RoomType() uint32 {
 	return atomic.LoadUint32(&r.pType)
 }
 

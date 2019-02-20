@@ -2,6 +2,7 @@ package cache
 
 import (
 	"github.com/trist725/myleaf/log"
+	"mlgs/src/msg"
 	"reflect"
 	"sort"
 )
@@ -18,6 +19,12 @@ type Card struct {
 	Color uint8
 	//牌值,2-14
 	Num uint8
+}
+
+func (c *Card) ToMsg(nc *msg.Card) *msg.Card {
+	nc.Num = int32(c.Num)
+	nc.Color = int32(c.Color)
+	return nc
 }
 
 func (c *Card) Equal(card Card) bool {

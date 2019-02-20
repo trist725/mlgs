@@ -38,8 +38,12 @@ message Player{
     repeated Card Cards= 8;
     ///性别
     string Sex = 9;
-
+    ///最大牌型
+    BestCombo BestCombo = 10;
+    ///玩家状态,1-对局中,2-弃牌,3-无筹码
+    int32 Status = 11;
 }
+
 
 /// 房间
 message Room {
@@ -53,6 +57,8 @@ message Room {
     int64 Chip = 4;
     ///当前最大加注
     int64 MaxBet = 5;
+    ///房间类型
+    int32 RoomType = 6;
 }
 
 /// 快速开始游戏请求
@@ -223,4 +229,25 @@ message S2C_RoomChat{
     int64 DstUserId = 2;
     ///内容
     string Content = 3;
+}
+
+/// 同步游戏状态
+message C2S_SyncGameStatus {
+}
+
+message S2C_SyncGameStatus {
+    ///对局阶段,0-等待对局,1-4第1到4阶段,5-结算,6-不在房间(推送S2C_UpdateMoney)
+    int32 GameStage = 1;
+    ///公共牌
+    repeated Card CommunityCards = 2;
+    ///房间信息
+    Room Room = 3;
+    ///结算信息
+    repeated Balance Balances = 4;
+    ///初始小盲注
+    int64 SmallBlind = 7;
+    ///赛事场胜场
+    int32 WinRound = 12;
+    ///本次赛事场第几局
+    int32 Round = 13;
 }

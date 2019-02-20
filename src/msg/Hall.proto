@@ -86,6 +86,8 @@ message S2C_LoginInfo{
     int64 UsingDealer = 8;
     ///大厅角色性别,0-女,1-男
     int32 HallRoleSex = 9;
+    ///是否在游戏中(重连)
+    bool InTheGame = 10;
 }
 
 ///每日签到请求

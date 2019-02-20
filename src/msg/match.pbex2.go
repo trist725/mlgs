@@ -24,6 +24,8 @@ It has these top-level messages:
 	S2C_Balance
 	C2S_RoomChat
 	S2C_RoomChat
+	C2S_SyncGameStatus
+	S2C_SyncGameStatus
 */
 
 package msg
@@ -329,6 +331,8 @@ func (m *Player) ResetEx() {
 	}
 	m.Cards = []*Card{}
 	m.Sex = ""
+	m.BestCombo.ResetEx()
+	m.Status = 0
 
 }
 
@@ -359,6 +363,8 @@ func (m Player) Clone() *Player {
 	}
 
 	n.Sex = m.Sex
+	n.BestCombo = m.BestCombo.Clone()
+	n.Status = m.Status
 
 	return n
 }
@@ -378,7 +384,8 @@ func Clone_Player_Slice(dst []*Player, src []*Player) []*Player {
 
 func New_Player() *Player {
 	m := &Player{
-		Cards: []*Card{},
+		Cards:     []*Card{},
+		BestCombo: New_BestCombo(),
 	}
 	return m
 }
@@ -420,6 +427,7 @@ func (m *Room) ResetEx() {
 	m.Players = []*Player{}
 	m.Chip = 0
 	m.MaxBet = 0
+	m.RoomType = 0
 
 }
 
@@ -446,6 +454,7 @@ func (m Room) Clone() *Room {
 
 	n.Chip = m.Chip
 	n.MaxBet = m.MaxBet
+	n.RoomType = m.RoomType
 
 	return n
 }
@@ -1654,4 +1663,171 @@ func Put_S2C_RoomChat(i interface{}) {
 }
 
 // message [S2C_RoomChat] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [C2S_SyncGameStatus] begin
+func (m *C2S_SyncGameStatus) ResetEx() {
+
+}
+
+func (m C2S_SyncGameStatus) Clone() *C2S_SyncGameStatus {
+	n, ok := g_C2S_SyncGameStatus_Pool.Get().(*C2S_SyncGameStatus)
+	if !ok || n == nil {
+		n = &C2S_SyncGameStatus{}
+	}
+
+	return n
+}
+
+func Clone_C2S_SyncGameStatus_Slice(dst []*C2S_SyncGameStatus, src []*C2S_SyncGameStatus) []*C2S_SyncGameStatus {
+	for _, i := range dst {
+		Put_C2S_SyncGameStatus(i)
+	}
+	dst = []*C2S_SyncGameStatus{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_C2S_SyncGameStatus() *C2S_SyncGameStatus {
+	m := &C2S_SyncGameStatus{}
+	return m
+}
+
+var g_C2S_SyncGameStatus_Pool = sync.Pool{}
+
+func Get_C2S_SyncGameStatus() *C2S_SyncGameStatus {
+	m, ok := g_C2S_SyncGameStatus_Pool.Get().(*C2S_SyncGameStatus)
+	if !ok {
+		m = New_C2S_SyncGameStatus()
+	} else {
+		if m == nil {
+			m = New_C2S_SyncGameStatus()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_C2S_SyncGameStatus(i interface{}) {
+	if m, ok := i.(*C2S_SyncGameStatus); ok && m != nil {
+		g_C2S_SyncGameStatus_Pool.Put(i)
+	}
+}
+
+// message [C2S_SyncGameStatus] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_SyncGameStatus] begin
+func (m *S2C_SyncGameStatus) ResetEx() {
+	m.GameStage = 0
+
+	for _, i := range m.CommunityCards {
+		Put_Card(i)
+	}
+	m.CommunityCards = []*Card{}
+	m.Room.ResetEx()
+
+	for _, i := range m.Balances {
+		Put_Balance(i)
+	}
+	m.Balances = []*Balance{}
+	m.SmallBlind = 0
+	m.WinRound = 0
+	m.Round = 0
+
+}
+
+func (m S2C_SyncGameStatus) Clone() *S2C_SyncGameStatus {
+	n, ok := g_S2C_SyncGameStatus_Pool.Get().(*S2C_SyncGameStatus)
+	if !ok || n == nil {
+		n = &S2C_SyncGameStatus{}
+	}
+
+	n.GameStage = m.GameStage
+
+	if len(m.CommunityCards) > 0 {
+		for _, i := range m.CommunityCards {
+			if i != nil {
+				n.CommunityCards = append(n.CommunityCards, i.Clone())
+			} else {
+				n.CommunityCards = append(n.CommunityCards, nil)
+			}
+		}
+	} else {
+		n.CommunityCards = []*Card{}
+	}
+
+	n.Room = m.Room.Clone()
+
+	if len(m.Balances) > 0 {
+		for _, i := range m.Balances {
+			if i != nil {
+				n.Balances = append(n.Balances, i.Clone())
+			} else {
+				n.Balances = append(n.Balances, nil)
+			}
+		}
+	} else {
+		n.Balances = []*Balance{}
+	}
+
+	n.SmallBlind = m.SmallBlind
+	n.WinRound = m.WinRound
+	n.Round = m.Round
+
+	return n
+}
+
+func Clone_S2C_SyncGameStatus_Slice(dst []*S2C_SyncGameStatus, src []*S2C_SyncGameStatus) []*S2C_SyncGameStatus {
+	for _, i := range dst {
+		Put_S2C_SyncGameStatus(i)
+	}
+	dst = []*S2C_SyncGameStatus{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_S2C_SyncGameStatus() *S2C_SyncGameStatus {
+	m := &S2C_SyncGameStatus{
+		CommunityCards: []*Card{},
+		Room:           New_Room(),
+		Balances:       []*Balance{},
+	}
+	return m
+}
+
+var g_S2C_SyncGameStatus_Pool = sync.Pool{}
+
+func Get_S2C_SyncGameStatus() *S2C_SyncGameStatus {
+	m, ok := g_S2C_SyncGameStatus_Pool.Get().(*S2C_SyncGameStatus)
+	if !ok {
+		m = New_S2C_SyncGameStatus()
+	} else {
+		if m == nil {
+			m = New_S2C_SyncGameStatus()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_SyncGameStatus(i interface{}) {
+	if m, ok := i.(*S2C_SyncGameStatus); ok && m != nil {
+		g_S2C_SyncGameStatus_Pool.Put(i)
+	}
+}
+
+// message [S2C_SyncGameStatus] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

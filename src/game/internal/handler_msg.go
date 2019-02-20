@@ -37,6 +37,8 @@ func init() {
 	regiserMsgHandle(&msg.C2S_SwitchHallRoleSex{}, handleSwitchHallRoleSex)
 
 	regiserMsgHandle(&msg.C2S_GetNotices{}, handleGetNotices)
+
+	regiserMsgHandle(&msg.C2S_SyncGameStatus{}, handleSyncGameStatus)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -771,4 +773,94 @@ func handleGetNotices(args []interface{}) {
 
 	send.Notices = append(send.Notices, ConvertNotices()...)
 
+}
+
+func handleSyncGameStatus(args []interface{}) {
+	//recv := args[0].(*msg.C2S_GetNotices)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleSyncGameStatus return for nil session")
+		return
+	}
+
+	send := msg.Get_S2C_SyncGameStatus()
+	defer sender.WriteMsg(send)
+	defer session.Update()
+
+	player := session.Player()
+	if player == nil {
+		log.Debug("[%s], handleSyncGameStatus: player data is nil", session.Sign())
+		return
+	}
+	r := room.Mgr().GetRoom(player.RoomId())
+	if r == nil {
+		log.Debug("[%s], handleSyncGameStatus: room data is nil", session.Sign())
+		return
+	}
+	send.Room = msg.Get_Room()
+	send.Room.Name = r.Name()
+	send.Room.Id = r.Id()
+	send.Room.Chip = r.Pot()
+	send.Room.MaxBet = r.MaxBet()
+	send.Room.RoomType = int32(r.RoomType())
+	r.PlayerEach(func(p *cache.Player) {
+		userData := p.UserData()
+		if userData == nil {
+			return
+		}
+		np := msg.Get_Player()
+		np.UserId = userData.ID
+		np.NickName = userData.NickName
+		np.AvatarURL = userData.AvatarURL
+		np.Pos = p.Pos()
+		np.Role = int32(p.Role())
+		np.Chip = p.Chip()
+		np.BetChip = p.TotalBet()
+		for _, c := range p.Cards() {
+			np.Cards = append(np.Cards, c.ToMsg(msg.Get_Card()))
+		}
+		np.Sex = userData.Sex
+		for _, n := range p.Nuts() {
+			np.BestCombo = msg.Get_BestCombo()
+			np.BestCombo.Cards = append(np.BestCombo.Cards, n.ToMsg(msg.Get_Card()))
+		}
+		np.BestCombo.Type = p.NutsLevel()
+		np.Status = int32(p.Stat())
+
+		send.Room.Players = append(send.Room.Players, np)
+	})
+	send.SmallBlind = r.SmallBlind()
+	for _, c := range r.CommunityCards() {
+		send.CommunityCards = append(send.CommunityCards, c.ToMsg(msg.Get_Card()))
+	}
+
+	if !player.InRoom() {
+		send.GameStage = 6
+	} else {
+		send.GameStage = int32(r.Stage())
+	}
+
+	send.WinRound = int32(player.WinTimes())
+	send.Round = int32(player.Round())
+
+	send.Balances = r.MakeBalanceMsg()
+
+	if send.GameStage == 6 {
+		ud := session.UserData()
+		if ud == nil {
+			log.Error("[%s] userData in session:[%d] is nil", session.Sign(), session.ID())
+			return
+		}
+		send := msg.Get_S2C_UpdateMoney()
+		for _, nm := range ud.Monies {
+			send.Monies = append(send.Monies, nm.ToMsg(msg.Get_Money()))
+		}
+		sender.WriteMsg(send)
+	}
 }

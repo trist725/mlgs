@@ -293,6 +293,28 @@ func (r *Room) BoardCastRC(m *msg.C2S_RoomChat) {
 func (r *Room) BoardCastBalance() {
 	send := msg.Get_S2C_Balance()
 
+	send.Balances = r.MakeBalanceMsg()
+
+	r.PlayerEach(func(player *cache.Player) {
+		session := s.Mgr().GetSession(player.SessionId())
+		if session == nil {
+			log.Debug("use nil session on BoardCastBalnce")
+			return
+		}
+
+		session.Agent().WriteMsg(send)
+	})
+
+	for _, b := range send.Balances {
+		log.Debug("=======================: %v", b)
+	}
+	//for _, p := range r.players {
+	//	log.Debug("######################id: %d : %v", p.UserId(), p.Nuts())
+	//}
+	//return
+}
+
+func (r *Room) MakeBalanceMsg() (nb []*msg.Balance) {
 	r.PlayerEach(func(player *cache.Player) {
 		b := msg.Get_Balance()
 		//手牌
@@ -317,24 +339,7 @@ func (r *Room) BoardCastBalance() {
 		b.UserId = player.UserId()
 		b.WinRound = int32(player.WinTimes())
 
-		send.Balances = append(send.Balances, b)
+		nb = append(nb, b)
 	})
-
-	r.PlayerEach(func(player *cache.Player) {
-		session := s.Mgr().GetSession(player.SessionId())
-		if session == nil {
-			log.Debug("use nil session on BoardCastBalnce")
-			return
-		}
-
-		session.Agent().WriteMsg(send)
-	})
-
-	for _, b := range send.Balances {
-		log.Debug("=======================: %v", b)
-	}
-	//for _, p := range r.players {
-	//	log.Debug("######################id: %d : %v", p.UserId(), p.Nuts())
-	//}
-	//return
+	return nb
 }

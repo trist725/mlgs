@@ -21,6 +21,7 @@ func init() {
 	skeleton.RegisterChanRPC("RoomChat", OnRoomChat)
 	skeleton.RegisterChanRPC("UpdateUserData", OnUpdateUserData)
 	skeleton.RegisterChanRPC("UpdateItems", OnUpdateItems)
+	skeleton.RegisterChanRPC("SyncGameStatus", OnSyncGameStatus)
 }
 
 //每轮签到天数
@@ -59,8 +60,11 @@ func OnAfterLoginAuthPass(args []interface{}) {
 	user.AllocDayQuests()
 	//更新邮件列表
 	//user.UpdateMails()
-
+	send.InTheGame = args[2].(bool)
 	sender.WriteMsg(send)
+	if send.InTheGame {
+		ChanRPC.Go("SyncGameStatus", nil, sender)
+	}
 }
 
 func OnPlayerJoinRoom(args []interface{}) {
@@ -158,4 +162,8 @@ func OnUpdateItems(args []interface{}) {
 	//room := args[0].(*r.Room)
 	//
 	//room.BoardCastRC(recv)
+}
+
+func OnSyncGameStatus(args []interface{}) {
+	handleSyncGameStatus(args)
 }

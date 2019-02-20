@@ -193,6 +193,10 @@ func (p *Player) Cards() []Card {
 }
 
 func NewPlayer(sid uint64, uid int64, t int64, user *model.User) *Player {
+	if user == nil {
+		log.Debug("NewPlayer failed, userData is nil")
+		return nil
+	}
 	//todo:根据t进入不同房间类型
 	var rommSd *sd.Room
 	switch t {
@@ -298,6 +302,18 @@ func (p *Player) InTheGame() bool {
 		return false
 	}
 	return true
+}
+
+func (p *Player) CompeteOver() bool {
+	competSd := sd.CompetitionMgr.Get(1)
+	if competSd == nil {
+		log.Fatal("get competition sd failed on MatchOver")
+	}
+	if int64(p.WinTimes()) >= competSd.RoundWin || competSd.RoundTotle == int64(p.Round()) ||
+		competSd.RoundTotle-int64(p.Round())+int64(p.WinTimes()) < competSd.RoundWin {
+		return true
+	}
+	return false
 }
 
 func (p *Player) SetRoomId(rid uint64) {

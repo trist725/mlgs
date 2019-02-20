@@ -91,7 +91,7 @@ func handleLoginAuth(args []interface{}) {
 			if p := session.Player(); p != nil {
 				if p.SessionId() == 0 {
 					p.SetSessionId(session.ID())
-					game.ChanRPC.Go("AfterLoginAuthPass", sender, user)
+					game.ChanRPC.Go("AfterLoginAuthPass", sender, user, p.InRoom())
 				} else {
 					log.Debug("[%d-%s] already online", user.ID, user.NickName)
 					send.Reason = msg.S2C_Login_E_Err_AlreadyLogin
