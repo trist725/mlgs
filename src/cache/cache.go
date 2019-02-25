@@ -304,13 +304,16 @@ func (p *Player) InTheGame() bool {
 	return true
 }
 
-func (p *Player) CompeteOver() bool {
+func (p *Player) CompeteOver(bb int64) bool {
+	if p.Round() == 0 {
+		return true
+	}
 	competSd := sd.CompetitionMgr.Get(1)
 	if competSd == nil {
 		log.Fatal("get competition sd failed on MatchOver")
 	}
 	if int64(p.WinTimes()) >= competSd.RoundWin || competSd.RoundTotle == int64(p.Round()) ||
-		competSd.RoundTotle-int64(p.Round())+int64(p.WinTimes()) < competSd.RoundWin {
+		competSd.RoundTotle-int64(p.Round())+int64(p.WinTimes()) < competSd.RoundWin || p.Chip() < bb {
 		return true
 	}
 	return false

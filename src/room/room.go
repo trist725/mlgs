@@ -664,11 +664,15 @@ func (r *Room) PlayerLeave(p *cache.Player, reason msg.S2C_UpdatePlayerLeaveRoom
 	r.Lock()
 	defer r.Unlock()
 
-	//已开局,不离开房间
+	//已开局/赛事场未结束,不离开房间
 	if r.Stage() != 0 && p.Stat() != 0 {
 		return nil
 	}
-
+	if sd.E_RoomType(r.RoomType()) == sd.E_RoomType_Match && !p.Robot() {
+		if !p.CompeteOver(r.bb) {
+			return nil
+		}
+	}
 	if player, ok := r.players[p.Pos()]; ok && player == p {
 		if p.UserData() == nil {
 			return fmt.Errorf("nil userdata on playerLeave")
@@ -1020,6 +1024,10 @@ func (r *Room) CurPlayer() *cache.Player {
 	return r.players[r.curPos]
 }
 
+func (r *Room) CurPos() uint32 {
+	return atomic.LoadUint32(&r.curPos)
+}
+
 func (r *Room) NextPos() uint32 {
 	for offset := 1; offset < gPlayerLimit; offset++ {
 		pos := uint32(offset) + r.curPos
@@ -1152,16 +1160,16 @@ func (r *Room) KickOffPlayers() {
 		player.SetStat(0)
 		//赛事场
 		if sd.E_RoomType(r.pType) == sd.E_RoomType_Match {
-			if int64(player.WinTimes()) >= competSd.RoundWin || player.Chip() < r.bb ||
-				competSd.RoundTotle == int64(player.Round()) ||
-				competSd.RoundTotle-int64(player.Round())+int64(player.WinTimes()) < competSd.RoundWin {
+			if player.CompeteOver(r.bb) {
 				r.PlayerLeave(player, msg.S2C_UpdatePlayerLeaveRoom_E_Err_Match_Over)
+				log.Debug("kick player match over------------------------ : [%d]", player.UserId())
 				return
 			}
 		}
 
 		// 掉线的/第一次断线重连的/机器人/筹码不够的 踢
-		if player.SessionId() == 0 || player.PreSessionId() != 0 || player.Robot() || player.Chip() < r.bb {
+		if player.SessionId() == 0 /*|| player.PreSessionId() != 0 */ || player.Robot() || player.Chip() < r.bb {
+			log.Debug("。。。。。。。。。。。。你为什么这么秀 为什么不离开。。。。。。。。。。[%d]", player.UserId())
 			if player.PreSessionId() != 0 {
 				//确保对局中断线再登陆,原对局结束后只会被踢一次
 				player.SetPreSessionId(0)

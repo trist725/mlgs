@@ -1741,6 +1741,7 @@ func (m *S2C_SyncGameStatus) ResetEx() {
 	m.SmallBlind = 0
 	m.WinRound = 0
 	m.Round = 0
+	m.CurTurnPos = 0
 
 }
 
@@ -1781,6 +1782,7 @@ func (m S2C_SyncGameStatus) Clone() *S2C_SyncGameStatus {
 	n.SmallBlind = m.SmallBlind
 	n.WinRound = m.WinRound
 	n.Round = m.Round
+	n.CurTurnPos = m.CurTurnPos
 
 	return n
 }

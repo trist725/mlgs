@@ -82,6 +82,11 @@ func handlePlayerLeaveRoom(args []interface{}) {
 		return
 	}
 
+	if player.InRoom() && r.Stage() == 0 && sd.E_RoomType(r.RoomType()) == sd.E_RoomType_Match {
+		send.Err = msg.S2C_PlayerLeaveRoom_E_Err_Playing
+		return
+	}
+
 	send.Err = msg.S2C_PlayerLeaveRoom_E_Err_Success
 	//ChanRPC.Go("PlayerLeaveRoom", session.UserData().ID, r, msg.S2C_UpdatePlayerLeaveRoom_E_Err_Normal)
 
@@ -790,7 +795,7 @@ func handleSyncGameStatus(args []interface{}) {
 	}
 
 	send := msg.Get_S2C_SyncGameStatus()
-	defer sender.WriteMsg(send)
+
 	defer session.Update()
 
 	player := session.Player()
@@ -815,23 +820,27 @@ func handleSyncGameStatus(args []interface{}) {
 			return
 		}
 		np := msg.Get_Player()
-		np.UserId = userData.ID
+		np.UserId = p.UserId()
 		np.NickName = userData.NickName
 		np.AvatarURL = userData.AvatarURL
 		np.Pos = p.Pos()
 		np.Role = int32(p.Role())
 		np.Chip = p.Chip()
 		np.BetChip = p.TotalBet()
-		for _, c := range p.Cards() {
-			np.Cards = append(np.Cards, c.ToMsg(msg.Get_Card()))
-		}
 		np.Sex = userData.Sex
-		for _, n := range p.Nuts() {
-			np.BestCombo = msg.Get_BestCombo()
-			np.BestCombo.Cards = append(np.BestCombo.Cards, n.ToMsg(msg.Get_Card()))
-		}
-		np.BestCombo.Type = p.NutsLevel()
 		np.Status = int32(p.Stat())
+
+		//只发自己的手牌信息,防挂
+		if p.UserId() == player.UserId() {
+			for _, c := range p.Cards() {
+				np.Cards = append(np.Cards, c.ToMsg(msg.Get_Card()))
+			}
+			for _, n := range p.Nuts() {
+				np.BestCombo = msg.Get_BestCombo()
+				np.BestCombo.Cards = append(np.BestCombo.Cards, n.ToMsg(msg.Get_Card()))
+			}
+			np.BestCombo.Type = p.NutsLevel()
+		}
 
 		send.Room.Players = append(send.Room.Players, np)
 	})
@@ -848,9 +857,10 @@ func handleSyncGameStatus(args []interface{}) {
 
 	send.WinRound = int32(player.WinTimes())
 	send.Round = int32(player.Round())
-
+	send.CurTurnPos = int32(r.CurPos())
 	send.Balances = r.MakeBalanceMsg()
 
+	sender.WriteMsg(send)
 	if send.GameStage == 6 {
 		ud := session.UserData()
 		if ud == nil {

@@ -245,9 +245,11 @@ message S2C_SyncGameStatus {
     ///结算信息
     repeated Balance Balances = 4;
     ///初始小盲注
-    int64 SmallBlind = 7;
+    int64 SmallBlind = 5;
     ///赛事场胜场
-    int32 WinRound = 12;
+    int32 WinRound = 6;
     ///本次赛事场第几局
-    int32 Round = 13;
+    int32 Round = 7;
+    ///当前操作位置
+    int32 CurTurnPos = 8;
 }
