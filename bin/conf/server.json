@@ -6,12 +6,13 @@
 	"ConsolePort": 3333,
 
 	"MgoUrl": "mongodb://admin:admin@47.110.73.211:27017/admin",
-	"WebUrl": "http://192.168.101.202:8004",
+	"WebUrl": "http://47.110.73.211:8000",
+	"UnionPlatUrl": "http://10.0.0.55:8087/third/",
+	"MerchantCode": "WANBO_MECODE_2019_04_23",
+	"ProductCode": "2",
 	"MgoSessionNum": 100,
 	"MgoName": "dzpk",
 
 	"XlsxPath": "../xlsx"
 }
-
-
 

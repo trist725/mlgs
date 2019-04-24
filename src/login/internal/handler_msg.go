@@ -1,9 +1,12 @@
 package internal
 
 import (
+	"encoding/json"
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
 	"gopkg.in/mgo.v2/bson"
+	"gopkg.in/resty.v1"
+	"mlgs/src/conf"
 	"mlgs/src/game"
 	"mlgs/src/model"
 	"mlgs/src/msg"
@@ -46,6 +49,39 @@ func handleLoginAuth(args []interface{}) {
 		closeFlag = true
 		send.Reason = msg.S2C_Login_E_Err_LowVersion
 		return
+	}
+
+	if recv.Logintype == msg.C2S_Login_E_LoginType_WanBo {
+		resp, err := resty.R().SetFormData(map[string]string{
+			"MerchantCode": conf.Server.MerchantCode,
+			"Password":     recv.Password,
+			"PlayerId":     recv.UID,
+			"ProductCode":  conf.Server.ProductCode,
+		}).Post(conf.Server.UnionPlatUrl + "Player/Login")
+		//SetBody(LoginReq{MerchantCode: conf.Server.MerchantCode, Password: recv.Password, PlayerId: recv.UID, ProductCode: conf.Server.ProductCode}).Post(conf.Server.UnionPlatUrl + "Player/Login")
+		if err != nil {
+			log.Debug("wanbo login failed")
+			send.Reason = msg.S2C_Login_E_Err_Unknown
+			return
+		}
+		var respLogin LoginResp
+		err = json.Unmarshal(resp.Body(), &respLogin)
+		if err != nil {
+			log.Error("failed to unmarshal login resp")
+			send.Reason = msg.S2C_Login_E_Err_Unknown
+			return
+		}
+		send.WanboRes = int32(respLogin.Code)
+		if respLogin.Code == 0 {
+			send.Reason = msg.S2C_Login_E_Err_LoginSuccess
+		} else if respLogin.Code >= 501 && respLogin.Code <= 509 {
+			send.Reason = msg.S2C_Login_E_Err_LoginInfoNotMatch
+			return
+		} else {
+			send.Reason = msg.S2C_Login_E_Err_Unknown
+			return
+		}
+
 	}
 
 	if account, err := checkAccountExist(dbSession, recv.UID); err != nil {

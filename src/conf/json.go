@@ -18,9 +18,12 @@ var Server struct {
 	ProfilePath   string
 	MgoUrl        string
 	WebUrl        string
+	UnionPlatUrl  string
 	MgoSessionNum int
 	MgoName       string
 	XlsxPath      string
+	MerchantCode  string
+	ProductCode   string
 }
 
 func init() {

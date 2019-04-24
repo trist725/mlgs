@@ -11,6 +11,8 @@ It has these top-level messages:
 	S2C_UsingOwnDealerSkins
 	C2S_BuyItem
 	S2C_BuyItem
+	C2S_Charge
+	S2C_Charge
 */
 
 package msg
@@ -151,6 +153,50 @@ func Each_S2C_BuyItem_E_Err_I(f func(int32) bool) {
 }
 
 // enum [S2C_BuyItem_E_Err] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// enum [S2C_Charge_E_Err] begin
+
+var S2C_Charge_E_Err_Slice = []int32{
+	0,
+	1,
+	3,
+	4,
+}
+
+func S2C_Charge_E_Err_Len() int {
+	return len(S2C_Charge_E_Err_Slice)
+}
+
+func Check_S2C_Charge_E_Err_I(value int32) bool {
+	if _, ok := S2C_Charge_E_Err_name[value]; ok && value != 0 {
+		return true
+	}
+	return false
+}
+
+func Check_S2C_Charge_E_Err(value S2C_Charge_E_Err) bool {
+	return Check_S2C_Charge_E_Err_I(int32(value))
+}
+
+func Each_S2C_Charge_E_Err(f func(S2C_Charge_E_Err) bool) {
+	for _, value := range S2C_Charge_E_Err_Slice {
+		if !f(S2C_Charge_E_Err(value)) {
+			break
+		}
+	}
+}
+
+func Each_S2C_Charge_E_Err_I(f func(int32) bool) {
+	for _, value := range S2C_Charge_E_Err_Slice {
+		if !f(value) {
+			break
+		}
+	}
+}
+
+// enum [S2C_Charge_E_Err] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -667,4 +713,128 @@ func Put_S2C_BuyItem(i interface{}) {
 }
 
 // message [S2C_BuyItem] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [C2S_Charge] begin
+func (m *C2S_Charge) ResetEx() {
+	m.Id = 0
+
+}
+
+func (m C2S_Charge) Clone() *C2S_Charge {
+	n, ok := g_C2S_Charge_Pool.Get().(*C2S_Charge)
+	if !ok || n == nil {
+		n = &C2S_Charge{}
+	}
+
+	n.Id = m.Id
+
+	return n
+}
+
+func Clone_C2S_Charge_Slice(dst []*C2S_Charge, src []*C2S_Charge) []*C2S_Charge {
+	for _, i := range dst {
+		Put_C2S_Charge(i)
+	}
+	dst = []*C2S_Charge{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_C2S_Charge() *C2S_Charge {
+	m := &C2S_Charge{}
+	return m
+}
+
+var g_C2S_Charge_Pool = sync.Pool{}
+
+func Get_C2S_Charge() *C2S_Charge {
+	m, ok := g_C2S_Charge_Pool.Get().(*C2S_Charge)
+	if !ok {
+		m = New_C2S_Charge()
+	} else {
+		if m == nil {
+			m = New_C2S_Charge()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_C2S_Charge(i interface{}) {
+	if m, ok := i.(*C2S_Charge); ok && m != nil {
+		g_C2S_Charge_Pool.Put(i)
+	}
+}
+
+// message [C2S_Charge] end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// message [S2C_Charge] begin
+func (m *S2C_Charge) ResetEx() {
+	m.Err = 0
+	m.Diamond = 0
+
+}
+
+func (m S2C_Charge) Clone() *S2C_Charge {
+	n, ok := g_S2C_Charge_Pool.Get().(*S2C_Charge)
+	if !ok || n == nil {
+		n = &S2C_Charge{}
+	}
+
+	n.Err = m.Err
+	n.Diamond = m.Diamond
+
+	return n
+}
+
+func Clone_S2C_Charge_Slice(dst []*S2C_Charge, src []*S2C_Charge) []*S2C_Charge {
+	for _, i := range dst {
+		Put_S2C_Charge(i)
+	}
+	dst = []*S2C_Charge{}
+
+	for _, i := range src {
+		dst = append(dst, i.Clone())
+	}
+
+	return dst
+}
+
+func New_S2C_Charge() *S2C_Charge {
+	m := &S2C_Charge{}
+	return m
+}
+
+var g_S2C_Charge_Pool = sync.Pool{}
+
+func Get_S2C_Charge() *S2C_Charge {
+	m, ok := g_S2C_Charge_Pool.Get().(*S2C_Charge)
+	if !ok {
+		m = New_S2C_Charge()
+	} else {
+		if m == nil {
+			m = New_S2C_Charge()
+		} else {
+			m.ResetEx()
+		}
+	}
+	return m
+}
+
+func Put_S2C_Charge(i interface{}) {
+	if m, ok := i.(*S2C_Charge); ok && m != nil {
+		g_S2C_Charge_Pool.Put(i)
+	}
+}
+
+// message [S2C_Charge] end
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -8,6 +8,20 @@ import (
 	"mlgs/src/msg"
 )
 
+type LoginReq struct {
+	MerchantCode string
+	Password     string
+	PlayerId     string
+	ProductCode  string
+}
+
+type LoginResp struct {
+	Message string `json:"Message, omitempty"`
+	UserId  string `json:"UserId, omitempty"`
+	Product string `json:"Product, omitempty"`
+	Code    int    `json:"Code, omitempty"`
+}
+
 func checkAccountExist(dbSession *mongodb.Session, uid string) (*model.Account, error) {
 	account, err := model.FindOne_Account(dbSession, bson.M{"UID": uid})
 	if err == nil {

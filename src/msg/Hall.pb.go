@@ -47,7 +47,7 @@ func (x C2S_Login_E_LoginType) String() string {
 	return proto.EnumName(C2S_Login_E_LoginType_name, int32(x))
 }
 func (C2S_Login_E_LoginType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_9716d23264b48c0a, []int{0, 0}
+	return fileDescriptor_Hall_3cb600d55f422fb9, []int{0, 0}
 }
 
 type S2C_Login_E_ErrReason int32
@@ -100,7 +100,7 @@ func (x S2C_Login_E_ErrReason) String() string {
 	return proto.EnumName(S2C_Login_E_ErrReason_name, int32(x))
 }
 func (S2C_Login_E_ErrReason) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_9716d23264b48c0a, []int{1, 0}
+	return fileDescriptor_Hall_3cb600d55f422fb9, []int{1, 0}
 }
 
 type S2C_DaySign_E_Err_DaySign int32
@@ -133,7 +133,7 @@ func (x S2C_DaySign_E_Err_DaySign) String() string {
 	return proto.EnumName(S2C_DaySign_E_Err_DaySign_name, int32(x))
 }
 func (S2C_DaySign_E_Err_DaySign) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_9716d23264b48c0a, []int{4, 0}
+	return fileDescriptor_Hall_3cb600d55f422fb9, []int{4, 0}
 }
 
 type S2C_SwitchHallRoleSex_E_Err int32
@@ -166,7 +166,7 @@ func (x S2C_SwitchHallRoleSex_E_Err) String() string {
 	return proto.EnumName(S2C_SwitchHallRoleSex_E_Err_name, int32(x))
 }
 func (S2C_SwitchHallRoleSex_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_9716d23264b48c0a, []int{6, 0}
+	return fileDescriptor_Hall_3cb600d55f422fb9, []int{6, 0}
 }
 
 // /登陆请求
@@ -180,7 +180,7 @@ type C2S_Login struct {
 	AvatarURL string `protobuf:"bytes,3,opt,name=AvatarURL,proto3" json:"AvatarURL,omitempty"`
 	// /性别
 	Sex string `protobuf:"bytes,4,opt,name=sex,proto3" json:"sex,omitempty"`
-	// 微信登陆传openid，游客登陆传空
+	// 微信登陆传openid，游客登陆传空,万博登陆用万博密码
 	Password string `protobuf:"bytes,5,opt,name=password,proto3" json:"password,omitempty"`
 	// /地理位置
 	Location  string                `protobuf:"bytes,6,opt,name=location,proto3" json:"location,omitempty"`
@@ -197,7 +197,7 @@ func (m *C2S_Login) Reset()         { *m = C2S_Login{} }
 func (m *C2S_Login) String() string { return proto.CompactTextString(m) }
 func (*C2S_Login) ProtoMessage()    {}
 func (*C2S_Login) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_9716d23264b48c0a, []int{0}
+	return fileDescriptor_Hall_3cb600d55f422fb9, []int{0}
 }
 func (m *C2S_Login) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -315,7 +315,7 @@ func (m *S2C_Login) Reset()         { *m = S2C_Login{} }
 func (m *S2C_Login) String() string { return proto.CompactTextString(m) }
 func (*S2C_Login) ProtoMessage()    {}
 func (*S2C_Login) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_9716d23264b48c0a, []int{1}
+	return fileDescriptor_Hall_3cb600d55f422fb9, []int{1}
 }
 func (m *S2C_Login) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -387,7 +387,7 @@ func (m *S2C_LoginInfo) Reset()         { *m = S2C_LoginInfo{} }
 func (m *S2C_LoginInfo) String() string { return proto.CompactTextString(m) }
 func (*S2C_LoginInfo) ProtoMessage()    {}
 func (*S2C_LoginInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_9716d23264b48c0a, []int{2}
+	return fileDescriptor_Hall_3cb600d55f422fb9, []int{2}
 }
 func (m *S2C_LoginInfo) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -497,7 +497,7 @@ func (m *C2S_DaySign) Reset()         { *m = C2S_DaySign{} }
 func (m *C2S_DaySign) String() string { return proto.CompactTextString(m) }
 func (*C2S_DaySign) ProtoMessage()    {}
 func (*C2S_DaySign) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_9716d23264b48c0a, []int{3}
+	return fileDescriptor_Hall_3cb600d55f422fb9, []int{3}
 }
 func (m *C2S_DaySign) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -545,7 +545,7 @@ func (m *S2C_DaySign) Reset()         { *m = S2C_DaySign{} }
 func (m *S2C_DaySign) String() string { return proto.CompactTextString(m) }
 func (*S2C_DaySign) ProtoMessage()    {}
 func (*S2C_DaySign) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_9716d23264b48c0a, []int{4}
+	return fileDescriptor_Hall_3cb600d55f422fb9, []int{4}
 }
 func (m *S2C_DaySign) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -599,7 +599,7 @@ func (m *C2S_SwitchHallRoleSex) Reset()         { *m = C2S_SwitchHallRoleSex{} }
 func (m *C2S_SwitchHallRoleSex) String() string { return proto.CompactTextString(m) }
 func (*C2S_SwitchHallRoleSex) ProtoMessage()    {}
 func (*C2S_SwitchHallRoleSex) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_9716d23264b48c0a, []int{5}
+	return fileDescriptor_Hall_3cb600d55f422fb9, []int{5}
 }
 func (m *C2S_SwitchHallRoleSex) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -644,7 +644,7 @@ func (m *S2C_SwitchHallRoleSex) Reset()         { *m = S2C_SwitchHallRoleSex{} }
 func (m *S2C_SwitchHallRoleSex) String() string { return proto.CompactTextString(m) }
 func (*S2C_SwitchHallRoleSex) ProtoMessage()    {}
 func (*S2C_SwitchHallRoleSex) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_9716d23264b48c0a, []int{6}
+	return fileDescriptor_Hall_3cb600d55f422fb9, []int{6}
 }
 func (m *S2C_SwitchHallRoleSex) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2289,9 +2289,9 @@ var (
 	ErrIntOverflowHall   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("Hall.proto", fileDescriptor_Hall_9716d23264b48c0a) }
+func init() { proto.RegisterFile("Hall.proto", fileDescriptor_Hall_3cb600d55f422fb9) }
 
-var fileDescriptor_Hall_9716d23264b48c0a = []byte{
+var fileDescriptor_Hall_3cb600d55f422fb9 = []byte{
 	// 778 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x54, 0x41, 0x6f, 0xdb, 0x36,
 	0x14, 0xb6, 0xa4, 0x58, 0x89, 0x9f, 0xd6, 0x82, 0xe5, 0x96, 0x56, 0xc8, 0x06, 0xcd, 0xd0, 0x29,

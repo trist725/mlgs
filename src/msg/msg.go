@@ -67,4 +67,6 @@ func init() {
 	Processor.Register(&C2S_SyncGameStatus{})
 	Processor.Register(&S2C_SyncGameStatus{})
 	Processor.Register(&S2C_UpdateMoney{})
+	Processor.Register(&C2S_Charge{})
+	Processor.Register(&S2C_Charge{})
 }

@@ -39,6 +39,8 @@ func init() {
 	regiserMsgHandle(&msg.C2S_GetNotices{}, handleGetNotices)
 
 	regiserMsgHandle(&msg.C2S_SyncGameStatus{}, handleSyncGameStatus)
+
+	regiserMsgHandle(&msg.C2S_Charge{}, handleCharge)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -873,4 +875,23 @@ func handleSyncGameStatus(args []interface{}) {
 		}
 		sender.WriteMsg(send)
 	}
+}
+
+func handleCharge(args []interface{}) {
+	//recv := args[0].(*msg.C2S_Charge)
+	sender := args[1].(gate.Agent)
+	if sender.UserData() == nil {
+		log.Debug("no session yet")
+		return
+	}
+	sid := sender.UserData().(uint64)
+	session := s.Mgr().GetSession(sid)
+	if session == nil {
+		log.Debug("handleCharge return for nil session")
+		return
+	}
+
+	//send := msg.Get_S2C_Charge()
+
+	defer session.Update()
 }

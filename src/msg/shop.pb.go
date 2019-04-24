@@ -45,7 +45,7 @@ func (x S2C_GetOwnDealerSkins_E_Err) String() string {
 	return proto.EnumName(S2C_GetOwnDealerSkins_E_Err_name, int32(x))
 }
 func (S2C_GetOwnDealerSkins_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_shop_e2648311c3e406a7, []int{3, 0}
+	return fileDescriptor_shop_4f29b027858ac939, []int{3, 0}
 }
 
 type S2C_UsingOwnDealerSkins_E_Err int32
@@ -77,7 +77,7 @@ func (x S2C_UsingOwnDealerSkins_E_Err) String() string {
 	return proto.EnumName(S2C_UsingOwnDealerSkins_E_Err_name, int32(x))
 }
 func (S2C_UsingOwnDealerSkins_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_shop_e2648311c3e406a7, []int{5, 0}
+	return fileDescriptor_shop_4f29b027858ac939, []int{5, 0}
 }
 
 type S2C_BuyItem_E_Err int32
@@ -113,7 +113,39 @@ func (x S2C_BuyItem_E_Err) String() string {
 	return proto.EnumName(S2C_BuyItem_E_Err_name, int32(x))
 }
 func (S2C_BuyItem_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_shop_e2648311c3e406a7, []int{7, 0}
+	return fileDescriptor_shop_4f29b027858ac939, []int{7, 0}
+}
+
+type S2C_Charge_E_Err int32
+
+const (
+	S2C_Charge_E_Err_ S2C_Charge_E_Err = 0
+	// /成功
+	S2C_Charge_E_Err_Succeed S2C_Charge_E_Err = 1
+	// /失败,钱不够
+	S2C_Charge_E_Err_Not_Enough_Money S2C_Charge_E_Err = 3
+	// /失败,未知
+	S2C_Charge_E_Err_UnKnown S2C_Charge_E_Err = 4
+)
+
+var S2C_Charge_E_Err_name = map[int32]string{
+	0: "E_Err_",
+	1: "E_Err_Succeed",
+	3: "E_Err_Not_Enough_Money",
+	4: "E_Err_UnKnown",
+}
+var S2C_Charge_E_Err_value = map[string]int32{
+	"E_Err_":                 0,
+	"E_Err_Succeed":          1,
+	"E_Err_Not_Enough_Money": 3,
+	"E_Err_UnKnown":          4,
+}
+
+func (x S2C_Charge_E_Err) String() string {
+	return proto.EnumName(S2C_Charge_E_Err_name, int32(x))
+}
+func (S2C_Charge_E_Err) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_shop_4f29b027858ac939, []int{9, 0}
 }
 
 // /获取拥有的道具
@@ -124,7 +156,7 @@ func (m *C2S_GetOwnItems) Reset()         { *m = C2S_GetOwnItems{} }
 func (m *C2S_GetOwnItems) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetOwnItems) ProtoMessage()    {}
 func (*C2S_GetOwnItems) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_e2648311c3e406a7, []int{0}
+	return fileDescriptor_shop_4f29b027858ac939, []int{0}
 }
 func (m *C2S_GetOwnItems) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -161,7 +193,7 @@ func (m *S2C_GetOwnItems) Reset()         { *m = S2C_GetOwnItems{} }
 func (m *S2C_GetOwnItems) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetOwnItems) ProtoMessage()    {}
 func (*S2C_GetOwnItems) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_e2648311c3e406a7, []int{1}
+	return fileDescriptor_shop_4f29b027858ac939, []int{1}
 }
 func (m *S2C_GetOwnItems) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -205,7 +237,7 @@ func (m *C2S_GetOwnDealerSkins) Reset()         { *m = C2S_GetOwnDealerSkins{} }
 func (m *C2S_GetOwnDealerSkins) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetOwnDealerSkins) ProtoMessage()    {}
 func (*C2S_GetOwnDealerSkins) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_e2648311c3e406a7, []int{2}
+	return fileDescriptor_shop_4f29b027858ac939, []int{2}
 }
 func (m *C2S_GetOwnDealerSkins) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -246,7 +278,7 @@ func (m *S2C_GetOwnDealerSkins) Reset()         { *m = S2C_GetOwnDealerSkins{} }
 func (m *S2C_GetOwnDealerSkins) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetOwnDealerSkins) ProtoMessage()    {}
 func (*S2C_GetOwnDealerSkins) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_e2648311c3e406a7, []int{3}
+	return fileDescriptor_shop_4f29b027858ac939, []int{3}
 }
 func (m *S2C_GetOwnDealerSkins) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -306,7 +338,7 @@ func (m *C2S_UsingOwnDealerSkins) Reset()         { *m = C2S_UsingOwnDealerSkins
 func (m *C2S_UsingOwnDealerSkins) String() string { return proto.CompactTextString(m) }
 func (*C2S_UsingOwnDealerSkins) ProtoMessage()    {}
 func (*C2S_UsingOwnDealerSkins) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_e2648311c3e406a7, []int{4}
+	return fileDescriptor_shop_4f29b027858ac939, []int{4}
 }
 func (m *C2S_UsingOwnDealerSkins) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -351,7 +383,7 @@ func (m *S2C_UsingOwnDealerSkins) Reset()         { *m = S2C_UsingOwnDealerSkins
 func (m *S2C_UsingOwnDealerSkins) String() string { return proto.CompactTextString(m) }
 func (*S2C_UsingOwnDealerSkins) ProtoMessage()    {}
 func (*S2C_UsingOwnDealerSkins) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_e2648311c3e406a7, []int{5}
+	return fileDescriptor_shop_4f29b027858ac939, []int{5}
 }
 func (m *S2C_UsingOwnDealerSkins) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -406,7 +438,7 @@ func (m *C2S_BuyItem) Reset()         { *m = C2S_BuyItem{} }
 func (m *C2S_BuyItem) String() string { return proto.CompactTextString(m) }
 func (*C2S_BuyItem) ProtoMessage()    {}
 func (*C2S_BuyItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_e2648311c3e406a7, []int{6}
+	return fileDescriptor_shop_4f29b027858ac939, []int{6}
 }
 func (m *C2S_BuyItem) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -459,7 +491,7 @@ func (m *S2C_BuyItem) Reset()         { *m = S2C_BuyItem{} }
 func (m *S2C_BuyItem) String() string { return proto.CompactTextString(m) }
 func (*S2C_BuyItem) ProtoMessage()    {}
 func (*S2C_BuyItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_e2648311c3e406a7, []int{7}
+	return fileDescriptor_shop_4f29b027858ac939, []int{7}
 }
 func (m *S2C_BuyItem) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -502,6 +534,104 @@ func (m *S2C_BuyItem) GetErr() S2C_BuyItem_E_Err {
 	return S2C_BuyItem_E_Err_
 }
 
+type C2S_Charge struct {
+	// /充值包在item表中的id
+	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
+}
+
+func (m *C2S_Charge) Reset()         { *m = C2S_Charge{} }
+func (m *C2S_Charge) String() string { return proto.CompactTextString(m) }
+func (*C2S_Charge) ProtoMessage()    {}
+func (*C2S_Charge) Descriptor() ([]byte, []int) {
+	return fileDescriptor_shop_4f29b027858ac939, []int{8}
+}
+func (m *C2S_Charge) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *C2S_Charge) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_C2S_Charge.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *C2S_Charge) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_Charge.Merge(dst, src)
+}
+func (m *C2S_Charge) XXX_Size() int {
+	return m.Size()
+}
+func (m *C2S_Charge) XXX_DiscardUnknown() {
+	xxx_messageInfo_C2S_Charge.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_C2S_Charge proto.InternalMessageInfo
+
+func (m *C2S_Charge) GetId() int64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+type S2C_Charge struct {
+	Err S2C_Charge_E_Err `protobuf:"varint,2,opt,name=Err,proto3,enum=msg.S2C_Charge_E_Err" json:"Err,omitempty"`
+	// /充值后的钻石数
+	Diamond int64 `protobuf:"varint,3,opt,name=Diamond,proto3" json:"Diamond,omitempty"`
+}
+
+func (m *S2C_Charge) Reset()         { *m = S2C_Charge{} }
+func (m *S2C_Charge) String() string { return proto.CompactTextString(m) }
+func (*S2C_Charge) ProtoMessage()    {}
+func (*S2C_Charge) Descriptor() ([]byte, []int) {
+	return fileDescriptor_shop_4f29b027858ac939, []int{9}
+}
+func (m *S2C_Charge) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *S2C_Charge) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_S2C_Charge.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *S2C_Charge) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_Charge.Merge(dst, src)
+}
+func (m *S2C_Charge) XXX_Size() int {
+	return m.Size()
+}
+func (m *S2C_Charge) XXX_DiscardUnknown() {
+	xxx_messageInfo_S2C_Charge.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_S2C_Charge proto.InternalMessageInfo
+
+func (m *S2C_Charge) GetErr() S2C_Charge_E_Err {
+	if m != nil {
+		return m.Err
+	}
+	return S2C_Charge_E_Err_
+}
+
+func (m *S2C_Charge) GetDiamond() int64 {
+	if m != nil {
+		return m.Diamond
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*C2S_GetOwnItems)(nil), "msg.C2S_GetOwnItems")
 	proto.RegisterType((*S2C_GetOwnItems)(nil), "msg.S2C_GetOwnItems")
@@ -511,9 +641,12 @@ func init() {
 	proto.RegisterType((*S2C_UsingOwnDealerSkins)(nil), "msg.S2C_UsingOwnDealerSkins")
 	proto.RegisterType((*C2S_BuyItem)(nil), "msg.C2S_BuyItem")
 	proto.RegisterType((*S2C_BuyItem)(nil), "msg.S2C_BuyItem")
+	proto.RegisterType((*C2S_Charge)(nil), "msg.C2S_Charge")
+	proto.RegisterType((*S2C_Charge)(nil), "msg.S2C_Charge")
 	proto.RegisterEnum("msg.S2C_GetOwnDealerSkins_E_Err", S2C_GetOwnDealerSkins_E_Err_name, S2C_GetOwnDealerSkins_E_Err_value)
 	proto.RegisterEnum("msg.S2C_UsingOwnDealerSkins_E_Err", S2C_UsingOwnDealerSkins_E_Err_name, S2C_UsingOwnDealerSkins_E_Err_value)
 	proto.RegisterEnum("msg.S2C_BuyItem_E_Err", S2C_BuyItem_E_Err_name, S2C_BuyItem_E_Err_value)
+	proto.RegisterEnum("msg.S2C_Charge_E_Err", S2C_Charge_E_Err_name, S2C_Charge_E_Err_value)
 }
 func (m *C2S_GetOwnItems) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
@@ -731,6 +864,57 @@ func (m *S2C_BuyItem) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
+func (m *C2S_Charge) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *C2S_Charge) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Id != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintShop(dAtA, i, uint64(m.Id))
+	}
+	return i, nil
+}
+
+func (m *S2C_Charge) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *S2C_Charge) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Err != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintShop(dAtA, i, uint64(m.Err))
+	}
+	if m.Diamond != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintShop(dAtA, i, uint64(m.Diamond))
+	}
+	return i, nil
+}
+
 func encodeVarintShop(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -847,6 +1031,33 @@ func (m *S2C_BuyItem) Size() (n int) {
 	}
 	if m.Err != 0 {
 		n += 1 + sovShop(uint64(m.Err))
+	}
+	return n
+}
+
+func (m *C2S_Charge) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Id != 0 {
+		n += 1 + sovShop(uint64(m.Id))
+	}
+	return n
+}
+
+func (m *S2C_Charge) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Err != 0 {
+		n += 1 + sovShop(uint64(m.Err))
+	}
+	if m.Diamond != 0 {
+		n += 1 + sovShop(uint64(m.Diamond))
 	}
 	return n
 }
@@ -1495,6 +1706,163 @@ func (m *S2C_BuyItem) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *C2S_Charge) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowShop
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: C2S_Charge: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: C2S_Charge: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowShop
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipShop(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthShop
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *S2C_Charge) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowShop
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: S2C_Charge: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: S2C_Charge: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Err", wireType)
+			}
+			m.Err = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowShop
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Err |= (S2C_Charge_E_Err(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Diamond", wireType)
+			}
+			m.Diamond = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowShop
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Diamond |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipShop(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthShop
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func skipShop(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1600,33 +1968,36 @@ var (
 	ErrIntOverflowShop   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("shop.proto", fileDescriptor_shop_e2648311c3e406a7) }
+func init() { proto.RegisterFile("shop.proto", fileDescriptor_shop_4f29b027858ac939) }
 
-var fileDescriptor_shop_e2648311c3e406a7 = []byte{
-	// 396 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x92, 0xcf, 0xae, 0xd2, 0x40,
-	0x18, 0xc5, 0x3b, 0x1d, 0xef, 0x4d, 0xee, 0x47, 0xe4, 0x96, 0x49, 0x80, 0x86, 0x45, 0x6d, 0x66,
-	0x55, 0x37, 0x35, 0xa9, 0x6e, 0x5c, 0x0a, 0x36, 0xda, 0x18, 0x30, 0x69, 0xc3, 0xba, 0x41, 0x3a,
-	0x29, 0x44, 0x3a, 0x25, 0xfd, 0x23, 0xe1, 0x2d, 0x7c, 0x0c, 0x57, 0x2e, 0x7d, 0x06, 0x97, 0x2c,
-	0x5d, 0x1a, 0x78, 0x11, 0x33, 0x1d, 0xa0, 0x8d, 0x70, 0x13, 0x76, 0xa7, 0xa7, 0xdf, 0x77, 0x7a,
-	0x7e, 0x9d, 0x01, 0xc8, 0x17, 0xe9, 0xda, 0x5e, 0x67, 0x69, 0x91, 0x12, 0x9c, 0xe4, 0xf1, 0x00,
-	0x96, 0x05, 0x4b, 0xa4, 0x41, 0x3b, 0xf0, 0x38, 0x72, 0x82, 0xf0, 0x03, 0x2b, 0x3e, 0x6f, 0xb8,
-	0x57, 0xb0, 0x24, 0xa7, 0x0e, 0x3c, 0x06, 0xce, 0xa8, 0x69, 0x91, 0x17, 0x70, 0x57, 0x09, 0x1d,
-	0x99, 0xd8, 0x6a, 0x39, 0x0f, 0x76, 0x92, 0xc7, 0xb6, 0x70, 0x7c, 0xe9, 0xd3, 0x3e, 0x74, 0xeb,
-	0x98, 0xf7, 0x6c, 0xb6, 0x62, 0x59, 0xf0, 0x75, 0xc9, 0x73, 0xfa, 0x03, 0x41, 0xb7, 0x4e, 0x6b,
-	0xbc, 0x21, 0x1a, 0x60, 0x2f, 0x92, 0x89, 0x0f, 0xbe, 0x90, 0xa4, 0x0d, 0xaa, 0x17, 0xe9, 0xaa,
-	0x89, 0x2c, 0xec, 0xab, 0x5e, 0x44, 0x1c, 0xc0, 0x6e, 0x96, 0xe9, 0xd8, 0x44, 0x56, 0xdb, 0x31,
-	0xab, 0x6f, 0x5e, 0x8d, 0xb2, 0xdd, 0xd0, 0xcd, 0x32, 0x5f, 0x0c, 0xd3, 0xb7, 0x70, 0x57, 0x3d,
-	0x11, 0x80, 0xfb, 0x4a, 0x84, 0x9a, 0x42, 0x3a, 0xf0, 0x5c, 0xea, 0xa0, 0x9c, 0xcf, 0x19, 0x8b,
-	0x34, 0x54, 0x5b, 0x53, 0xfe, 0x89, 0xa7, 0x1b, 0xae, 0xa9, 0xf4, 0x25, 0xf4, 0x05, 0xc3, 0x34,
-	0x5f, 0xf2, 0xf8, 0xbf, 0xae, 0xb2, 0x19, 0x3a, 0x35, 0xa3, 0x3f, 0x11, 0xf4, 0x45, 0x95, 0x1b,
-	0x66, 0xc9, 0x1b, 0x49, 0xa1, 0x56, 0x14, 0xf4, 0x4c, 0x71, 0x65, 0xb5, 0xc9, 0x31, 0xbe, 0x91,
-	0x83, 0x40, 0x5b, 0x5a, 0x93, 0xb4, 0x08, 0x3f, 0xce, 0xbe, 0x31, 0x4d, 0xbd, 0x64, 0xc3, 0xf4,
-	0x15, 0xb4, 0x04, 0xdb, 0xb0, 0xdc, 0x8a, 0xf3, 0xba, 0xe8, 0xa8, 0x01, 0x9e, 0x94, 0xc9, 0xf1,
-	0xd7, 0x0b, 0x49, 0x7f, 0x21, 0x68, 0x89, 0x9a, 0x4f, 0x6d, 0x58, 0x4d, 0xaa, 0xde, 0x99, 0xea,
-	0x38, 0xde, 0x24, 0x49, 0x6e, 0x24, 0xe9, 0x01, 0x91, 0xd6, 0xbb, 0x55, 0xc6, 0x66, 0xd1, 0xf6,
-	0x44, 0x33, 0x80, 0x5e, 0x4d, 0xe8, 0xf2, 0xb4, 0x8c, 0x17, 0xe1, 0x38, 0xe5, 0x6c, 0xab, 0xe1,
-	0x4b, 0xd2, 0x67, 0x43, 0xfd, 0xf7, 0xde, 0x40, 0xbb, 0xbd, 0x81, 0xfe, 0xee, 0x0d, 0xf4, 0xfd,
-	0x60, 0x28, 0xbb, 0x83, 0xa1, 0xfc, 0x39, 0x18, 0xca, 0x97, 0xfb, 0xea, 0xc6, 0xbf, 0xfe, 0x17,
-	0x00, 0x00, 0xff, 0xff, 0x23, 0x79, 0x43, 0xeb, 0x10, 0x03, 0x00, 0x00,
+var fileDescriptor_shop_4f29b027858ac939 = []byte{
+	// 448 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x93, 0xc1, 0x6e, 0xd3, 0x40,
+	0x10, 0x86, 0xb3, 0x5e, 0x5a, 0xd4, 0x89, 0x48, 0xdd, 0x95, 0x92, 0x58, 0x15, 0x32, 0xd1, 0x5e,
+	0x08, 0x97, 0x20, 0x19, 0x2e, 0x1c, 0x69, 0x6a, 0x81, 0x85, 0x5a, 0x24, 0x5b, 0x39, 0x5b, 0xa6,
+	0x5e, 0x39, 0x16, 0xf5, 0x6e, 0xb5, 0xb6, 0xa9, 0xf2, 0x16, 0x3c, 0x05, 0xe2, 0xc4, 0x91, 0x67,
+	0xe0, 0xd8, 0x23, 0x47, 0x94, 0xbc, 0x08, 0x5a, 0x6f, 0x12, 0x5b, 0xb8, 0x48, 0xee, 0xed, 0xdf,
+	0x7f, 0x66, 0xc7, 0xff, 0xe7, 0xb1, 0x01, 0xf2, 0xa5, 0xb8, 0x99, 0xdd, 0x48, 0x51, 0x08, 0x82,
+	0xb3, 0x3c, 0x39, 0x85, 0xb4, 0x60, 0x99, 0x36, 0xe8, 0x09, 0x1c, 0xcf, 0x9d, 0x20, 0x7c, 0xc7,
+	0x8a, 0x8f, 0xb7, 0xdc, 0x2b, 0x58, 0x96, 0x53, 0x07, 0x8e, 0x03, 0x67, 0xde, 0xb4, 0xc8, 0x33,
+	0x38, 0xa8, 0x84, 0x85, 0x26, 0x78, 0xda, 0x77, 0x8e, 0x66, 0x59, 0x9e, 0xcc, 0x94, 0xe3, 0x6b,
+	0x9f, 0x8e, 0x61, 0x58, 0x8f, 0x39, 0x67, 0xd1, 0x35, 0x93, 0xc1, 0xe7, 0x94, 0xe7, 0xf4, 0x3b,
+	0x82, 0x61, 0x3d, 0xad, 0x51, 0x21, 0x26, 0x60, 0x2f, 0xd6, 0x13, 0x8f, 0x7c, 0x25, 0xc9, 0x00,
+	0x0c, 0x2f, 0xb6, 0x8c, 0x09, 0x9a, 0x62, 0xdf, 0xf0, 0x62, 0xe2, 0x00, 0x76, 0xa5, 0xb4, 0xf0,
+	0x04, 0x4d, 0x07, 0xce, 0xa4, 0x7a, 0xe6, 0xbd, 0xa3, 0x66, 0x6e, 0xe8, 0x4a, 0xe9, 0xab, 0x66,
+	0xfa, 0x06, 0x0e, 0xaa, 0x13, 0x01, 0x38, 0xac, 0x44, 0x68, 0xf6, 0xc8, 0x09, 0x3c, 0xd1, 0x3a,
+	0x28, 0xaf, 0xae, 0x18, 0x8b, 0x4d, 0x54, 0x5b, 0x0b, 0xfe, 0x81, 0x8b, 0x5b, 0x6e, 0x1a, 0xf4,
+	0x05, 0x8c, 0x15, 0xc3, 0x22, 0x4f, 0x79, 0xf2, 0x4f, 0x56, 0x9d, 0x0c, 0xed, 0x92, 0xd1, 0x1f,
+	0x08, 0xc6, 0x2a, 0x4a, 0x87, 0x5e, 0xf2, 0x5a, 0x53, 0x18, 0x15, 0x05, 0xdd, 0x53, 0xdc, 0x73,
+	0xb5, 0xc9, 0x71, 0xd1, 0x91, 0x83, 0xc0, 0x40, 0x5b, 0x97, 0xa2, 0x08, 0xdf, 0x47, 0x5f, 0x98,
+	0x69, 0xb4, 0xd9, 0x30, 0x7d, 0x09, 0x7d, 0xc5, 0x76, 0x56, 0xae, 0xd4, 0xbe, 0x5a, 0x19, 0x4d,
+	0xc0, 0x97, 0x65, 0xb6, 0x7d, 0xf5, 0x4a, 0xd2, 0x9f, 0x08, 0xfa, 0x2a, 0xe6, 0xff, 0x6e, 0x4c,
+	0x9b, 0x54, 0xa3, 0x3d, 0xd5, 0xb6, 0xbd, 0x49, 0x92, 0x75, 0x24, 0x19, 0x01, 0xd1, 0xd6, 0xdb,
+	0x6b, 0xc9, 0xa2, 0x78, 0xb5, 0xa3, 0x39, 0x85, 0x51, 0x4d, 0xe8, 0x72, 0x51, 0x26, 0xcb, 0xf0,
+	0x42, 0x70, 0xb6, 0x32, 0x71, 0x9b, 0xf4, 0x11, 0x7d, 0x0a, 0xa0, 0x48, 0xe7, 0xcb, 0x48, 0x26,
+	0xac, 0xb5, 0xb8, 0x6f, 0x08, 0x40, 0xe5, 0xdc, 0x96, 0x9f, 0x37, 0x29, 0x86, 0x7b, 0x0a, 0x5d,
+	0x6d, 0x40, 0x10, 0x0b, 0x1e, 0x9f, 0xa7, 0x51, 0x26, 0x78, 0x5c, 0x7d, 0x8e, 0xd8, 0xdf, 0x1d,
+	0xe9, 0xa2, 0x23, 0xde, 0xc3, 0x30, 0xce, 0xac, 0x5f, 0x6b, 0x1b, 0xdd, 0xad, 0x6d, 0xf4, 0x67,
+	0x6d, 0xa3, 0xaf, 0x1b, 0xbb, 0x77, 0xb7, 0xb1, 0x7b, 0xbf, 0x37, 0x76, 0xef, 0xd3, 0x61, 0xf5,
+	0xe3, 0xbe, 0xfa, 0x1b, 0x00, 0x00, 0xff, 0xff, 0xb0, 0xf3, 0x00, 0xeb, 0xd7, 0x03, 0x00, 0x00,
 }

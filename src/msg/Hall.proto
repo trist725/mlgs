@@ -15,7 +15,7 @@ message C2S_Login{
     string AvatarURL = 3;
     ///性别
     string sex = 4;
-    //微信登陆传openid，游客登陆传空
+    //微信登陆传openid，游客登陆传空,万博登陆用万博密码
     string password=5;
     ///地理位置
     string location = 6;
