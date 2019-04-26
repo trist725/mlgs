@@ -1,9 +1,15 @@
 package internal
 
 import (
+	"encoding/base64"
+	"encoding/json"
+	"github.com/trist725/mgsu/util"
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
+	"gopkg.in/resty.v1"
+	"io/ioutil"
 	"mlgs/src/cache"
+	"mlgs/src/conf"
 	"mlgs/src/cost"
 	"mlgs/src/msg"
 	"mlgs/src/room"
@@ -878,7 +884,7 @@ func handleSyncGameStatus(args []interface{}) {
 }
 
 func handleCharge(args []interface{}) {
-	//recv := args[0].(*msg.C2S_Charge)
+	recv := args[0].(*msg.C2S_Charge)
 	sender := args[1].(gate.Agent)
 	if sender.UserData() == nil {
 		log.Debug("no session yet")
@@ -890,8 +896,82 @@ func handleCharge(args []interface{}) {
 		log.Debug("handleCharge return for nil session")
 		return
 	}
-
-	//send := msg.Get_S2C_Charge()
-
 	defer session.Update()
+	ud := session.UserData()
+	if ud == nil {
+		log.Error("[%s] userData in session:[%d] is nil", session.Sign(), session.ID())
+		return
+	}
+	send := msg.Get_S2C_Charge()
+	defer sender.WriteMsg(send)
+
+	itemSd := sd.ItemMgr.Get(recv.Id)
+	if itemSd == nil {
+		log.Error("fail to load item sd")
+		send.Err = msg.S2C_Charge_E_Err_UnKnown
+		return
+	}
+	if itemSd.Type != int32(sd.E_Item_Diamond_SupplyBag) {
+		log.Error("invalid item id")
+		send.Err = msg.S2C_Charge_E_Err_UnKnown
+		return
+	}
+
+	pubKey, err := ioutil.ReadFile("publicKey.keystore.txt")
+	if err != nil {
+		log.Error("read public key file error")
+		send.Err = msg.S2C_Charge_E_Err_UnKnown
+		return
+	}
+	mer, err := util.RsaPubEncrypt(pubKey, []byte(conf.Server.MerchantCode))
+	amount, err := util.RsaPubEncrypt(pubKey, []byte(strconv.Itoa(int(itemSd.BuyCost))))
+	tranId, err := util.RsaPubEncrypt(pubKey, []byte(recv.TranCode))
+	pc, err := util.RsaPubEncrypt(pubKey, []byte(conf.Server.ProductCode))
+	pid, err := util.RsaPubEncrypt(pubKey, []byte(recv.AccountId))
+
+	resp, err := resty.R().SetFormData(map[string]string{
+		"Amount":        base64.StdEncoding.EncodeToString(amount),
+		"MerchantCode":  base64.StdEncoding.EncodeToString(mer),
+		"TransactionId": base64.StdEncoding.EncodeToString(tranId),
+		"PlayerId":      base64.StdEncoding.EncodeToString(pid),
+		"ProductCode":   base64.StdEncoding.EncodeToString(pc),
+		"Token":         recv.Token,
+	}).Post(conf.Server.UnionPlatUrl + "App/Account/Cost")
+	var respCharge sd.ChargeResp
+	if err = json.Unmarshal(resp.Body(), &respCharge); err != nil {
+		log.Error("failed to unmarshal login resp")
+		send.Err = msg.S2C_Charge_E_Err_UnKnown
+		return
+	}
+
+	if 0 == respCharge.Code {
+		if _, _, err := ud.Gain(itemSd.ID, 1, false, nil); err != nil {
+			log.Error("[%s] gain diamond failed", session.Sign())
+			send.Err = msg.S2C_Charge_E_Err_UnKnown
+			return
+		}
+
+		diamond := ud.GetMoney(int32(itemSd.IncomeID))
+		if diamond == nil {
+			log.Error("[%s] get moeny failed", session.Sign())
+			send.Err = msg.S2C_Charge_E_Err_UnKnown
+			return
+		}
+		send.Diamond = diamond.Num
+		send.Err = msg.S2C_Charge_E_Err_Succeed
+		log.Debug("............%#v", send)
+	} else if 512 == respCharge.Code {
+		send.Err = msg.S2C_Charge_E_Err_TranCodeAlreadyExist
+		return
+	} else if 518 == respCharge.Code {
+		send.Err = msg.S2C_Charge_E_Err_Not_Enough_Money
+		return
+	} else if respCharge.Code >= 522 && respCharge.Code <= 525 {
+		send.Err = msg.S2C_Charge_E_Err_TokenInvalid
+		return
+	} else {
+		send.Err = msg.S2C_Charge_E_Err_UnKnown
+		return
+	}
+
 }

@@ -163,6 +163,8 @@ var S2C_Charge_E_Err_Slice = []int32{
 	1,
 	3,
 	4,
+	6,
+	5,
 }
 
 func S2C_Charge_E_Err_Len() int {
@@ -719,6 +721,9 @@ func Put_S2C_BuyItem(i interface{}) {
 // message [C2S_Charge] begin
 func (m *C2S_Charge) ResetEx() {
 	m.Id = 0
+	m.Token = ""
+	m.TranCode = ""
+	m.AccountId = ""
 
 }
 
@@ -729,6 +734,9 @@ func (m C2S_Charge) Clone() *C2S_Charge {
 	}
 
 	n.Id = m.Id
+	n.Token = m.Token
+	n.TranCode = m.TranCode
+	n.AccountId = m.AccountId
 
 	return n
 }

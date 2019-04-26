@@ -214,6 +214,7 @@ func (m *C2S_Login) ResetEx() {
 	m.BigVer = 0
 	m.SmallVer = 0
 	m.FixVer = 0
+	m.Token = ""
 
 }
 
@@ -234,6 +235,7 @@ func (m C2S_Login) Clone() *C2S_Login {
 	n.BigVer = m.BigVer
 	n.SmallVer = m.SmallVer
 	n.FixVer = m.FixVer
+	n.Token = m.Token
 
 	return n
 }
@@ -305,6 +307,7 @@ func init() {
 func (m *S2C_Login) ResetEx() {
 	m.Reason = 0
 	m.WanboRes = 0
+	m.Token = ""
 
 }
 
@@ -316,6 +319,7 @@ func (m S2C_Login) Clone() *S2C_Login {
 
 	n.Reason = m.Reason
 	n.WanboRes = m.WanboRes
+	n.Token = m.Token
 
 	return n
 }

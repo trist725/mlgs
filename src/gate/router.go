@@ -30,4 +30,5 @@ func init() {
 	msg.Processor.SetRouter(&msg.C2S_SwitchHallRoleSex{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_GetNotices{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_SyncGameStatus{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_Charge{}, game.ChanRPC)
 }

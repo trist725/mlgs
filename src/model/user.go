@@ -324,6 +324,14 @@ func (user *User) Gain(tid int64, num int64, notify bool, skeleton *module.Skele
 
 	case sd.E_Item_Coin_SupplyBag:
 	case sd.E_Item_Diamond_SupplyBag:
+		money := user.GetMoney(int32(itemSD.IncomeID))
+		if money == nil {
+			err = fmt.Errorf("get money failed")
+			return
+		}
+		gain := itemSD.Income * num
+		money.Num += gain
+		log.Debug("[%d-%s] gain money, subtype=[%v], num=[%d]", user.ID, user.NickName, itemSD.IncomeID, gain)
 	}
 
 	return

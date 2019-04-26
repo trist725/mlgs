@@ -37,6 +37,8 @@ type Account struct {
 	Password string `bson:"Password"`
 	/// 帐号状态 1=游客, 2=注册, 3=绑定 E_AccountState State = 6; / 密钥 string Token = 7; / 上次服务器ID int32 LastLoginServerID = 8; / 登录过服务器ID列表 repeated int32 LoginList = 9; / 渠道名 string ChannelName = 10; / 渠道帐号 string ChannelAccount = 11; / 封号标记,1为被封
 	Ban int32 `bson:"Ban"`
+	///游客/微信/万博
+	Type int32 `bson:"Type"`
 }
 
 func New_Account() *Account {
@@ -56,6 +58,7 @@ func (m *Account) Reset() {
 	m.Location = ""
 	m.Password = ""
 	m.Ban = 0
+	m.Type = 0
 
 }
 
@@ -71,6 +74,7 @@ func (m Account) Clone() *Account {
 	n.Location = m.Location
 	n.Password = m.Password
 	n.Ban = m.Ban
+	n.Type = m.Type
 
 	return n
 }

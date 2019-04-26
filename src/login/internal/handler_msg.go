@@ -1,11 +1,14 @@
 package internal
 
 import (
+	"encoding/base64"
 	"encoding/json"
+	"github.com/trist725/mgsu/util"
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
 	"gopkg.in/mgo.v2/bson"
 	"gopkg.in/resty.v1"
+	"io/ioutil"
 	"mlgs/src/conf"
 	"mlgs/src/game"
 	"mlgs/src/model"
@@ -52,15 +55,28 @@ func handleLoginAuth(args []interface{}) {
 	}
 
 	if recv.Logintype == msg.C2S_Login_E_LoginType_WanBo {
+		pubKey, err := ioutil.ReadFile("publicKey.keystore.txt")
+		if err != nil {
+			log.Error("read public key file error")
+			send.Reason = msg.S2C_Login_E_Err_Unknown
+			return
+		}
+
+		mer, err := util.RsaPubEncrypt(pubKey, []byte(conf.Server.MerchantCode))
+		pwd, err := util.RsaPubEncrypt(pubKey, []byte(recv.Password))
+		uid, err := util.RsaPubEncrypt(pubKey, []byte(recv.UID))
+		pc, err := util.RsaPubEncrypt(pubKey, []byte(conf.Server.ProductCode))
+
 		resp, err := resty.R().SetFormData(map[string]string{
-			"MerchantCode": conf.Server.MerchantCode,
-			"Password":     recv.Password,
-			"PlayerId":     recv.UID,
-			"ProductCode":  conf.Server.ProductCode,
+			"MerchantCode": base64.StdEncoding.EncodeToString(mer),
+			"Password":     base64.StdEncoding.EncodeToString(pwd),
+			"PlayerId":     base64.StdEncoding.EncodeToString(uid),
+			"ProductCode":  base64.StdEncoding.EncodeToString(pc),
+			"Token":        recv.Token,
 		}).Post(conf.Server.UnionPlatUrl + "Player/Login")
 		//SetBody(LoginReq{MerchantCode: conf.Server.MerchantCode, Password: recv.Password, PlayerId: recv.UID, ProductCode: conf.Server.ProductCode}).Post(conf.Server.UnionPlatUrl + "Player/Login")
 		if err != nil {
-			log.Debug("wanbo login failed")
+			log.Debug("wanbo login failed: %s", err)
 			send.Reason = msg.S2C_Login_E_Err_Unknown
 			return
 		}
@@ -72,6 +88,7 @@ func handleLoginAuth(args []interface{}) {
 			return
 		}
 		send.WanboRes = int32(respLogin.Code)
+		send.Token = respLogin.Token
 		if respLogin.Code == 0 {
 			send.Reason = msg.S2C_Login_E_Err_LoginSuccess
 		} else if respLogin.Code >= 501 && respLogin.Code <= 509 {

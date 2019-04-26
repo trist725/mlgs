@@ -8,7 +8,7 @@ import "item.proto";
 //@msg
 message C2S_Login{
     ///微信登陆时是微信uid,游客登陆时是手机唯一标识,万博登陆是playerid
-    string UID=1;
+    string UID = 1;
     ///用户昵称
     string NickName = 2;
     ///用户头像url
@@ -16,7 +16,7 @@ message C2S_Login{
     ///性别
     string sex = 4;
     //微信登陆传openid，游客登陆传空,万博登陆用万博密码
-    string password=5;
+    string password = 5;
     ///地理位置
     string location = 6;
     ///登陆类型
@@ -35,6 +35,8 @@ message C2S_Login{
     int32 BigVer = 9;
     int32 SmallVer = 10;
     int32 FixVer = 11;
+    ///万博登陆token,暂时7天有效期
+    string Token = 12;
 }
 
 ///登陆回复
@@ -63,6 +65,8 @@ message S2C_Login{
     E_ErrReason reason=1;
     ///万博响应码
     int32 WanboRes = 2;
+    ///万博登陆token,暂时7天有效期
+    string Token = 3;
 }
 
 ///登陆成功后下发信息

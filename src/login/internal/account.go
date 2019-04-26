@@ -13,6 +13,7 @@ type LoginReq struct {
 	Password     string
 	PlayerId     string
 	ProductCode  string
+	Token        string
 }
 
 type LoginResp struct {
@@ -20,6 +21,7 @@ type LoginResp struct {
 	UserId  string `json:"UserId, omitempty"`
 	Product string `json:"Product, omitempty"`
 	Code    int    `json:"Code, omitempty"`
+	Token   string
 }
 
 func checkAccountExist(dbSession *mongodb.Session, uid string) (*model.Account, error) {

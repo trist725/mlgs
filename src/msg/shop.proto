@@ -79,6 +79,12 @@ message S2C_BuyItem {
 message C2S_Charge {
     ///充值包在item表中的id
     int64 Id = 1;
+    ///登陆token
+    string Token = 2;
+    ///唯一交易流水号
+    string TranCode = 3;
+    ///万博账号id
+    string AccountId = 4;
 }
 
 message S2C_Charge {
@@ -90,6 +96,10 @@ message S2C_Charge {
         E_Err_Not_Enough_Money = 3;
         ///失败,未知
         E_Err_UnKnown = 4;
+        ///交易已存在
+        E_Err_TranCodeAlreadyExist = 6;
+        ///token无效
+        E_Err_TokenInvalid = 5;
     }
     E_Err Err = 2;
     ///充值后的钻石数
