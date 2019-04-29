@@ -1,0 +1,40 @@
+# github.com/gogo/protobuf v1.2.1
+github.com/gogo/protobuf/proto
+# github.com/golang/protobuf v1.3.1
+github.com/golang/protobuf/proto
+# github.com/gorilla/websocket v1.4.0
+github.com/gorilla/websocket
+# github.com/robfig/cron v0.0.0-20180505203441-b41be1df6967
+github.com/robfig/cron
+# github.com/tealeg/xlsx v1.0.3
+github.com/tealeg/xlsx
+# github.com/trist725/mgsu v0.0.0-20190426014452-a22843dc613c
+github.com/trist725/mgsu/util
+github.com/trist725/mgsu/network/protocol/protobuf/v2
+github.com/trist725/mgsu/network/protocol
+# github.com/trist725/myleaf v0.0.0-20180912090459-560d092705ea
+github.com/trist725/myleaf
+github.com/trist725/myleaf/conf
+github.com/trist725/myleaf/chanrpc
+github.com/trist725/myleaf/module
+github.com/trist725/myleaf/log
+github.com/trist725/myleaf/gate
+github.com/trist725/myleaf/db/mongodb
+github.com/trist725/myleaf/network/protobuf
+github.com/trist725/myleaf/network
+github.com/trist725/myleaf/timer
+github.com/trist725/myleaf/cluster
+github.com/trist725/myleaf/console
+github.com/trist725/myleaf/go
+# github.com/yireyun/go-queue v0.0.0-20180809062148-5e6897360dac
+github.com/yireyun/go-queue
+# golang.org/x/net v0.0.0-20190415214537-1da14a5a36f2
+golang.org/x/net/publicsuffix
+# gopkg.in/mgo.v2 v2.0.0-20180705113604-9856a29383ce
+gopkg.in/mgo.v2/bson
+gopkg.in/mgo.v2
+gopkg.in/mgo.v2/internal/json
+gopkg.in/mgo.v2/internal/sasl
+gopkg.in/mgo.v2/internal/scram
+# gopkg.in/resty.v1 v1.12.0
+gopkg.in/resty.v1

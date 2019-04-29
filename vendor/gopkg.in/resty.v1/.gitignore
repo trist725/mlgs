@@ -20,15 +20,9 @@ _cgo_export.*
 _testmain.go
 
 *.exe
-.idea
-*.log
-bin/gateway
-bin/game
-bin/login
-bin/robot
-bin/mlgs
-pkg
-# vendor
-.DS_Store
-# ~*.xlsx
-# xlsx
+*.test
+*.prof
+
+coverage.out
+coverage.txt
+go.sum
