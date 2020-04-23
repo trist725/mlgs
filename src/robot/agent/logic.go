@@ -3,7 +3,7 @@ package agent
 import (
 	"github.com/trist725/myleaf/network/protobuf"
 	"mlgs/src/msg"
-	"robot/robot"
+	"mlgs/src/robot/robot"
 )
 
 func (a *Agent) SendSome() {
