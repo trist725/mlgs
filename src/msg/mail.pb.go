@@ -3,11 +3,13 @@
 
 package msg
 
-import proto "github.com/gogo/protobuf/proto"
-import fmt "fmt"
-import math "math"
-
-import io "io"
+import (
+	fmt "fmt"
+	proto "github.com/gogo/protobuf/proto"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -18,17 +20,17 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type S2C_GetMailReward_E_Err int32
 
 const (
 	S2C_GetMailReward_E_Err_ S2C_GetMailReward_E_Err = 0
-	// /成功
+	///成功
 	S2C_GetMailReward_E_Err_Succeed S2C_GetMailReward_E_Err = 1
-	// /失败,已经领取过
+	///失败,已经领取过
 	S2C_GetMailReward_E_Err_Already_Receive S2C_GetMailReward_E_Err = 2
-	// /失败,其它
+	///失败,其它
 	S2C_GetMailReward_E_Err_UnKnown S2C_GetMailReward_E_Err = 3
 )
 
@@ -38,6 +40,7 @@ var S2C_GetMailReward_E_Err_name = map[int32]string{
 	2: "E_Err_Already_Receive",
 	3: "E_Err_UnKnown",
 }
+
 var S2C_GetMailReward_E_Err_value = map[string]int32{
 	"E_Err_":                0,
 	"E_Err_Succeed":         1,
@@ -48,18 +51,19 @@ var S2C_GetMailReward_E_Err_value = map[string]int32{
 func (x S2C_GetMailReward_E_Err) String() string {
 	return proto.EnumName(S2C_GetMailReward_E_Err_name, int32(x))
 }
+
 func (S2C_GetMailReward_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_mail_0b6648635ece5973, []int{4, 0}
+	return fileDescriptor_7cda5f053e74676b, []int{4, 0}
 }
 
 type Mail struct {
-	// /邮件编号
+	///邮件编号
 	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
-	// /奖励类型,对应item表id
+	///奖励类型,对应item表id
 	RewardType int64 `protobuf:"varint,2,opt,name=RewardType,proto3" json:"RewardType,omitempty"`
-	// /奖励数量
+	///奖励数量
 	RewardNum int64 `protobuf:"varint,3,opt,name=RewardNum,proto3" json:"RewardNum,omitempty"`
-	// /邮件内容
+	///邮件内容
 	Content string `protobuf:"bytes,4,opt,name=Content,proto3" json:"Content,omitempty"`
 }
 
@@ -67,7 +71,7 @@ func (m *Mail) Reset()         { *m = Mail{} }
 func (m *Mail) String() string { return proto.CompactTextString(m) }
 func (*Mail) ProtoMessage()    {}
 func (*Mail) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_0b6648635ece5973, []int{0}
+	return fileDescriptor_7cda5f053e74676b, []int{0}
 }
 func (m *Mail) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -77,15 +81,15 @@ func (m *Mail) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Mail.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *Mail) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Mail.Merge(dst, src)
+func (m *Mail) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Mail.Merge(m, src)
 }
 func (m *Mail) XXX_Size() int {
 	return m.Size()
@@ -124,7 +128,7 @@ func (m *Mail) GetContent() string {
 	return ""
 }
 
-// /获取未领取奖励的邮件列表
+///获取未领取奖励的邮件列表
 type C2S_GetMailList struct {
 }
 
@@ -132,7 +136,7 @@ func (m *C2S_GetMailList) Reset()         { *m = C2S_GetMailList{} }
 func (m *C2S_GetMailList) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetMailList) ProtoMessage()    {}
 func (*C2S_GetMailList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_0b6648635ece5973, []int{1}
+	return fileDescriptor_7cda5f053e74676b, []int{1}
 }
 func (m *C2S_GetMailList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -142,15 +146,15 @@ func (m *C2S_GetMailList) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return xxx_messageInfo_C2S_GetMailList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_GetMailList) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_GetMailList.Merge(dst, src)
+func (m *C2S_GetMailList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_GetMailList.Merge(m, src)
 }
 func (m *C2S_GetMailList) XXX_Size() int {
 	return m.Size()
@@ -162,15 +166,15 @@ func (m *C2S_GetMailList) XXX_DiscardUnknown() {
 var xxx_messageInfo_C2S_GetMailList proto.InternalMessageInfo
 
 type S2C_GetMailList struct {
-	// /大佬读不了int64数组,改成string数组
-	Mails []*Mail `protobuf:"bytes,1,rep,name=Mails" json:"Mails,omitempty"`
+	///大佬读不了int64数组,改成string数组
+	Mails []*Mail `protobuf:"bytes,1,rep,name=Mails,proto3" json:"Mails,omitempty"`
 }
 
 func (m *S2C_GetMailList) Reset()         { *m = S2C_GetMailList{} }
 func (m *S2C_GetMailList) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetMailList) ProtoMessage()    {}
 func (*S2C_GetMailList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_0b6648635ece5973, []int{2}
+	return fileDescriptor_7cda5f053e74676b, []int{2}
 }
 func (m *S2C_GetMailList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -180,15 +184,15 @@ func (m *S2C_GetMailList) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return xxx_messageInfo_S2C_GetMailList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_GetMailList) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_GetMailList.Merge(dst, src)
+func (m *S2C_GetMailList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_GetMailList.Merge(m, src)
 }
 func (m *S2C_GetMailList) XXX_Size() int {
 	return m.Size()
@@ -206,9 +210,9 @@ func (m *S2C_GetMailList) GetMails() []*Mail {
 	return nil
 }
 
-// /领取mail中的奖励
+///领取mail中的奖励
 type C2S_GetMailReward struct {
-	// /要领取奖励的邮件Id
+	///要领取奖励的邮件Id
 	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
 }
 
@@ -216,7 +220,7 @@ func (m *C2S_GetMailReward) Reset()         { *m = C2S_GetMailReward{} }
 func (m *C2S_GetMailReward) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetMailReward) ProtoMessage()    {}
 func (*C2S_GetMailReward) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_0b6648635ece5973, []int{3}
+	return fileDescriptor_7cda5f053e74676b, []int{3}
 }
 func (m *C2S_GetMailReward) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -226,15 +230,15 @@ func (m *C2S_GetMailReward) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return xxx_messageInfo_C2S_GetMailReward.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_GetMailReward) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_GetMailReward.Merge(dst, src)
+func (m *C2S_GetMailReward) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_GetMailReward.Merge(m, src)
 }
 func (m *C2S_GetMailReward) XXX_Size() int {
 	return m.Size()
@@ -261,7 +265,7 @@ func (m *S2C_GetMailReward) Reset()         { *m = S2C_GetMailReward{} }
 func (m *S2C_GetMailReward) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetMailReward) ProtoMessage()    {}
 func (*S2C_GetMailReward) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_0b6648635ece5973, []int{4}
+	return fileDescriptor_7cda5f053e74676b, []int{4}
 }
 func (m *S2C_GetMailReward) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -271,15 +275,15 @@ func (m *S2C_GetMailReward) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return xxx_messageInfo_S2C_GetMailReward.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_GetMailReward) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_GetMailReward.Merge(dst, src)
+func (m *S2C_GetMailReward) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_GetMailReward.Merge(m, src)
 }
 func (m *S2C_GetMailReward) XXX_Size() int {
 	return m.Size()
@@ -304,7 +308,7 @@ func (m *S2C_GetMailReward) GetErr() S2C_GetMailReward_E_Err {
 	return S2C_GetMailReward_E_Err_
 }
 
-// /一键领取
+///一键领取
 type C2S_GetAllMailReward struct {
 }
 
@@ -312,7 +316,7 @@ func (m *C2S_GetAllMailReward) Reset()         { *m = C2S_GetAllMailReward{} }
 func (m *C2S_GetAllMailReward) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetAllMailReward) ProtoMessage()    {}
 func (*C2S_GetAllMailReward) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_0b6648635ece5973, []int{5}
+	return fileDescriptor_7cda5f053e74676b, []int{5}
 }
 func (m *C2S_GetAllMailReward) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -322,15 +326,15 @@ func (m *C2S_GetAllMailReward) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_C2S_GetAllMailReward.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_GetAllMailReward) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_GetAllMailReward.Merge(dst, src)
+func (m *C2S_GetAllMailReward) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_GetAllMailReward.Merge(m, src)
 }
 func (m *C2S_GetAllMailReward) XXX_Size() int {
 	return m.Size()
@@ -342,15 +346,15 @@ func (m *C2S_GetAllMailReward) XXX_DiscardUnknown() {
 var xxx_messageInfo_C2S_GetAllMailReward proto.InternalMessageInfo
 
 type S2C_GetAllMailReward struct {
-	// /领取成功的id
-	Ids []string `protobuf:"bytes,1,rep,name=Ids" json:"Ids,omitempty"`
+	///领取成功的id
+	Ids []string `protobuf:"bytes,1,rep,name=Ids,proto3" json:"Ids,omitempty"`
 }
 
 func (m *S2C_GetAllMailReward) Reset()         { *m = S2C_GetAllMailReward{} }
 func (m *S2C_GetAllMailReward) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetAllMailReward) ProtoMessage()    {}
 func (*S2C_GetAllMailReward) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mail_0b6648635ece5973, []int{6}
+	return fileDescriptor_7cda5f053e74676b, []int{6}
 }
 func (m *S2C_GetAllMailReward) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -360,15 +364,15 @@ func (m *S2C_GetAllMailReward) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return xxx_messageInfo_S2C_GetAllMailReward.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_GetAllMailReward) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_GetAllMailReward.Merge(dst, src)
+func (m *S2C_GetAllMailReward) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_GetAllMailReward.Merge(m, src)
 }
 func (m *S2C_GetAllMailReward) XXX_Size() int {
 	return m.Size()
@@ -387,6 +391,7 @@ func (m *S2C_GetAllMailReward) GetIds() []string {
 }
 
 func init() {
+	proto.RegisterEnum("msg.S2C_GetMailReward_E_Err", S2C_GetMailReward_E_Err_name, S2C_GetMailReward_E_Err_value)
 	proto.RegisterType((*Mail)(nil), "msg.Mail")
 	proto.RegisterType((*C2S_GetMailList)(nil), "msg.C2S_GetMailList")
 	proto.RegisterType((*S2C_GetMailList)(nil), "msg.S2C_GetMailList")
@@ -394,12 +399,39 @@ func init() {
 	proto.RegisterType((*S2C_GetMailReward)(nil), "msg.S2C_GetMailReward")
 	proto.RegisterType((*C2S_GetAllMailReward)(nil), "msg.C2S_GetAllMailReward")
 	proto.RegisterType((*S2C_GetAllMailReward)(nil), "msg.S2C_GetAllMailReward")
-	proto.RegisterEnum("msg.S2C_GetMailReward_E_Err", S2C_GetMailReward_E_Err_name, S2C_GetMailReward_E_Err_value)
 }
+
+func init() { proto.RegisterFile("mail.proto", fileDescriptor_7cda5f053e74676b) }
+
+var fileDescriptor_7cda5f053e74676b = []byte{
+	// 334 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0x91, 0xcd, 0x4e, 0xc2, 0x40,
+	0x14, 0x85, 0x3b, 0x2d, 0x60, 0x7a, 0x8d, 0xd0, 0x4e, 0xd0, 0x8c, 0x09, 0x19, 0xc9, 0xb8, 0xe9,
+	0xaa, 0x8b, 0xfa, 0x04, 0x48, 0x88, 0x21, 0xfe, 0x2c, 0x06, 0x5c, 0x37, 0x95, 0x4e, 0x48, 0x93,
+	0xfe, 0x90, 0x69, 0x91, 0xf0, 0x16, 0xbe, 0x86, 0x6f, 0xe2, 0x92, 0xa5, 0x4b, 0x03, 0x2f, 0x62,
+	0x3a, 0x45, 0x29, 0xba, 0x3b, 0xf7, 0x9b, 0x7b, 0xef, 0x99, 0x33, 0x03, 0x90, 0x04, 0x51, 0xec,
+	0x2e, 0x64, 0x56, 0x64, 0xd8, 0x48, 0xf2, 0x39, 0x4b, 0xa1, 0xf1, 0x18, 0x44, 0x31, 0x6e, 0x83,
+	0x3e, 0x0e, 0x09, 0xea, 0x23, 0xc7, 0xe0, 0xfa, 0x38, 0xc4, 0x14, 0x80, 0x8b, 0x55, 0x20, 0xc3,
+	0xe9, 0x7a, 0x21, 0x88, 0xae, 0x78, 0x8d, 0xe0, 0x1e, 0x98, 0x55, 0xf5, 0xb4, 0x4c, 0x88, 0xa1,
+	0x8e, 0x0f, 0x00, 0x13, 0x38, 0x19, 0x66, 0x69, 0x21, 0xd2, 0x82, 0x34, 0xfa, 0xc8, 0x31, 0xf9,
+	0x4f, 0xc9, 0x6c, 0xe8, 0x0c, 0xbd, 0x89, 0x7f, 0x27, 0x8a, 0xd2, 0xf6, 0x21, 0xca, 0x0b, 0xe6,
+	0x41, 0x67, 0xe2, 0x0d, 0xeb, 0x08, 0x5f, 0x41, 0xb3, 0xd4, 0x39, 0x41, 0x7d, 0xc3, 0x39, 0xf5,
+	0x4c, 0x37, 0xc9, 0xe7, 0x6e, 0x49, 0x78, 0xc5, 0xd9, 0x35, 0xd8, 0xb5, 0x35, 0x95, 0xf1, 0xdf,
+	0x0c, 0xec, 0x1d, 0x81, 0x5d, 0xdb, 0x7c, 0xd4, 0xa5, 0xff, 0x26, 0x75, 0xc1, 0x18, 0x49, 0xa9,
+	0xc6, 0xda, 0x5e, 0x4f, 0x39, 0xfd, 0x1b, 0x72, 0x47, 0xfe, 0x48, 0x4a, 0x5e, 0x36, 0xb2, 0x29,
+	0x34, 0x55, 0x85, 0x01, 0x5a, 0x4a, 0xf8, 0x96, 0x86, 0x6d, 0x38, 0xab, 0xf4, 0x64, 0x39, 0x9b,
+	0x09, 0x11, 0x5a, 0x08, 0x5f, 0xc2, 0x79, 0x85, 0x06, 0xb1, 0x14, 0x41, 0xb8, 0xf6, 0xb9, 0x98,
+	0x89, 0xe8, 0x55, 0x58, 0xfa, 0xa1, 0xfb, 0x39, 0xbd, 0x4f, 0xb3, 0x55, 0x6a, 0x19, 0xec, 0x02,
+	0xba, 0xfb, 0x40, 0x83, 0x38, 0x3e, 0x18, 0x33, 0x07, 0xba, 0xfb, 0xdb, 0x1c, 0x71, 0x6c, 0x81,
+	0x31, 0x0e, 0xab, 0xf7, 0x31, 0x79, 0x29, 0x6f, 0xc9, 0xc7, 0x96, 0xa2, 0xcd, 0x96, 0xa2, 0xaf,
+	0x2d, 0x45, 0x6f, 0x3b, 0xaa, 0x6d, 0x76, 0x54, 0xfb, 0xdc, 0x51, 0xed, 0xa5, 0xa5, 0xfe, 0xfb,
+	0xe6, 0x3b, 0x00, 0x00, 0xff, 0xff, 0x9b, 0x62, 0x32, 0xfa, 0xfd, 0x01, 0x00, 0x00,
+}
+
 func (m *Mail) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -407,38 +439,44 @@ func (m *Mail) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Mail) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Mail) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Id != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintMail(dAtA, i, uint64(m.Id))
-	}
-	if m.RewardType != 0 {
-		dAtA[i] = 0x10
-		i++
-		i = encodeVarintMail(dAtA, i, uint64(m.RewardType))
+	if len(m.Content) > 0 {
+		i -= len(m.Content)
+		copy(dAtA[i:], m.Content)
+		i = encodeVarintMail(dAtA, i, uint64(len(m.Content)))
+		i--
+		dAtA[i] = 0x22
 	}
 	if m.RewardNum != 0 {
-		dAtA[i] = 0x18
-		i++
 		i = encodeVarintMail(dAtA, i, uint64(m.RewardNum))
+		i--
+		dAtA[i] = 0x18
 	}
-	if len(m.Content) > 0 {
-		dAtA[i] = 0x22
-		i++
-		i = encodeVarintMail(dAtA, i, uint64(len(m.Content)))
-		i += copy(dAtA[i:], m.Content)
+	if m.RewardType != 0 {
+		i = encodeVarintMail(dAtA, i, uint64(m.RewardType))
+		i--
+		dAtA[i] = 0x10
 	}
-	return i, nil
+	if m.Id != 0 {
+		i = encodeVarintMail(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *C2S_GetMailList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -446,17 +484,22 @@ func (m *C2S_GetMailList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_GetMailList) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_GetMailList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_GetMailList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -464,29 +507,36 @@ func (m *S2C_GetMailList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_GetMailList) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_GetMailList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Mails) > 0 {
-		for _, msg := range m.Mails {
-			dAtA[i] = 0xa
-			i++
-			i = encodeVarintMail(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+		for iNdEx := len(m.Mails) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Mails[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintMail(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0xa
 		}
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *C2S_GetMailReward) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -494,22 +544,27 @@ func (m *C2S_GetMailReward) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_GetMailReward) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_GetMailReward) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if m.Id != 0 {
-		dAtA[i] = 0x8
-		i++
 		i = encodeVarintMail(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_GetMailReward) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -517,27 +572,32 @@ func (m *S2C_GetMailReward) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_GetMailReward) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_GetMailReward) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Err != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintMail(dAtA, i, uint64(m.Err))
-	}
 	if m.Id != 0 {
-		dAtA[i] = 0x10
-		i++
 		i = encodeVarintMail(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x10
 	}
-	return i, nil
+	if m.Err != 0 {
+		i = encodeVarintMail(dAtA, i, uint64(m.Err))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *C2S_GetAllMailReward) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -545,17 +605,22 @@ func (m *C2S_GetAllMailReward) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_GetAllMailReward) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_GetAllMailReward) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_GetAllMailReward) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -563,36 +628,37 @@ func (m *S2C_GetAllMailReward) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_GetAllMailReward) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_GetAllMailReward) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Ids) > 0 {
-		for _, s := range m.Ids {
+		for iNdEx := len(m.Ids) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Ids[iNdEx])
+			copy(dAtA[i:], m.Ids[iNdEx])
+			i = encodeVarintMail(dAtA, i, uint64(len(m.Ids[iNdEx])))
+			i--
 			dAtA[i] = 0xa
-			i++
-			l = len(s)
-			for l >= 1<<7 {
-				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
-				l >>= 7
-				i++
-			}
-			dAtA[i] = uint8(l)
-			i++
-			i += copy(dAtA[i:], s)
 		}
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintMail(dAtA []byte, offset int, v uint64) int {
+	offset -= sovMail(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func (m *Mail) Size() (n int) {
 	if m == nil {
@@ -692,14 +758,7 @@ func (m *S2C_GetAllMailReward) Size() (n int) {
 }
 
 func sovMail(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozMail(x uint64) (n int) {
 	return sovMail(uint64((x << 1) ^ uint64((int64(x) >> 63))))
@@ -719,7 +778,7 @@ func (m *Mail) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -747,7 +806,7 @@ func (m *Mail) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -766,7 +825,7 @@ func (m *Mail) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.RewardType |= (int64(b) & 0x7F) << shift
+				m.RewardType |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -785,7 +844,7 @@ func (m *Mail) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.RewardNum |= (int64(b) & 0x7F) << shift
+				m.RewardNum |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -804,7 +863,7 @@ func (m *Mail) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -814,6 +873,9 @@ func (m *Mail) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthMail
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthMail
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -826,6 +888,9 @@ func (m *Mail) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthMail
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthMail
 			}
 			if (iNdEx + skippy) > l {
@@ -855,7 +920,7 @@ func (m *C2S_GetMailList) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -876,6 +941,9 @@ func (m *C2S_GetMailList) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthMail
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthMail
 			}
 			if (iNdEx + skippy) > l {
@@ -905,7 +973,7 @@ func (m *S2C_GetMailList) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -933,7 +1001,7 @@ func (m *S2C_GetMailList) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -942,6 +1010,9 @@ func (m *S2C_GetMailList) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthMail
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthMail
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -957,6 +1028,9 @@ func (m *S2C_GetMailList) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthMail
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthMail
 			}
 			if (iNdEx + skippy) > l {
@@ -986,7 +1060,7 @@ func (m *C2S_GetMailReward) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1014,7 +1088,7 @@ func (m *C2S_GetMailReward) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1026,6 +1100,9 @@ func (m *C2S_GetMailReward) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthMail
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthMail
 			}
 			if (iNdEx + skippy) > l {
@@ -1055,7 +1132,7 @@ func (m *S2C_GetMailReward) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1083,7 +1160,7 @@ func (m *S2C_GetMailReward) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Err |= (S2C_GetMailReward_E_Err(b) & 0x7F) << shift
+				m.Err |= S2C_GetMailReward_E_Err(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1102,7 +1179,7 @@ func (m *S2C_GetMailReward) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1114,6 +1191,9 @@ func (m *S2C_GetMailReward) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthMail
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthMail
 			}
 			if (iNdEx + skippy) > l {
@@ -1143,7 +1223,7 @@ func (m *C2S_GetAllMailReward) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1164,6 +1244,9 @@ func (m *C2S_GetAllMailReward) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthMail
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthMail
 			}
 			if (iNdEx + skippy) > l {
@@ -1193,7 +1276,7 @@ func (m *S2C_GetAllMailReward) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1221,7 +1304,7 @@ func (m *S2C_GetAllMailReward) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1231,6 +1314,9 @@ func (m *S2C_GetAllMailReward) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthMail
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthMail
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1243,6 +1329,9 @@ func (m *S2C_GetAllMailReward) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthMail
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthMail
 			}
 			if (iNdEx + skippy) > l {
@@ -1260,6 +1349,7 @@ func (m *S2C_GetAllMailReward) Unmarshal(dAtA []byte) error {
 func skipMail(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
+	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -1291,10 +1381,8 @@ func skipMail(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			return iNdEx, nil
 		case 1:
 			iNdEx += 8
-			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -1311,81 +1399,34 @@ func skipMail(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			iNdEx += length
 			if length < 0 {
 				return 0, ErrInvalidLengthMail
 			}
-			return iNdEx, nil
+			iNdEx += length
 		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowMail
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipMail(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-			}
-			return iNdEx, nil
+			depth++
 		case 4:
-			return iNdEx, nil
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupMail
+			}
+			depth--
 		case 5:
 			iNdEx += 4
-			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthMail
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
 	}
-	panic("unreachable")
+	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrInvalidLengthMail = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowMail   = fmt.Errorf("proto: integer overflow")
+	ErrInvalidLengthMail        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowMail          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupMail = fmt.Errorf("proto: unexpected end of group")
 )
-
-func init() { proto.RegisterFile("mail.proto", fileDescriptor_mail_0b6648635ece5973) }
-
-var fileDescriptor_mail_0b6648635ece5973 = []byte{
-	// 337 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0x91, 0xcd, 0x4e, 0xfa, 0x40,
-	0x14, 0xc5, 0x3b, 0x2d, 0xf0, 0x4f, 0xef, 0x3f, 0x42, 0x3b, 0x41, 0x33, 0x26, 0x64, 0x24, 0xe3,
-	0xa6, 0xab, 0x2e, 0xea, 0x13, 0x20, 0x21, 0x86, 0xf8, 0xb1, 0x18, 0x70, 0xdd, 0x54, 0x3a, 0x21,
-	0x4d, 0xfa, 0x41, 0xa6, 0x45, 0xc2, 0x5b, 0xf8, 0x1a, 0xbe, 0x89, 0x4b, 0x96, 0x2e, 0x0d, 0xbc,
-	0x88, 0xe9, 0xb4, 0x4a, 0xd5, 0xdd, 0xb9, 0xbf, 0x7b, 0x72, 0xee, 0xbd, 0x33, 0x00, 0x49, 0x10,
-	0xc5, 0xee, 0x4a, 0x66, 0x45, 0x86, 0x8d, 0x24, 0x5f, 0xb2, 0x14, 0x5a, 0xf7, 0x41, 0x14, 0xe3,
-	0x2e, 0xe8, 0xd3, 0x90, 0xa0, 0x21, 0x72, 0x0c, 0xae, 0x4f, 0x43, 0x4c, 0x01, 0xb8, 0xd8, 0x04,
-	0x32, 0x9c, 0x6f, 0x57, 0x82, 0xe8, 0x8a, 0x37, 0x08, 0x1e, 0x80, 0x59, 0x55, 0x0f, 0xeb, 0x84,
-	0x18, 0xaa, 0x7d, 0x04, 0x98, 0xc0, 0xbf, 0x71, 0x96, 0x16, 0x22, 0x2d, 0x48, 0x6b, 0x88, 0x1c,
-	0x93, 0x7f, 0x95, 0xcc, 0x86, 0xde, 0xd8, 0x9b, 0xf9, 0x37, 0xa2, 0x28, 0xc7, 0xde, 0x45, 0x79,
-	0xc1, 0x3c, 0xe8, 0xcd, 0xbc, 0x71, 0x13, 0xe1, 0x0b, 0x68, 0x97, 0x3a, 0x27, 0x68, 0x68, 0x38,
-	0xff, 0x3d, 0xd3, 0x4d, 0xf2, 0xa5, 0x5b, 0x12, 0x5e, 0x71, 0x76, 0x09, 0x76, 0x23, 0xa6, 0x1a,
-	0xfc, 0xfb, 0x06, 0xf6, 0x8a, 0xc0, 0x6e, 0x24, 0xd7, 0x2e, 0x17, 0x8c, 0x89, 0x94, 0xca, 0xd6,
-	0xf5, 0x06, 0x2a, 0xf9, 0x8f, 0xc9, 0x9d, 0xf8, 0x13, 0x29, 0x79, 0x69, 0xac, 0x53, 0xf5, 0xef,
-	0xd4, 0x39, 0xb4, 0x55, 0x17, 0x03, 0x74, 0x94, 0xf0, 0x2d, 0x0d, 0xdb, 0x70, 0x52, 0xe9, 0xd9,
-	0x7a, 0xb1, 0x10, 0x22, 0xb4, 0x10, 0x3e, 0x87, 0xd3, 0x0a, 0x8d, 0x62, 0x29, 0x82, 0x70, 0xeb,
-	0x73, 0xb1, 0x10, 0xd1, 0xb3, 0xb0, 0xf4, 0xa3, 0xfb, 0x31, 0xbd, 0x4d, 0xb3, 0x4d, 0x6a, 0x19,
-	0xec, 0x0c, 0xfa, 0xf5, 0x41, 0xa3, 0x38, 0x3e, 0x2e, 0xc2, 0x1c, 0xe8, 0xd7, 0xdb, 0xfd, 0xe0,
-	0xd8, 0x02, 0x63, 0x1a, 0x56, 0xef, 0x63, 0xf2, 0x52, 0x5e, 0x93, 0xb7, 0x3d, 0x45, 0xbb, 0x3d,
-	0x45, 0x1f, 0x7b, 0x8a, 0x5e, 0x0e, 0x54, 0xdb, 0x1d, 0xa8, 0xf6, 0x7e, 0xa0, 0xda, 0x53, 0x47,
-	0xfd, 0xf7, 0xd5, 0x67, 0x00, 0x00, 0x00, 0xff, 0xff, 0x82, 0xef, 0x0d, 0x12, 0xfd, 0x01, 0x00,
-	0x00,
-}

@@ -3,11 +3,13 @@
 
 package msg
 
-import proto "github.com/gogo/protobuf/proto"
-import fmt "fmt"
-import math "math"
-
-import io "io"
+import (
+	fmt "fmt"
+	proto "github.com/gogo/protobuf/proto"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -18,12 +20,12 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Achievement struct {
-	// /在成就表中的id
+	///在成就表中的id
 	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
-	// /成就表中的类型
+	///成就表中的类型
 	Type int32 `protobuf:"varint,2,opt,name=Type,proto3" json:"Type,omitempty"`
 }
 
@@ -31,7 +33,7 @@ func (m *Achievement) Reset()         { *m = Achievement{} }
 func (m *Achievement) String() string { return proto.CompactTextString(m) }
 func (*Achievement) ProtoMessage()    {}
 func (*Achievement) Descriptor() ([]byte, []int) {
-	return fileDescriptor_achievement_ee23d8cb7327fbcf, []int{0}
+	return fileDescriptor_db793eeb74aaeebb, []int{0}
 }
 func (m *Achievement) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -41,15 +43,15 @@ func (m *Achievement) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_Achievement.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *Achievement) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Achievement.Merge(dst, src)
+func (m *Achievement) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Achievement.Merge(m, src)
 }
 func (m *Achievement) XXX_Size() int {
 	return m.Size()
@@ -74,7 +76,7 @@ func (m *Achievement) GetType() int32 {
 	return 0
 }
 
-// /获取已完成的成就
+///获取已完成的成就
 type C2S_GetCompletedAchievements struct {
 }
 
@@ -82,7 +84,7 @@ func (m *C2S_GetCompletedAchievements) Reset()         { *m = C2S_GetCompletedAc
 func (m *C2S_GetCompletedAchievements) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetCompletedAchievements) ProtoMessage()    {}
 func (*C2S_GetCompletedAchievements) Descriptor() ([]byte, []int) {
-	return fileDescriptor_achievement_ee23d8cb7327fbcf, []int{1}
+	return fileDescriptor_db793eeb74aaeebb, []int{1}
 }
 func (m *C2S_GetCompletedAchievements) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -92,15 +94,15 @@ func (m *C2S_GetCompletedAchievements) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_C2S_GetCompletedAchievements.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_GetCompletedAchievements) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_GetCompletedAchievements.Merge(dst, src)
+func (m *C2S_GetCompletedAchievements) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_GetCompletedAchievements.Merge(m, src)
 }
 func (m *C2S_GetCompletedAchievements) XXX_Size() int {
 	return m.Size()
@@ -112,14 +114,14 @@ func (m *C2S_GetCompletedAchievements) XXX_DiscardUnknown() {
 var xxx_messageInfo_C2S_GetCompletedAchievements proto.InternalMessageInfo
 
 type S2C_GetCompletedAchievements struct {
-	Achievements []*Achievement `protobuf:"bytes,1,rep,name=Achievements" json:"Achievements,omitempty"`
+	Achievements []*Achievement `protobuf:"bytes,1,rep,name=Achievements,proto3" json:"Achievements,omitempty"`
 }
 
 func (m *S2C_GetCompletedAchievements) Reset()         { *m = S2C_GetCompletedAchievements{} }
 func (m *S2C_GetCompletedAchievements) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetCompletedAchievements) ProtoMessage()    {}
 func (*S2C_GetCompletedAchievements) Descriptor() ([]byte, []int) {
-	return fileDescriptor_achievement_ee23d8cb7327fbcf, []int{2}
+	return fileDescriptor_db793eeb74aaeebb, []int{2}
 }
 func (m *S2C_GetCompletedAchievements) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -129,15 +131,15 @@ func (m *S2C_GetCompletedAchievements) XXX_Marshal(b []byte, deterministic bool)
 		return xxx_messageInfo_S2C_GetCompletedAchievements.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_GetCompletedAchievements) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_GetCompletedAchievements.Merge(dst, src)
+func (m *S2C_GetCompletedAchievements) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_GetCompletedAchievements.Merge(m, src)
 }
 func (m *S2C_GetCompletedAchievements) XXX_Size() int {
 	return m.Size()
@@ -160,10 +162,29 @@ func init() {
 	proto.RegisterType((*C2S_GetCompletedAchievements)(nil), "msg.C2S_GetCompletedAchievements")
 	proto.RegisterType((*S2C_GetCompletedAchievements)(nil), "msg.S2C_GetCompletedAchievements")
 }
+
+func init() { proto.RegisterFile("achievement.proto", fileDescriptor_db793eeb74aaeebb) }
+
+var fileDescriptor_db793eeb74aaeebb = []byte{
+	// 177 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4c, 0x4c, 0xce, 0xc8,
+	0x4c, 0x2d, 0x4b, 0xcd, 0x4d, 0xcd, 0x2b, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0xce,
+	0x2d, 0x4e, 0x57, 0x32, 0xe4, 0xe2, 0x76, 0x44, 0xc8, 0x08, 0xf1, 0x71, 0x31, 0x79, 0xa6, 0x48,
+	0x30, 0x2a, 0x30, 0x6a, 0x30, 0x07, 0x31, 0x79, 0xa6, 0x08, 0x09, 0x71, 0xb1, 0x84, 0x54, 0x16,
+	0xa4, 0x4a, 0x30, 0x29, 0x30, 0x6a, 0xb0, 0x06, 0x81, 0xd9, 0x4a, 0x72, 0x5c, 0x32, 0xce, 0x46,
+	0xc1, 0xf1, 0xee, 0xa9, 0x25, 0xce, 0xf9, 0xb9, 0x05, 0x39, 0xa9, 0x25, 0xa9, 0x29, 0x48, 0x46,
+	0x14, 0x2b, 0x85, 0x70, 0xc9, 0x04, 0x1b, 0x39, 0xe3, 0x94, 0x17, 0x32, 0xe1, 0xe2, 0x41, 0xe6,
+	0x4b, 0x30, 0x2a, 0x30, 0x6b, 0x70, 0x1b, 0x09, 0xe8, 0xe5, 0x16, 0xa7, 0xeb, 0x21, 0x49, 0x04,
+	0xa1, 0xa8, 0x72, 0x92, 0x38, 0xf1, 0x48, 0x8e, 0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4,
+	0x18, 0x27, 0x3c, 0x96, 0x63, 0xb8, 0xf0, 0x58, 0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x24, 0x36,
+	0xb0, 0x77, 0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x4f, 0x92, 0x18, 0xb8, 0xe3, 0x00, 0x00,
+	0x00,
+}
+
 func (m *Achievement) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -171,27 +192,32 @@ func (m *Achievement) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Achievement) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Achievement) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Id != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintAchievement(dAtA, i, uint64(m.Id))
-	}
 	if m.Type != 0 {
-		dAtA[i] = 0x10
-		i++
 		i = encodeVarintAchievement(dAtA, i, uint64(m.Type))
+		i--
+		dAtA[i] = 0x10
 	}
-	return i, nil
+	if m.Id != 0 {
+		i = encodeVarintAchievement(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *C2S_GetCompletedAchievements) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -199,17 +225,22 @@ func (m *C2S_GetCompletedAchievements) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_GetCompletedAchievements) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_GetCompletedAchievements) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_GetCompletedAchievements) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -217,33 +248,42 @@ func (m *S2C_GetCompletedAchievements) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_GetCompletedAchievements) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_GetCompletedAchievements) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Achievements) > 0 {
-		for _, msg := range m.Achievements {
-			dAtA[i] = 0xa
-			i++
-			i = encodeVarintAchievement(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+		for iNdEx := len(m.Achievements) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Achievements[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintAchievement(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0xa
 		}
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintAchievement(dAtA []byte, offset int, v uint64) int {
+	offset -= sovAchievement(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func (m *Achievement) Size() (n int) {
 	if m == nil {
@@ -285,14 +325,7 @@ func (m *S2C_GetCompletedAchievements) Size() (n int) {
 }
 
 func sovAchievement(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozAchievement(x uint64) (n int) {
 	return sovAchievement(uint64((x << 1) ^ uint64((int64(x) >> 63))))
@@ -312,7 +345,7 @@ func (m *Achievement) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -340,7 +373,7 @@ func (m *Achievement) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -359,7 +392,7 @@ func (m *Achievement) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Type |= (int32(b) & 0x7F) << shift
+				m.Type |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -371,6 +404,9 @@ func (m *Achievement) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthAchievement
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthAchievement
 			}
 			if (iNdEx + skippy) > l {
@@ -400,7 +436,7 @@ func (m *C2S_GetCompletedAchievements) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -421,6 +457,9 @@ func (m *C2S_GetCompletedAchievements) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthAchievement
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthAchievement
 			}
 			if (iNdEx + skippy) > l {
@@ -450,7 +489,7 @@ func (m *S2C_GetCompletedAchievements) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -478,7 +517,7 @@ func (m *S2C_GetCompletedAchievements) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -487,6 +526,9 @@ func (m *S2C_GetCompletedAchievements) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthAchievement
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAchievement
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -504,6 +546,9 @@ func (m *S2C_GetCompletedAchievements) Unmarshal(dAtA []byte) error {
 			if skippy < 0 {
 				return ErrInvalidLengthAchievement
 			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAchievement
+			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -519,6 +564,7 @@ func (m *S2C_GetCompletedAchievements) Unmarshal(dAtA []byte) error {
 func skipAchievement(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
+	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -550,10 +596,8 @@ func skipAchievement(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			return iNdEx, nil
 		case 1:
 			iNdEx += 8
-			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -570,71 +614,34 @@ func skipAchievement(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			iNdEx += length
 			if length < 0 {
 				return 0, ErrInvalidLengthAchievement
 			}
-			return iNdEx, nil
+			iNdEx += length
 		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowAchievement
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipAchievement(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-			}
-			return iNdEx, nil
+			depth++
 		case 4:
-			return iNdEx, nil
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupAchievement
+			}
+			depth--
 		case 5:
 			iNdEx += 4
-			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthAchievement
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
 	}
-	panic("unreachable")
+	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrInvalidLengthAchievement = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowAchievement   = fmt.Errorf("proto: integer overflow")
+	ErrInvalidLengthAchievement        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowAchievement          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupAchievement = fmt.Errorf("proto: unexpected end of group")
 )
-
-func init() { proto.RegisterFile("achievement.proto", fileDescriptor_achievement_ee23d8cb7327fbcf) }
-
-var fileDescriptor_achievement_ee23d8cb7327fbcf = []byte{
-	// 177 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4c, 0x4c, 0xce, 0xc8,
-	0x4c, 0x2d, 0x4b, 0xcd, 0x4d, 0xcd, 0x2b, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0xce,
-	0x2d, 0x4e, 0x57, 0x32, 0xe4, 0xe2, 0x76, 0x44, 0xc8, 0x08, 0xf1, 0x71, 0x31, 0x79, 0xa6, 0x48,
-	0x30, 0x2a, 0x30, 0x6a, 0x30, 0x07, 0x31, 0x79, 0xa6, 0x08, 0x09, 0x71, 0xb1, 0x84, 0x54, 0x16,
-	0xa4, 0x4a, 0x30, 0x29, 0x30, 0x6a, 0xb0, 0x06, 0x81, 0xd9, 0x4a, 0x72, 0x5c, 0x32, 0xce, 0x46,
-	0xc1, 0xf1, 0xee, 0xa9, 0x25, 0xce, 0xf9, 0xb9, 0x05, 0x39, 0xa9, 0x25, 0xa9, 0x29, 0x48, 0x46,
-	0x14, 0x2b, 0x85, 0x70, 0xc9, 0x04, 0x1b, 0x39, 0xe3, 0x94, 0x17, 0x32, 0xe1, 0xe2, 0x41, 0xe6,
-	0x4b, 0x30, 0x2a, 0x30, 0x6b, 0x70, 0x1b, 0x09, 0xe8, 0xe5, 0x16, 0xa7, 0xeb, 0x21, 0x49, 0x04,
-	0xa1, 0xa8, 0x72, 0x92, 0x38, 0xf1, 0x48, 0x8e, 0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4,
-	0x18, 0x27, 0x3c, 0x96, 0x63, 0xb8, 0xf0, 0x58, 0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x24, 0x36,
-	0xb0, 0x77, 0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x4f, 0x92, 0x18, 0xb8, 0xe3, 0x00, 0x00,
-	0x00,
-}

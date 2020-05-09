@@ -3,11 +3,13 @@
 
 package msg
 
-import proto "github.com/gogo/protobuf/proto"
-import fmt "fmt"
-import math "math"
-
-import io "io"
+import (
+	fmt "fmt"
+	proto "github.com/gogo/protobuf/proto"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -18,19 +20,19 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type S2C_GetQuestReward_E_Err int32
 
 const (
 	S2C_GetQuestReward_E_Err_ S2C_GetQuestReward_E_Err = 0
-	// /成功
+	///成功
 	S2C_GetQuestReward_E_Err_Success S2C_GetQuestReward_E_Err = 1
-	// /失败,已领取过
+	///失败,已领取过
 	S2C_GetQuestReward_E_Err_Received S2C_GetQuestReward_E_Err = 2
-	// /失败,任务未完成
+	///失败,任务未完成
 	S2C_GetQuestReward_E_Err_Not_Completed S2C_GetQuestReward_E_Err = 3
-	// /失败
+	///失败
 	S2C_GetQuestReward_E_Err_UnKnown S2C_GetQuestReward_E_Err = 4
 )
 
@@ -41,6 +43,7 @@ var S2C_GetQuestReward_E_Err_name = map[int32]string{
 	3: "E_Err_Not_Completed",
 	4: "E_Err_UnKnown",
 }
+
 var S2C_GetQuestReward_E_Err_value = map[string]int32{
 	"E_Err_":              0,
 	"E_Err_Success":       1,
@@ -52,16 +55,17 @@ var S2C_GetQuestReward_E_Err_value = map[string]int32{
 func (x S2C_GetQuestReward_E_Err) String() string {
 	return proto.EnumName(S2C_GetQuestReward_E_Err_name, int32(x))
 }
+
 func (S2C_GetQuestReward_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_quest_ef55780e53d25f6d, []int{4, 0}
+	return fileDescriptor_b2f2806ca967ee2b, []int{4, 0}
 }
 
 type Quest struct {
-	// /在任务表中的id
+	///在任务表中的id
 	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
-	// /完成进度
+	///完成进度
 	Progress int64 `protobuf:"varint,2,opt,name=Progress,proto3" json:"Progress,omitempty"`
-	// /是否已领取奖励
+	///是否已领取奖励
 	Received bool `protobuf:"varint,3,opt,name=Received,proto3" json:"Received,omitempty"`
 }
 
@@ -69,7 +73,7 @@ func (m *Quest) Reset()         { *m = Quest{} }
 func (m *Quest) String() string { return proto.CompactTextString(m) }
 func (*Quest) ProtoMessage()    {}
 func (*Quest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_quest_ef55780e53d25f6d, []int{0}
+	return fileDescriptor_b2f2806ca967ee2b, []int{0}
 }
 func (m *Quest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -79,15 +83,15 @@ func (m *Quest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Quest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *Quest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Quest.Merge(dst, src)
+func (m *Quest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Quest.Merge(m, src)
 }
 func (m *Quest) XXX_Size() int {
 	return m.Size()
@@ -119,7 +123,7 @@ func (m *Quest) GetReceived() bool {
 	return false
 }
 
-// /获取所有任务
+///获取所有任务
 type C2S_GetAllQuests struct {
 }
 
@@ -127,7 +131,7 @@ func (m *C2S_GetAllQuests) Reset()         { *m = C2S_GetAllQuests{} }
 func (m *C2S_GetAllQuests) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetAllQuests) ProtoMessage()    {}
 func (*C2S_GetAllQuests) Descriptor() ([]byte, []int) {
-	return fileDescriptor_quest_ef55780e53d25f6d, []int{1}
+	return fileDescriptor_b2f2806ca967ee2b, []int{1}
 }
 func (m *C2S_GetAllQuests) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -137,15 +141,15 @@ func (m *C2S_GetAllQuests) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return xxx_messageInfo_C2S_GetAllQuests.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_GetAllQuests) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_GetAllQuests.Merge(dst, src)
+func (m *C2S_GetAllQuests) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_GetAllQuests.Merge(m, src)
 }
 func (m *C2S_GetAllQuests) XXX_Size() int {
 	return m.Size()
@@ -157,14 +161,14 @@ func (m *C2S_GetAllQuests) XXX_DiscardUnknown() {
 var xxx_messageInfo_C2S_GetAllQuests proto.InternalMessageInfo
 
 type S2C_GetAllQuests struct {
-	Quests []*Quest `protobuf:"bytes,1,rep,name=Quests" json:"Quests,omitempty"`
+	Quests []*Quest `protobuf:"bytes,1,rep,name=Quests,proto3" json:"Quests,omitempty"`
 }
 
 func (m *S2C_GetAllQuests) Reset()         { *m = S2C_GetAllQuests{} }
 func (m *S2C_GetAllQuests) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetAllQuests) ProtoMessage()    {}
 func (*S2C_GetAllQuests) Descriptor() ([]byte, []int) {
-	return fileDescriptor_quest_ef55780e53d25f6d, []int{2}
+	return fileDescriptor_b2f2806ca967ee2b, []int{2}
 }
 func (m *S2C_GetAllQuests) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -174,15 +178,15 @@ func (m *S2C_GetAllQuests) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return xxx_messageInfo_S2C_GetAllQuests.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_GetAllQuests) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_GetAllQuests.Merge(dst, src)
+func (m *S2C_GetAllQuests) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_GetAllQuests.Merge(m, src)
 }
 func (m *S2C_GetAllQuests) XXX_Size() int {
 	return m.Size()
@@ -200,11 +204,11 @@ func (m *S2C_GetAllQuests) GetQuests() []*Quest {
 	return nil
 }
 
-// /领取任务奖励
+///领取任务奖励
 type C2S_GetQuestReward struct {
-	// /要领取的任务Id
+	///要领取的任务Id
 	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
-	// /大佬要加的标记
+	///大佬要加的标记
 	CltPath string `protobuf:"bytes,2,opt,name=CltPath,proto3" json:"CltPath,omitempty"`
 }
 
@@ -212,7 +216,7 @@ func (m *C2S_GetQuestReward) Reset()         { *m = C2S_GetQuestReward{} }
 func (m *C2S_GetQuestReward) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetQuestReward) ProtoMessage()    {}
 func (*C2S_GetQuestReward) Descriptor() ([]byte, []int) {
-	return fileDescriptor_quest_ef55780e53d25f6d, []int{3}
+	return fileDescriptor_b2f2806ca967ee2b, []int{3}
 }
 func (m *C2S_GetQuestReward) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -222,15 +226,15 @@ func (m *C2S_GetQuestReward) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_C2S_GetQuestReward.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_GetQuestReward) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_GetQuestReward.Merge(dst, src)
+func (m *C2S_GetQuestReward) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_GetQuestReward.Merge(m, src)
 }
 func (m *C2S_GetQuestReward) XXX_Size() int {
 	return m.Size()
@@ -257,9 +261,9 @@ func (m *C2S_GetQuestReward) GetCltPath() string {
 
 type S2C_GetQuestReward struct {
 	Err S2C_GetQuestReward_E_Err `protobuf:"varint,1,opt,name=Err,proto3,enum=msg.S2C_GetQuestReward_E_Err" json:"Err,omitempty"`
-	// /任务id
+	///任务id
 	Id int64 `protobuf:"varint,2,opt,name=Id,proto3" json:"Id,omitempty"`
-	// /大佬要加的标记
+	///大佬要加的标记
 	CltPath string `protobuf:"bytes,3,opt,name=CltPath,proto3" json:"CltPath,omitempty"`
 }
 
@@ -267,7 +271,7 @@ func (m *S2C_GetQuestReward) Reset()         { *m = S2C_GetQuestReward{} }
 func (m *S2C_GetQuestReward) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetQuestReward) ProtoMessage()    {}
 func (*S2C_GetQuestReward) Descriptor() ([]byte, []int) {
-	return fileDescriptor_quest_ef55780e53d25f6d, []int{4}
+	return fileDescriptor_b2f2806ca967ee2b, []int{4}
 }
 func (m *S2C_GetQuestReward) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -277,15 +281,15 @@ func (m *S2C_GetQuestReward) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_S2C_GetQuestReward.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_GetQuestReward) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_GetQuestReward.Merge(dst, src)
+func (m *S2C_GetQuestReward) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_GetQuestReward.Merge(m, src)
 }
 func (m *S2C_GetQuestReward) XXX_Size() int {
 	return m.Size()
@@ -318,17 +322,44 @@ func (m *S2C_GetQuestReward) GetCltPath() string {
 }
 
 func init() {
+	proto.RegisterEnum("msg.S2C_GetQuestReward_E_Err", S2C_GetQuestReward_E_Err_name, S2C_GetQuestReward_E_Err_value)
 	proto.RegisterType((*Quest)(nil), "msg.Quest")
 	proto.RegisterType((*C2S_GetAllQuests)(nil), "msg.C2S_GetAllQuests")
 	proto.RegisterType((*S2C_GetAllQuests)(nil), "msg.S2C_GetAllQuests")
 	proto.RegisterType((*C2S_GetQuestReward)(nil), "msg.C2S_GetQuestReward")
 	proto.RegisterType((*S2C_GetQuestReward)(nil), "msg.S2C_GetQuestReward")
-	proto.RegisterEnum("msg.S2C_GetQuestReward_E_Err", S2C_GetQuestReward_E_Err_name, S2C_GetQuestReward_E_Err_value)
 }
+
+func init() { proto.RegisterFile("quest.proto", fileDescriptor_b2f2806ca967ee2b) }
+
+var fileDescriptor_b2f2806ca967ee2b = []byte{
+	// 319 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x91, 0xc1, 0x4a, 0xc3, 0x40,
+	0x10, 0x86, 0xb3, 0x59, 0x5b, 0xeb, 0x14, 0xcb, 0x3a, 0x1e, 0x0c, 0x82, 0xa1, 0xe4, 0xd4, 0x53,
+	0x84, 0x08, 0x1e, 0x05, 0x0d, 0x45, 0x8a, 0xa0, 0x75, 0x8b, 0xe7, 0x50, 0x9b, 0xb5, 0x0a, 0x69,
+	0xb7, 0xee, 0x6e, 0xed, 0x6b, 0xf8, 0x58, 0x1e, 0x7b, 0xd3, 0xa3, 0xb4, 0x2f, 0x22, 0xd9, 0xa4,
+	0xd5, 0x52, 0x6f, 0xf3, 0x7f, 0x33, 0xf3, 0xff, 0xc3, 0x2e, 0xd4, 0x5f, 0xa7, 0x42, 0x9b, 0x70,
+	0xa2, 0xa4, 0x91, 0x48, 0x47, 0x7a, 0x18, 0xdc, 0x41, 0xe5, 0x3e, 0x67, 0xd8, 0x00, 0xb7, 0x93,
+	0x7a, 0xa4, 0x49, 0x5a, 0x94, 0xbb, 0x9d, 0x14, 0x8f, 0xa1, 0xd6, 0x55, 0x72, 0xa8, 0x84, 0xd6,
+	0x9e, 0x6b, 0xe9, 0x5a, 0xe7, 0x3d, 0x2e, 0x06, 0xe2, 0xe5, 0x4d, 0xa4, 0x1e, 0x6d, 0x92, 0x56,
+	0x8d, 0xaf, 0x75, 0x80, 0xc0, 0xe2, 0xa8, 0x97, 0x5c, 0x0b, 0x73, 0x99, 0x65, 0xd6, 0x5a, 0x07,
+	0xe7, 0xc0, 0x7a, 0x51, 0xbc, 0xc1, 0x30, 0x80, 0x6a, 0x51, 0x79, 0xa4, 0x49, 0x5b, 0xf5, 0x08,
+	0xc2, 0x91, 0x1e, 0x86, 0x16, 0xf1, 0xb2, 0x13, 0x5c, 0x00, 0x96, 0x5e, 0x05, 0x17, 0xb3, 0xbe,
+	0x4a, 0xb7, 0x2e, 0xf5, 0x60, 0x37, 0xce, 0x4c, 0xb7, 0x6f, 0x9e, 0xed, 0xa1, 0x7b, 0x7c, 0x25,
+	0x83, 0x4f, 0x02, 0x58, 0x06, 0xff, 0x35, 0x38, 0x05, 0xda, 0x56, 0xca, 0x3a, 0x34, 0xa2, 0x13,
+	0x9b, 0xbb, 0x3d, 0x15, 0xb6, 0x93, 0xb6, 0x52, 0x3c, 0x9f, 0x2c, 0x13, 0xdd, 0xff, 0x12, 0xe9,
+	0x66, 0xe2, 0x13, 0x54, 0xec, 0x1e, 0x02, 0x54, 0x6d, 0x91, 0x30, 0x07, 0x0f, 0x60, 0xbf, 0xa8,
+	0x7b, 0xd3, 0xc1, 0x40, 0x68, 0xcd, 0x08, 0x22, 0x34, 0x0a, 0xb4, 0x7a, 0x37, 0xe6, 0xe2, 0x11,
+	0x1c, 0x16, 0xec, 0x56, 0x9a, 0x24, 0x96, 0xa3, 0x49, 0x26, 0x8c, 0x48, 0x19, 0xfd, 0xdd, 0x7f,
+	0x18, 0xdf, 0x8c, 0xe5, 0x6c, 0xcc, 0x76, 0xae, 0xbc, 0x8f, 0x85, 0x4f, 0xe6, 0x0b, 0x9f, 0x7c,
+	0x2f, 0x7c, 0xf2, 0xbe, 0xf4, 0x9d, 0xf9, 0xd2, 0x77, 0xbe, 0x96, 0xbe, 0xf3, 0x58, 0xb5, 0x9f,
+	0x7b, 0xf6, 0x13, 0x00, 0x00, 0xff, 0xff, 0x3f, 0x0b, 0xa0, 0xaa, 0xeb, 0x01, 0x00, 0x00,
+}
+
 func (m *Quest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -336,37 +367,42 @@ func (m *Quest) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Quest) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Quest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Id != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintQuest(dAtA, i, uint64(m.Id))
-	}
-	if m.Progress != 0 {
-		dAtA[i] = 0x10
-		i++
-		i = encodeVarintQuest(dAtA, i, uint64(m.Progress))
-	}
 	if m.Received {
-		dAtA[i] = 0x18
-		i++
+		i--
 		if m.Received {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
+		i--
+		dAtA[i] = 0x18
 	}
-	return i, nil
+	if m.Progress != 0 {
+		i = encodeVarintQuest(dAtA, i, uint64(m.Progress))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.Id != 0 {
+		i = encodeVarintQuest(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *C2S_GetAllQuests) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -374,17 +410,22 @@ func (m *C2S_GetAllQuests) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_GetAllQuests) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_GetAllQuests) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_GetAllQuests) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -392,29 +433,36 @@ func (m *S2C_GetAllQuests) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_GetAllQuests) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_GetAllQuests) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Quests) > 0 {
-		for _, msg := range m.Quests {
-			dAtA[i] = 0xa
-			i++
-			i = encodeVarintQuest(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+		for iNdEx := len(m.Quests) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Quests[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuest(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0xa
 		}
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *C2S_GetQuestReward) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -422,28 +470,34 @@ func (m *C2S_GetQuestReward) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_GetQuestReward) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_GetQuestReward) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Id != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintQuest(dAtA, i, uint64(m.Id))
-	}
 	if len(m.CltPath) > 0 {
-		dAtA[i] = 0x12
-		i++
+		i -= len(m.CltPath)
+		copy(dAtA[i:], m.CltPath)
 		i = encodeVarintQuest(dAtA, i, uint64(len(m.CltPath)))
-		i += copy(dAtA[i:], m.CltPath)
+		i--
+		dAtA[i] = 0x12
 	}
-	return i, nil
+	if m.Id != 0 {
+		i = encodeVarintQuest(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_GetQuestReward) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -451,37 +505,45 @@ func (m *S2C_GetQuestReward) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_GetQuestReward) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_GetQuestReward) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Err != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintQuest(dAtA, i, uint64(m.Err))
+	if len(m.CltPath) > 0 {
+		i -= len(m.CltPath)
+		copy(dAtA[i:], m.CltPath)
+		i = encodeVarintQuest(dAtA, i, uint64(len(m.CltPath)))
+		i--
+		dAtA[i] = 0x1a
 	}
 	if m.Id != 0 {
-		dAtA[i] = 0x10
-		i++
 		i = encodeVarintQuest(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x10
 	}
-	if len(m.CltPath) > 0 {
-		dAtA[i] = 0x1a
-		i++
-		i = encodeVarintQuest(dAtA, i, uint64(len(m.CltPath)))
-		i += copy(dAtA[i:], m.CltPath)
+	if m.Err != 0 {
+		i = encodeVarintQuest(dAtA, i, uint64(m.Err))
+		i--
+		dAtA[i] = 0x8
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintQuest(dAtA []byte, offset int, v uint64) int {
+	offset -= sovQuest(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func (m *Quest) Size() (n int) {
 	if m == nil {
@@ -561,14 +623,7 @@ func (m *S2C_GetQuestReward) Size() (n int) {
 }
 
 func sovQuest(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozQuest(x uint64) (n int) {
 	return sovQuest(uint64((x << 1) ^ uint64((int64(x) >> 63))))
@@ -588,7 +643,7 @@ func (m *Quest) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -616,7 +671,7 @@ func (m *Quest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -635,7 +690,7 @@ func (m *Quest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Progress |= (int64(b) & 0x7F) << shift
+				m.Progress |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -654,7 +709,7 @@ func (m *Quest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				v |= (int(b) & 0x7F) << shift
+				v |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -667,6 +722,9 @@ func (m *Quest) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthQuest
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthQuest
 			}
 			if (iNdEx + skippy) > l {
@@ -696,7 +754,7 @@ func (m *C2S_GetAllQuests) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -717,6 +775,9 @@ func (m *C2S_GetAllQuests) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthQuest
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthQuest
 			}
 			if (iNdEx + skippy) > l {
@@ -746,7 +807,7 @@ func (m *S2C_GetAllQuests) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -774,7 +835,7 @@ func (m *S2C_GetAllQuests) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -783,6 +844,9 @@ func (m *S2C_GetAllQuests) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthQuest
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuest
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -798,6 +862,9 @@ func (m *S2C_GetAllQuests) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthQuest
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthQuest
 			}
 			if (iNdEx + skippy) > l {
@@ -827,7 +894,7 @@ func (m *C2S_GetQuestReward) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -855,7 +922,7 @@ func (m *C2S_GetQuestReward) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -874,7 +941,7 @@ func (m *C2S_GetQuestReward) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -884,6 +951,9 @@ func (m *C2S_GetQuestReward) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthQuest
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuest
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -896,6 +966,9 @@ func (m *C2S_GetQuestReward) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthQuest
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthQuest
 			}
 			if (iNdEx + skippy) > l {
@@ -925,7 +998,7 @@ func (m *S2C_GetQuestReward) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -953,7 +1026,7 @@ func (m *S2C_GetQuestReward) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Err |= (S2C_GetQuestReward_E_Err(b) & 0x7F) << shift
+				m.Err |= S2C_GetQuestReward_E_Err(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -972,7 +1045,7 @@ func (m *S2C_GetQuestReward) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -991,7 +1064,7 @@ func (m *S2C_GetQuestReward) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1001,6 +1074,9 @@ func (m *S2C_GetQuestReward) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthQuest
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuest
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1013,6 +1089,9 @@ func (m *S2C_GetQuestReward) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthQuest
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthQuest
 			}
 			if (iNdEx + skippy) > l {
@@ -1030,6 +1109,7 @@ func (m *S2C_GetQuestReward) Unmarshal(dAtA []byte) error {
 func skipQuest(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
+	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -1061,10 +1141,8 @@ func skipQuest(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			return iNdEx, nil
 		case 1:
 			iNdEx += 8
-			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -1081,79 +1159,34 @@ func skipQuest(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			iNdEx += length
 			if length < 0 {
 				return 0, ErrInvalidLengthQuest
 			}
-			return iNdEx, nil
+			iNdEx += length
 		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowQuest
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipQuest(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-			}
-			return iNdEx, nil
+			depth++
 		case 4:
-			return iNdEx, nil
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupQuest
+			}
+			depth--
 		case 5:
 			iNdEx += 4
-			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthQuest
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
 	}
-	panic("unreachable")
+	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrInvalidLengthQuest = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowQuest   = fmt.Errorf("proto: integer overflow")
+	ErrInvalidLengthQuest        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowQuest          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupQuest = fmt.Errorf("proto: unexpected end of group")
 )
-
-func init() { proto.RegisterFile("quest.proto", fileDescriptor_quest_ef55780e53d25f6d) }
-
-var fileDescriptor_quest_ef55780e53d25f6d = []byte{
-	// 319 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x91, 0xc1, 0x4a, 0xc3, 0x40,
-	0x10, 0x86, 0xb3, 0x59, 0x5b, 0xeb, 0x14, 0xcb, 0x3a, 0x1e, 0x0c, 0x82, 0xa1, 0xe4, 0xd4, 0x53,
-	0x84, 0x08, 0x1e, 0x05, 0x0d, 0x45, 0x8a, 0xa0, 0x75, 0x8b, 0xe7, 0x50, 0x9b, 0xb5, 0x0a, 0x69,
-	0xb7, 0xee, 0x6e, 0xed, 0x6b, 0xf8, 0x58, 0x1e, 0x7b, 0xd3, 0xa3, 0xb4, 0x2f, 0x22, 0xd9, 0xa4,
-	0xd5, 0x52, 0x6f, 0xf3, 0x7f, 0x33, 0xf3, 0xff, 0xc3, 0x2e, 0xd4, 0x5f, 0xa7, 0x42, 0x9b, 0x70,
-	0xa2, 0xa4, 0x91, 0x48, 0x47, 0x7a, 0x18, 0xdc, 0x41, 0xe5, 0x3e, 0x67, 0xd8, 0x00, 0xb7, 0x93,
-	0x7a, 0xa4, 0x49, 0x5a, 0x94, 0xbb, 0x9d, 0x14, 0x8f, 0xa1, 0xd6, 0x55, 0x72, 0xa8, 0x84, 0xd6,
-	0x9e, 0x6b, 0xe9, 0x5a, 0xe7, 0x3d, 0x2e, 0x06, 0xe2, 0xe5, 0x4d, 0xa4, 0x1e, 0x6d, 0x92, 0x56,
-	0x8d, 0xaf, 0x75, 0x80, 0xc0, 0xe2, 0xa8, 0x97, 0x5c, 0x0b, 0x73, 0x99, 0x65, 0xd6, 0x5a, 0x07,
-	0xe7, 0xc0, 0x7a, 0x51, 0xbc, 0xc1, 0x30, 0x80, 0x6a, 0x51, 0x79, 0xa4, 0x49, 0x5b, 0xf5, 0x08,
-	0xc2, 0x91, 0x1e, 0x86, 0x16, 0xf1, 0xb2, 0x13, 0x5c, 0x00, 0x96, 0x5e, 0x05, 0x17, 0xb3, 0xbe,
-	0x4a, 0xb7, 0x2e, 0xf5, 0x60, 0x37, 0xce, 0x4c, 0xb7, 0x6f, 0x9e, 0xed, 0xa1, 0x7b, 0x7c, 0x25,
-	0x83, 0x4f, 0x02, 0x58, 0x06, 0xff, 0x35, 0x38, 0x05, 0xda, 0x56, 0xca, 0x3a, 0x34, 0xa2, 0x13,
-	0x9b, 0xbb, 0x3d, 0x15, 0xb6, 0x93, 0xb6, 0x52, 0x3c, 0x9f, 0x2c, 0x13, 0xdd, 0xff, 0x12, 0xe9,
-	0x66, 0xe2, 0x13, 0x54, 0xec, 0x1e, 0x02, 0x54, 0x6d, 0x91, 0x30, 0x07, 0x0f, 0x60, 0xbf, 0xa8,
-	0x7b, 0xd3, 0xc1, 0x40, 0x68, 0xcd, 0x08, 0x22, 0x34, 0x0a, 0xb4, 0x7a, 0x37, 0xe6, 0xe2, 0x11,
-	0x1c, 0x16, 0xec, 0x56, 0x9a, 0x24, 0x96, 0xa3, 0x49, 0x26, 0x8c, 0x48, 0x19, 0xfd, 0xdd, 0x7f,
-	0x18, 0xdf, 0x8c, 0xe5, 0x6c, 0xcc, 0x76, 0xae, 0xbc, 0x8f, 0x85, 0x4f, 0xe6, 0x0b, 0x9f, 0x7c,
-	0x2f, 0x7c, 0xf2, 0xbe, 0xf4, 0x9d, 0xf9, 0xd2, 0x77, 0xbe, 0x96, 0xbe, 0xf3, 0x58, 0xb5, 0x9f,
-	0x7b, 0xf6, 0x13, 0x00, 0x00, 0xff, 0xff, 0x3f, 0x0b, 0xa0, 0xaa, 0xeb, 0x01, 0x00, 0x00,
-}

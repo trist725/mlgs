@@ -3,11 +3,13 @@
 
 package msg
 
-import proto "github.com/gogo/protobuf/proto"
-import fmt "fmt"
-import math "math"
-
-import io "io"
+import (
+	fmt "fmt"
+	proto "github.com/gogo/protobuf/proto"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -18,13 +20,13 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// / 用户货币信息
+/// 用户货币信息
 type Money struct {
-	// / 类型, 1=金币,2=钻石,3=积分,
+	/// 类型, 1=金币,2=钻石,3=积分,
 	Type int32 `protobuf:"varint,1,opt,name=Type,proto3" json:"Type,omitempty"`
-	// / 数量
+	/// 数量
 	Num int64 `protobuf:"varint,2,opt,name=Num,proto3" json:"Num,omitempty"`
 }
 
@@ -32,7 +34,7 @@ func (m *Money) Reset()         { *m = Money{} }
 func (m *Money) String() string { return proto.CompactTextString(m) }
 func (*Money) ProtoMessage()    {}
 func (*Money) Descriptor() ([]byte, []int) {
-	return fileDescriptor_money_ab5d14a8f58d6b21, []int{0}
+	return fileDescriptor_2917341c8b38eaf8, []int{0}
 }
 func (m *Money) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -42,15 +44,15 @@ func (m *Money) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Money.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *Money) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Money.Merge(dst, src)
+func (m *Money) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Money.Merge(m, src)
 }
 func (m *Money) XXX_Size() int {
 	return m.Size()
@@ -75,18 +77,18 @@ func (m *Money) GetNum() int64 {
 	return 0
 }
 
-// / 更新货币
-// @msg
+/// 更新货币
+//@msg
 type S2C_UpdateMoney struct {
-	// / 发生变更的货币列表
-	Monies []*Money `protobuf:"bytes,1,rep,name=Monies" json:"Monies,omitempty"`
+	/// 发生变更的货币列表
+	Monies []*Money `protobuf:"bytes,1,rep,name=Monies,proto3" json:"Monies,omitempty"`
 }
 
 func (m *S2C_UpdateMoney) Reset()         { *m = S2C_UpdateMoney{} }
 func (m *S2C_UpdateMoney) String() string { return proto.CompactTextString(m) }
 func (*S2C_UpdateMoney) ProtoMessage()    {}
 func (*S2C_UpdateMoney) Descriptor() ([]byte, []int) {
-	return fileDescriptor_money_ab5d14a8f58d6b21, []int{1}
+	return fileDescriptor_2917341c8b38eaf8, []int{1}
 }
 func (m *S2C_UpdateMoney) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -96,15 +98,15 @@ func (m *S2C_UpdateMoney) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return xxx_messageInfo_S2C_UpdateMoney.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_UpdateMoney) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_UpdateMoney.Merge(dst, src)
+func (m *S2C_UpdateMoney) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_UpdateMoney.Merge(m, src)
 }
 func (m *S2C_UpdateMoney) XXX_Size() int {
 	return m.Size()
@@ -126,10 +128,27 @@ func init() {
 	proto.RegisterType((*Money)(nil), "msg.Money")
 	proto.RegisterType((*S2C_UpdateMoney)(nil), "msg.S2C_UpdateMoney")
 }
+
+func init() { proto.RegisterFile("money.proto", fileDescriptor_2917341c8b38eaf8) }
+
+var fileDescriptor_2917341c8b38eaf8 = []byte{
+	// 157 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0xce, 0xcd, 0xcf, 0x4b,
+	0xad, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0xce, 0x2d, 0x4e, 0x57, 0xd2, 0xe5, 0x62,
+	0xf5, 0x05, 0x89, 0x09, 0x09, 0x71, 0xb1, 0x84, 0x54, 0x16, 0xa4, 0x4a, 0x30, 0x2a, 0x30, 0x6a,
+	0xb0, 0x06, 0x81, 0xd9, 0x42, 0x02, 0x5c, 0xcc, 0x7e, 0xa5, 0xb9, 0x12, 0x4c, 0x0a, 0x8c, 0x1a,
+	0xcc, 0x41, 0x20, 0xa6, 0x92, 0x29, 0x17, 0x7f, 0xb0, 0x91, 0x73, 0x7c, 0x68, 0x41, 0x4a, 0x62,
+	0x49, 0x2a, 0x44, 0xa3, 0x12, 0x17, 0x9b, 0x6f, 0x7e, 0x5e, 0x66, 0x6a, 0xb1, 0x04, 0xa3, 0x02,
+	0xb3, 0x06, 0xb7, 0x11, 0x97, 0x5e, 0x6e, 0x71, 0xba, 0x1e, 0x58, 0x2e, 0x08, 0x2a, 0xe3, 0x24,
+	0x71, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e, 0xc9, 0x31, 0x4e, 0x78, 0x2c,
+	0xc7, 0x70, 0xe1, 0xb1, 0x1c, 0xc3, 0x8d, 0xc7, 0x72, 0x0c, 0x49, 0x6c, 0x60, 0xb7, 0x18, 0x03,
+	0x02, 0x00, 0x00, 0xff, 0xff, 0xfb, 0x4a, 0x76, 0xfe, 0x9a, 0x00, 0x00, 0x00,
+}
+
 func (m *Money) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -137,27 +156,32 @@ func (m *Money) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Money) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Money) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Type != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintMoney(dAtA, i, uint64(m.Type))
-	}
 	if m.Num != 0 {
-		dAtA[i] = 0x10
-		i++
 		i = encodeVarintMoney(dAtA, i, uint64(m.Num))
+		i--
+		dAtA[i] = 0x10
 	}
-	return i, nil
+	if m.Type != 0 {
+		i = encodeVarintMoney(dAtA, i, uint64(m.Type))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_UpdateMoney) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -165,33 +189,42 @@ func (m *S2C_UpdateMoney) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_UpdateMoney) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_UpdateMoney) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Monies) > 0 {
-		for _, msg := range m.Monies {
-			dAtA[i] = 0xa
-			i++
-			i = encodeVarintMoney(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+		for iNdEx := len(m.Monies) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Monies[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintMoney(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0xa
 		}
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintMoney(dAtA []byte, offset int, v uint64) int {
+	offset -= sovMoney(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func (m *Money) Size() (n int) {
 	if m == nil {
@@ -224,14 +257,7 @@ func (m *S2C_UpdateMoney) Size() (n int) {
 }
 
 func sovMoney(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozMoney(x uint64) (n int) {
 	return sovMoney(uint64((x << 1) ^ uint64((int64(x) >> 63))))
@@ -251,7 +277,7 @@ func (m *Money) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -279,7 +305,7 @@ func (m *Money) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Type |= (int32(b) & 0x7F) << shift
+				m.Type |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -298,7 +324,7 @@ func (m *Money) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Num |= (int64(b) & 0x7F) << shift
+				m.Num |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -310,6 +336,9 @@ func (m *Money) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthMoney
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthMoney
 			}
 			if (iNdEx + skippy) > l {
@@ -339,7 +368,7 @@ func (m *S2C_UpdateMoney) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -367,7 +396,7 @@ func (m *S2C_UpdateMoney) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -376,6 +405,9 @@ func (m *S2C_UpdateMoney) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthMoney
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthMoney
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -393,6 +425,9 @@ func (m *S2C_UpdateMoney) Unmarshal(dAtA []byte) error {
 			if skippy < 0 {
 				return ErrInvalidLengthMoney
 			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthMoney
+			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -408,6 +443,7 @@ func (m *S2C_UpdateMoney) Unmarshal(dAtA []byte) error {
 func skipMoney(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
+	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -439,10 +475,8 @@ func skipMoney(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			return iNdEx, nil
 		case 1:
 			iNdEx += 8
-			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -459,69 +493,34 @@ func skipMoney(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			iNdEx += length
 			if length < 0 {
 				return 0, ErrInvalidLengthMoney
 			}
-			return iNdEx, nil
+			iNdEx += length
 		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowMoney
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipMoney(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-			}
-			return iNdEx, nil
+			depth++
 		case 4:
-			return iNdEx, nil
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupMoney
+			}
+			depth--
 		case 5:
 			iNdEx += 4
-			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthMoney
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
 	}
-	panic("unreachable")
+	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrInvalidLengthMoney = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowMoney   = fmt.Errorf("proto: integer overflow")
+	ErrInvalidLengthMoney        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowMoney          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupMoney = fmt.Errorf("proto: unexpected end of group")
 )
-
-func init() { proto.RegisterFile("money.proto", fileDescriptor_money_ab5d14a8f58d6b21) }
-
-var fileDescriptor_money_ab5d14a8f58d6b21 = []byte{
-	// 157 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0xce, 0xcd, 0xcf, 0x4b,
-	0xad, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0xce, 0x2d, 0x4e, 0x57, 0xd2, 0xe5, 0x62,
-	0xf5, 0x05, 0x89, 0x09, 0x09, 0x71, 0xb1, 0x84, 0x54, 0x16, 0xa4, 0x4a, 0x30, 0x2a, 0x30, 0x6a,
-	0xb0, 0x06, 0x81, 0xd9, 0x42, 0x02, 0x5c, 0xcc, 0x7e, 0xa5, 0xb9, 0x12, 0x4c, 0x0a, 0x8c, 0x1a,
-	0xcc, 0x41, 0x20, 0xa6, 0x92, 0x29, 0x17, 0x7f, 0xb0, 0x91, 0x73, 0x7c, 0x68, 0x41, 0x4a, 0x62,
-	0x49, 0x2a, 0x44, 0xa3, 0x12, 0x17, 0x9b, 0x6f, 0x7e, 0x5e, 0x66, 0x6a, 0xb1, 0x04, 0xa3, 0x02,
-	0xb3, 0x06, 0xb7, 0x11, 0x97, 0x5e, 0x6e, 0x71, 0xba, 0x1e, 0x58, 0x2e, 0x08, 0x2a, 0xe3, 0x24,
-	0x71, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e, 0xc9, 0x31, 0x4e, 0x78, 0x2c,
-	0xc7, 0x70, 0xe1, 0xb1, 0x1c, 0xc3, 0x8d, 0xc7, 0x72, 0x0c, 0x49, 0x6c, 0x60, 0xb7, 0x18, 0x03,
-	0x02, 0x00, 0x00, 0xff, 0xff, 0xfb, 0x4a, 0x76, 0xfe, 0x9a, 0x00, 0x00, 0x00,
-}

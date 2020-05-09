@@ -3,11 +3,13 @@
 
 package msg
 
-import proto "github.com/gogo/protobuf/proto"
-import fmt "fmt"
-import math "math"
-
-import io "io"
+import (
+	fmt "fmt"
+	proto "github.com/gogo/protobuf/proto"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -18,15 +20,15 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type S2C_GetOwnDealerSkins_E_Err int32
 
 const (
 	S2C_GetOwnDealerSkins_E_Err_ S2C_GetOwnDealerSkins_E_Err = 0
-	// /成功
+	///成功
 	S2C_GetOwnDealerSkins_E_Err_Succeed S2C_GetOwnDealerSkins_E_Err = 1
-	// /失败,其它
+	///失败,其它
 	S2C_GetOwnDealerSkins_E_Err_UnKnown S2C_GetOwnDealerSkins_E_Err = 2
 )
 
@@ -35,6 +37,7 @@ var S2C_GetOwnDealerSkins_E_Err_name = map[int32]string{
 	1: "E_Err_Succeed",
 	2: "E_Err_UnKnown",
 }
+
 var S2C_GetOwnDealerSkins_E_Err_value = map[string]int32{
 	"E_Err_":        0,
 	"E_Err_Succeed": 1,
@@ -44,19 +47,20 @@ var S2C_GetOwnDealerSkins_E_Err_value = map[string]int32{
 func (x S2C_GetOwnDealerSkins_E_Err) String() string {
 	return proto.EnumName(S2C_GetOwnDealerSkins_E_Err_name, int32(x))
 }
+
 func (S2C_GetOwnDealerSkins_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{3, 0}
+	return fileDescriptor_0f3030369b20fd61, []int{3, 0}
 }
 
 type S2C_UsingOwnDealerSkins_E_Err int32
 
 const (
 	S2C_UsingOwnDealerSkins_E_Err_ S2C_UsingOwnDealerSkins_E_Err = 0
-	// /成功
+	///成功
 	S2C_UsingOwnDealerSkins_E_Err_Succeed S2C_UsingOwnDealerSkins_E_Err = 1
-	// /失败,未拥有
+	///失败,未拥有
 	S2C_UsingOwnDealerSkins_E_Err_Not_Have S2C_UsingOwnDealerSkins_E_Err = 2
-	// /失败,其它
+	///失败,其它
 	S2C_UsingOwnDealerSkins_E_Err_UnKnown S2C_UsingOwnDealerSkins_E_Err = 3
 )
 
@@ -66,6 +70,7 @@ var S2C_UsingOwnDealerSkins_E_Err_name = map[int32]string{
 	2: "E_Err_Not_Have",
 	3: "E_Err_UnKnown",
 }
+
 var S2C_UsingOwnDealerSkins_E_Err_value = map[string]int32{
 	"E_Err_":         0,
 	"E_Err_Succeed":  1,
@@ -76,21 +81,22 @@ var S2C_UsingOwnDealerSkins_E_Err_value = map[string]int32{
 func (x S2C_UsingOwnDealerSkins_E_Err) String() string {
 	return proto.EnumName(S2C_UsingOwnDealerSkins_E_Err_name, int32(x))
 }
+
 func (S2C_UsingOwnDealerSkins_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{5, 0}
+	return fileDescriptor_0f3030369b20fd61, []int{5, 0}
 }
 
 type S2C_BuyItem_E_Err int32
 
 const (
 	S2C_BuyItem_E_Err_ S2C_BuyItem_E_Err = 0
-	// /成功
+	///成功
 	S2C_BuyItem_E_Err_Succeed S2C_BuyItem_E_Err = 1
-	// /失败,已拥有(仅皮肤等不能重复购买的商品)
+	///失败,已拥有(仅皮肤等不能重复购买的商品)
 	S2C_BuyItem_E_Err_Already_Have S2C_BuyItem_E_Err = 2
-	// /失败,钱不够
+	///失败,钱不够
 	S2C_BuyItem_E_Err_Not_Enough_Money S2C_BuyItem_E_Err = 3
-	// /失败,未知
+	///失败,未知
 	S2C_BuyItem_E_Err_UnKnown S2C_BuyItem_E_Err = 4
 )
 
@@ -101,6 +107,7 @@ var S2C_BuyItem_E_Err_name = map[int32]string{
 	3: "E_Err_Not_Enough_Money",
 	4: "E_Err_UnKnown",
 }
+
 var S2C_BuyItem_E_Err_value = map[string]int32{
 	"E_Err_":                 0,
 	"E_Err_Succeed":          1,
@@ -112,23 +119,24 @@ var S2C_BuyItem_E_Err_value = map[string]int32{
 func (x S2C_BuyItem_E_Err) String() string {
 	return proto.EnumName(S2C_BuyItem_E_Err_name, int32(x))
 }
+
 func (S2C_BuyItem_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{7, 0}
+	return fileDescriptor_0f3030369b20fd61, []int{7, 0}
 }
 
 type S2C_Charge_E_Err int32
 
 const (
 	S2C_Charge_E_Err_ S2C_Charge_E_Err = 0
-	// /成功
+	///成功
 	S2C_Charge_E_Err_Succeed S2C_Charge_E_Err = 1
-	// /失败,钱不够
+	///失败,钱不够
 	S2C_Charge_E_Err_Not_Enough_Money S2C_Charge_E_Err = 3
-	// /失败,未知
+	///失败,未知
 	S2C_Charge_E_Err_UnKnown S2C_Charge_E_Err = 4
-	// /交易已存在
+	///交易已存在
 	S2C_Charge_E_Err_TranCodeAlreadyExist S2C_Charge_E_Err = 6
-	// /token无效
+	///token无效
 	S2C_Charge_E_Err_TokenInvalid S2C_Charge_E_Err = 5
 )
 
@@ -140,6 +148,7 @@ var S2C_Charge_E_Err_name = map[int32]string{
 	6: "E_Err_TranCodeAlreadyExist",
 	5: "E_Err_TokenInvalid",
 }
+
 var S2C_Charge_E_Err_value = map[string]int32{
 	"E_Err_":                     0,
 	"E_Err_Succeed":              1,
@@ -152,11 +161,12 @@ var S2C_Charge_E_Err_value = map[string]int32{
 func (x S2C_Charge_E_Err) String() string {
 	return proto.EnumName(S2C_Charge_E_Err_name, int32(x))
 }
+
 func (S2C_Charge_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{9, 0}
+	return fileDescriptor_0f3030369b20fd61, []int{9, 0}
 }
 
-// /获取拥有的道具
+///获取拥有的道具
 type C2S_GetOwnItems struct {
 }
 
@@ -164,7 +174,7 @@ func (m *C2S_GetOwnItems) Reset()         { *m = C2S_GetOwnItems{} }
 func (m *C2S_GetOwnItems) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetOwnItems) ProtoMessage()    {}
 func (*C2S_GetOwnItems) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{0}
+	return fileDescriptor_0f3030369b20fd61, []int{0}
 }
 func (m *C2S_GetOwnItems) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -174,15 +184,15 @@ func (m *C2S_GetOwnItems) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return xxx_messageInfo_C2S_GetOwnItems.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_GetOwnItems) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_GetOwnItems.Merge(dst, src)
+func (m *C2S_GetOwnItems) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_GetOwnItems.Merge(m, src)
 }
 func (m *C2S_GetOwnItems) XXX_Size() int {
 	return m.Size()
@@ -194,14 +204,14 @@ func (m *C2S_GetOwnItems) XXX_DiscardUnknown() {
 var xxx_messageInfo_C2S_GetOwnItems proto.InternalMessageInfo
 
 type S2C_GetOwnItems struct {
-	Items []*Item `protobuf:"bytes,1,rep,name=Items" json:"Items,omitempty"`
+	Items []*Item `protobuf:"bytes,1,rep,name=Items,proto3" json:"Items,omitempty"`
 }
 
 func (m *S2C_GetOwnItems) Reset()         { *m = S2C_GetOwnItems{} }
 func (m *S2C_GetOwnItems) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetOwnItems) ProtoMessage()    {}
 func (*S2C_GetOwnItems) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{1}
+	return fileDescriptor_0f3030369b20fd61, []int{1}
 }
 func (m *S2C_GetOwnItems) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -211,15 +221,15 @@ func (m *S2C_GetOwnItems) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return xxx_messageInfo_S2C_GetOwnItems.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_GetOwnItems) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_GetOwnItems.Merge(dst, src)
+func (m *S2C_GetOwnItems) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_GetOwnItems.Merge(m, src)
 }
 func (m *S2C_GetOwnItems) XXX_Size() int {
 	return m.Size()
@@ -237,7 +247,7 @@ func (m *S2C_GetOwnItems) GetItems() []*Item {
 	return nil
 }
 
-// /获取拥有的荷官皮肤
+///获取拥有的荷官皮肤
 type C2S_GetOwnDealerSkins struct {
 }
 
@@ -245,7 +255,7 @@ func (m *C2S_GetOwnDealerSkins) Reset()         { *m = C2S_GetOwnDealerSkins{} }
 func (m *C2S_GetOwnDealerSkins) String() string { return proto.CompactTextString(m) }
 func (*C2S_GetOwnDealerSkins) ProtoMessage()    {}
 func (*C2S_GetOwnDealerSkins) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{2}
+	return fileDescriptor_0f3030369b20fd61, []int{2}
 }
 func (m *C2S_GetOwnDealerSkins) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -255,15 +265,15 @@ func (m *C2S_GetOwnDealerSkins) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_C2S_GetOwnDealerSkins.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_GetOwnDealerSkins) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_GetOwnDealerSkins.Merge(dst, src)
+func (m *C2S_GetOwnDealerSkins) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_GetOwnDealerSkins.Merge(m, src)
 }
 func (m *C2S_GetOwnDealerSkins) XXX_Size() int {
 	return m.Size()
@@ -275,9 +285,9 @@ func (m *C2S_GetOwnDealerSkins) XXX_DiscardUnknown() {
 var xxx_messageInfo_C2S_GetOwnDealerSkins proto.InternalMessageInfo
 
 type S2C_GetOwnDealerSkins struct {
-	// /荷官皮肤在item表的id
-	Ids []string `protobuf:"bytes,1,rep,name=Ids" json:"Ids,omitempty"`
-	// /使用中的皮肤id,0是默认皮肤
+	///荷官皮肤在item表的id
+	Ids []string `protobuf:"bytes,1,rep,name=Ids,proto3" json:"Ids,omitempty"`
+	///使用中的皮肤id,0是默认皮肤
 	Id  int64                       `protobuf:"varint,2,opt,name=Id,proto3" json:"Id,omitempty"`
 	Err S2C_GetOwnDealerSkins_E_Err `protobuf:"varint,3,opt,name=Err,proto3,enum=msg.S2C_GetOwnDealerSkins_E_Err" json:"Err,omitempty"`
 }
@@ -286,7 +296,7 @@ func (m *S2C_GetOwnDealerSkins) Reset()         { *m = S2C_GetOwnDealerSkins{} }
 func (m *S2C_GetOwnDealerSkins) String() string { return proto.CompactTextString(m) }
 func (*S2C_GetOwnDealerSkins) ProtoMessage()    {}
 func (*S2C_GetOwnDealerSkins) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{3}
+	return fileDescriptor_0f3030369b20fd61, []int{3}
 }
 func (m *S2C_GetOwnDealerSkins) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -296,15 +306,15 @@ func (m *S2C_GetOwnDealerSkins) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_S2C_GetOwnDealerSkins.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_GetOwnDealerSkins) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_GetOwnDealerSkins.Merge(dst, src)
+func (m *S2C_GetOwnDealerSkins) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_GetOwnDealerSkins.Merge(m, src)
 }
 func (m *S2C_GetOwnDealerSkins) XXX_Size() int {
 	return m.Size()
@@ -336,9 +346,9 @@ func (m *S2C_GetOwnDealerSkins) GetErr() S2C_GetOwnDealerSkins_E_Err {
 	return S2C_GetOwnDealerSkins_E_Err_
 }
 
-// /使用(装备)拥有的荷官皮肤
+///使用(装备)拥有的荷官皮肤
 type C2S_UsingOwnDealerSkins struct {
-	// /要装备的皮肤在item表中的id
+	///要装备的皮肤在item表中的id
 	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
 }
 
@@ -346,7 +356,7 @@ func (m *C2S_UsingOwnDealerSkins) Reset()         { *m = C2S_UsingOwnDealerSkins
 func (m *C2S_UsingOwnDealerSkins) String() string { return proto.CompactTextString(m) }
 func (*C2S_UsingOwnDealerSkins) ProtoMessage()    {}
 func (*C2S_UsingOwnDealerSkins) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{4}
+	return fileDescriptor_0f3030369b20fd61, []int{4}
 }
 func (m *C2S_UsingOwnDealerSkins) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -356,15 +366,15 @@ func (m *C2S_UsingOwnDealerSkins) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return xxx_messageInfo_C2S_UsingOwnDealerSkins.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_UsingOwnDealerSkins) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_UsingOwnDealerSkins.Merge(dst, src)
+func (m *C2S_UsingOwnDealerSkins) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_UsingOwnDealerSkins.Merge(m, src)
 }
 func (m *C2S_UsingOwnDealerSkins) XXX_Size() int {
 	return m.Size()
@@ -391,7 +401,7 @@ func (m *S2C_UsingOwnDealerSkins) Reset()         { *m = S2C_UsingOwnDealerSkins
 func (m *S2C_UsingOwnDealerSkins) String() string { return proto.CompactTextString(m) }
 func (*S2C_UsingOwnDealerSkins) ProtoMessage()    {}
 func (*S2C_UsingOwnDealerSkins) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{5}
+	return fileDescriptor_0f3030369b20fd61, []int{5}
 }
 func (m *S2C_UsingOwnDealerSkins) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -401,15 +411,15 @@ func (m *S2C_UsingOwnDealerSkins) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return xxx_messageInfo_S2C_UsingOwnDealerSkins.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_UsingOwnDealerSkins) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_UsingOwnDealerSkins.Merge(dst, src)
+func (m *S2C_UsingOwnDealerSkins) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_UsingOwnDealerSkins.Merge(m, src)
 }
 func (m *S2C_UsingOwnDealerSkins) XXX_Size() int {
 	return m.Size()
@@ -434,11 +444,11 @@ func (m *S2C_UsingOwnDealerSkins) GetErr() S2C_UsingOwnDealerSkins_E_Err {
 	return S2C_UsingOwnDealerSkins_E_Err_
 }
 
-// /购买物品
+///购买物品
 type C2S_BuyItem struct {
-	// /要购买的物品在item表中的id
+	///要购买的物品在item表中的id
 	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
-	// /购买数量
+	///购买数量
 	Num int64 `protobuf:"varint,2,opt,name=Num,proto3" json:"Num,omitempty"`
 }
 
@@ -446,7 +456,7 @@ func (m *C2S_BuyItem) Reset()         { *m = C2S_BuyItem{} }
 func (m *C2S_BuyItem) String() string { return proto.CompactTextString(m) }
 func (*C2S_BuyItem) ProtoMessage()    {}
 func (*C2S_BuyItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{6}
+	return fileDescriptor_0f3030369b20fd61, []int{6}
 }
 func (m *C2S_BuyItem) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -456,15 +466,15 @@ func (m *C2S_BuyItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_C2S_BuyItem.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_BuyItem) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_BuyItem.Merge(dst, src)
+func (m *C2S_BuyItem) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_BuyItem.Merge(m, src)
 }
 func (m *C2S_BuyItem) XXX_Size() int {
 	return m.Size()
@@ -490,7 +500,7 @@ func (m *C2S_BuyItem) GetNum() int64 {
 }
 
 type S2C_BuyItem struct {
-	// /要购买的物品在item表中的id
+	///要购买的物品在item表中的id
 	Id  int64             `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
 	Err S2C_BuyItem_E_Err `protobuf:"varint,2,opt,name=Err,proto3,enum=msg.S2C_BuyItem_E_Err" json:"Err,omitempty"`
 }
@@ -499,7 +509,7 @@ func (m *S2C_BuyItem) Reset()         { *m = S2C_BuyItem{} }
 func (m *S2C_BuyItem) String() string { return proto.CompactTextString(m) }
 func (*S2C_BuyItem) ProtoMessage()    {}
 func (*S2C_BuyItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{7}
+	return fileDescriptor_0f3030369b20fd61, []int{7}
 }
 func (m *S2C_BuyItem) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -509,15 +519,15 @@ func (m *S2C_BuyItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_S2C_BuyItem.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_BuyItem) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_BuyItem.Merge(dst, src)
+func (m *S2C_BuyItem) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_BuyItem.Merge(m, src)
 }
 func (m *S2C_BuyItem) XXX_Size() int {
 	return m.Size()
@@ -543,13 +553,13 @@ func (m *S2C_BuyItem) GetErr() S2C_BuyItem_E_Err {
 }
 
 type C2S_Charge struct {
-	// /充值包在item表中的id
+	///充值包在item表中的id
 	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
-	// /登陆token
+	///登陆token
 	Token string `protobuf:"bytes,2,opt,name=Token,proto3" json:"Token,omitempty"`
-	// /唯一交易流水号
+	///唯一交易流水号
 	TranCode string `protobuf:"bytes,3,opt,name=TranCode,proto3" json:"TranCode,omitempty"`
-	// /万博账号id
+	///万博账号id
 	AccountId string `protobuf:"bytes,4,opt,name=AccountId,proto3" json:"AccountId,omitempty"`
 }
 
@@ -557,7 +567,7 @@ func (m *C2S_Charge) Reset()         { *m = C2S_Charge{} }
 func (m *C2S_Charge) String() string { return proto.CompactTextString(m) }
 func (*C2S_Charge) ProtoMessage()    {}
 func (*C2S_Charge) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{8}
+	return fileDescriptor_0f3030369b20fd61, []int{8}
 }
 func (m *C2S_Charge) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -567,15 +577,15 @@ func (m *C2S_Charge) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_C2S_Charge.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_Charge) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_Charge.Merge(dst, src)
+func (m *C2S_Charge) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_Charge.Merge(m, src)
 }
 func (m *C2S_Charge) XXX_Size() int {
 	return m.Size()
@@ -616,7 +626,7 @@ func (m *C2S_Charge) GetAccountId() string {
 
 type S2C_Charge struct {
 	Err S2C_Charge_E_Err `protobuf:"varint,2,opt,name=Err,proto3,enum=msg.S2C_Charge_E_Err" json:"Err,omitempty"`
-	// /充值后的钻石数
+	///充值后的钻石数
 	Diamond int64 `protobuf:"varint,3,opt,name=Diamond,proto3" json:"Diamond,omitempty"`
 }
 
@@ -624,7 +634,7 @@ func (m *S2C_Charge) Reset()         { *m = S2C_Charge{} }
 func (m *S2C_Charge) String() string { return proto.CompactTextString(m) }
 func (*S2C_Charge) ProtoMessage()    {}
 func (*S2C_Charge) Descriptor() ([]byte, []int) {
-	return fileDescriptor_shop_3eedebb802c6afd1, []int{9}
+	return fileDescriptor_0f3030369b20fd61, []int{9}
 }
 func (m *S2C_Charge) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -634,15 +644,15 @@ func (m *S2C_Charge) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_S2C_Charge.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_Charge) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_Charge.Merge(dst, src)
+func (m *S2C_Charge) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_Charge.Merge(m, src)
 }
 func (m *S2C_Charge) XXX_Size() int {
 	return m.Size()
@@ -668,6 +678,10 @@ func (m *S2C_Charge) GetDiamond() int64 {
 }
 
 func init() {
+	proto.RegisterEnum("msg.S2C_GetOwnDealerSkins_E_Err", S2C_GetOwnDealerSkins_E_Err_name, S2C_GetOwnDealerSkins_E_Err_value)
+	proto.RegisterEnum("msg.S2C_UsingOwnDealerSkins_E_Err", S2C_UsingOwnDealerSkins_E_Err_name, S2C_UsingOwnDealerSkins_E_Err_value)
+	proto.RegisterEnum("msg.S2C_BuyItem_E_Err", S2C_BuyItem_E_Err_name, S2C_BuyItem_E_Err_value)
+	proto.RegisterEnum("msg.S2C_Charge_E_Err", S2C_Charge_E_Err_name, S2C_Charge_E_Err_value)
 	proto.RegisterType((*C2S_GetOwnItems)(nil), "msg.C2S_GetOwnItems")
 	proto.RegisterType((*S2C_GetOwnItems)(nil), "msg.S2C_GetOwnItems")
 	proto.RegisterType((*C2S_GetOwnDealerSkins)(nil), "msg.C2S_GetOwnDealerSkins")
@@ -678,15 +692,51 @@ func init() {
 	proto.RegisterType((*S2C_BuyItem)(nil), "msg.S2C_BuyItem")
 	proto.RegisterType((*C2S_Charge)(nil), "msg.C2S_Charge")
 	proto.RegisterType((*S2C_Charge)(nil), "msg.S2C_Charge")
-	proto.RegisterEnum("msg.S2C_GetOwnDealerSkins_E_Err", S2C_GetOwnDealerSkins_E_Err_name, S2C_GetOwnDealerSkins_E_Err_value)
-	proto.RegisterEnum("msg.S2C_UsingOwnDealerSkins_E_Err", S2C_UsingOwnDealerSkins_E_Err_name, S2C_UsingOwnDealerSkins_E_Err_value)
-	proto.RegisterEnum("msg.S2C_BuyItem_E_Err", S2C_BuyItem_E_Err_name, S2C_BuyItem_E_Err_value)
-	proto.RegisterEnum("msg.S2C_Charge_E_Err", S2C_Charge_E_Err_name, S2C_Charge_E_Err_value)
 }
+
+func init() { proto.RegisterFile("shop.proto", fileDescriptor_0f3030369b20fd61) }
+
+var fileDescriptor_0f3030369b20fd61 = []byte{
+	// 519 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0x4f, 0x6f, 0x12, 0x41,
+	0x18, 0xc6, 0x99, 0x9d, 0x82, 0xf2, 0x12, 0xe9, 0x76, 0x22, 0xb0, 0x21, 0x66, 0x25, 0x73, 0x11,
+	0x2f, 0x98, 0xac, 0x5e, 0x3c, 0xb6, 0x94, 0xe8, 0xc6, 0xb4, 0x26, 0x4b, 0x7b, 0x26, 0x2b, 0x3b,
+	0x59, 0x36, 0x65, 0x67, 0x9a, 0xfd, 0xd3, 0xca, 0x87, 0x30, 0xf1, 0x63, 0x78, 0xf2, 0xe8, 0x67,
+	0xf0, 0xd8, 0xa3, 0x37, 0x0d, 0x7c, 0x11, 0x33, 0x33, 0xc0, 0x6e, 0xa4, 0x26, 0xf4, 0xf6, 0xbe,
+	0xcf, 0xcc, 0xbc, 0xef, 0xf3, 0x7b, 0x20, 0x0b, 0x90, 0xce, 0xc4, 0xf5, 0xe0, 0x3a, 0x11, 0x99,
+	0x20, 0x38, 0x4e, 0xc3, 0x2e, 0x44, 0x19, 0x8b, 0xb5, 0x40, 0x8f, 0xe0, 0x70, 0xe8, 0x8c, 0x27,
+	0xef, 0x58, 0xf6, 0xf1, 0x96, 0xbb, 0x19, 0x8b, 0x53, 0xea, 0xc0, 0xe1, 0xd8, 0x19, 0x96, 0x25,
+	0xf2, 0x1c, 0xaa, 0xaa, 0xb0, 0x50, 0x0f, 0xf7, 0x1b, 0x4e, 0x7d, 0x10, 0xa7, 0xe1, 0x40, 0x2a,
+	0x9e, 0xd6, 0x69, 0x07, 0x5a, 0xc5, 0x98, 0x53, 0xe6, 0xcf, 0x59, 0x32, 0xbe, 0x8a, 0x78, 0x4a,
+	0xbf, 0x21, 0x68, 0x15, 0xd3, 0x4a, 0x27, 0xc4, 0x04, 0xec, 0x06, 0x7a, 0x62, 0xdd, 0x93, 0x25,
+	0x69, 0x82, 0xe1, 0x06, 0x96, 0xd1, 0x43, 0x7d, 0xec, 0x19, 0x6e, 0x40, 0x1c, 0xc0, 0xa3, 0x24,
+	0xb1, 0x70, 0x0f, 0xf5, 0x9b, 0x4e, 0x4f, 0xed, 0xbc, 0x77, 0xd4, 0x60, 0x34, 0x19, 0x25, 0x89,
+	0x27, 0x2f, 0xd3, 0xb7, 0x50, 0x55, 0x1d, 0x01, 0xa8, 0xa9, 0x62, 0x62, 0x56, 0xc8, 0x11, 0x3c,
+	0xd1, 0xf5, 0x38, 0x9f, 0x4e, 0x19, 0x0b, 0x4c, 0x54, 0x48, 0x97, 0xfc, 0x03, 0x17, 0xb7, 0xdc,
+	0x34, 0xe8, 0x4b, 0xe8, 0x48, 0x86, 0xcb, 0x34, 0xe2, 0xe1, 0x3f, 0x5e, 0xb5, 0x33, 0xb4, 0x71,
+	0x46, 0xbf, 0x23, 0xe8, 0x48, 0x2b, 0x7b, 0xdc, 0x25, 0x6f, 0x34, 0x85, 0xa1, 0x28, 0xe8, 0x96,
+	0xe2, 0x9e, 0xa7, 0x65, 0x8e, 0xb3, 0x3d, 0x39, 0x08, 0x34, 0xb5, 0x74, 0x2e, 0xb2, 0xc9, 0x7b,
+	0xff, 0x86, 0x99, 0xc6, 0x2e, 0x1b, 0xa6, 0xaf, 0xa0, 0x21, 0xd9, 0x4e, 0xf2, 0x85, 0xfc, 0xbd,
+	0x76, 0x3c, 0x9a, 0x80, 0xcf, 0xf3, 0x78, 0x1d, 0xbd, 0x2c, 0xe9, 0x0f, 0x04, 0x0d, 0x69, 0xf3,
+	0x7f, 0x2f, 0xfa, 0x65, 0xaa, 0xf6, 0x96, 0x6a, 0x7d, 0xbd, 0x4c, 0x12, 0xef, 0x49, 0xd2, 0x06,
+	0xa2, 0xa5, 0xe3, 0x79, 0xc2, 0xfc, 0x60, 0xb1, 0xa1, 0xe9, 0x42, 0xbb, 0x20, 0x1c, 0x71, 0x91,
+	0x87, 0xb3, 0xc9, 0x99, 0xe0, 0x6c, 0x61, 0xe2, 0x5d, 0xd2, 0x03, 0x3a, 0x07, 0x90, 0xa4, 0xc3,
+	0x99, 0x9f, 0x84, 0x6c, 0xc7, 0xf6, 0x53, 0xa8, 0x5e, 0x88, 0x2b, 0xc6, 0x95, 0xf1, 0xba, 0xa7,
+	0x1b, 0xd2, 0x85, 0xc7, 0x17, 0x89, 0xcf, 0x87, 0x22, 0x60, 0xea, 0xdf, 0x56, 0xf7, 0xb6, 0x3d,
+	0x79, 0x06, 0xf5, 0xe3, 0xe9, 0x54, 0xe4, 0x3c, 0x73, 0x03, 0xeb, 0x40, 0x1d, 0x16, 0x02, 0xfd,
+	0x8d, 0x00, 0x24, 0xf7, 0x7a, 0xdd, 0x8b, 0x72, 0x2a, 0xad, 0x6d, 0x2a, 0xfa, 0xb4, 0x14, 0x0a,
+	0xb1, 0xe0, 0xd1, 0x69, 0xe4, 0xc7, 0x82, 0x07, 0x6a, 0x21, 0xf6, 0x36, 0x2d, 0xfd, 0x82, 0xf6,
+	0xcc, 0xeb, 0x61, 0xb9, 0x10, 0x1b, 0xba, 0x5a, 0xda, 0x90, 0xad, 0x63, 0x1e, 0x7d, 0x8e, 0xd2,
+	0xcc, 0xac, 0x15, 0xf1, 0xab, 0x48, 0x5c, 0x7e, 0xe3, 0xcf, 0xa3, 0xc0, 0xac, 0x9e, 0x58, 0x3f,
+	0x97, 0x36, 0xba, 0x5b, 0xda, 0xe8, 0xcf, 0xd2, 0x46, 0x5f, 0x57, 0x76, 0xe5, 0x6e, 0x65, 0x57,
+	0x7e, 0xad, 0xec, 0xca, 0xa7, 0x9a, 0xfa, 0x82, 0xbc, 0xfe, 0x1b, 0x00, 0x00, 0xff, 0xff, 0xc0,
+	0x6f, 0xbc, 0x52, 0x60, 0x04, 0x00, 0x00,
+}
+
 func (m *C2S_GetOwnItems) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -694,17 +744,22 @@ func (m *C2S_GetOwnItems) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_GetOwnItems) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_GetOwnItems) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_GetOwnItems) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -712,29 +767,36 @@ func (m *S2C_GetOwnItems) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_GetOwnItems) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_GetOwnItems) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Items) > 0 {
-		for _, msg := range m.Items {
-			dAtA[i] = 0xa
-			i++
-			i = encodeVarintShop(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintShop(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0xa
 		}
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *C2S_GetOwnDealerSkins) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -742,17 +804,22 @@ func (m *C2S_GetOwnDealerSkins) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_GetOwnDealerSkins) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_GetOwnDealerSkins) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_GetOwnDealerSkins) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -760,42 +827,41 @@ func (m *S2C_GetOwnDealerSkins) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_GetOwnDealerSkins) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_GetOwnDealerSkins) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Ids) > 0 {
-		for _, s := range m.Ids {
-			dAtA[i] = 0xa
-			i++
-			l = len(s)
-			for l >= 1<<7 {
-				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
-				l >>= 7
-				i++
-			}
-			dAtA[i] = uint8(l)
-			i++
-			i += copy(dAtA[i:], s)
-		}
+	if m.Err != 0 {
+		i = encodeVarintShop(dAtA, i, uint64(m.Err))
+		i--
+		dAtA[i] = 0x18
 	}
 	if m.Id != 0 {
-		dAtA[i] = 0x10
-		i++
 		i = encodeVarintShop(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x10
 	}
-	if m.Err != 0 {
-		dAtA[i] = 0x18
-		i++
-		i = encodeVarintShop(dAtA, i, uint64(m.Err))
+	if len(m.Ids) > 0 {
+		for iNdEx := len(m.Ids) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Ids[iNdEx])
+			copy(dAtA[i:], m.Ids[iNdEx])
+			i = encodeVarintShop(dAtA, i, uint64(len(m.Ids[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+		}
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *C2S_UsingOwnDealerSkins) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -803,22 +869,27 @@ func (m *C2S_UsingOwnDealerSkins) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_UsingOwnDealerSkins) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_UsingOwnDealerSkins) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if m.Id != 0 {
-		dAtA[i] = 0x8
-		i++
 		i = encodeVarintShop(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_UsingOwnDealerSkins) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -826,27 +897,32 @@ func (m *S2C_UsingOwnDealerSkins) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_UsingOwnDealerSkins) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_UsingOwnDealerSkins) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Id != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintShop(dAtA, i, uint64(m.Id))
-	}
 	if m.Err != 0 {
-		dAtA[i] = 0x10
-		i++
 		i = encodeVarintShop(dAtA, i, uint64(m.Err))
+		i--
+		dAtA[i] = 0x10
 	}
-	return i, nil
+	if m.Id != 0 {
+		i = encodeVarintShop(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *C2S_BuyItem) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -854,27 +930,32 @@ func (m *C2S_BuyItem) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_BuyItem) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_BuyItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Id != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintShop(dAtA, i, uint64(m.Id))
-	}
 	if m.Num != 0 {
-		dAtA[i] = 0x10
-		i++
 		i = encodeVarintShop(dAtA, i, uint64(m.Num))
+		i--
+		dAtA[i] = 0x10
 	}
-	return i, nil
+	if m.Id != 0 {
+		i = encodeVarintShop(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_BuyItem) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -882,27 +963,32 @@ func (m *S2C_BuyItem) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_BuyItem) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_BuyItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Id != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintShop(dAtA, i, uint64(m.Id))
-	}
 	if m.Err != 0 {
-		dAtA[i] = 0x10
-		i++
 		i = encodeVarintShop(dAtA, i, uint64(m.Err))
+		i--
+		dAtA[i] = 0x10
 	}
-	return i, nil
+	if m.Id != 0 {
+		i = encodeVarintShop(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *C2S_Charge) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -910,40 +996,48 @@ func (m *C2S_Charge) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_Charge) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_Charge) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Id != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintShop(dAtA, i, uint64(m.Id))
-	}
-	if len(m.Token) > 0 {
-		dAtA[i] = 0x12
-		i++
-		i = encodeVarintShop(dAtA, i, uint64(len(m.Token)))
-		i += copy(dAtA[i:], m.Token)
+	if len(m.AccountId) > 0 {
+		i -= len(m.AccountId)
+		copy(dAtA[i:], m.AccountId)
+		i = encodeVarintShop(dAtA, i, uint64(len(m.AccountId)))
+		i--
+		dAtA[i] = 0x22
 	}
 	if len(m.TranCode) > 0 {
-		dAtA[i] = 0x1a
-		i++
+		i -= len(m.TranCode)
+		copy(dAtA[i:], m.TranCode)
 		i = encodeVarintShop(dAtA, i, uint64(len(m.TranCode)))
-		i += copy(dAtA[i:], m.TranCode)
+		i--
+		dAtA[i] = 0x1a
 	}
-	if len(m.AccountId) > 0 {
-		dAtA[i] = 0x22
-		i++
-		i = encodeVarintShop(dAtA, i, uint64(len(m.AccountId)))
-		i += copy(dAtA[i:], m.AccountId)
+	if len(m.Token) > 0 {
+		i -= len(m.Token)
+		copy(dAtA[i:], m.Token)
+		i = encodeVarintShop(dAtA, i, uint64(len(m.Token)))
+		i--
+		dAtA[i] = 0x12
 	}
-	return i, nil
+	if m.Id != 0 {
+		i = encodeVarintShop(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_Charge) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -951,31 +1045,38 @@ func (m *S2C_Charge) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_Charge) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_Charge) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Err != 0 {
-		dAtA[i] = 0x10
-		i++
-		i = encodeVarintShop(dAtA, i, uint64(m.Err))
-	}
 	if m.Diamond != 0 {
-		dAtA[i] = 0x18
-		i++
 		i = encodeVarintShop(dAtA, i, uint64(m.Diamond))
+		i--
+		dAtA[i] = 0x18
 	}
-	return i, nil
+	if m.Err != 0 {
+		i = encodeVarintShop(dAtA, i, uint64(m.Err))
+		i--
+		dAtA[i] = 0x10
+	}
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintShop(dAtA []byte, offset int, v uint64) int {
+	offset -= sovShop(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func (m *C2S_GetOwnItems) Size() (n int) {
 	if m == nil {
@@ -1128,14 +1229,7 @@ func (m *S2C_Charge) Size() (n int) {
 }
 
 func sovShop(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozShop(x uint64) (n int) {
 	return sovShop(uint64((x << 1) ^ uint64((int64(x) >> 63))))
@@ -1155,7 +1249,7 @@ func (m *C2S_GetOwnItems) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1176,6 +1270,9 @@ func (m *C2S_GetOwnItems) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthShop
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthShop
 			}
 			if (iNdEx + skippy) > l {
@@ -1205,7 +1302,7 @@ func (m *S2C_GetOwnItems) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1233,7 +1330,7 @@ func (m *S2C_GetOwnItems) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1242,6 +1339,9 @@ func (m *S2C_GetOwnItems) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthShop
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthShop
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1257,6 +1357,9 @@ func (m *S2C_GetOwnItems) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthShop
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthShop
 			}
 			if (iNdEx + skippy) > l {
@@ -1286,7 +1389,7 @@ func (m *C2S_GetOwnDealerSkins) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1307,6 +1410,9 @@ func (m *C2S_GetOwnDealerSkins) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthShop
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthShop
 			}
 			if (iNdEx + skippy) > l {
@@ -1336,7 +1442,7 @@ func (m *S2C_GetOwnDealerSkins) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1364,7 +1470,7 @@ func (m *S2C_GetOwnDealerSkins) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1374,6 +1480,9 @@ func (m *S2C_GetOwnDealerSkins) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthShop
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthShop
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1393,7 +1502,7 @@ func (m *S2C_GetOwnDealerSkins) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1412,7 +1521,7 @@ func (m *S2C_GetOwnDealerSkins) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Err |= (S2C_GetOwnDealerSkins_E_Err(b) & 0x7F) << shift
+				m.Err |= S2C_GetOwnDealerSkins_E_Err(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1424,6 +1533,9 @@ func (m *S2C_GetOwnDealerSkins) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthShop
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthShop
 			}
 			if (iNdEx + skippy) > l {
@@ -1453,7 +1565,7 @@ func (m *C2S_UsingOwnDealerSkins) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1481,7 +1593,7 @@ func (m *C2S_UsingOwnDealerSkins) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1493,6 +1605,9 @@ func (m *C2S_UsingOwnDealerSkins) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthShop
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthShop
 			}
 			if (iNdEx + skippy) > l {
@@ -1522,7 +1637,7 @@ func (m *S2C_UsingOwnDealerSkins) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1550,7 +1665,7 @@ func (m *S2C_UsingOwnDealerSkins) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1569,7 +1684,7 @@ func (m *S2C_UsingOwnDealerSkins) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Err |= (S2C_UsingOwnDealerSkins_E_Err(b) & 0x7F) << shift
+				m.Err |= S2C_UsingOwnDealerSkins_E_Err(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1581,6 +1696,9 @@ func (m *S2C_UsingOwnDealerSkins) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthShop
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthShop
 			}
 			if (iNdEx + skippy) > l {
@@ -1610,7 +1728,7 @@ func (m *C2S_BuyItem) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1638,7 +1756,7 @@ func (m *C2S_BuyItem) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1657,7 +1775,7 @@ func (m *C2S_BuyItem) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Num |= (int64(b) & 0x7F) << shift
+				m.Num |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1669,6 +1787,9 @@ func (m *C2S_BuyItem) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthShop
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthShop
 			}
 			if (iNdEx + skippy) > l {
@@ -1698,7 +1819,7 @@ func (m *S2C_BuyItem) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1726,7 +1847,7 @@ func (m *S2C_BuyItem) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1745,7 +1866,7 @@ func (m *S2C_BuyItem) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Err |= (S2C_BuyItem_E_Err(b) & 0x7F) << shift
+				m.Err |= S2C_BuyItem_E_Err(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1757,6 +1878,9 @@ func (m *S2C_BuyItem) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthShop
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthShop
 			}
 			if (iNdEx + skippy) > l {
@@ -1786,7 +1910,7 @@ func (m *C2S_Charge) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1814,7 +1938,7 @@ func (m *C2S_Charge) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= (int64(b) & 0x7F) << shift
+				m.Id |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1833,7 +1957,7 @@ func (m *C2S_Charge) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1843,6 +1967,9 @@ func (m *C2S_Charge) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthShop
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthShop
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1862,7 +1989,7 @@ func (m *C2S_Charge) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1872,6 +1999,9 @@ func (m *C2S_Charge) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthShop
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthShop
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1891,7 +2021,7 @@ func (m *C2S_Charge) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1901,6 +2031,9 @@ func (m *C2S_Charge) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthShop
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthShop
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1913,6 +2046,9 @@ func (m *C2S_Charge) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthShop
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthShop
 			}
 			if (iNdEx + skippy) > l {
@@ -1942,7 +2078,7 @@ func (m *S2C_Charge) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1970,7 +2106,7 @@ func (m *S2C_Charge) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Err |= (S2C_Charge_E_Err(b) & 0x7F) << shift
+				m.Err |= S2C_Charge_E_Err(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1989,7 +2125,7 @@ func (m *S2C_Charge) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Diamond |= (int64(b) & 0x7F) << shift
+				m.Diamond |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -2001,6 +2137,9 @@ func (m *S2C_Charge) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthShop
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthShop
 			}
 			if (iNdEx + skippy) > l {
@@ -2018,6 +2157,7 @@ func (m *S2C_Charge) Unmarshal(dAtA []byte) error {
 func skipShop(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
+	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -2049,10 +2189,8 @@ func skipShop(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			return iNdEx, nil
 		case 1:
 			iNdEx += 8
-			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -2069,92 +2207,34 @@ func skipShop(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			iNdEx += length
 			if length < 0 {
 				return 0, ErrInvalidLengthShop
 			}
-			return iNdEx, nil
+			iNdEx += length
 		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowShop
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipShop(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-			}
-			return iNdEx, nil
+			depth++
 		case 4:
-			return iNdEx, nil
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupShop
+			}
+			depth--
 		case 5:
 			iNdEx += 4
-			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthShop
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
 	}
-	panic("unreachable")
+	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrInvalidLengthShop = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowShop   = fmt.Errorf("proto: integer overflow")
+	ErrInvalidLengthShop        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowShop          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupShop = fmt.Errorf("proto: unexpected end of group")
 )
-
-func init() { proto.RegisterFile("shop.proto", fileDescriptor_shop_3eedebb802c6afd1) }
-
-var fileDescriptor_shop_3eedebb802c6afd1 = []byte{
-	// 519 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0x4f, 0x6f, 0x12, 0x41,
-	0x18, 0xc6, 0x99, 0x9d, 0x82, 0xf2, 0x12, 0xe9, 0x76, 0x22, 0xb0, 0x21, 0x66, 0x25, 0x73, 0x11,
-	0x2f, 0x98, 0xac, 0x5e, 0x3c, 0xb6, 0x94, 0xe8, 0xc6, 0xb4, 0x26, 0x4b, 0x7b, 0x26, 0x2b, 0x3b,
-	0x59, 0x36, 0x65, 0x67, 0x9a, 0xfd, 0xd3, 0xca, 0x87, 0x30, 0xf1, 0x63, 0x78, 0xf2, 0xe8, 0x67,
-	0xf0, 0xd8, 0xa3, 0x37, 0x0d, 0x7c, 0x11, 0x33, 0x33, 0xc0, 0x6e, 0xa4, 0x26, 0xf4, 0xf6, 0xbe,
-	0xcf, 0xcc, 0xbc, 0xef, 0xf3, 0x7b, 0x20, 0x0b, 0x90, 0xce, 0xc4, 0xf5, 0xe0, 0x3a, 0x11, 0x99,
-	0x20, 0x38, 0x4e, 0xc3, 0x2e, 0x44, 0x19, 0x8b, 0xb5, 0x40, 0x8f, 0xe0, 0x70, 0xe8, 0x8c, 0x27,
-	0xef, 0x58, 0xf6, 0xf1, 0x96, 0xbb, 0x19, 0x8b, 0x53, 0xea, 0xc0, 0xe1, 0xd8, 0x19, 0x96, 0x25,
-	0xf2, 0x1c, 0xaa, 0xaa, 0xb0, 0x50, 0x0f, 0xf7, 0x1b, 0x4e, 0x7d, 0x10, 0xa7, 0xe1, 0x40, 0x2a,
-	0x9e, 0xd6, 0x69, 0x07, 0x5a, 0xc5, 0x98, 0x53, 0xe6, 0xcf, 0x59, 0x32, 0xbe, 0x8a, 0x78, 0x4a,
-	0xbf, 0x21, 0x68, 0x15, 0xd3, 0x4a, 0x27, 0xc4, 0x04, 0xec, 0x06, 0x7a, 0x62, 0xdd, 0x93, 0x25,
-	0x69, 0x82, 0xe1, 0x06, 0x96, 0xd1, 0x43, 0x7d, 0xec, 0x19, 0x6e, 0x40, 0x1c, 0xc0, 0xa3, 0x24,
-	0xb1, 0x70, 0x0f, 0xf5, 0x9b, 0x4e, 0x4f, 0xed, 0xbc, 0x77, 0xd4, 0x60, 0x34, 0x19, 0x25, 0x89,
-	0x27, 0x2f, 0xd3, 0xb7, 0x50, 0x55, 0x1d, 0x01, 0xa8, 0xa9, 0x62, 0x62, 0x56, 0xc8, 0x11, 0x3c,
-	0xd1, 0xf5, 0x38, 0x9f, 0x4e, 0x19, 0x0b, 0x4c, 0x54, 0x48, 0x97, 0xfc, 0x03, 0x17, 0xb7, 0xdc,
-	0x34, 0xe8, 0x4b, 0xe8, 0x48, 0x86, 0xcb, 0x34, 0xe2, 0xe1, 0x3f, 0x5e, 0xb5, 0x33, 0xb4, 0x71,
-	0x46, 0xbf, 0x23, 0xe8, 0x48, 0x2b, 0x7b, 0xdc, 0x25, 0x6f, 0x34, 0x85, 0xa1, 0x28, 0xe8, 0x96,
-	0xe2, 0x9e, 0xa7, 0x65, 0x8e, 0xb3, 0x3d, 0x39, 0x08, 0x34, 0xb5, 0x74, 0x2e, 0xb2, 0xc9, 0x7b,
-	0xff, 0x86, 0x99, 0xc6, 0x2e, 0x1b, 0xa6, 0xaf, 0xa0, 0x21, 0xd9, 0x4e, 0xf2, 0x85, 0xfc, 0xbd,
-	0x76, 0x3c, 0x9a, 0x80, 0xcf, 0xf3, 0x78, 0x1d, 0xbd, 0x2c, 0xe9, 0x0f, 0x04, 0x0d, 0x69, 0xf3,
-	0x7f, 0x2f, 0xfa, 0x65, 0xaa, 0xf6, 0x96, 0x6a, 0x7d, 0xbd, 0x4c, 0x12, 0xef, 0x49, 0xd2, 0x06,
-	0xa2, 0xa5, 0xe3, 0x79, 0xc2, 0xfc, 0x60, 0xb1, 0xa1, 0xe9, 0x42, 0xbb, 0x20, 0x1c, 0x71, 0x91,
-	0x87, 0xb3, 0xc9, 0x99, 0xe0, 0x6c, 0x61, 0xe2, 0x5d, 0xd2, 0x03, 0x3a, 0x07, 0x90, 0xa4, 0xc3,
-	0x99, 0x9f, 0x84, 0x6c, 0xc7, 0xf6, 0x53, 0xa8, 0x5e, 0x88, 0x2b, 0xc6, 0x95, 0xf1, 0xba, 0xa7,
-	0x1b, 0xd2, 0x85, 0xc7, 0x17, 0x89, 0xcf, 0x87, 0x22, 0x60, 0xea, 0xdf, 0x56, 0xf7, 0xb6, 0x3d,
-	0x79, 0x06, 0xf5, 0xe3, 0xe9, 0x54, 0xe4, 0x3c, 0x73, 0x03, 0xeb, 0x40, 0x1d, 0x16, 0x02, 0xfd,
-	0x8d, 0x00, 0x24, 0xf7, 0x7a, 0xdd, 0x8b, 0x72, 0x2a, 0xad, 0x6d, 0x2a, 0xfa, 0xb4, 0x14, 0x0a,
-	0xb1, 0xe0, 0xd1, 0x69, 0xe4, 0xc7, 0x82, 0x07, 0x6a, 0x21, 0xf6, 0x36, 0x2d, 0xfd, 0x82, 0xf6,
-	0xcc, 0xeb, 0x61, 0xb9, 0x10, 0x1b, 0xba, 0x5a, 0xda, 0x90, 0xad, 0x63, 0x1e, 0x7d, 0x8e, 0xd2,
-	0xcc, 0xac, 0x15, 0xf1, 0xab, 0x48, 0x5c, 0x7e, 0xe3, 0xcf, 0xa3, 0xc0, 0xac, 0x9e, 0x58, 0x3f,
-	0x97, 0x36, 0xba, 0x5b, 0xda, 0xe8, 0xcf, 0xd2, 0x46, 0x5f, 0x57, 0x76, 0xe5, 0x6e, 0x65, 0x57,
-	0x7e, 0xad, 0xec, 0xca, 0xa7, 0x9a, 0xfa, 0x82, 0xbc, 0xfe, 0x1b, 0x00, 0x00, 0xff, 0xff, 0xc0,
-	0x6f, 0xbc, 0x52, 0x60, 0x04, 0x00, 0x00,
-}

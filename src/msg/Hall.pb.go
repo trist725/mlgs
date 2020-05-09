@@ -3,11 +3,13 @@
 
 package msg
 
-import proto "github.com/gogo/protobuf/proto"
-import fmt "fmt"
-import math "math"
-
-import io "io"
+import (
+	fmt "fmt"
+	proto "github.com/gogo/protobuf/proto"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -18,17 +20,17 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// /登陆类型
+///登陆类型
 type C2S_Login_E_LoginType int32
 
 const (
-	// /微信登陆
+	///微信登陆
 	C2S_Login_E_LoginType_WeChat C2S_Login_E_LoginType = 0
-	// /游客登陆
+	///游客登陆
 	C2S_Login_E_LoginType_Guest C2S_Login_E_LoginType = 1
-	// /万博登陆
+	///万博登陆
 	C2S_Login_E_LoginType_WanBo C2S_Login_E_LoginType = 2
 )
 
@@ -37,6 +39,7 @@ var C2S_Login_E_LoginType_name = map[int32]string{
 	1: "E_LoginType_Guest",
 	2: "E_LoginType_WanBo",
 }
+
 var C2S_Login_E_LoginType_value = map[string]int32{
 	"E_LoginType_WeChat": 0,
 	"E_LoginType_Guest":  1,
@@ -46,30 +49,31 @@ var C2S_Login_E_LoginType_value = map[string]int32{
 func (x C2S_Login_E_LoginType) String() string {
 	return proto.EnumName(C2S_Login_E_LoginType_name, int32(x))
 }
+
 func (C2S_Login_E_LoginType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_bae5ae9e6d7f23f5, []int{0, 0}
+	return fileDescriptor_a77d98885c0f92eb, []int{0, 0}
 }
 
 type S2C_Login_E_ErrReason int32
 
 const (
-	// /保留
+	///保留
 	S2C_Login_E_ErrReason_ S2C_Login_E_ErrReason = 0
-	// /成功登陆,将下发数据
+	///成功登陆,将下发数据
 	S2C_Login_E_Err_LoginSuccess S2C_Login_E_ErrReason = 1
-	// /成功创建新账号,读表获取初始数据
+	///成功创建新账号,读表获取初始数据
 	S2C_Login_E_Err_NewAccount S2C_Login_E_ErrReason = 2
-	// /登陆信息不匹配,登陆失败
+	///登陆信息不匹配,登陆失败
 	S2C_Login_E_Err_LoginInfoNotMatch S2C_Login_E_ErrReason = 3
-	// /验证通过,允许登陆,但登陆地点异常警告
+	///验证通过,允许登陆,但登陆地点异常警告
 	S2C_Login_E_Err_LocationWarn S2C_Login_E_ErrReason = 4
-	// /用户不存在
+	///用户不存在
 	S2C_Login_E_Err_UserNotExist S2C_Login_E_ErrReason = 5
-	// /已登陆
+	///已登陆
 	S2C_Login_E_Err_AlreadyLogin S2C_Login_E_ErrReason = 6
-	// /其它错误
+	///其它错误
 	S2C_Login_E_Err_Unknown S2C_Login_E_ErrReason = 7
-	// /客户端版本过低
+	///客户端版本过低
 	S2C_Login_E_Err_LowVersion S2C_Login_E_ErrReason = 8
 )
 
@@ -84,6 +88,7 @@ var S2C_Login_E_ErrReason_name = map[int32]string{
 	7: "E_Err_Unknown",
 	8: "E_Err_LowVersion",
 }
+
 var S2C_Login_E_ErrReason_value = map[string]int32{
 	"E_ErrReason_":            0,
 	"E_Err_LoginSuccess":      1,
@@ -99,20 +104,21 @@ var S2C_Login_E_ErrReason_value = map[string]int32{
 func (x S2C_Login_E_ErrReason) String() string {
 	return proto.EnumName(S2C_Login_E_ErrReason_name, int32(x))
 }
+
 func (S2C_Login_E_ErrReason) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_bae5ae9e6d7f23f5, []int{1, 0}
+	return fileDescriptor_a77d98885c0f92eb, []int{1, 0}
 }
 
 type S2C_DaySign_E_Err_DaySign int32
 
 const (
-	// /保留
+	///保留
 	S2C_DaySign_E_ErrReason_ S2C_DaySign_E_Err_DaySign = 0
-	// /成功签到
+	///成功签到
 	S2C_DaySign_E_Err_Success S2C_DaySign_E_Err_DaySign = 1
-	// /今日已签到
+	///今日已签到
 	S2C_DaySign_E_Err_AlreadySign S2C_DaySign_E_Err_DaySign = 2
-	// /其它错误
+	///其它错误
 	S2C_DaySign_E_Err_Unknown S2C_DaySign_E_Err_DaySign = 6
 )
 
@@ -122,6 +128,7 @@ var S2C_DaySign_E_Err_DaySign_name = map[int32]string{
 	2: "E_Err_AlreadySign",
 	6: "E_Err_Unknown",
 }
+
 var S2C_DaySign_E_Err_DaySign_value = map[string]int32{
 	"E_ErrReason_":      0,
 	"E_Err_Success":     1,
@@ -132,20 +139,21 @@ var S2C_DaySign_E_Err_DaySign_value = map[string]int32{
 func (x S2C_DaySign_E_Err_DaySign) String() string {
 	return proto.EnumName(S2C_DaySign_E_Err_DaySign_name, int32(x))
 }
+
 func (S2C_DaySign_E_Err_DaySign) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_bae5ae9e6d7f23f5, []int{4, 0}
+	return fileDescriptor_a77d98885c0f92eb, []int{4, 0}
 }
 
 type S2C_SwitchHallRoleSex_E_Err int32
 
 const (
-	// /保留
+	///保留
 	S2C_SwitchHallRoleSex_E_Err_ S2C_SwitchHallRoleSex_E_Err = 0
-	// /成功
+	///成功
 	S2C_SwitchHallRoleSex_E_Err_Success S2C_SwitchHallRoleSex_E_Err = 1
-	// /参数不对
+	///参数不对
 	S2C_SwitchHallRoleSex_E_Err_Invalid_Param S2C_SwitchHallRoleSex_E_Err = 2
-	// /其它错误
+	///其它错误
 	S2C_SwitchHallRoleSex_E_Err_Unknown S2C_SwitchHallRoleSex_E_Err = 3
 )
 
@@ -155,6 +163,7 @@ var S2C_SwitchHallRoleSex_E_Err_name = map[int32]string{
 	2: "E_Err_Invalid_Param",
 	3: "E_Err_Unknown",
 }
+
 var S2C_SwitchHallRoleSex_E_Err_value = map[string]int32{
 	"E_Err_":              0,
 	"E_Err_Success":       1,
@@ -165,33 +174,34 @@ var S2C_SwitchHallRoleSex_E_Err_value = map[string]int32{
 func (x S2C_SwitchHallRoleSex_E_Err) String() string {
 	return proto.EnumName(S2C_SwitchHallRoleSex_E_Err_name, int32(x))
 }
+
 func (S2C_SwitchHallRoleSex_E_Err) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_bae5ae9e6d7f23f5, []int{6, 0}
+	return fileDescriptor_a77d98885c0f92eb, []int{6, 0}
 }
 
-// /登陆请求
-// @msg
+///登陆请求
+//@msg
 type C2S_Login struct {
-	// /微信登陆时是微信uid,游客登陆时是手机唯一标识,万博登陆是playerid
+	///微信登陆时是微信uid,游客登陆时是手机唯一标识,万博登陆是playerid
 	UID string `protobuf:"bytes,1,opt,name=UID,proto3" json:"UID,omitempty"`
-	// /用户昵称
+	///用户昵称
 	NickName string `protobuf:"bytes,2,opt,name=NickName,proto3" json:"NickName,omitempty"`
-	// /用户头像url
+	///用户头像url
 	AvatarURL string `protobuf:"bytes,3,opt,name=AvatarURL,proto3" json:"AvatarURL,omitempty"`
-	// /性别
+	///性别
 	Sex string `protobuf:"bytes,4,opt,name=sex,proto3" json:"sex,omitempty"`
-	// 微信登陆传openid，游客登陆传空,万博登陆用万博密码
+	//微信登陆传openid，游客登陆传空,万博登陆用万博密码
 	Password string `protobuf:"bytes,5,opt,name=password,proto3" json:"password,omitempty"`
-	// /地理位置
+	///地理位置
 	Location  string                `protobuf:"bytes,6,opt,name=location,proto3" json:"location,omitempty"`
 	Logintype C2S_Login_E_LoginType `protobuf:"varint,7,opt,name=logintype,proto3,enum=msg.C2S_Login_E_LoginType" json:"logintype,omitempty"`
-	// /客户端设备类型,1-android,2-ios,3-h5
+	///客户端设备类型,1-android,2-ios,3-h5
 	CltType int32 `protobuf:"varint,8,opt,name=CltType,proto3" json:"CltType,omitempty"`
-	// /客户端版本号: BigVer.SmallVer.FixVer
+	///客户端版本号: BigVer.SmallVer.FixVer
 	BigVer   int32 `protobuf:"varint,9,opt,name=BigVer,proto3" json:"BigVer,omitempty"`
 	SmallVer int32 `protobuf:"varint,10,opt,name=SmallVer,proto3" json:"SmallVer,omitempty"`
 	FixVer   int32 `protobuf:"varint,11,opt,name=FixVer,proto3" json:"FixVer,omitempty"`
-	// /万博登陆token,暂时7天有效期
+	///万博登陆token,暂时7天有效期
 	Token string `protobuf:"bytes,12,opt,name=Token,proto3" json:"Token,omitempty"`
 }
 
@@ -199,7 +209,7 @@ func (m *C2S_Login) Reset()         { *m = C2S_Login{} }
 func (m *C2S_Login) String() string { return proto.CompactTextString(m) }
 func (*C2S_Login) ProtoMessage()    {}
 func (*C2S_Login) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_bae5ae9e6d7f23f5, []int{0}
+	return fileDescriptor_a77d98885c0f92eb, []int{0}
 }
 func (m *C2S_Login) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -209,15 +219,15 @@ func (m *C2S_Login) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_C2S_Login.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_Login) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_Login.Merge(dst, src)
+func (m *C2S_Login) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_Login.Merge(m, src)
 }
 func (m *C2S_Login) XXX_Size() int {
 	return m.Size()
@@ -312,13 +322,13 @@ func (m *C2S_Login) GetToken() string {
 	return ""
 }
 
-// /登陆回复
-// @msg
+///登陆回复
+//@msg
 type S2C_Login struct {
 	Reason S2C_Login_E_ErrReason `protobuf:"varint,1,opt,name=reason,proto3,enum=msg.S2C_Login_E_ErrReason" json:"reason,omitempty"`
-	// /万博响应码
+	///万博响应码
 	WanboRes int32 `protobuf:"varint,2,opt,name=WanboRes,proto3" json:"WanboRes,omitempty"`
-	// /万博登陆token,暂时7天有效期
+	///万博登陆token,暂时7天有效期
 	Token string `protobuf:"bytes,3,opt,name=Token,proto3" json:"Token,omitempty"`
 }
 
@@ -326,7 +336,7 @@ func (m *S2C_Login) Reset()         { *m = S2C_Login{} }
 func (m *S2C_Login) String() string { return proto.CompactTextString(m) }
 func (*S2C_Login) ProtoMessage()    {}
 func (*S2C_Login) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_bae5ae9e6d7f23f5, []int{1}
+	return fileDescriptor_a77d98885c0f92eb, []int{1}
 }
 func (m *S2C_Login) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -336,15 +346,15 @@ func (m *S2C_Login) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_S2C_Login.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_Login) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_Login.Merge(dst, src)
+func (m *S2C_Login) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_Login.Merge(m, src)
 }
 func (m *S2C_Login) XXX_Size() int {
 	return m.Size()
@@ -376,28 +386,28 @@ func (m *S2C_Login) GetToken() string {
 	return ""
 }
 
-// /登陆成功后下发信息
-// @msg
+///登陆成功后下发信息
+//@msg
 type S2C_LoginInfo struct {
-	// /玩家id
+	///玩家id
 	ID int64 `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
-	// /用户昵称
+	///用户昵称
 	NickName string `protobuf:"bytes,2,opt,name=NickName,proto3" json:"NickName,omitempty"`
-	// /头像url
+	///头像url
 	AvatarURL string `protobuf:"bytes,3,opt,name=AvatarURL,proto3" json:"AvatarURL,omitempty"`
-	// /货币信息
-	Monies []*Money `protobuf:"bytes,4,rep,name=Monies" json:"Monies,omitempty"`
-	// /今日是否已签到
+	///货币信息
+	Monies []*Money `protobuf:"bytes,4,rep,name=Monies,proto3" json:"Monies,omitempty"`
+	///今日是否已签到
 	DaySigned bool `protobuf:"varint,5,opt,name=DaySigned,proto3" json:"DaySigned,omitempty"`
-	// /已签到天数
+	///已签到天数
 	SignedDays int32 `protobuf:"varint,6,opt,name=SignedDays,proto3" json:"SignedDays,omitempty"`
-	// /每日签到奖励,数组第几个代表第几天
-	SignRewards []*Item `protobuf:"bytes,7,rep,name=SignRewards" json:"SignRewards,omitempty"`
-	// /使用中的荷官在item表中的id,0是默认皮肤
+	///每日签到奖励,数组第几个代表第几天
+	SignRewards []*Item `protobuf:"bytes,7,rep,name=SignRewards,proto3" json:"SignRewards,omitempty"`
+	///使用中的荷官在item表中的id,0是默认皮肤
 	UsingDealer int64 `protobuf:"varint,8,opt,name=UsingDealer,proto3" json:"UsingDealer,omitempty"`
-	// /大厅角色性别,0-女,1-男
+	///大厅角色性别,0-女,1-男
 	HallRoleSex int32 `protobuf:"varint,9,opt,name=HallRoleSex,proto3" json:"HallRoleSex,omitempty"`
-	// /是否在游戏中(重连)
+	///是否在游戏中(重连)
 	InTheGame bool `protobuf:"varint,10,opt,name=InTheGame,proto3" json:"InTheGame,omitempty"`
 }
 
@@ -405,7 +415,7 @@ func (m *S2C_LoginInfo) Reset()         { *m = S2C_LoginInfo{} }
 func (m *S2C_LoginInfo) String() string { return proto.CompactTextString(m) }
 func (*S2C_LoginInfo) ProtoMessage()    {}
 func (*S2C_LoginInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_bae5ae9e6d7f23f5, []int{2}
+	return fileDescriptor_a77d98885c0f92eb, []int{2}
 }
 func (m *S2C_LoginInfo) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -415,15 +425,15 @@ func (m *S2C_LoginInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_S2C_LoginInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_LoginInfo) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_LoginInfo.Merge(dst, src)
+func (m *S2C_LoginInfo) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_LoginInfo.Merge(m, src)
 }
 func (m *S2C_LoginInfo) XXX_Size() int {
 	return m.Size()
@@ -504,10 +514,10 @@ func (m *S2C_LoginInfo) GetInTheGame() bool {
 	return false
 }
 
-// /每日签到请求
-// @msg
+///每日签到请求
+//@msg
 type C2S_DaySign struct {
-	// /要签到的天数
+	///要签到的天数
 	Day int32 `protobuf:"varint,1,opt,name=day,proto3" json:"day,omitempty"`
 }
 
@@ -515,7 +525,7 @@ func (m *C2S_DaySign) Reset()         { *m = C2S_DaySign{} }
 func (m *C2S_DaySign) String() string { return proto.CompactTextString(m) }
 func (*C2S_DaySign) ProtoMessage()    {}
 func (*C2S_DaySign) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_bae5ae9e6d7f23f5, []int{3}
+	return fileDescriptor_a77d98885c0f92eb, []int{3}
 }
 func (m *C2S_DaySign) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -525,15 +535,15 @@ func (m *C2S_DaySign) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_C2S_DaySign.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_DaySign) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_DaySign.Merge(dst, src)
+func (m *C2S_DaySign) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_DaySign.Merge(m, src)
 }
 func (m *C2S_DaySign) XXX_Size() int {
 	return m.Size()
@@ -551,19 +561,19 @@ func (m *C2S_DaySign) GetDay() int32 {
 	return 0
 }
 
-// /每日签到回复
-// @msg
+///每日签到回复
+//@msg
 type S2C_DaySign struct {
 	Err S2C_DaySign_E_Err_DaySign `protobuf:"varint,1,opt,name=err,proto3,enum=msg.S2C_DaySign_E_Err_DaySign" json:"err,omitempty"`
-	// /签到后的货币信息
-	Monies []*Money `protobuf:"bytes,2,rep,name=Monies" json:"Monies,omitempty"`
+	///签到后的货币信息
+	Monies []*Money `protobuf:"bytes,2,rep,name=Monies,proto3" json:"Monies,omitempty"`
 }
 
 func (m *S2C_DaySign) Reset()         { *m = S2C_DaySign{} }
 func (m *S2C_DaySign) String() string { return proto.CompactTextString(m) }
 func (*S2C_DaySign) ProtoMessage()    {}
 func (*S2C_DaySign) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_bae5ae9e6d7f23f5, []int{4}
+	return fileDescriptor_a77d98885c0f92eb, []int{4}
 }
 func (m *S2C_DaySign) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -573,15 +583,15 @@ func (m *S2C_DaySign) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_S2C_DaySign.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_DaySign) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_DaySign.Merge(dst, src)
+func (m *S2C_DaySign) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_DaySign.Merge(m, src)
 }
 func (m *S2C_DaySign) XXX_Size() int {
 	return m.Size()
@@ -606,10 +616,10 @@ func (m *S2C_DaySign) GetMonies() []*Money {
 	return nil
 }
 
-// /切换大厅角色显示的性别
-// @msg
+///切换大厅角色显示的性别
+//@msg
 type C2S_SwitchHallRoleSex struct {
-	// /要切换到的性别,0-女,1-男
+	///要切换到的性别,0-女,1-男
 	Sex int32 `protobuf:"varint,1,opt,name=Sex,proto3" json:"Sex,omitempty"`
 }
 
@@ -617,7 +627,7 @@ func (m *C2S_SwitchHallRoleSex) Reset()         { *m = C2S_SwitchHallRoleSex{} }
 func (m *C2S_SwitchHallRoleSex) String() string { return proto.CompactTextString(m) }
 func (*C2S_SwitchHallRoleSex) ProtoMessage()    {}
 func (*C2S_SwitchHallRoleSex) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_bae5ae9e6d7f23f5, []int{5}
+	return fileDescriptor_a77d98885c0f92eb, []int{5}
 }
 func (m *C2S_SwitchHallRoleSex) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -627,15 +637,15 @@ func (m *C2S_SwitchHallRoleSex) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_C2S_SwitchHallRoleSex.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *C2S_SwitchHallRoleSex) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_C2S_SwitchHallRoleSex.Merge(dst, src)
+func (m *C2S_SwitchHallRoleSex) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_C2S_SwitchHallRoleSex.Merge(m, src)
 }
 func (m *C2S_SwitchHallRoleSex) XXX_Size() int {
 	return m.Size()
@@ -653,7 +663,7 @@ func (m *C2S_SwitchHallRoleSex) GetSex() int32 {
 	return 0
 }
 
-// @msg
+//@msg
 type S2C_SwitchHallRoleSex struct {
 	Err S2C_SwitchHallRoleSex_E_Err `protobuf:"varint,1,opt,name=Err,proto3,enum=msg.S2C_SwitchHallRoleSex_E_Err" json:"Err,omitempty"`
 }
@@ -662,7 +672,7 @@ func (m *S2C_SwitchHallRoleSex) Reset()         { *m = S2C_SwitchHallRoleSex{} }
 func (m *S2C_SwitchHallRoleSex) String() string { return proto.CompactTextString(m) }
 func (*S2C_SwitchHallRoleSex) ProtoMessage()    {}
 func (*S2C_SwitchHallRoleSex) Descriptor() ([]byte, []int) {
-	return fileDescriptor_Hall_bae5ae9e6d7f23f5, []int{6}
+	return fileDescriptor_a77d98885c0f92eb, []int{6}
 }
 func (m *S2C_SwitchHallRoleSex) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -672,15 +682,15 @@ func (m *S2C_SwitchHallRoleSex) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return xxx_messageInfo_S2C_SwitchHallRoleSex.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (dst *S2C_SwitchHallRoleSex) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_S2C_SwitchHallRoleSex.Merge(dst, src)
+func (m *S2C_SwitchHallRoleSex) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_S2C_SwitchHallRoleSex.Merge(m, src)
 }
 func (m *S2C_SwitchHallRoleSex) XXX_Size() int {
 	return m.Size()
@@ -699,6 +709,10 @@ func (m *S2C_SwitchHallRoleSex) GetErr() S2C_SwitchHallRoleSex_E_Err {
 }
 
 func init() {
+	proto.RegisterEnum("msg.C2S_Login_E_LoginType", C2S_Login_E_LoginType_name, C2S_Login_E_LoginType_value)
+	proto.RegisterEnum("msg.S2C_Login_E_ErrReason", S2C_Login_E_ErrReason_name, S2C_Login_E_ErrReason_value)
+	proto.RegisterEnum("msg.S2C_DaySign_E_Err_DaySign", S2C_DaySign_E_Err_DaySign_name, S2C_DaySign_E_Err_DaySign_value)
+	proto.RegisterEnum("msg.S2C_SwitchHallRoleSex_E_Err", S2C_SwitchHallRoleSex_E_Err_name, S2C_SwitchHallRoleSex_E_Err_value)
 	proto.RegisterType((*C2S_Login)(nil), "msg.C2S_Login")
 	proto.RegisterType((*S2C_Login)(nil), "msg.S2C_Login")
 	proto.RegisterType((*S2C_LoginInfo)(nil), "msg.S2C_LoginInfo")
@@ -706,15 +720,68 @@ func init() {
 	proto.RegisterType((*S2C_DaySign)(nil), "msg.S2C_DaySign")
 	proto.RegisterType((*C2S_SwitchHallRoleSex)(nil), "msg.C2S_SwitchHallRoleSex")
 	proto.RegisterType((*S2C_SwitchHallRoleSex)(nil), "msg.S2C_SwitchHallRoleSex")
-	proto.RegisterEnum("msg.C2S_Login_E_LoginType", C2S_Login_E_LoginType_name, C2S_Login_E_LoginType_value)
-	proto.RegisterEnum("msg.S2C_Login_E_ErrReason", S2C_Login_E_ErrReason_name, S2C_Login_E_ErrReason_value)
-	proto.RegisterEnum("msg.S2C_DaySign_E_Err_DaySign", S2C_DaySign_E_Err_DaySign_name, S2C_DaySign_E_Err_DaySign_value)
-	proto.RegisterEnum("msg.S2C_SwitchHallRoleSex_E_Err", S2C_SwitchHallRoleSex_E_Err_name, S2C_SwitchHallRoleSex_E_Err_value)
 }
+
+func init() { proto.RegisterFile("Hall.proto", fileDescriptor_a77d98885c0f92eb) }
+
+var fileDescriptor_a77d98885c0f92eb = []byte{
+	// 797 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x55, 0xcd, 0x6e, 0xdb, 0x46,
+	0x10, 0x16, 0x49, 0x93, 0xb6, 0x86, 0x49, 0xb0, 0xd9, 0xc6, 0x09, 0xe1, 0x16, 0xac, 0xc0, 0x93,
+	0x8b, 0x02, 0x42, 0xa1, 0x5e, 0x7a, 0xf5, 0x8f, 0x9a, 0x0a, 0xb0, 0x85, 0x62, 0x69, 0xc7, 0xb7,
+	0x0a, 0x1b, 0x6a, 0x2b, 0x11, 0x26, 0x77, 0x85, 0x5d, 0x3a, 0x92, 0xde, 0xa2, 0x6f, 0xd0, 0x17,
+	0xe8, 0x5b, 0xf4, 0x52, 0xf4, 0xd2, 0x1c, 0x0b, 0xf4, 0x52, 0xd8, 0x2f, 0x52, 0xec, 0x2e, 0x45,
+	0x12, 0x71, 0x7a, 0xca, 0x49, 0xfb, 0x7d, 0x33, 0x1c, 0x7e, 0xdf, 0xec, 0x0c, 0x05, 0xf0, 0x03,
+	0x2d, 0x8a, 0xe1, 0x4a, 0x8a, 0x4a, 0x60, 0xaf, 0x54, 0x8b, 0xa3, 0xb0, 0x14, 0x9c, 0x6d, 0x2d,
+	0x73, 0x04, 0x79, 0xc5, 0x4a, 0x7b, 0x4e, 0x7e, 0xf3, 0xa0, 0x7f, 0x36, 0x4a, 0x67, 0x17, 0x62,
+	0x91, 0x73, 0x8c, 0xc0, 0xbb, 0x9e, 0x9c, 0x47, 0xce, 0xc0, 0x39, 0xee, 0x13, 0x7d, 0xc4, 0x47,
+	0x70, 0x30, 0xcd, 0xb3, 0xdb, 0x29, 0x2d, 0x59, 0xe4, 0x1a, 0xba, 0xc1, 0xf8, 0x0b, 0xe8, 0x9f,
+	0xbc, 0xa3, 0x15, 0x95, 0xd7, 0xe4, 0x22, 0xf2, 0x4c, 0xb0, 0x25, 0x74, 0x2d, 0xc5, 0x36, 0xd1,
+	0x9e, 0xad, 0xa5, 0xd8, 0x46, 0xd7, 0x5a, 0x51, 0xa5, 0xd6, 0x42, 0xce, 0x23, 0xdf, 0xd6, 0xda,
+	0x61, 0x1d, 0x2b, 0x44, 0x46, 0xab, 0x5c, 0xf0, 0x28, 0xb0, 0xb1, 0x1d, 0xc6, 0xdf, 0x41, 0xbf,
+	0xd0, 0xf2, 0xaa, 0xed, 0x8a, 0x45, 0xfb, 0x03, 0xe7, 0xf8, 0xd9, 0xe8, 0x68, 0x58, 0xaa, 0xc5,
+	0xb0, 0x11, 0x3e, 0x1c, 0xdb, 0xdf, 0xab, 0xed, 0x8a, 0x91, 0x36, 0x19, 0x47, 0xb0, 0x7f, 0x56,
+	0x54, 0x9a, 0x8d, 0x0e, 0x06, 0xce, 0xb1, 0x4f, 0x76, 0x10, 0xbf, 0x84, 0xe0, 0x34, 0x5f, 0xbc,
+	0x61, 0x32, 0xea, 0x9b, 0x40, 0x8d, 0xb4, 0x8e, 0xb4, 0xa4, 0x45, 0xa1, 0x23, 0x60, 0x22, 0x0d,
+	0xd6, 0xcf, 0x7c, 0x9f, 0x6f, 0x74, 0x24, 0xb4, 0xcf, 0x58, 0x84, 0x5f, 0x80, 0x7f, 0x25, 0x6e,
+	0x19, 0x8f, 0x9e, 0x18, 0xe1, 0x16, 0x24, 0x29, 0x84, 0x1d, 0x55, 0xf8, 0x25, 0xe0, 0x0e, 0x9c,
+	0xdd, 0xb0, 0xb3, 0x25, 0xad, 0x50, 0x0f, 0x1f, 0xc2, 0xf3, 0x2e, 0xff, 0xfa, 0x8e, 0xa9, 0x0a,
+	0x39, 0x1f, 0xd2, 0x37, 0x94, 0x9f, 0x0a, 0xe4, 0x26, 0x7f, 0xb9, 0xd0, 0x4f, 0x47, 0x67, 0xf5,
+	0x75, 0x8d, 0x20, 0x90, 0x8c, 0x2a, 0xc1, 0xcd, 0x8d, 0xed, 0xba, 0xd2, 0xc4, 0x87, 0xe3, 0xd9,
+	0x58, 0x4a, 0x62, 0x32, 0x48, 0x9d, 0xa9, 0x0d, 0xde, 0x50, 0xfe, 0x56, 0x10, 0xa6, 0xcc, 0x85,
+	0xfa, 0xa4, 0xc1, 0xad, 0x11, 0xaf, 0x6b, 0xe4, 0x1f, 0x47, 0x3b, 0x69, 0x2a, 0x61, 0x04, 0x4f,
+	0x3a, 0x70, 0x86, 0x7a, 0xd6, 0xdb, 0x58, 0x4a, 0xfb, 0xda, 0xf4, 0x2e, 0xcb, 0x98, 0x52, 0xc8,
+	0xc1, 0x2f, 0x00, 0x59, 0x7e, 0xca, 0xd6, 0x27, 0x59, 0x26, 0xee, 0x78, 0x85, 0x5c, 0xfc, 0x39,
+	0xbc, 0xea, 0x64, 0x4f, 0xf8, 0xcf, 0x62, 0x2a, 0xaa, 0x4b, 0x5a, 0x65, 0x4b, 0xe4, 0x75, 0x4b,
+	0xd9, 0xdb, 0xbf, 0xa1, 0x92, 0xa3, 0xbd, 0x96, 0xbf, 0x56, 0x4c, 0x4e, 0x45, 0x35, 0xde, 0xe4,
+	0xaa, 0x42, 0x7e, 0xcb, 0x9f, 0x14, 0x92, 0xd1, 0xf9, 0xd6, 0xd4, 0x44, 0x01, 0x7e, 0x0e, 0x4f,
+	0xeb, 0x7c, 0x7e, 0xcb, 0xc5, 0x9a, 0xa3, 0xfd, 0x56, 0xcd, 0x85, 0x58, 0xbf, 0x61, 0x52, 0xe5,
+	0x82, 0xa3, 0x83, 0xe4, 0x4f, 0x17, 0x9e, 0x36, 0x1d, 0xd3, 0x62, 0xf0, 0x33, 0x70, 0xeb, 0x1d,
+	0xf0, 0x88, 0xfb, 0x49, 0x2b, 0x90, 0x40, 0x70, 0x29, 0x78, 0xce, 0x54, 0xb4, 0x37, 0xf0, 0x8e,
+	0xc3, 0x11, 0x98, 0xfb, 0xb9, 0xd4, 0xab, 0x48, 0xea, 0x88, 0xae, 0x70, 0x4e, 0xb7, 0x69, 0xbe,
+	0xe0, 0xcc, 0x6e, 0xc5, 0x01, 0x69, 0x09, 0x1c, 0x03, 0xd8, 0xd3, 0x39, 0xdd, 0x2a, 0xb3, 0x18,
+	0x3e, 0xe9, 0x30, 0xf8, 0x6b, 0x08, 0x35, 0x22, 0x6c, 0x4d, 0xe5, 0x5c, 0x45, 0xfb, 0xe6, 0x35,
+	0x7d, 0xf3, 0x9a, 0x49, 0xc5, 0x4a, 0xd2, 0x8d, 0xe2, 0x01, 0x84, 0xd7, 0x2a, 0xe7, 0x8b, 0x73,
+	0x46, 0x0b, 0x26, 0xcd, 0x46, 0x78, 0xa4, 0x4b, 0xe9, 0x0c, 0xfd, 0xe5, 0x20, 0xa2, 0x60, 0x29,
+	0xdb, 0xd4, 0xab, 0xd1, 0xa5, 0xb4, 0xdc, 0x09, 0xbf, 0x5a, 0xb2, 0xd7, 0xba, 0x1b, 0x60, 0xe5,
+	0x36, 0x44, 0xf2, 0x25, 0x84, 0x7a, 0x27, 0x6b, 0xfd, 0xfa, 0x13, 0x30, 0xa7, 0x5b, 0xd3, 0x4a,
+	0x9f, 0xe8, 0x63, 0xf2, 0xbb, 0x03, 0xa1, 0xee, 0xf6, 0x2e, 0xe3, 0x1b, 0xf0, 0x98, 0x94, 0xf5,
+	0xf8, 0xc6, 0xcd, 0xf8, 0xd6, 0x61, 0x3b, 0xc0, 0x3b, 0x44, 0x74, 0x6a, 0xa7, 0xa7, 0xee, 0xff,
+	0xf5, 0x34, 0xf9, 0x69, 0x77, 0xf9, 0xad, 0x90, 0x0f, 0x47, 0xb6, 0x99, 0x8f, 0x76, 0x5a, 0xcd,
+	0xca, 0x75, 0x46, 0x49, 0x3f, 0x89, 0xdc, 0xc7, 0x93, 0x14, 0x24, 0x5f, 0xc1, 0xa1, 0xb6, 0x99,
+	0xae, 0xf3, 0x2a, 0x5b, 0x76, 0xbb, 0x83, 0xc0, 0xd3, 0x7d, 0xab, 0x0d, 0xa7, 0x6c, 0x93, 0xfc,
+	0xea, 0xc0, 0xa1, 0x76, 0xf4, 0x38, 0x77, 0x04, 0xde, 0xb8, 0xb1, 0x3e, 0x68, 0xac, 0x3f, 0x4a,
+	0xac, 0xb7, 0x58, 0x27, 0x27, 0x04, 0x7c, 0x83, 0x30, 0x40, 0x60, 0x45, 0x7d, 0xdc, 0xca, 0x2b,
+	0xf8, 0xcc, 0x52, 0x13, 0xfe, 0x8e, 0x16, 0xf9, 0x7c, 0xf6, 0x23, 0x95, 0xb4, 0xfc, 0x98, 0x19,
+	0xef, 0x34, 0xfa, 0xe3, 0x3e, 0x76, 0xde, 0xdf, 0xc7, 0xce, 0xbf, 0xf7, 0xb1, 0xf3, 0xcb, 0x43,
+	0xdc, 0x7b, 0xff, 0x10, 0xf7, 0xfe, 0x7e, 0x88, 0x7b, 0x6f, 0x03, 0xf3, 0x17, 0xf1, 0xed, 0x7f,
+	0x01, 0x00, 0x00, 0xff, 0xff, 0x5c, 0x93, 0x4f, 0x34, 0x4e, 0x06, 0x00, 0x00,
+}
+
 func (m *C2S_Login) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -722,84 +789,96 @@ func (m *C2S_Login) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_Login) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_Login) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.UID) > 0 {
-		dAtA[i] = 0xa
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(len(m.UID)))
-		i += copy(dAtA[i:], m.UID)
-	}
-	if len(m.NickName) > 0 {
-		dAtA[i] = 0x12
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(len(m.NickName)))
-		i += copy(dAtA[i:], m.NickName)
-	}
-	if len(m.AvatarURL) > 0 {
-		dAtA[i] = 0x1a
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(len(m.AvatarURL)))
-		i += copy(dAtA[i:], m.AvatarURL)
-	}
-	if len(m.Sex) > 0 {
-		dAtA[i] = 0x22
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(len(m.Sex)))
-		i += copy(dAtA[i:], m.Sex)
-	}
-	if len(m.Password) > 0 {
-		dAtA[i] = 0x2a
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(len(m.Password)))
-		i += copy(dAtA[i:], m.Password)
-	}
-	if len(m.Location) > 0 {
-		dAtA[i] = 0x32
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(len(m.Location)))
-		i += copy(dAtA[i:], m.Location)
-	}
-	if m.Logintype != 0 {
-		dAtA[i] = 0x38
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(m.Logintype))
-	}
-	if m.CltType != 0 {
-		dAtA[i] = 0x40
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(m.CltType))
-	}
-	if m.BigVer != 0 {
-		dAtA[i] = 0x48
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(m.BigVer))
-	}
-	if m.SmallVer != 0 {
-		dAtA[i] = 0x50
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(m.SmallVer))
+	if len(m.Token) > 0 {
+		i -= len(m.Token)
+		copy(dAtA[i:], m.Token)
+		i = encodeVarintHall(dAtA, i, uint64(len(m.Token)))
+		i--
+		dAtA[i] = 0x62
 	}
 	if m.FixVer != 0 {
-		dAtA[i] = 0x58
-		i++
 		i = encodeVarintHall(dAtA, i, uint64(m.FixVer))
+		i--
+		dAtA[i] = 0x58
 	}
-	if len(m.Token) > 0 {
-		dAtA[i] = 0x62
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(len(m.Token)))
-		i += copy(dAtA[i:], m.Token)
+	if m.SmallVer != 0 {
+		i = encodeVarintHall(dAtA, i, uint64(m.SmallVer))
+		i--
+		dAtA[i] = 0x50
 	}
-	return i, nil
+	if m.BigVer != 0 {
+		i = encodeVarintHall(dAtA, i, uint64(m.BigVer))
+		i--
+		dAtA[i] = 0x48
+	}
+	if m.CltType != 0 {
+		i = encodeVarintHall(dAtA, i, uint64(m.CltType))
+		i--
+		dAtA[i] = 0x40
+	}
+	if m.Logintype != 0 {
+		i = encodeVarintHall(dAtA, i, uint64(m.Logintype))
+		i--
+		dAtA[i] = 0x38
+	}
+	if len(m.Location) > 0 {
+		i -= len(m.Location)
+		copy(dAtA[i:], m.Location)
+		i = encodeVarintHall(dAtA, i, uint64(len(m.Location)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if len(m.Password) > 0 {
+		i -= len(m.Password)
+		copy(dAtA[i:], m.Password)
+		i = encodeVarintHall(dAtA, i, uint64(len(m.Password)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.Sex) > 0 {
+		i -= len(m.Sex)
+		copy(dAtA[i:], m.Sex)
+		i = encodeVarintHall(dAtA, i, uint64(len(m.Sex)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.AvatarURL) > 0 {
+		i -= len(m.AvatarURL)
+		copy(dAtA[i:], m.AvatarURL)
+		i = encodeVarintHall(dAtA, i, uint64(len(m.AvatarURL)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.NickName) > 0 {
+		i -= len(m.NickName)
+		copy(dAtA[i:], m.NickName)
+		i = encodeVarintHall(dAtA, i, uint64(len(m.NickName)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.UID) > 0 {
+		i -= len(m.UID)
+		copy(dAtA[i:], m.UID)
+		i = encodeVarintHall(dAtA, i, uint64(len(m.UID)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_Login) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -807,33 +886,39 @@ func (m *S2C_Login) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_Login) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_Login) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Reason != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(m.Reason))
+	if len(m.Token) > 0 {
+		i -= len(m.Token)
+		copy(dAtA[i:], m.Token)
+		i = encodeVarintHall(dAtA, i, uint64(len(m.Token)))
+		i--
+		dAtA[i] = 0x1a
 	}
 	if m.WanboRes != 0 {
-		dAtA[i] = 0x10
-		i++
 		i = encodeVarintHall(dAtA, i, uint64(m.WanboRes))
+		i--
+		dAtA[i] = 0x10
 	}
-	if len(m.Token) > 0 {
-		dAtA[i] = 0x1a
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(len(m.Token)))
-		i += copy(dAtA[i:], m.Token)
+	if m.Reason != 0 {
+		i = encodeVarintHall(dAtA, i, uint64(m.Reason))
+		i--
+		dAtA[i] = 0x8
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_LoginInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -841,93 +926,104 @@ func (m *S2C_LoginInfo) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_LoginInfo) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_LoginInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.ID != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(m.ID))
-	}
-	if len(m.NickName) > 0 {
-		dAtA[i] = 0x12
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(len(m.NickName)))
-		i += copy(dAtA[i:], m.NickName)
-	}
-	if len(m.AvatarURL) > 0 {
-		dAtA[i] = 0x1a
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(len(m.AvatarURL)))
-		i += copy(dAtA[i:], m.AvatarURL)
-	}
-	if len(m.Monies) > 0 {
-		for _, msg := range m.Monies {
-			dAtA[i] = 0x22
-			i++
-			i = encodeVarintHall(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if m.DaySigned {
-		dAtA[i] = 0x28
-		i++
-		if m.DaySigned {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i++
-	}
-	if m.SignedDays != 0 {
-		dAtA[i] = 0x30
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(m.SignedDays))
-	}
-	if len(m.SignRewards) > 0 {
-		for _, msg := range m.SignRewards {
-			dAtA[i] = 0x3a
-			i++
-			i = encodeVarintHall(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if m.UsingDealer != 0 {
-		dAtA[i] = 0x40
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(m.UsingDealer))
-	}
-	if m.HallRoleSex != 0 {
-		dAtA[i] = 0x48
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(m.HallRoleSex))
-	}
 	if m.InTheGame {
-		dAtA[i] = 0x50
-		i++
+		i--
 		if m.InTheGame {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
+		i--
+		dAtA[i] = 0x50
 	}
-	return i, nil
+	if m.HallRoleSex != 0 {
+		i = encodeVarintHall(dAtA, i, uint64(m.HallRoleSex))
+		i--
+		dAtA[i] = 0x48
+	}
+	if m.UsingDealer != 0 {
+		i = encodeVarintHall(dAtA, i, uint64(m.UsingDealer))
+		i--
+		dAtA[i] = 0x40
+	}
+	if len(m.SignRewards) > 0 {
+		for iNdEx := len(m.SignRewards) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.SignRewards[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintHall(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x3a
+		}
+	}
+	if m.SignedDays != 0 {
+		i = encodeVarintHall(dAtA, i, uint64(m.SignedDays))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.DaySigned {
+		i--
+		if m.DaySigned {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x28
+	}
+	if len(m.Monies) > 0 {
+		for iNdEx := len(m.Monies) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Monies[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintHall(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
+	}
+	if len(m.AvatarURL) > 0 {
+		i -= len(m.AvatarURL)
+		copy(dAtA[i:], m.AvatarURL)
+		i = encodeVarintHall(dAtA, i, uint64(len(m.AvatarURL)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.NickName) > 0 {
+		i -= len(m.NickName)
+		copy(dAtA[i:], m.NickName)
+		i = encodeVarintHall(dAtA, i, uint64(len(m.NickName)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.ID != 0 {
+		i = encodeVarintHall(dAtA, i, uint64(m.ID))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *C2S_DaySign) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -935,22 +1031,27 @@ func (m *C2S_DaySign) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_DaySign) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_DaySign) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if m.Day != 0 {
-		dAtA[i] = 0x8
-		i++
 		i = encodeVarintHall(dAtA, i, uint64(m.Day))
+		i--
+		dAtA[i] = 0x8
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_DaySign) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -958,34 +1059,41 @@ func (m *S2C_DaySign) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_DaySign) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_DaySign) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Err != 0 {
-		dAtA[i] = 0x8
-		i++
-		i = encodeVarintHall(dAtA, i, uint64(m.Err))
-	}
 	if len(m.Monies) > 0 {
-		for _, msg := range m.Monies {
-			dAtA[i] = 0x12
-			i++
-			i = encodeVarintHall(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+		for iNdEx := len(m.Monies) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Monies[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintHall(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0x12
 		}
 	}
-	return i, nil
+	if m.Err != 0 {
+		i = encodeVarintHall(dAtA, i, uint64(m.Err))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *C2S_SwitchHallRoleSex) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -993,22 +1101,27 @@ func (m *C2S_SwitchHallRoleSex) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *C2S_SwitchHallRoleSex) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *C2S_SwitchHallRoleSex) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if m.Sex != 0 {
-		dAtA[i] = 0x8
-		i++
 		i = encodeVarintHall(dAtA, i, uint64(m.Sex))
+		i--
+		dAtA[i] = 0x8
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *S2C_SwitchHallRoleSex) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -1016,26 +1129,33 @@ func (m *S2C_SwitchHallRoleSex) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *S2C_SwitchHallRoleSex) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *S2C_SwitchHallRoleSex) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if m.Err != 0 {
-		dAtA[i] = 0x8
-		i++
 		i = encodeVarintHall(dAtA, i, uint64(m.Err))
+		i--
+		dAtA[i] = 0x8
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintHall(dAtA []byte, offset int, v uint64) int {
+	offset -= sovHall(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func (m *C2S_Login) Size() (n int) {
 	if m == nil {
@@ -1210,14 +1330,7 @@ func (m *S2C_SwitchHallRoleSex) Size() (n int) {
 }
 
 func sovHall(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozHall(x uint64) (n int) {
 	return sovHall(uint64((x << 1) ^ uint64((int64(x) >> 63))))
@@ -1237,7 +1350,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1265,7 +1378,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1275,6 +1388,9 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1294,7 +1410,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1304,6 +1420,9 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1323,7 +1442,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1333,6 +1452,9 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1352,7 +1474,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1362,6 +1484,9 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1381,7 +1506,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1391,6 +1516,9 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1410,7 +1538,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1420,6 +1548,9 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1439,7 +1570,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Logintype |= (C2S_Login_E_LoginType(b) & 0x7F) << shift
+				m.Logintype |= C2S_Login_E_LoginType(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1458,7 +1589,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.CltType |= (int32(b) & 0x7F) << shift
+				m.CltType |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1477,7 +1608,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.BigVer |= (int32(b) & 0x7F) << shift
+				m.BigVer |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1496,7 +1627,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.SmallVer |= (int32(b) & 0x7F) << shift
+				m.SmallVer |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1515,7 +1646,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.FixVer |= (int32(b) & 0x7F) << shift
+				m.FixVer |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1534,7 +1665,7 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1544,6 +1675,9 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1556,6 +1690,9 @@ func (m *C2S_Login) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthHall
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthHall
 			}
 			if (iNdEx + skippy) > l {
@@ -1585,7 +1722,7 @@ func (m *S2C_Login) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1613,7 +1750,7 @@ func (m *S2C_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Reason |= (S2C_Login_E_ErrReason(b) & 0x7F) << shift
+				m.Reason |= S2C_Login_E_ErrReason(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1632,7 +1769,7 @@ func (m *S2C_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.WanboRes |= (int32(b) & 0x7F) << shift
+				m.WanboRes |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1651,7 +1788,7 @@ func (m *S2C_Login) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1661,6 +1798,9 @@ func (m *S2C_Login) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1673,6 +1813,9 @@ func (m *S2C_Login) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthHall
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthHall
 			}
 			if (iNdEx + skippy) > l {
@@ -1702,7 +1845,7 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -1730,7 +1873,7 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ID |= (int64(b) & 0x7F) << shift
+				m.ID |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1749,7 +1892,7 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1759,6 +1902,9 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1778,7 +1924,7 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1788,6 +1934,9 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1807,7 +1956,7 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1816,6 +1965,9 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1838,7 +1990,7 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				v |= (int(b) & 0x7F) << shift
+				v |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1858,7 +2010,7 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.SignedDays |= (int32(b) & 0x7F) << shift
+				m.SignedDays |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1877,7 +2029,7 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1886,6 +2038,9 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -1908,7 +2063,7 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.UsingDealer |= (int64(b) & 0x7F) << shift
+				m.UsingDealer |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1927,7 +2082,7 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.HallRoleSex |= (int32(b) & 0x7F) << shift
+				m.HallRoleSex |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1946,7 +2101,7 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				v |= (int(b) & 0x7F) << shift
+				v |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -1959,6 +2114,9 @@ func (m *S2C_LoginInfo) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthHall
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthHall
 			}
 			if (iNdEx + skippy) > l {
@@ -1988,7 +2146,7 @@ func (m *C2S_DaySign) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -2016,7 +2174,7 @@ func (m *C2S_DaySign) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Day |= (int32(b) & 0x7F) << shift
+				m.Day |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -2028,6 +2186,9 @@ func (m *C2S_DaySign) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthHall
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthHall
 			}
 			if (iNdEx + skippy) > l {
@@ -2057,7 +2218,7 @@ func (m *S2C_DaySign) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -2085,7 +2246,7 @@ func (m *S2C_DaySign) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Err |= (S2C_DaySign_E_Err_DaySign(b) & 0x7F) << shift
+				m.Err |= S2C_DaySign_E_Err_DaySign(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -2104,7 +2265,7 @@ func (m *S2C_DaySign) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -2113,6 +2274,9 @@ func (m *S2C_DaySign) Unmarshal(dAtA []byte) error {
 				return ErrInvalidLengthHall
 			}
 			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthHall
+			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
@@ -2128,6 +2292,9 @@ func (m *S2C_DaySign) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthHall
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthHall
 			}
 			if (iNdEx + skippy) > l {
@@ -2157,7 +2324,7 @@ func (m *C2S_SwitchHallRoleSex) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -2185,7 +2352,7 @@ func (m *C2S_SwitchHallRoleSex) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Sex |= (int32(b) & 0x7F) << shift
+				m.Sex |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -2197,6 +2364,9 @@ func (m *C2S_SwitchHallRoleSex) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthHall
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthHall
 			}
 			if (iNdEx + skippy) > l {
@@ -2226,7 +2396,7 @@ func (m *S2C_SwitchHallRoleSex) Unmarshal(dAtA []byte) error {
 			}
 			b := dAtA[iNdEx]
 			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
+			wire |= uint64(b&0x7F) << shift
 			if b < 0x80 {
 				break
 			}
@@ -2254,7 +2424,7 @@ func (m *S2C_SwitchHallRoleSex) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Err |= (S2C_SwitchHallRoleSex_E_Err(b) & 0x7F) << shift
+				m.Err |= S2C_SwitchHallRoleSex_E_Err(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -2266,6 +2436,9 @@ func (m *S2C_SwitchHallRoleSex) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			if skippy < 0 {
+				return ErrInvalidLengthHall
+			}
+			if (iNdEx + skippy) < 0 {
 				return ErrInvalidLengthHall
 			}
 			if (iNdEx + skippy) > l {
@@ -2283,6 +2456,7 @@ func (m *S2C_SwitchHallRoleSex) Unmarshal(dAtA []byte) error {
 func skipHall(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
+	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -2314,10 +2488,8 @@ func skipHall(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			return iNdEx, nil
 		case 1:
 			iNdEx += 8
-			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -2334,109 +2506,34 @@ func skipHall(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
-			iNdEx += length
 			if length < 0 {
 				return 0, ErrInvalidLengthHall
 			}
-			return iNdEx, nil
+			iNdEx += length
 		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowHall
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipHall(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-			}
-			return iNdEx, nil
+			depth++
 		case 4:
-			return iNdEx, nil
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupHall
+			}
+			depth--
 		case 5:
 			iNdEx += 4
-			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthHall
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
 	}
-	panic("unreachable")
+	return 0, io.ErrUnexpectedEOF
 }
 
 var (
-	ErrInvalidLengthHall = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowHall   = fmt.Errorf("proto: integer overflow")
+	ErrInvalidLengthHall        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowHall          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupHall = fmt.Errorf("proto: unexpected end of group")
 )
-
-func init() { proto.RegisterFile("Hall.proto", fileDescriptor_Hall_bae5ae9e6d7f23f5) }
-
-var fileDescriptor_Hall_bae5ae9e6d7f23f5 = []byte{
-	// 797 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x55, 0xcd, 0x6e, 0xdb, 0x46,
-	0x10, 0x16, 0x49, 0x93, 0xb6, 0x86, 0x49, 0xb0, 0xd9, 0xc6, 0x09, 0xe1, 0x16, 0xac, 0xc0, 0x93,
-	0x8b, 0x02, 0x42, 0xa1, 0x5e, 0x7a, 0xf5, 0x8f, 0x9a, 0x0a, 0xb0, 0x85, 0x62, 0x69, 0xc7, 0xb7,
-	0x0a, 0x1b, 0x6a, 0x2b, 0x11, 0x26, 0x77, 0x85, 0x5d, 0x3a, 0x92, 0xde, 0xa2, 0x6f, 0xd0, 0x17,
-	0xe8, 0x5b, 0xf4, 0x52, 0xf4, 0xd2, 0x1c, 0x0b, 0xf4, 0x52, 0xd8, 0x2f, 0x52, 0xec, 0x2e, 0x45,
-	0x12, 0x71, 0x7a, 0xca, 0x49, 0xfb, 0x7d, 0x33, 0x1c, 0x7e, 0xdf, 0xec, 0x0c, 0x05, 0xf0, 0x03,
-	0x2d, 0x8a, 0xe1, 0x4a, 0x8a, 0x4a, 0x60, 0xaf, 0x54, 0x8b, 0xa3, 0xb0, 0x14, 0x9c, 0x6d, 0x2d,
-	0x73, 0x04, 0x79, 0xc5, 0x4a, 0x7b, 0x4e, 0x7e, 0xf3, 0xa0, 0x7f, 0x36, 0x4a, 0x67, 0x17, 0x62,
-	0x91, 0x73, 0x8c, 0xc0, 0xbb, 0x9e, 0x9c, 0x47, 0xce, 0xc0, 0x39, 0xee, 0x13, 0x7d, 0xc4, 0x47,
-	0x70, 0x30, 0xcd, 0xb3, 0xdb, 0x29, 0x2d, 0x59, 0xe4, 0x1a, 0xba, 0xc1, 0xf8, 0x0b, 0xe8, 0x9f,
-	0xbc, 0xa3, 0x15, 0x95, 0xd7, 0xe4, 0x22, 0xf2, 0x4c, 0xb0, 0x25, 0x74, 0x2d, 0xc5, 0x36, 0xd1,
-	0x9e, 0xad, 0xa5, 0xd8, 0x46, 0xd7, 0x5a, 0x51, 0xa5, 0xd6, 0x42, 0xce, 0x23, 0xdf, 0xd6, 0xda,
-	0x61, 0x1d, 0x2b, 0x44, 0x46, 0xab, 0x5c, 0xf0, 0x28, 0xb0, 0xb1, 0x1d, 0xc6, 0xdf, 0x41, 0xbf,
-	0xd0, 0xf2, 0xaa, 0xed, 0x8a, 0x45, 0xfb, 0x03, 0xe7, 0xf8, 0xd9, 0xe8, 0x68, 0x58, 0xaa, 0xc5,
-	0xb0, 0x11, 0x3e, 0x1c, 0xdb, 0xdf, 0xab, 0xed, 0x8a, 0x91, 0x36, 0x19, 0x47, 0xb0, 0x7f, 0x56,
-	0x54, 0x9a, 0x8d, 0x0e, 0x06, 0xce, 0xb1, 0x4f, 0x76, 0x10, 0xbf, 0x84, 0xe0, 0x34, 0x5f, 0xbc,
-	0x61, 0x32, 0xea, 0x9b, 0x40, 0x8d, 0xb4, 0x8e, 0xb4, 0xa4, 0x45, 0xa1, 0x23, 0x60, 0x22, 0x0d,
-	0xd6, 0xcf, 0x7c, 0x9f, 0x6f, 0x74, 0x24, 0xb4, 0xcf, 0x58, 0x84, 0x5f, 0x80, 0x7f, 0x25, 0x6e,
-	0x19, 0x8f, 0x9e, 0x18, 0xe1, 0x16, 0x24, 0x29, 0x84, 0x1d, 0x55, 0xf8, 0x25, 0xe0, 0x0e, 0x9c,
-	0xdd, 0xb0, 0xb3, 0x25, 0xad, 0x50, 0x0f, 0x1f, 0xc2, 0xf3, 0x2e, 0xff, 0xfa, 0x8e, 0xa9, 0x0a,
-	0x39, 0x1f, 0xd2, 0x37, 0x94, 0x9f, 0x0a, 0xe4, 0x26, 0x7f, 0xb9, 0xd0, 0x4f, 0x47, 0x67, 0xf5,
-	0x75, 0x8d, 0x20, 0x90, 0x8c, 0x2a, 0xc1, 0xcd, 0x8d, 0xed, 0xba, 0xd2, 0xc4, 0x87, 0xe3, 0xd9,
-	0x58, 0x4a, 0x62, 0x32, 0x48, 0x9d, 0xa9, 0x0d, 0xde, 0x50, 0xfe, 0x56, 0x10, 0xa6, 0xcc, 0x85,
-	0xfa, 0xa4, 0xc1, 0xad, 0x11, 0xaf, 0x6b, 0xe4, 0x1f, 0x47, 0x3b, 0x69, 0x2a, 0x61, 0x04, 0x4f,
-	0x3a, 0x70, 0x86, 0x7a, 0xd6, 0xdb, 0x58, 0x4a, 0xfb, 0xda, 0xf4, 0x2e, 0xcb, 0x98, 0x52, 0xc8,
-	0xc1, 0x2f, 0x00, 0x59, 0x7e, 0xca, 0xd6, 0x27, 0x59, 0x26, 0xee, 0x78, 0x85, 0x5c, 0xfc, 0x39,
-	0xbc, 0xea, 0x64, 0x4f, 0xf8, 0xcf, 0x62, 0x2a, 0xaa, 0x4b, 0x5a, 0x65, 0x4b, 0xe4, 0x75, 0x4b,
-	0xd9, 0xdb, 0xbf, 0xa1, 0x92, 0xa3, 0xbd, 0x96, 0xbf, 0x56, 0x4c, 0x4e, 0x45, 0x35, 0xde, 0xe4,
-	0xaa, 0x42, 0x7e, 0xcb, 0x9f, 0x14, 0x92, 0xd1, 0xf9, 0xd6, 0xd4, 0x44, 0x01, 0x7e, 0x0e, 0x4f,
-	0xeb, 0x7c, 0x7e, 0xcb, 0xc5, 0x9a, 0xa3, 0xfd, 0x56, 0xcd, 0x85, 0x58, 0xbf, 0x61, 0x52, 0xe5,
-	0x82, 0xa3, 0x83, 0xe4, 0x4f, 0x17, 0x9e, 0x36, 0x1d, 0xd3, 0x62, 0xf0, 0x33, 0x70, 0xeb, 0x1d,
-	0xf0, 0x88, 0xfb, 0x49, 0x2b, 0x90, 0x40, 0x70, 0x29, 0x78, 0xce, 0x54, 0xb4, 0x37, 0xf0, 0x8e,
-	0xc3, 0x11, 0x98, 0xfb, 0xb9, 0xd4, 0xab, 0x48, 0xea, 0x88, 0xae, 0x70, 0x4e, 0xb7, 0x69, 0xbe,
-	0xe0, 0xcc, 0x6e, 0xc5, 0x01, 0x69, 0x09, 0x1c, 0x03, 0xd8, 0xd3, 0x39, 0xdd, 0x2a, 0xb3, 0x18,
-	0x3e, 0xe9, 0x30, 0xf8, 0x6b, 0x08, 0x35, 0x22, 0x6c, 0x4d, 0xe5, 0x5c, 0x45, 0xfb, 0xe6, 0x35,
-	0x7d, 0xf3, 0x9a, 0x49, 0xc5, 0x4a, 0xd2, 0x8d, 0xe2, 0x01, 0x84, 0xd7, 0x2a, 0xe7, 0x8b, 0x73,
-	0x46, 0x0b, 0x26, 0xcd, 0x46, 0x78, 0xa4, 0x4b, 0xe9, 0x0c, 0xfd, 0xe5, 0x20, 0xa2, 0x60, 0x29,
-	0xdb, 0xd4, 0xab, 0xd1, 0xa5, 0xb4, 0xdc, 0x09, 0xbf, 0x5a, 0xb2, 0xd7, 0xba, 0x1b, 0x60, 0xe5,
-	0x36, 0x44, 0xf2, 0x25, 0x84, 0x7a, 0x27, 0x6b, 0xfd, 0xfa, 0x13, 0x30, 0xa7, 0x5b, 0xd3, 0x4a,
-	0x9f, 0xe8, 0x63, 0xf2, 0xbb, 0x03, 0xa1, 0xee, 0xf6, 0x2e, 0xe3, 0x1b, 0xf0, 0x98, 0x94, 0xf5,
-	0xf8, 0xc6, 0xcd, 0xf8, 0xd6, 0x61, 0x3b, 0xc0, 0x3b, 0x44, 0x74, 0x6a, 0xa7, 0xa7, 0xee, 0xff,
-	0xf5, 0x34, 0xf9, 0x69, 0x77, 0xf9, 0xad, 0x90, 0x0f, 0x47, 0xb6, 0x99, 0x8f, 0x76, 0x5a, 0xcd,
-	0xca, 0x75, 0x46, 0x49, 0x3f, 0x89, 0xdc, 0xc7, 0x93, 0x14, 0x24, 0x5f, 0xc1, 0xa1, 0xb6, 0x99,
-	0xae, 0xf3, 0x2a, 0x5b, 0x76, 0xbb, 0x83, 0xc0, 0xd3, 0x7d, 0xab, 0x0d, 0xa7, 0x6c, 0x93, 0xfc,
-	0xea, 0xc0, 0xa1, 0x76, 0xf4, 0x38, 0x77, 0x04, 0xde, 0xb8, 0xb1, 0x3e, 0x68, 0xac, 0x3f, 0x4a,
-	0xac, 0xb7, 0x58, 0x27, 0x27, 0x04, 0x7c, 0x83, 0x30, 0x40, 0x60, 0x45, 0x7d, 0xdc, 0xca, 0x2b,
-	0xf8, 0xcc, 0x52, 0x13, 0xfe, 0x8e, 0x16, 0xf9, 0x7c, 0xf6, 0x23, 0x95, 0xb4, 0xfc, 0x98, 0x19,
-	0xef, 0x34, 0xfa, 0xe3, 0x3e, 0x76, 0xde, 0xdf, 0xc7, 0xce, 0xbf, 0xf7, 0xb1, 0xf3, 0xcb, 0x43,
-	0xdc, 0x7b, 0xff, 0x10, 0xf7, 0xfe, 0x7e, 0x88, 0x7b, 0x6f, 0x03, 0xf3, 0x17, 0xf1, 0xed, 0x7f,
-	0x01, 0x00, 0x00, 0xff, 0xff, 0x5c, 0x93, 0x4f, 0x34, 0x4e, 0x06, 0x00, 0x00,
-}
