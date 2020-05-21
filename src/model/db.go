@@ -22,11 +22,6 @@ const (
 	visitorNameSeq = "visitor" // 用来生成游客名的递增序列
 )
 
-var (
-	dbName      string
-	dialContext *mongodb.DialContext
-)
-
 // 定义库表的递增序列
 var seqs = []string{
 	TblAccount,

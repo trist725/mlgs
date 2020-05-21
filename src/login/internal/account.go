@@ -2,8 +2,10 @@ package internal
 
 import (
 	"fmt"
-	"github.com/trist725/mgsu/db/mongodb"
+
 	"github.com/globalsign/mgo/bson"
+	"github.com/trist725/mgsu/db/mongodb"
+
 	"mlgs/src/conf"
 	"mlgs/src/model"
 	"mlgs/src/msg"
