@@ -99,3 +99,15 @@ func RandomInt64(min int64, max int64) int64 {
 	}
 	return max + dice.Int63n(min-max)
 }
+
+func HitProbability(prob uint8) bool {
+	if prob > 100 || prob == 0 {
+		return false
+	}
+
+	if prob >= uint8(RandomInt(1, int(100+1))) {
+		return true
+	}
+
+	return false
+}

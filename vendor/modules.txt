@@ -1,40 +1,96 @@
-# github.com/gogo/protobuf v1.2.1
+# github.com/astaxie/beego v1.12.1
+github.com/astaxie/beego/logs
+# github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
+## explicit
+github.com/globalsign/mgo
+github.com/globalsign/mgo/bson
+github.com/globalsign/mgo/internal/json
+github.com/globalsign/mgo/internal/sasl
+github.com/globalsign/mgo/internal/scram
+# github.com/gogo/protobuf v1.3.1
+## explicit
 github.com/gogo/protobuf/proto
-# github.com/golang/protobuf v1.3.1
+# github.com/golang/protobuf v1.4.1
+## explicit
 github.com/golang/protobuf/proto
-# github.com/gorilla/websocket v1.4.0
+# github.com/gorilla/websocket v1.4.2
+## explicit
 github.com/gorilla/websocket
-# github.com/robfig/cron v0.0.0-20180505203441-b41be1df6967
-github.com/robfig/cron
-# github.com/tealeg/xlsx v1.0.3
+# github.com/kr/text v0.2.0
+## explicit
+# github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e
+## explicit
+# github.com/robfig/cron v1.2.0
+## explicit
+# github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644
+github.com/shiena/ansicolor
+# github.com/tealeg/xlsx v1.0.5
+## explicit
 github.com/tealeg/xlsx
-# github.com/trist725/mgsu v0.0.0-20190426014452-a22843dc613c
+# github.com/trist725/mgsu/db v0.0.0-20200511093703-ad769b7b05d7
+## explicit
+github.com/trist725/mgsu/db
+github.com/trist725/mgsu/db/mongodb
+# github.com/trist725/mgsu/log v0.0.0-20200511072914-077d3303ef68
+github.com/trist725/mgsu/log
+# github.com/trist725/mgsu/util v0.0.0-20200509033703-729ba4db1192
+## explicit
 github.com/trist725/mgsu/util
-github.com/trist725/mgsu/network/protocol/protobuf/v2
-github.com/trist725/mgsu/network/protocol
 # github.com/trist725/myleaf v0.0.0-20180912090459-560d092705ea
+## explicit
 github.com/trist725/myleaf
-github.com/trist725/myleaf/conf
 github.com/trist725/myleaf/chanrpc
-github.com/trist725/myleaf/module
-github.com/trist725/myleaf/log
-github.com/trist725/myleaf/gate
-github.com/trist725/myleaf/db/mongodb
-github.com/trist725/myleaf/network/protobuf
-github.com/trist725/myleaf/network
-github.com/trist725/myleaf/timer
 github.com/trist725/myleaf/cluster
+github.com/trist725/myleaf/conf
 github.com/trist725/myleaf/console
+github.com/trist725/myleaf/gate
 github.com/trist725/myleaf/go
+github.com/trist725/myleaf/log
+github.com/trist725/myleaf/module
+github.com/trist725/myleaf/network
+github.com/trist725/myleaf/network/protobuf
+github.com/trist725/myleaf/timer
 # github.com/yireyun/go-queue v0.0.0-20180809062148-5e6897360dac
-github.com/yireyun/go-queue
-# golang.org/x/net v0.0.0-20190415214537-1da14a5a36f2
+## explicit
+# golang.org/x/net v0.0.0-20200506145744-7e3656a0809f
+## explicit
 golang.org/x/net/publicsuffix
-# gopkg.in/mgo.v2 v2.0.0-20180705113604-9856a29383ce
+# google.golang.org/protobuf v1.22.0
+google.golang.org/protobuf/encoding/prototext
+google.golang.org/protobuf/encoding/protowire
+google.golang.org/protobuf/internal/descfmt
+google.golang.org/protobuf/internal/descopts
+google.golang.org/protobuf/internal/detrand
+google.golang.org/protobuf/internal/encoding/defval
+google.golang.org/protobuf/internal/encoding/messageset
+google.golang.org/protobuf/internal/encoding/tag
+google.golang.org/protobuf/internal/encoding/text
+google.golang.org/protobuf/internal/errors
+google.golang.org/protobuf/internal/fieldnum
+google.golang.org/protobuf/internal/fieldsort
+google.golang.org/protobuf/internal/filedesc
+google.golang.org/protobuf/internal/filetype
+google.golang.org/protobuf/internal/flags
+google.golang.org/protobuf/internal/genname
+google.golang.org/protobuf/internal/impl
+google.golang.org/protobuf/internal/mapsort
+google.golang.org/protobuf/internal/pragma
+google.golang.org/protobuf/internal/set
+google.golang.org/protobuf/internal/strs
+google.golang.org/protobuf/internal/version
+google.golang.org/protobuf/proto
+google.golang.org/protobuf/reflect/protoreflect
+google.golang.org/protobuf/reflect/protoregistry
+google.golang.org/protobuf/runtime/protoiface
+google.golang.org/protobuf/runtime/protoimpl
+# gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f
+## explicit
+# gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
+## explicit
 gopkg.in/mgo.v2/bson
-gopkg.in/mgo.v2
 gopkg.in/mgo.v2/internal/json
-gopkg.in/mgo.v2/internal/sasl
-gopkg.in/mgo.v2/internal/scram
 # gopkg.in/resty.v1 v1.12.0
+## explicit
 gopkg.in/resty.v1
+# gopkg.in/yaml.v2 v2.3.0
+## explicit

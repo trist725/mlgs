@@ -6,7 +6,7 @@ import (
 	"github.com/trist725/mgsu/util"
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
-	"gopkg.in/mgo.v2/bson"
+	"github.com/globalsign/mgo/bson"
 	"gopkg.in/resty.v1"
 	"io/ioutil"
 	"mlgs/src/conf"

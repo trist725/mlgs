@@ -3,7 +3,7 @@ package internal
 import (
 	"fmt"
 	"github.com/trist725/mgsu/db/mongodb"
-	"gopkg.in/mgo.v2/bson"
+	"github.com/globalsign/mgo/bson"
 	"mlgs/src/conf"
 	"mlgs/src/model"
 	"mlgs/src/msg"
