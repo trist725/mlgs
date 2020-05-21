@@ -40,8 +40,8 @@ func handleLoginAuth(args []interface{}) {
 			sender.Close()
 		}
 	}()
-	dbSession := model.GetSession()
-	defer model.PutSession(dbSession)
+	dbSession := model.SC.GetSession()
+	defer model.SC.PutSession(dbSession)
 
 	if !CheckCltVer(&CltVer{
 		recv.BigVer,
@@ -115,7 +115,7 @@ func handleLoginAuth(args []interface{}) {
 		}
 
 		//根据关联的accountID查找user
-		user, err := model.FindOne_User(
+		user, err := model.SC.FindOne_User(
 			dbSession,
 			bson.M{
 				"AccountID": account.ID,
@@ -141,16 +141,16 @@ func handleLoginAuth(args []interface{}) {
 			session.SetAgent(sender)
 			session.Agent().SetUserData(session.ID())
 			session.SetCloseFlag(0)
-			if p := session.Player(); p != nil {
-				if p.SessionId() == 0 {
-					p.SetSessionId(session.ID())
-					game.ChanRPC.Go("AfterLoginAuthPass", sender, user, p.InRoom())
-				} else {
-					log.Debug("[%d-%s] already online", user.ID, user.NickName)
-					send.Reason = msg.S2C_Login_E_Err_AlreadyLogin
-					closeFlag = true
-				}
-			}
+			//if p := session.Player(); p != nil {
+			//	if p.SessionId() == 0 {
+			//		p.SetSessionId(session.ID())
+			//		game.ChanRPC.Go("AfterLoginAuthPass", sender, user, p.InRoom())
+			//	} else {
+			//		log.Debug("[%d-%s] already online", user.ID, user.NickName)
+			//		send.Reason = msg.S2C_Login_E_Err_AlreadyLogin
+			//		closeFlag = true
+			//	}
+			//}
 			return
 		}
 

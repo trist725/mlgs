@@ -3,93 +3,96 @@ package model
 import (
 	"testing"
 
-	"gopkg.in/mgo.v2/bson"
+	"github.com/globalsign/mgo/bson"
 )
 
 const (
-	url = "mongodb://admin:123456@192.168.101.100:27017/admin"
+	url = "mongodb://127.0.0.1:27017/admin"
 )
 
-func TestAccount(t *testing.T) {
-	if err := Init(url, 1, "hh-test"); err != nil {
+func TestUser(t *testing.T) {
+	if err := SC.Init(url, 1, "db_test"); err != nil {
 		t.Error(err)
 		return
 	}
-	defer Release()
+	defer SC.Release()
 
-	session := GetSession()
-	defer PutSession(session)
+	session := SC.GetSession()
+	defer SC.PutSession(session)
 
-	newAccount, err := CreateAccount("test", "123456")
+	newUser, err := SC.CreateUser(1, 1, "test", 1)
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	if err := newAccount.Insert(session); err != nil {
+	if err := newUser.Insert(session, SC.DBName()); err != nil {
 		t.Error(err)
 		return
 	}
 
-	_, err = FindOne_Account(session, bson.M{"_id": newAccount.ID})
+	u, err := SC.FindOne_User(session, bson.M{"_id": newUser.ID})
 	if err != nil {
 		t.Error(err)
 	}
 
-	_, err = FindOne_Account(session, bson.M{"Name": "test"})
+	t.Logf("%v\n", u)
+
+	_, err = SC.FindOne_User(session, bson.M{"Name": "test"})
 	if err != nil {
 		t.Error(err)
 	}
 
-	some, err := FindSome_Account(session, bson.M{"Name": "test"})
+	some, err := SC.FindSome_User(session, bson.M{"Name": "test"})
 	if err != nil || len(some) != 1 {
 		t.Error(err)
 	}
 
-	err = newAccount.RemoveByID(session)
+	err = newUser.RemoveByID(session, SC.DBName())
 	if err != nil {
 		t.Error(err)
 	}
 }
 
-func TestUser(t *testing.T) {
-	if err := Init(url, 1, "hh-test"); err != nil {
-		t.Error(err)
-		return
-	}
-	defer Release()
-
-	session := GetSession()
-	defer PutSession(session)
-
-	newUser, err := CreateUser(1, 1, "test", 1)
-	if err != nil {
-		t.Error(err)
-		return
+func TestClone_User_Slice(t *testing.T) {
+	var dst = []*User{
+		{ID: 1},
+		{ID: 2},
+		{ID: 3},
+		{ID: 4},
 	}
 
-	if err := newUser.Insert(session); err != nil {
-		t.Error(err)
-		return
+	t.Logf("before, dst=\n")
+	for _, i := range dst {
+		t.Log(i)
 	}
 
-	_, err = FindOne_User(session, bson.M{"_id": newUser.ID})
-	if err != nil {
-		t.Error(err)
+	var src = []*User{
+		{ID: 2},
+		{ID: 3},
+		{ID: 4},
+		{ID: 5},
+		{ID: 6},
 	}
 
-	_, err = FindOne_User(session, bson.M{"Name": "test"})
-	if err != nil {
-		t.Error(err)
+	t.Logf("src=\n")
+	for _, i := range src {
+		t.Log(i)
 	}
 
-	some, err := FindSome_User(session, bson.M{"Name": "test"})
-	if err != nil || len(some) != 1 {
-		t.Error(err)
+	t.Logf("dst=%#v\nsrc=%#v\n", dst, src)
+
+	dst = Clone_User_Slice(dst, src)
+
+	t.Logf("after clone, dst=\n")
+	for _, i := range dst {
+		t.Log(i)
 	}
 
-	err = newUser.RemoveByID(session)
-	if err != nil {
-		t.Error(err)
+	t.Logf("src=\n")
+	for _, i := range src {
+		t.Log(i)
 	}
+
+	t.Logf("dst=%#v\nsrc=%#v\n", dst, src)
 }

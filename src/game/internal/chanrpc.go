@@ -4,8 +4,6 @@ import (
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
 	"mlgs/src/model"
-	"mlgs/src/msg"
-	"mlgs/src/room"
 	s "mlgs/src/session"
 	"time"
 )
@@ -31,17 +29,6 @@ func rpcCloseAgent(args []interface{}) {
 		sid := a.UserData().(uint64)
 		session := s.Mgr().GetSession(sid)
 		if session != nil {
-			//player离开room
-			//todo:bystander离开room
-			if p := session.Player(); p != nil {
-				rid := p.RoomId()
-				r := room.Mgr().GetRoom(rid)
-				if r != nil {
-					r.PlayerLeave(session.Player(), msg.S2C_UpdatePlayerLeaveRoom_E_Err_DisConn)
-					//todo: 断线重连机制
-					ChanRPC.Go("DisConn", session.UserData().ID, r)
-				}
-			}
 			session.Close()
 			log.Debug("[%s] session id:[%d] closed", session.Sign(), sid)
 		}

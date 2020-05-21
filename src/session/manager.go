@@ -1,6 +1,6 @@
 package session
 
-//参考并摘取了https://github.com/funny/link部分代码
+//ref https://github.com/funny/link
 
 import (
 	"sync"

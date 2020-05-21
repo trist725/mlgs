@@ -2,13 +2,6 @@ syntax="proto3";
 
 package model;
 
-import "money.proto";
-import "item.proto";
-import "card.proto";
-import "achievement.proto";
-import "quest.proto";
-import "mail.proto";
-
 /// 用户数据
 //@collection
 message User {
@@ -33,32 +26,11 @@ message User {
     int64 LastLoginTime = 8;
     /// 上次登出时刻
     int64 LastLogoutTime = 9;
-    ///货币信息
-    repeated Money Monies = 10;
-    ///物品
-    repeated Item Items = 11;
     ///经验
     int64 Exp = 12;
     ///今日是否已签到
     bool DaySigned = 13;
     ///已签到天数
     int32 SignedDays = 14;
-    ///每日签到奖励,数组第几个代表第几天
-    //repeated Item SignRewards = 15;
-    ///历史最大牌型
-    BestCombo BestCombo = 15;
-    ///是否已分配每日任务
-    bool AllocDayQuest = 16;
-    ///成就
-    repeated Achievement Achieves = 17;
-    ///任务
-    repeated Quest Quests = 18;
-    ///累计获得过的金币
-    int64 GainCoin = 19;
-    ///邮件
-    repeated Mail Mails = 20;
-    ///使用中的荷官在item表中的id,0是默认皮肤
-    int64 UsingDealer = 21;
-    ///大厅显示的角色性别,0-女,1-男
-    int32 HallRoleSex = 22;
+
 }

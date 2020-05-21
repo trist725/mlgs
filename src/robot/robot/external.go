@@ -1,6 +1,6 @@
 package robot
 
-import "mlgs/src/robot/robot/internal"
+import "robot/robot/internal"
 
 var (
 	Module  = new(internal.Module)

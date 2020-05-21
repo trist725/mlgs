@@ -6,7 +6,7 @@ import (
 )
 
 func CreateAccount(recv *msg.C2S_Login) (d *Account, err error) {
-	nextSeq, err := NextSeq(TblAccount)
+	nextSeq, err := SC.NextSeq(TblAccount)
 	if err != nil {
 		return nil, err
 	}

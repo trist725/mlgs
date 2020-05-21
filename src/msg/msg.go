@@ -8,7 +8,10 @@ import (
 //var Protocol = protocol.New(nil, nil, nil)
 
 // 使用 Protobuf 消息处理器
-var Processor = protobuf.NewProcessor()
+var (
+	PH        = 0
+	Processor = protobuf.NewProcessor()
+)
 
 func init() {
 	Processor.SetByteOrder(true)

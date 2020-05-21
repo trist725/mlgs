@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"mlgs/src/msg"
+	"github.com/trist725/mlgs/src/msg"
 	"os"
 	"reflect"
 )

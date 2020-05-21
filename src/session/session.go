@@ -5,7 +5,7 @@ import (
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
 	"github.com/trist725/myleaf/timer"
-	"mlgs/src/cache"
+	"mlgs/src/conf"
 	"mlgs/src/model"
 	"sync/atomic"
 	"time"
@@ -18,12 +18,12 @@ type Session struct {
 	timer *timer.Timer
 	sign  string // 日志标识
 
-	agent          gate.Agent
-	closeFlag      int32
-	user           *model.User    // 需要保存到数据库的用户数据
-	account        *model.Account // 帐号数据
-	cache          *cache.Player  // 玩家游戏过程中的数据
-	lastActiveTime int64          //上次活动时间
+	agent     gate.Agent
+	closeFlag int32
+	user      *model.User    // 需要保存到数据库的用户数据
+	account   *model.Account // 帐号数据
+	//cache          *cache.Player  // 玩家游戏过程中的数据
+	lastActiveTime int64 //上次活动时间
 }
 
 var gSessionId uint64
@@ -78,11 +78,11 @@ func (s *Session) SaveData() {
 	if s.user != nil {
 		// 保存用户数据
 		log.Debug("[%s] save data on [%v]", s.sign, time.Now())
-		dbSession := model.GetSession()
-		if err := s.user.UpdateByID(dbSession); err != nil {
+		dbSession := model.SC.GetSession()
+		if err := s.user.UpdateByID(dbSession, conf.Server.MgoName); err != nil {
 			log.Error("[%s], save data error:[%s]", s.sign, err)
 		}
-		model.PutSession(dbSession)
+		model.SC.PutSession(dbSession)
 	}
 }
 
@@ -105,14 +105,10 @@ func (s *Session) Close() error {
 		if s.timer != nil {
 			s.timer.Stop()
 		}
-		if s.cache != nil {
-			//游戏中,不删session
-			if s.cache.InRoom() && s.cache.Stat() != 0 {
-				s.cache.SetSessionId(0)
-				s.cache.SetPreSessionId(s.id)
-				return nil
-			}
-		}
+		//if s.cache != nil {
+		//	//游戏中,不删session
+		//
+		//}
 		gSessionManager.delSession(s)
 	}
 	return nil
@@ -130,13 +126,13 @@ func (s *Session) SetTimer(t *timer.Timer) {
 	s.timer = t
 }
 
-func (s *Session) Player() *cache.Player {
-	return s.cache
-}
-
-func (s *Session) SetPlayer(p *cache.Player) {
-	s.cache = p
-}
+//func (s *Session) Player() *cache.Player {
+//	return s.cache
+//}
+//
+//func (s *Session) SetPlayer(p *cache.Player) {
+//	s.cache = p
+//}
 
 func (s *Session) Agent() gate.Agent {
 	return s.agent
