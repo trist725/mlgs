@@ -2,16 +2,12 @@
 	"LogLevel": "debug",
 	"LogPath": "",
 	"TCPAddr": "[::]:6666",
-	"MaxConnNum": 10000,
+	"MaxConnNum": 9999,
 	"ConsolePort": 3333,
 
 	"MgoUrl": "mongodb://127.0.0.1:27017/admin",
-	"WebUrl": "http://47.110.73.211:8000",
-	"UnionPlatUrl": "http://39.106.165.36:8080/third/",
-	"MerchantCode": "WANBO_MECODE_2019_04_23",
-	"ProductCode": "2",
-	"MgoSessionNum": 100,
-	"MgoName": "db_test",
+	"MgoSessionNum": 999,
+	"DBName": "db_test",
 
 	"XlsxPath": "../xlsx"
 }

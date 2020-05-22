@@ -18,7 +18,7 @@ func main() {
 	lconf.ConsolePort = conf.Server.ConsolePort
 	lconf.ProfilePath = conf.Server.ProfilePath
 
-	if err := model.SC.Init(conf.Server.MgoUrl, 1, "db_test"); err != nil {
+	if err := model.SC.Init(conf.Server.MgoUrl, conf.Server.MgoSessionNum, conf.Server.DBName); err != nil {
 		panic(err)
 	}
 	defer model.SC.Release()

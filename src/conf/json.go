@@ -17,13 +17,9 @@ var Server struct {
 	ConsolePort   int
 	ProfilePath   string
 	MgoUrl        string
-	WebUrl        string
-	UnionPlatUrl  string
 	MgoSessionNum int
-	MgoName       string
+	DBName        string
 	XlsxPath      string
-	MerchantCode  string
-	ProductCode   string
 }
 
 func init() {
