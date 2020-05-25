@@ -1,10 +1,6 @@
 package cost
 
 import (
-	"fmt"
-	"github.com/trist725/myleaf/log"
-	"github.com/trist725/myleaf/module"
-	"mlgs/src/model"
 	"mlgs/src/sd"
 )
 
@@ -88,54 +84,55 @@ func (c Costs) AppendItem(i CostItem) (nc Costs) {
 	return
 }
 
-func CanCost(user *model.User, cost Costs, n int64) (err error) {
-	if cost.Len() == 0 {
-		err = fmt.Errorf("empty cost")
-		return
-	}
-	if n <= 0 {
-		err = fmt.Errorf("cost %+v fail, n <= 0", cost)
-		return
-	}
-	if n > 1 {
-		cost = cost.Multiple(n)
-	}
-
-	cost = cost.Format()
-
-	cost.Each(func(item CostItem) {
-		ownNum := user.GetNum(item.TID())
-		if ownNum < item.Num() {
-			err = fmt.Errorf("can't cost %+v, ownNum[%d] < needNum[%d]", cost, ownNum, item.Num())
-			return
-		}
-	})
-
-	return
-}
-
-func Cost(user *model.User, cost Costs, n int64, notify bool, skeleton *module.Skeleton) (err error) {
-	if cost.Len() == 0 {
-		err = fmt.Errorf("[%d-%s] cost %+v fail, %v", user.ID, user.NickName, cost, err)
-		return
-	}
-	if n <= 0 {
-		err = fmt.Errorf("[%d-%s] cost %+v fail, %v", user.ID, user.NickName, cost, err)
-		return
-	}
-	if n > 1 {
-		cost = cost.Multiple(n)
-	}
-
-	cost = cost.Format()
-
-	cost.Each(func(item CostItem) {
-		_, _, err = user.Lost(item.TID(), item.Num(), notify, skeleton)
-		if err != nil {
-			log.Error("[%d-%s] cost %+v fail, %v", user.ID, user.NickName, cost, err)
-			return
-		}
-	})
-
-	return
-}
+//
+//func CanCost(user *model.User, cost Costs, n int64) (err error) {
+//	if cost.Len() == 0 {
+//		err = fmt.Errorf("empty cost")
+//		return
+//	}
+//	if n <= 0 {
+//		err = fmt.Errorf("cost %+v fail, n <= 0", cost)
+//		return
+//	}
+//	if n > 1 {
+//		cost = cost.Multiple(n)
+//	}
+//
+//	cost = cost.Format()
+//
+//	cost.Each(func(item CostItem) {
+//		ownNum := user.GetNum(item.TID())
+//		if ownNum < item.Num() {
+//			err = fmt.Errorf("can't cost %+v, ownNum[%d] < needNum[%d]", cost, ownNum, item.Num())
+//			return
+//		}
+//	})
+//
+//	return
+//}
+//
+//func Cost(user *model.User, cost Costs, n int64, notify bool, skeleton *module.Skeleton) (err error) {
+//	if cost.Len() == 0 {
+//		err = fmt.Errorf("[%d-%s] cost %+v fail, %v", user.ID, user.NickName, cost, err)
+//		return
+//	}
+//	if n <= 0 {
+//		err = fmt.Errorf("[%d-%s] cost %+v fail, %v", user.ID, user.NickName, cost, err)
+//		return
+//	}
+//	if n > 1 {
+//		cost = cost.Multiple(n)
+//	}
+//
+//	cost = cost.Format()
+//
+//	cost.Each(func(item CostItem) {
+//		_, _, err = user.Lost(item.TID(), item.Num(), notify, skeleton)
+//		if err != nil {
+//			log.Error("[%d-%s] cost %+v fail, %v", user.ID, user.NickName, cost, err)
+//			return
+//		}
+//	})
+//
+//	return
+//}

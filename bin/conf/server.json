@@ -6,7 +6,7 @@
 	"ConsolePort": 3333,
 
 	"MgoUrl": "mongodb://127.0.0.1:27017/admin",
-	"MgoSessionNum": 999,
+	"MgoSessionNum": 99,
 	"DBName": "db_test",
 
 	"XlsxPath": "../xlsx"
