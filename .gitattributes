@@ -1,2 +1,10 @@
 *.html linguist-language=golang
 
+* text=auto
+*.yml text elf=lf
+*.yaml text elf=lf
+*.json text elf=lf
+*.go text elf=lf
+*.sh text elf=lf
+*.html text elf=lf
+Dockerfile elf=lf
