@@ -10,7 +10,7 @@ import (
 
 func createUser(dbSession *mongodb.Session, accountId int64, recv *msg.C2S_Login) (*model.User, error) {
 	//user关联了accountID
-	newUser, err := model.SC.CreateUserEx(accountId, recv)
+	newUser, err := model.SC.CreateUserByMsg(accountId, recv)
 	if err != nil {
 		return nil, fmt.Errorf("create user fail, %s", err)
 

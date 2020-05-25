@@ -21,7 +21,7 @@ func (sc *SimpleClient) CreateUser(accountID int64, serverID int32, name string,
 	return
 }
 
-func (sc *SimpleClient) CreateUserEx(accountID int64, recv *msg.C2S_Login) (m *User, err error) {
+func (sc *SimpleClient) CreateUserByMsg(accountID int64, recv *msg.C2S_Login) (m *User, err error) {
 	nextSeq, err := sc.NextSeq(TblUser)
 	if err != nil {
 		return nil, err
