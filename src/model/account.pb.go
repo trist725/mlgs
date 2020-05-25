@@ -55,7 +55,7 @@ type Account struct {
 	//string ChannelAccount = 11;
 	/// 封号标记,1为被封
 	Ban int32 `protobuf:"varint,12,opt,name=Ban,proto3" json:"Ban,omitempty"`
-	///游客/微信/万博
+	///游客/微信
 	Type int32 `protobuf:"varint,13,opt,name=Type,proto3" json:"Type,omitempty"`
 }
 
