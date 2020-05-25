@@ -55,7 +55,7 @@ func createAccount(dbSession *mongodb.Session, recv *msg.C2S_Login) (*model.Acco
 		return nil, fmt.Errorf("CreateAccount fail, %s", err)
 	}
 
-	if err := newAccount.Insert(dbSession, conf.Server.MgoName); err != nil {
+	if err := newAccount.Insert(dbSession, conf.Server.DBName); err != nil {
 		return nil, fmt.Errorf("dbsession[%v] insert account[%v] fail, %s", dbSession, newAccount, err)
 	}
 

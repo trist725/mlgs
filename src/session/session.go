@@ -79,7 +79,7 @@ func (s *Session) SaveData() {
 		// 保存用户数据
 		log.Debug("[%s] save data on [%v]", s.sign, time.Now())
 		dbSession := model.SC.GetSession()
-		if err := s.user.UpdateByID(dbSession, conf.Server.MgoName); err != nil {
+		if err := s.user.UpdateByID(dbSession, conf.Server.DBName); err != nil {
 			log.Error("[%s], save data error:[%s]", s.sign, err)
 		}
 		model.SC.PutSession(dbSession)

@@ -15,7 +15,7 @@ func createUser(dbSession *mongodb.Session, accountId int64, recv *msg.C2S_Login
 		return nil, fmt.Errorf("create user fail, %s", err)
 
 	}
-	if err := newUser.Insert(dbSession, conf.Server.MgoName); err != nil {
+	if err := newUser.Insert(dbSession, conf.Server.DBName); err != nil {
 		return nil, fmt.Errorf("insert new user[%#v] fail, %s", newUser, err)
 	}
 	return newUser, nil
