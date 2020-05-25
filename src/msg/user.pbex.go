@@ -87,12 +87,6 @@ func (m *User) ResetEx() {
 
 	m.Exp = 0
 
-	if m.BestCombo != nil {
-		m.BestCombo.ResetEx()
-	} else {
-		m.BestCombo = Get_BestCombo()
-	}
-
 }
 
 func (m User) Clone() *User {
@@ -139,10 +133,6 @@ func (m User) Clone() *User {
 
 	n.Exp = m.Exp
 
-	if m.BestCombo != nil {
-		n.BestCombo = m.BestCombo.Clone()
-	}
-
 	return n
 }
 
@@ -170,10 +160,7 @@ func (m User) JsonString() string {
 }
 
 func New_User() *User {
-	m := &User{
-
-		BestCombo: New_BestCombo(),
-	}
+	m := &User{}
 	return m
 }
 

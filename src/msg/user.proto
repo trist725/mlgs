@@ -4,7 +4,6 @@ package msg;
 
 import "item.proto";
 import "money.proto";
-import "match.proto";
 
 /// 用户数据
 message User {
@@ -22,9 +21,6 @@ message User {
     int32 Level = 21;
     ///经验
     int64 Exp = 22;
-    ///历史最大牌型
-    BestCombo BestCombo = 32;
-    ///当前任务进度
 }
 
 /// 服务端下发用户信息

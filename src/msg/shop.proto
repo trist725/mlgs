@@ -12,45 +12,6 @@ message S2C_GetOwnItems {
     repeated Item Items = 1;
 }
 
-///获取拥有的荷官皮肤
-message C2S_GetOwnDealerSkins {
-}
-
-message S2C_GetOwnDealerSkins {
-    ///荷官皮肤在item表的id
-    repeated string Ids = 1;
-    ///使用中的皮肤id,0是默认皮肤
-    int64 Id = 2;
-    enum E_Err{
-        E_Err_ = 0;
-        ///成功
-        E_Err_Succeed = 1;
-        ///失败,其它
-        E_Err_UnKnown = 2;
-    }
-    E_Err Err = 3;
-}
-
-///使用(装备)拥有的荷官皮肤
-message C2S_UsingOwnDealerSkins {
-    ///要装备的皮肤在item表中的id
-    int64 Id = 1;
-}
-
-message S2C_UsingOwnDealerSkins {
-    int64 Id = 1;
-    enum E_Err{
-        E_Err_ = 0;
-        ///成功
-        E_Err_Succeed = 1;
-        ///失败,未拥有
-        E_Err_Not_Have = 2;
-        ///失败,其它
-        E_Err_UnKnown = 3;
-    }
-    E_Err Err = 2;
-}
-
 ///购买物品
 message C2S_BuyItem {
     ///要购买的物品在item表中的id
@@ -74,34 +35,4 @@ message S2C_BuyItem {
         E_Err_UnKnown = 4;
     }
     E_Err Err = 2;
-}
-
-message C2S_Charge {
-    ///充值包在item表中的id
-    int64 Id = 1;
-    ///登陆token
-    string Token = 2;
-    ///唯一交易流水号
-    string TranCode = 3;
-    ///万博账号id
-    string AccountId = 4;
-}
-
-message S2C_Charge {
-    enum E_Err{
-        E_Err_ = 0;
-        ///成功
-        E_Err_Succeed = 1;
-        ///失败,钱不够
-        E_Err_Not_Enough_Money = 3;
-        ///失败,未知
-        E_Err_UnKnown = 4;
-        ///交易已存在
-        E_Err_TranCodeAlreadyExist = 6;
-        ///token无效
-        E_Err_TokenInvalid = 5;
-    }
-    E_Err Err = 2;
-    ///充值后的钻石数
-    int64 Diamond = 3;
 }

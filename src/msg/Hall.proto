@@ -86,8 +86,6 @@ message S2C_LoginInfo{
     int32 SignedDays = 6;
     ///每日签到奖励,数组第几个代表第几天
     repeated Item SignRewards = 7;
-    ///使用中的荷官在item表中的id,0是默认皮肤
-    int64 UsingDealer = 8;
     ///大厅角色性别,0-女,1-男
     int32 HallRoleSex = 9;
     ///是否在游戏中(重连)
