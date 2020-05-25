@@ -46,6 +46,6 @@ message Account {
     //string ChannelAccount = 11;
     /// 封号标记,1为被封
     int32 Ban = 12;
-    ///游客/微信/万博
+    ///游客/微信
     int32 Type = 13;
 }

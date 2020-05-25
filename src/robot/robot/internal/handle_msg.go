@@ -8,13 +8,7 @@ import (
 
 func init() {
 	regiserMsgHandle(&msg.S2C_Login{}, handleLogin)
-	regiserMsgHandle(&msg.S2C_QuickMatchStart{}, handleQuickMatchStart)
-	regiserMsgHandle(&msg.S2C_PlayerLeaveRoom{}, handlePlayerLeaveRoom)
-	regiserMsgHandle(&msg.S2C_UpdatePlayerJoinRoom{}, handleUpdatePlayerJoinRoom)
-	regiserMsgHandle(&msg.S2C_UpdatePlayerLeaveRoom{}, handleUpdatePlayerLeaveRoom)
-	regiserMsgHandle(&msg.S2C_GameStart{}, handleGameStart)
-	regiserMsgHandle(&msg.S2C_GameOver{}, handleGameOver)
-	regiserMsgHandle(&msg.S2C_Balance{}, handleBalance)
+
 	regiserMsgHandle(&msg.S2C_GetMailList{}, handleGetMailList)
 }
 
@@ -25,24 +19,27 @@ func regiserMsgHandle(m interface{}, h interface{}) {
 func handleLogin(args []interface{}) {
 	// 收到的消息
 	recv := args[0].(*msg.S2C_Login)
-	if recv.Reason == msg.S2C_Login_E_Err_LoginSuccess {
-		log.Debug("login success")
+	a := args[1].(*msg.C2S_Login)
+
+	if recv.Reason == msg.S2C_Login_E_Err_LoginSuccess || recv.Reason == msg.S2C_Login_E_Err_NewAccount {
+		log.Debug("[%s-%s] login success", a.UID, a.NickName)
 	}
 }
 
-func handleQuickMatchStart(args []interface{}) {
-	// 收到的消息
-	recv := args[0].(*msg.S2C_QuickMatchStart)
-
-	//log.Debug("Err:[%d]", recv.Err)
-	//log.Debug("room id:[%d], name:[%s], chip:[%d], maxBet:[%d]",
-	//	recv.Room.Id, recv.Room.Name, recv.Room.Chip, recv.Room.MaxBet)
-
-	for _, p := range recv.Room.Players {
-		log.Debug("players :[%v]", p)
-	}
-	log.Debug("------------------------------")
-}
+//
+//func handleQuickMatchStart(args []interface{}) {
+//	// 收到的消息
+//	recv := args[0].(*msg.S2C_QuickMatchStart)
+//
+//	//log.Debug("Err:[%d]", recv.Err)
+//	//log.Debug("room id:[%d], name:[%s], chip:[%d], maxBet:[%d]",
+//	//	recv.Room.Id, recv.Room.Name, recv.Room.Chip, recv.Room.MaxBet)
+//
+//	for _, p := range recv.Room.Players {
+//		log.Debug("players :[%v]", p)
+//	}
+//	log.Debug("------------------------------")
+//}
 
 func handlePlayerLeaveRoom(args []interface{}) {
 	// 收到的消息
@@ -55,53 +52,6 @@ func handlePlayerLeaveRoom(args []interface{}) {
 	//for _, p := range recv.Room.Players {
 	//	log.Debug("players :[%v]", p)
 	//}
-
-}
-
-func handleUpdatePlayerJoinRoom(args []interface{}) {
-	// 收到的消息
-	recv := args[0].(*msg.S2C_UpdatePlayerJoinRoom)
-
-	log.Debug("handleUpdatePlayerJoinRoom, %v", recv.Players[0])
-
-}
-
-func handleUpdatePlayerLeaveRoom(args []interface{}) {
-	// 收到的消息
-	recv := args[0].(*msg.S2C_UpdatePlayerLeaveRoom)
-
-	log.Debug("handleUpdatePlayerLeaveRoom, %v", recv.UserId)
-	//log.Debug("Err:[%d]", recv.Err)
-	//log.Debug("room id:[%d], name:[%s], chip:[%d], maxBet:[%d]",
-	//	recv.Room.Id, recv.Room.Name, recv.Room.Chip, recv.Room.MaxBet)
-	//
-	//for _, p := range recv.Room.Players {
-	//	log.Debug("players :[%v]", p)
-	//}
-
-}
-
-func handleGameStart(args []interface{}) {
-	// 收到的消息
-	recv := args[0].(*msg.S2C_GameStart)
-
-	log.Debug("handleGameStart, %v", recv)
-
-}
-
-func handleGameOver(args []interface{}) {
-	// 收到的消息
-	recv := args[0].(*msg.S2C_GameOver)
-
-	log.Debug("handleGameOver, %v", recv)
-
-}
-
-func handleBalance(args []interface{}) {
-	// 收到的消息
-	recv := args[0].(*msg.S2C_Balance)
-
-	log.Debug("handleBalance, %v", recv)
 
 }
 

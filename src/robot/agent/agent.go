@@ -23,6 +23,13 @@ func NewAgent(conn *network.TCPConn) network.Agent {
 	return a
 }
 
+func (a *Agent) SetUserData(userData interface{}) {
+	a.userData = userData
+}
+func (a *Agent) UserData() interface{} {
+	return a.userData
+}
+
 func (a *Agent) SendSome() {
 	//登陆
 	{
@@ -33,10 +40,11 @@ func (a *Agent) SendSome() {
 		send.Location = "loc"
 		send.Password = "pwd"
 		send.Logintype = msg.C2S_Login_E_LoginType_WeChat
+		a.SetUserData(send)
 		a.WriteMsg(send)
 	}
 	//等待登陆成功
-	time.Sleep(2 * time.Second)
+	time.Sleep(1 * time.Second)
 	//签到
 	{
 		send := msg.Get_C2S_DaySign()
@@ -54,12 +62,12 @@ func (a *Agent) SendSome() {
 	}
 	//获取邮件列表
 	{
-		send := msg.Get_C2S_GetMailList()
-		a.WriteMsg(send)
+		//send := msg.Get_C2S_GetMailList()
+		//a.WriteMsg(send)
 	}
 	{
-		send := msg.Get_S2C_GetAllMailReward()
-		a.WriteMsg(send)
+		//send := msg.Get_S2C_GetAllMailReward()
+		//a.WriteMsg(send)
 	}
 }
 
@@ -98,7 +106,7 @@ func (a *Agent) Run() {
 				log.Debug("unmarshal message error: %v", err)
 				break
 			}
-			err = a.Processor.Route(msg, a)
+			err = a.Processor.Route(msg, a.userData)
 			if err != nil {
 				log.Debug("route message error: %v", err)
 				break

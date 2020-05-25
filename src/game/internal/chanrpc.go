@@ -30,7 +30,7 @@ func rpcCloseAgent(args []interface{}) {
 		session := s.Mgr().GetSession(sid)
 		if session != nil {
 			session.Close()
-			log.Debug("[%s] session id:[%d] closed", session.Sign(), sid)
+			log.Debug("[%s] session id:[%d] closed, current session count:[%d]", session.Sign(), sid, s.Mgr().Count())
 		}
 	}
 

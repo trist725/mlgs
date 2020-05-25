@@ -28,7 +28,7 @@ func (sc *SimpleClient) CreateUserByMsg(accountID int64, recv *msg.C2S_Login) (m
 	}
 	now := time.Now()
 	m = Get_User()
-	m.ID = int64(nextSeq) * UserIdTimes //+ int64(serverID)
+	m.ID = int64(nextSeq)*UserIdTimes + UserIdOffset //+ int64(serverID)
 	m.AccountID = accountID
 	m.NickName = recv.NickName
 	m.Sex = recv.Sex

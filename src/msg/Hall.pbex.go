@@ -22,7 +22,6 @@ var _ = math.Inf
 var C2S_Login_E_LoginType_Slice = []int32{
 	0,
 	1,
-	2,
 }
 
 func C2S_Login_E_LoginType_Len() int {
@@ -222,8 +221,6 @@ func (m *C2S_Login) ResetEx() {
 
 	m.FixVer = 0
 
-	m.Token = ""
-
 }
 
 func (m C2S_Login) Clone() *C2S_Login {
@@ -253,8 +250,6 @@ func (m C2S_Login) Clone() *C2S_Login {
 	n.SmallVer = m.SmallVer
 
 	n.FixVer = m.FixVer
-
-	n.Token = m.Token
 
 	return n
 }
@@ -318,10 +313,6 @@ func (m *S2C_Login) ResetEx() {
 
 	m.Reason = 0
 
-	m.WanboRes = 0
-
-	m.Token = ""
-
 }
 
 func (m S2C_Login) Clone() *S2C_Login {
@@ -331,10 +322,6 @@ func (m S2C_Login) Clone() *S2C_Login {
 	}
 
 	n.Reason = m.Reason
-
-	n.WanboRes = m.WanboRes
-
-	n.Token = m.Token
 
 	return n
 }
