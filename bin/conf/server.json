@@ -1,6 +1,6 @@
 {
 	"LogLevel": "debug",
-	"LogPath": "",
+	"LogPath": "./log",
 	"TCPAddr": "[::]:6666",
 	"MaxConnNum": 9999,
 	"ConsolePort": 3333,
