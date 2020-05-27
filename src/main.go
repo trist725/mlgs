@@ -1,14 +1,19 @@
 package main
 
 import (
-	"github.com/trist725/myleaf"
-	lconf "github.com/trist725/myleaf/conf"
+	"fmt"
+
 	"mlgs/src/conf"
 	"mlgs/src/game"
 	"mlgs/src/gate"
 	"mlgs/src/login"
 	"mlgs/src/model"
 	"mlgs/src/session"
+
+	"github.com/pkg/profile"
+	"github.com/trist725/mgsu/util"
+	"github.com/trist725/myleaf"
+	lconf "github.com/trist725/myleaf/conf"
 )
 
 func main() {
@@ -24,6 +29,16 @@ func main() {
 	defer model.SC.Release()
 
 	defer session.Mgr().Dispose()
+
+	//todo: Multi-modal profiling
+	cpuProf := profile.Start(profile.CPUProfile, profile.ProfilePath(conf.Server.ProfilePath), profile.NoShutdownHook)
+	defer cpuProf.Stop()
+
+	go func() {
+		util.WaitExitSignal()
+		fmt.Println("mlgs receive exit signal")
+		//todo: do something
+	}()
 
 	leaf.Run(
 		game.Module,

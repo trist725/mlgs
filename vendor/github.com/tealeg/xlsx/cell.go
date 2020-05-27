@@ -66,7 +66,14 @@ type Cell struct {
 	HMerge         int
 	VMerge         int
 	cellType       CellType
-	DataValidation *xlsxCellDataValidation
+	DataValidation *xlsxDataValidation
+	Hyperlink      Hyperlink
+}
+
+type Hyperlink struct {
+	DisplayString string
+	Link          string
+	Tooltip       string
 }
 
 // CellInterface defines the public API of the Cell.
@@ -242,6 +249,23 @@ func (c *Cell) SetInt(n int) {
 	c.SetValue(n)
 }
 
+// SetHyperlink sets this cell to contain the given hyperlink, displayText and tooltip.
+// If the displayText or tooltip are an empty string, they will not be set.
+// The hyperlink provided must be a valid URL starting with http:// or https:// or
+// excel will not recognize it as an external link.
+func (c *Cell) SetHyperlink(hyperlink string, displayText string, tooltip string) {
+	c.Hyperlink = Hyperlink{Link: hyperlink}
+	c.SetString(hyperlink)
+	c.Row.Sheet.addRelation(RelationshipTypeHyperlink, hyperlink, RelationshipTargetModeExternal)
+	if displayText != "" {
+		c.Hyperlink.DisplayString = displayText
+		c.SetString(displayText)
+	}
+	if tooltip != "" {
+		c.Hyperlink.Tooltip = tooltip
+	}
+}
+
 // SetInt sets a cell's value to an integer.
 func (c *Cell) SetValue(n interface{}) {
 	switch t := n.(type) {
@@ -249,16 +273,16 @@ func (c *Cell) SetValue(n interface{}) {
 		c.SetDateTime(t)
 		return
 	case int, int8, int16, int32, int64:
-		c.setNumeric(fmt.Sprintf("%d", n))
+		c.SetNumeric(fmt.Sprintf("%d", n))
 	case float64:
 		// When formatting floats, do not use fmt.Sprintf("%v", n), this will cause numbers below 1e-4 to be printed in
 		// scientific notation. Scientific notation is not a valid way to store numbers in XML.
 		// Also not not use fmt.Sprintf("%f", n), this will cause numbers to be stored as X.XXXXXX. Which means that
 		// numbers will lose precision and numbers with fewer significant digits such as 0 will be stored as 0.000000
 		// which causes tests to fail.
-		c.setNumeric(strconv.FormatFloat(t, 'f', -1, 64))
+		c.SetNumeric(strconv.FormatFloat(t, 'f', -1, 64))
 	case float32:
-		c.setNumeric(strconv.FormatFloat(float64(t), 'f', -1, 32))
+		c.SetNumeric(strconv.FormatFloat(float64(t), 'f', -1, 32))
 	case string:
 		c.SetString(t)
 	case []byte:
@@ -270,8 +294,8 @@ func (c *Cell) SetValue(n interface{}) {
 	}
 }
 
-// setNumeric sets a cell's value to a number
-func (c *Cell) setNumeric(s string) {
+// SetNumeric sets a cell's value to a number
+func (c *Cell) SetNumeric(s string) {
 	c.Value = s
 	c.NumFmt = builtInNumFmt[builtInNumFmtIndex_GENERAL]
 	c.formula = ""
@@ -388,31 +412,31 @@ func (c *Cell) FormattedValue() (string, error) {
 }
 
 // SetDataValidation set data validation
-func (c *Cell) SetDataValidation(dd *xlsxCellDataValidation) {
+func (c *Cell) SetDataValidation(dd *xlsxDataValidation) {
 	c.DataValidation = dd
 }
 
-// CellMetadata represents anything attributable to a cell
+// StreamingCellMetadata represents anything attributable to a cell
 // except for the cell data itself. For example, it is used
 // in StreamFileBuilder.AddSheetWithDefaultColumnMetadata to
 // associate default attributes for cells in a particular column
-type CellMetadata struct {
+type StreamingCellMetadata struct {
 	cellType    CellType
 	streamStyle StreamStyle
 }
 
 var (
-	DefaultStringCellMetadata  CellMetadata
-	DefaultNumericCellMetadata CellMetadata
-	DefaultDecimalCellMetadata CellMetadata
-	DefaultIntegerCellMetadata CellMetadata
-	DefaultDateCellMetadata    CellMetadata
+	DefaultStringStreamingCellMetadata  StreamingCellMetadata
+	DefaultNumericStreamingCellMetadata StreamingCellMetadata
+	DefaultDecimalStreamingCellMetadata StreamingCellMetadata
+	DefaultIntegerStreamingCellMetadata StreamingCellMetadata
+	DefaultDateStreamingCellMetadata    StreamingCellMetadata
 )
 
-func MakeCellMetadata(cellType CellType, streamStyle StreamStyle) CellMetadata {
-	return CellMetadata{cellType, streamStyle}
+func MakeStreamingCellMetadata(cellType CellType, streamStyle StreamStyle) StreamingCellMetadata {
+	return StreamingCellMetadata{cellType, streamStyle}
 }
 
-func (cm CellMetadata) Ptr() *CellMetadata {
+func (cm StreamingCellMetadata) Ptr() *StreamingCellMetadata {
 	return &cm
 }

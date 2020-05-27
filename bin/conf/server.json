@@ -9,6 +9,8 @@
 	"MgoSessionNum": 99,
 	"DBName": "db_test",
 
-	"XlsxPath": "../xlsx"
+	"XlsxPath": "../xlsx",
+
+	"ProfilePath": "./profile"
 }
 

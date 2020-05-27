@@ -18,13 +18,18 @@ github.com/golang/protobuf/proto
 # github.com/gorilla/websocket v1.4.2
 ## explicit
 github.com/gorilla/websocket
+# github.com/kr/pretty v0.2.0
+## explicit
 # github.com/kr/text v0.2.0
 ## explicit
 # github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e
 ## explicit
+# github.com/pkg/profile v1.5.0
+## explicit
+github.com/pkg/profile
 # github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644
 github.com/shiena/ansicolor
-# github.com/tealeg/xlsx v1.0.5
+# github.com/tealeg/xlsx v1.0.6-0.20191105032217-48f552b38ead
 ## explicit
 github.com/tealeg/xlsx
 # github.com/trist725/mgsu/db v0.0.0-20200511093703-ad769b7b05d7

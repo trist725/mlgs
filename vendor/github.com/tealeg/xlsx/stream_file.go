@@ -9,14 +9,17 @@ import (
 )
 
 type StreamFile struct {
-	xlsxFile       *File
-	sheetXmlPrefix []string
-	sheetXmlSuffix []string
-	zipWriter      *zip.Writer
-	currentSheet   *streamSheet
-	styleIds       [][]int
-	styleIdMap     map[StreamStyle]int
-	err            error
+	xlsxFile               *File
+	sheetXmlPrefix         []string
+	sheetXmlSuffix         []string
+	zipWriter              *zip.Writer
+	currentSheet           *streamSheet
+	styleIds               [][]int
+	styleIdMap             map[StreamStyle]int
+	streamingCellMetadatas map[int]*StreamingCellMetadata
+	sheetStreamStyles      map[int]cellStreamStyle
+	sheetDefaultCellType   map[int]defaultCellType
+	err                    error
 }
 
 type streamSheet struct {
@@ -27,8 +30,9 @@ type streamSheet struct {
 	// The number of columns in the sheet
 	columnCount int
 	// The writer to write to this sheet's file in the XLSX Zip file
-	writer   io.Writer
-	styleIds []int
+	writer     io.Writer
+	styleIds   []int
+	mergeCells []string
 }
 
 var (
@@ -56,8 +60,8 @@ func (sf *StreamFile) Write(cells []string) error {
 // WriteWithColumnDefaultMetadata will write a row of cells to the current sheet. Every call to WriteWithColumnDefaultMetadata
 // on the same sheet must contain the same number of cells as the header provided when the sheet was created or
 // an error will be returned. This function will always trigger a flush on success. Each cell will be encoded with the
-// default CellMetadata of the column that it belongs to. However, if the cell data string cannot be
-// parsed into the cell type in CellMetadata, we fall back on encoding the cell as a string and giving it a default
+// default StreamingCellMetadata of the column that it belongs to. However, if the cell data string cannot be
+// parsed into the cell type in StreamingCellMetadata, we fall back on encoding the cell as a string and giving it a default
 // string style
 func (sf *StreamFile) WriteWithColumnDefaultMetadata(cells []string) error {
 	if sf.err != nil {
@@ -118,13 +122,25 @@ func (sf *StreamFile) WriteAllS(records [][]StreamCell) error {
 	return sf.zipWriter.Flush()
 }
 
+func (sf *StreamFile) AddMergeCells(startRowIdx, startColumnIdx, endRowIdx, endColumnIdx int) {
+	start := GetCellIDStringFromCoords(startColumnIdx, startRowIdx)
+	end := GetCellIDStringFromCoords(endColumnIdx, endRowIdx)
+	ref := start + cellRangeChar + end
+	sf.currentSheet.mergeCells = append(sf.currentSheet.mergeCells, ref)
+}
+
 func (sf *StreamFile) write(cells []string) error {
 	if sf.currentSheet == nil {
 		return NoCurrentSheetError
 	}
-	if len(cells) != sf.currentSheet.columnCount {
-		return WrongNumberOfRowsError
+	cellCount := len(cells)
+	if cellCount != sf.currentSheet.columnCount {
+		if sf.currentSheet.columnCount != 0 {
+			return WrongNumberOfRowsError
+		}
+		sf.currentSheet.columnCount = cellCount
 	}
+
 	sf.currentSheet.rowCount++
 	if err := sf.currentSheet.write(`<row r="` + strconv.Itoa(sf.currentSheet.rowCount) + `">`); err != nil {
 		return err
@@ -170,38 +186,56 @@ func (sf *StreamFile) writeWithColumnDefaultMetadata(cells []string) error {
 	if sf.currentSheet == nil {
 		return NoCurrentSheetError
 	}
-	if len(cells) != sf.currentSheet.columnCount {
-		return WrongNumberOfRowsError
-	}
 
-	currentSheet := sf.xlsxFile.Sheets[sf.currentSheet.index-1]
+	sheetIndex := sf.currentSheet.index - 1
+	currentSheet := sf.xlsxFile.Sheets[sheetIndex]
 
 	var streamCells []StreamCell
-	for colIndex, col := range currentSheet.Cols {
 
+	if currentSheet.Cols == nil {
+		panic("trying to use uninitialised ColStore")
+	}
+
+	if len(cells) != sf.currentSheet.columnCount {
+		if sf.currentSheet.columnCount != 0 {
+			return WrongNumberOfRowsError
+
+		}
+		sf.currentSheet.columnCount = len(cells)
+	}
+
+	cSS := sf.sheetStreamStyles[sheetIndex]
+	cDCT := sf.sheetDefaultCellType[sheetIndex]
+	for ci, c := range cells {
 		// TODO: Legacy code paths like `StreamFileBuilder.AddSheet` could
 		// leave style empty and if cell data cannot be parsed into cell type then
 		// we need a sensible default StreamStyle to fall back to
 		style := StreamStyleDefaultString
-
 		// Because `cellData` could be anything we need to attempt to
 		// parse into the default cell type and if parsing fails fall back
 		// to some sensible default
-		defaultType := col.defaultCellType
-		// TODO: Again `CellType` could be nil if sheet was created through
-		// legacy code path so, like style, hardcoding for now
-		cellType := defaultType.fallbackTo(cells[colIndex], CellTypeString)
-		if defaultType != nil && *defaultType == cellType {
-			style = col.GetStreamStyle()
+		cellType := CellTypeInline
+		if dct, ok := cDCT[ci]; ok {
+			defaultType := dct
+			cellType = defaultType.fallbackTo(cells[ci], CellTypeString)
+			if ss, ok := cSS[ci]; ok {
+				// TODO: Again `CellType` could be nil if sheet was created through
+				// legacy code path so, like style, hardcoding for now
+				if defaultType != nil && *defaultType == cellType {
+					style = ss
+				}
+			}
+
 		}
 
 		streamCells = append(
 			streamCells,
 			NewStreamCell(
-				cells[colIndex],
+				c,
 				style,
 				cellType,
 			))
+
 	}
 	return sf.writeS(streamCells)
 }
@@ -211,7 +245,10 @@ func (sf *StreamFile) writeS(cells []StreamCell) error {
 		return NoCurrentSheetError
 	}
 	if len(cells) != sf.currentSheet.columnCount {
-		return WrongNumberOfRowsError
+		if sf.currentSheet.columnCount != 0 {
+			return WrongNumberOfRowsError
+		}
+		sf.currentSheet.columnCount = len(cells)
 	}
 
 	sf.currentSheet.rowCount++
@@ -328,7 +365,7 @@ func (sf *StreamFile) NextSheet() error {
 	sheetIndex++
 	sf.currentSheet = &streamSheet{
 		index:       sheetIndex,
-		columnCount: len(sf.xlsxFile.Sheets[sheetIndex-1].Cols),
+		columnCount: sf.xlsxFile.Sheets[sheetIndex-1].MaxCol,
 		styleIds:    sf.styleIds[sheetIndex-1],
 		rowCount:    len(sf.xlsxFile.Sheets[sheetIndex-1].Rows),
 	}
@@ -391,6 +428,17 @@ func (sf *StreamFile) writeSheetEnd() error {
 	if err := sf.currentSheet.write(endSheetDataTag); err != nil {
 		return err
 	}
+
+	if len(sf.currentSheet.mergeCells) > 0 {
+		mergeCellData := "<mergeCells count=\"" + strconv.Itoa(len(sf.currentSheet.mergeCells)) + "\">"
+		for _, ref := range sf.currentSheet.mergeCells {
+			mergeCellData += "<mergeCell ref=\"" + ref + "\"/>"
+		}
+		if err := sf.currentSheet.write(mergeCellData + "</mergeCells>"); err != nil {
+			return err
+		}
+	}
+
 	return sf.currentSheet.write(sf.sheetXmlSuffix[sf.currentSheet.index-1])
 }
 

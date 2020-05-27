@@ -17,6 +17,7 @@ import (
 // to the user.
 type File struct {
 	worksheets     map[string]*zip.File
+	worksheetRels  map[string]*zip.File
 	referenceTable *RefTable
 	Date1904       bool
 	styles         *xlsxStyleSheet
@@ -173,6 +174,7 @@ func (f *File) AddSheet(sheetName string) (*Sheet, error) {
 		Name:     sheetName,
 		File:     f,
 		Selected: len(f.Sheets) == 0,
+		Cols:     &ColStore{},
 	}
 	f.Sheet[sheetName] = sheet
 	f.Sheets = append(f.Sheets, sheet)
@@ -238,6 +240,17 @@ func replaceRelationshipsNameSpace(workbookMarshal string) string {
 	return strings.Replace(newWorkbook, oldXmlns, newXmlns, 1)
 }
 
+func addRelationshipNameSpaceToWorksheet(worksheetMarshal string) string {
+	oldXmlns := `<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">`
+	newXmlns := `<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">`
+	newSheetMarshall := strings.Replace(worksheetMarshal, oldXmlns, newXmlns, 1)
+
+	oldHyperlink := `<hyperlink id=`
+	newHyperlink := `<hyperlink r:id=`
+	newSheetMarshall = strings.Replace(newSheetMarshall, oldHyperlink, newHyperlink, -1)
+	return newSheetMarshall
+}
+
 // Construct a map of file name to XML content representing the file
 // in terms of the structure of an XLSX file.
 func (f *File) MarshallParts() (map[string]string, error) {
@@ -270,11 +283,13 @@ func (f *File) MarshallParts() (map[string]string, error) {
 		return nil, err
 	}
 	for _, sheet := range f.Sheets {
-		xSheet := sheet.makeXLSXSheet(refTable, f.styles)
+		xSheetRels := sheet.makeXLSXSheetRelations()
+		xSheet := sheet.makeXLSXSheet(refTable, f.styles, xSheetRels)
 		rId := fmt.Sprintf("rId%d", sheetIndex)
 		sheetId := strconv.Itoa(sheetIndex)
 		sheetPath := fmt.Sprintf("worksheets/sheet%d.xml", sheetIndex)
 		partName := "xl/" + sheetPath
+		relPartName := fmt.Sprintf("xl/worksheets/_rels/sheet%d.xml.rels", sheetIndex)
 		types.Overrides = append(
 			types.Overrides,
 			xlsxOverride{
@@ -286,9 +301,18 @@ func (f *File) MarshallParts() (map[string]string, error) {
 			SheetId: sheetId,
 			Id:      rId,
 			State:   "visible"}
-		parts[partName], err = marshal(xSheet)
+
+		worksheetMarshal, err := marshal(xSheet)
 		if err != nil {
 			return parts, err
+		}
+		worksheetMarshal = addRelationshipNameSpaceToWorksheet(worksheetMarshal)
+		parts[partName] = worksheetMarshal
+		if xSheetRels != nil {
+			parts[relPartName], err = marshal(xSheetRels)
+			if err != nil {
+				return parts, err
+			}
 		}
 		sheetIndex++
 	}
