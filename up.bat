@@ -17,6 +17,10 @@
 
 
 :build
+go build -o %EXEPATH% src/main.go
+@goto :exit
+
+:build-race
 go build -race -o %EXEPATH% src/main.go
 @goto :exit
 
