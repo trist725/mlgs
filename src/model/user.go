@@ -172,22 +172,22 @@ func (sc *SimpleClient) CreateUserByMsg(accountID int64, recv *msg.C2S_Login) (m
 //	})
 //}
 //
-func (m User) ToMsg(nm *msg.User) *msg.User {
-	nm.ID = m.ID
-	nm.NickName = m.NickName
-	//for _, money := range m.Monies {
-	//	nm.Monies = append(nm.Monies, money.ToMsg(msg.Get_Money()))
-	//}
-	nm.Sex = m.Sex
-	nm.Exp = m.Exp
-	nm.Level = m.Level
-
-	//for _, item := range m.Items {
-	//	nm.Items = append(nm.Items, item.ToMsg(msg.Get_Item()))
-	//}
-
-	return nm
-}
+//func (m User) ToMsg(nm *msg.User) *msg.User {
+//	nm.ID = m.ID
+//	nm.NickName = m.NickName
+//	//for _, money := range m.Monies {
+//	//	nm.Monies = append(nm.Monies, money.ToMsg(msg.Get_Money()))
+//	//}
+//	nm.Sex = m.Sex
+//	nm.Exp = m.Exp
+//	nm.Level = m.Level
+//
+//	//for _, item := range m.Items {
+//	//	nm.Items = append(nm.Items, item.ToMsg(msg.Get_Item()))
+//	//}
+//
+//	return nm
+//}
 
 //
 //func (user *User) GetMoney(st int32) *Money {

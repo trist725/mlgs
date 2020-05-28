@@ -27,19 +27,22 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 //@collection
 type User struct {
 	/// mongodb默认主键_id做用户id
-	//@bson=_id
+	//@msg
 	ID int64 `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty" bson:"_id"`
 	/// 帐号id
 	AccountID int64 `protobuf:"varint,2,opt,name=AccountID,proto3" json:"AccountID,omitempty"`
 	///等级
+	//@msg
 	Level int32 `protobuf:"varint,3,opt,name=Level,proto3" json:"Level,omitempty"`
 	///头像url
 	AvatarURL string `protobuf:"bytes,4,opt,name=AvatarURL,proto3" json:"AvatarURL,omitempty"`
 	/// 服务器ID
 	//int32 ServerID = 3;
 	/// 名字
+	//@msg
 	NickName string `protobuf:"bytes,5,opt,name=NickName,proto3" json:"NickName,omitempty"`
 	/// 性别
+	//@msg
 	Sex string `protobuf:"bytes,6,opt,name=Sex,proto3" json:"Sex,omitempty"`
 	/// 创建时刻
 	CreateTime int64 `protobuf:"varint,7,opt,name=CreateTime,proto3" json:"CreateTime,omitempty"`
@@ -48,6 +51,7 @@ type User struct {
 	/// 上次登出时刻
 	LastLogoutTime int64 `protobuf:"varint,9,opt,name=LastLogoutTime,proto3" json:"LastLogoutTime,omitempty"`
 	///经验
+	//@msg
 	Exp int64 `protobuf:"varint,12,opt,name=Exp,proto3" json:"Exp,omitempty"`
 	///今日是否已签到
 	DaySigned bool `protobuf:"varint,13,opt,name=DaySigned,proto3" json:"DaySigned,omitempty"`
