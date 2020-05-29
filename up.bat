@@ -7,6 +7,12 @@
 
 @IF "%1" == "" call :mod-tidy & call :build & cd %WORK_DIR% & call :run & goto :exit
 
+@IF "%1" == "gen-sd" cd %~dp0/src/sd & call :gen & cd ../.. & goto :exit
+
+@IF "%1" == "gen-msg" cd %~dp0/src/msg & call :gen & cd ../.. & goto :exit
+
+@IF "%1" == "gen-model" cd %~dp0/src/model & call :gen & cd ../.. & goto :exit
+
 @IF "%1" == "mod-tidy" call :mod-tidy & cd %WORK_DIR% & goto :exit
 
 @IF "%1" == "kill" call :kill & goto :exit
@@ -15,6 +21,9 @@
 
 @goto :exit
 
+:gen
+go generate
+@goto :exit
 
 :build
 go build -o %EXEPATH% src/main.go
