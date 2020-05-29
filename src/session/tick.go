@@ -1,10 +1,11 @@
 package session
 
 import (
-	"github.com/trist725/myleaf/module"
 	"mlgs/src/msg"
 	"mlgs/src/sd"
 	"time"
+
+	"github.com/trist725/myleaf/module"
 )
 
 func (manager *Manager) CheckTick(skeleton *module.Skeleton) {

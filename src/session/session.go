@@ -2,13 +2,14 @@ package session
 
 import (
 	"fmt"
-	"github.com/trist725/myleaf/gate"
-	"github.com/trist725/myleaf/log"
-	"github.com/trist725/myleaf/timer"
 	"mlgs/src/conf"
 	"mlgs/src/model"
 	"sync/atomic"
 	"time"
+
+	"github.com/trist725/myleaf/gate"
+	"github.com/trist725/myleaf/log"
+	"github.com/trist725/myleaf/timer"
 )
 
 //非线程安全

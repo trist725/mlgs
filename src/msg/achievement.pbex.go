@@ -6,9 +6,10 @@ package msg
 import (
 	json "encoding/json"
 	fmt "fmt"
-	proto "github.com/gogo/protobuf/proto"
 	math "math"
 	sync "sync"
+
+	proto "github.com/gogo/protobuf/proto"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

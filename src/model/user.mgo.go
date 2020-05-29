@@ -6,13 +6,14 @@ package model
 import (
 	json "encoding/json"
 	fmt "fmt"
+	math "math"
+	msg "mlgs/src/msg"
+	sync "sync"
+
 	mgo "github.com/globalsign/mgo"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	mongodb "github.com/trist725/mgsu/db/mongodb"
-	math "math"
-	msg "mlgs/src/msg"
-	sync "sync"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

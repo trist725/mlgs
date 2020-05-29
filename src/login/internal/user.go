@@ -2,10 +2,11 @@ package internal
 
 import (
 	"fmt"
-	"github.com/trist725/mgsu/db/mongodb"
 	"mlgs/src/conf"
 	"mlgs/src/model"
 	"mlgs/src/msg"
+
+	"github.com/trist725/mgsu/db/mongodb"
 )
 
 func createUser(dbSession *mongodb.Session, accountId int64, recv *msg.C2S_Login) (*model.User, error) {

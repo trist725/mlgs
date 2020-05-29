@@ -2,8 +2,9 @@ package conf
 
 import (
 	"encoding/json"
-	"github.com/trist725/myleaf/log"
 	"io/ioutil"
+
+	"github.com/trist725/myleaf/log"
 )
 
 var Client struct {

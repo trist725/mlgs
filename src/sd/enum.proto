@@ -1,0 +1,22 @@
+syntax="proto3";
+
+package sd;
+
+
+///物品类型枚举
+enum E_Item {
+  E_Item_ = 0;
+  ///货币
+  E_Item_Money = 1;
+}
+
+///货币类型枚举
+enum E_Money {
+  E_Money_ = 0;
+  ///金币
+  E_Money_Gold = 1;
+  ///钻石
+  E_Money_Diamond = 2;
+  ///积分
+  E_Money_Point = 3;
+}

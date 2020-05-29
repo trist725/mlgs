@@ -1,9 +1,10 @@
 package base
 
 import (
+	"mlgs/src/conf"
+
 	"github.com/trist725/myleaf/chanrpc"
 	"github.com/trist725/myleaf/module"
-	"mlgs/src/conf"
 )
 
 func NewSkeleton() *module.Skeleton {

@@ -15,5 +15,6 @@ require (
 	github.com/trist725/mgsu/db v0.0.0-20200511093703-ad769b7b05d7
 	github.com/trist725/mgsu/util v0.0.0-20200509033703-729ba4db1192
 	github.com/trist725/myleaf v0.0.0-20180912090459-560d092705ea
+	golang.org/x/tools v0.0.0-20200528185414-6be401e3f76e // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 )

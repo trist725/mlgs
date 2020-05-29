@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/trist725/myleaf"
-	"github.com/trist725/myleaf/network"
 	a "mlgs/src/robot/agent"
 	"mlgs/src/robot/conf"
 	"mlgs/src/robot/robot"
+
+	leaf "github.com/trist725/myleaf"
+	"github.com/trist725/myleaf/network"
 )
 
 var gTcpClient network.TCPClient
@@ -13,7 +14,7 @@ var gTcpClient network.TCPClient
 func init() {
 	gTcpClient = network.TCPClient{
 		Addr:            conf.Client.TCPAddr,
-		ConnNum:         1,
+		ConnNum:         10000,
 		ConnectInterval: 3,
 		PendingWriteNum: 1000,
 		NewAgent:        a.NewAgent,

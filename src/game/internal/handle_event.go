@@ -1,9 +1,10 @@
 package internal
 
 import (
-	"github.com/trist725/myleaf/gate"
 	"mlgs/src/model"
 	"mlgs/src/msg"
+
+	"github.com/trist725/myleaf/gate"
 )
 
 func init() {

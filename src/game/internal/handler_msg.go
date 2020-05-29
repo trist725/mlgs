@@ -1,11 +1,12 @@
 package internal
 
 import (
-	"github.com/trist725/myleaf/gate"
-	"github.com/trist725/myleaf/log"
 	"mlgs/src/msg"
 	s "mlgs/src/session"
 	"reflect"
+
+	"github.com/trist725/myleaf/gate"
+	"github.com/trist725/myleaf/log"
 )
 
 func init() {

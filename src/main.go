@@ -12,7 +12,7 @@ import (
 
 	"github.com/pkg/profile"
 	"github.com/trist725/mgsu/util"
-	"github.com/trist725/myleaf"
+	leaf "github.com/trist725/myleaf"
 	lconf "github.com/trist725/myleaf/conf"
 )
 

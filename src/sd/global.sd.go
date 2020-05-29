@@ -5,14 +5,14 @@ package sd
 
 import (
 	"encoding/json"
+	"fmt"
+	"log"
+	"path/filepath"
 	"strconv"
-)
-import "fmt"
-import "log"
-import "path/filepath"
 
-import "github.com/tealeg/xlsx"
-import "github.com/trist725/mgsu/util"
+	"github.com/tealeg/xlsx"
+	"github.com/trist725/mgsu/util"
+)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // TODO 添加扩展import代码

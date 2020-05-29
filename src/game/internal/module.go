@@ -1,8 +1,9 @@
 package internal
 
 import (
-	"github.com/trist725/myleaf/module"
 	"mlgs/src/base"
+
+	"github.com/trist725/myleaf/module"
 )
 
 var (

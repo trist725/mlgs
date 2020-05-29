@@ -1,14 +1,15 @@
 package agent
 
 import (
-	"github.com/trist725/mgsu/util"
-	"github.com/trist725/myleaf/log"
-	"github.com/trist725/myleaf/network"
-	"github.com/trist725/myleaf/network/protobuf"
 	"mlgs/src/msg"
 	"mlgs/src/robot/robot"
 	"reflect"
 	"time"
+
+	"github.com/trist725/mgsu/util"
+	"github.com/trist725/myleaf/log"
+	"github.com/trist725/myleaf/network"
+	"github.com/trist725/myleaf/network/protobuf"
 )
 
 type Agent struct {
