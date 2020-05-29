@@ -20,10 +20,10 @@ type LoginReq struct {
 }
 
 type LoginResp struct {
-	Message string `json:"Message, omitempty"`
-	UserId  string `json:"UserId, omitempty"`
-	Product string `json:"Product, omitempty"`
-	Code    int    `json:"Code, omitempty"`
+	Message string `json:"Message,omitempty"`
+	UserId  string `json:"UserId,omitempty"`
+	Product string `json:"Product,omitempty"`
+	Code    int    `json:"Code,omitempty"`
 	Token   string
 }
 

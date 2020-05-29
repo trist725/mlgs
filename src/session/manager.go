@@ -59,7 +59,7 @@ func (manager *Manager) GetSession(sessionID uint64) *Session {
 	smap.RLock()
 	defer smap.RUnlock()
 
-	session, _ := smap.sessions[sessionID]
+	session := smap.sessions[sessionID]
 	return session
 }
 

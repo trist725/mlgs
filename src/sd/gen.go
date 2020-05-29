@@ -6,11 +6,11 @@ import "mlgs/src/conf"
 
 func init() {
 	success := LoadAll(conf.Server.XlsxPath)
-	if success != true {
+	if !success {
 		panic("sd LoadAll failed")
 	}
 	success = AfterLoadAll(conf.Server.XlsxPath)
-	if success != true {
+	if !success {
 		panic("sd AfterLoadAll failed")
 	}
 }
