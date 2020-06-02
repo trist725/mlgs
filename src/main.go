@@ -10,7 +10,6 @@ import (
 	"mlgs/src/model"
 	"mlgs/src/session"
 
-	"github.com/pkg/profile"
 	"github.com/trist725/mgsu/util"
 	leaf "github.com/trist725/myleaf"
 	lconf "github.com/trist725/myleaf/conf"
@@ -29,10 +28,6 @@ func main() {
 	defer model.SC.Release()
 
 	defer session.Mgr().Dispose()
-
-	//todo: Multi-modal profiling
-	cpuProf := profile.Start(profile.CPUProfile, profile.ProfilePath(conf.Server.ProfilePath), profile.NoShutdownHook)
-	defer cpuProf.Stop()
 
 	go func() {
 		util.WaitExitSignal()

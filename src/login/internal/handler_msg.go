@@ -67,8 +67,7 @@ func handleLoginAuth(args []interface{}) {
 
 		//根据关联的accountID查找user
 		user, err := model.SC.FindOne_User(
-			dbSession,
-			bson.M{
+			dbSession, bson.M{
 				"AccountID": account.ID,
 			},
 		)
