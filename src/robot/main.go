@@ -4,6 +4,7 @@ import (
 	a "mlgs/src/robot/agent"
 	"mlgs/src/robot/conf"
 	"mlgs/src/robot/robot"
+	"time"
 
 	leaf "github.com/trist725/myleaf"
 	"github.com/trist725/myleaf/network"
@@ -15,7 +16,7 @@ func init() {
 	gTcpClient = network.TCPClient{
 		Addr:            conf.Client.TCPAddr,
 		ConnNum:         10000,
-		ConnectInterval: 3,
+		ConnectInterval: 3 * time.Second,
 		PendingWriteNum: 1000,
 		NewAgent:        a.NewAgent,
 		LenMsgLen:       2,

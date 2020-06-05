@@ -10,7 +10,6 @@
 	"DBName": "db_test",
 
 	"XlsxPath": "../xlsx",
-
 	"ProfilePath": "./profile"
 }
 
