@@ -1,30 +1,57 @@
 package internal
 
 import (
+	"mlgs/src/base"
 	"mlgs/src/conf"
-	"mlgs/src/game"
-	"mlgs/src/msg"
+	"time"
 
-	"github.com/trist725/myleaf/gate"
+	"github.com/trist725/myleaf/module"
+	"github.com/trist725/myleaf/network"
+	"github.com/trist725/myleaf/network/protobuf"
+)
+
+var (
+	skeleton = base.NewSkeleton()
+	ChanRPC  = skeleton.ChanRPCServer
+	//todo: 配置中心,gate分配id,这里用map
+	Gates []*network.TCPClient
 )
 
 type Module struct {
-	*gate.Gate
+	//*gate.Gate
+	*module.Skeleton
 }
 
 func (m *Module) OnInit() {
-	m.Gate = &gate.Gate{
-		MaxConnNum:      conf.Server.MaxConnNum,
-		PendingWriteNum: conf.PendingWriteNum,
-		MaxMsgLen:       conf.MaxMsgLen,
-		WSAddr:          conf.Server.WSAddr,
-		HTTPTimeout:     conf.HTTPTimeout,
-		CertFile:        conf.Server.CertFile,
-		KeyFile:         conf.Server.KeyFile,
-		TCPAddr:         conf.Server.TCPAddr,
-		LenMsgLen:       conf.LenMsgLen,
-		LittleEndian:    conf.LittleEndian,
-		Processor:       msg.Processor,
-		AgentChanRPC:    game.ChanRPC,
+	m.Skeleton = skeleton
+
+	for _, addr := range conf.Server.GateAddrs {
+		gate := network.TCPClient{
+			Addr:            addr,
+			ConnNum:         1,
+			ConnectInterval: 3 * time.Second,
+			PendingWriteNum: conf.PendingWriteNum,
+			NewAgent:        newAgent,
+			LenMsgLen:       conf.LenMsgLen,
+			MaxMsgLen:       conf.MaxMsgLen,
+			LittleEndian:    conf.LittleEndian,
+		}
+		gate.Start()
+		Gates = append(Gates, &gate)
 	}
+
+}
+
+func (m *Module) OnDestroy() {
+	for _, gate := range Gates {
+		gate.Close()
+	}
+}
+
+func newAgent(conn *network.TCPConn) network.Agent {
+	a := new(base.Agent)
+	a.SetConn(conn)
+	a.SetProcessor(protobuf.NewServerProcessor())
+	a.Processor().SetDefaultRouter(ChanRPC)
+	return a
 }

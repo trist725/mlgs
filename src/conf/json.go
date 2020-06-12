@@ -21,6 +21,7 @@ var Server struct {
 	MgoSessionNum int
 	DBName        string
 	XlsxPath      string
+	GateAddrs     []string
 }
 
 func init() {

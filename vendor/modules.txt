@@ -12,17 +12,13 @@ github.com/globalsign/mgo/internal/scram
 github.com/gogo/protobuf/gogoproto
 github.com/gogo/protobuf/proto
 github.com/gogo/protobuf/protoc-gen-gogo/descriptor
-# github.com/golang/protobuf v1.4.1
-## explicit
+# github.com/golang/protobuf v1.4.2
 github.com/golang/protobuf/proto
 # github.com/gorilla/websocket v1.4.2
-## explicit
 github.com/gorilla/websocket
 # github.com/kr/pretty v0.2.0
 ## explicit
 # github.com/kr/text v0.2.0
-## explicit
-# github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e
 ## explicit
 # github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644
 github.com/shiena/ansicolor
@@ -35,10 +31,10 @@ github.com/trist725/mgsu/db
 github.com/trist725/mgsu/db/mongodb
 # github.com/trist725/mgsu/log v0.0.0-20200511072914-077d3303ef68
 github.com/trist725/mgsu/log
-# github.com/trist725/mgsu/util v0.0.0-20200509033703-729ba4db1192
+# github.com/trist725/mgsu/util v0.0.0-20200611111608-73b4ea6d9b85
 ## explicit
 github.com/trist725/mgsu/util
-# github.com/trist725/myleaf v0.0.0-20180912090459-560d092705ea
+# github.com/trist725/myleaf v0.0.0-20200611113717-8647a939d27d
 ## explicit
 github.com/trist725/myleaf
 github.com/trist725/myleaf/chanrpc
@@ -52,7 +48,7 @@ github.com/trist725/myleaf/module
 github.com/trist725/myleaf/network
 github.com/trist725/myleaf/network/protobuf
 github.com/trist725/myleaf/timer
-# google.golang.org/protobuf v1.22.0
+# google.golang.org/protobuf v1.23.0
 google.golang.org/protobuf/encoding/prototext
 google.golang.org/protobuf/encoding/protowire
 google.golang.org/protobuf/internal/descfmt
@@ -80,5 +76,3 @@ google.golang.org/protobuf/reflect/protoreflect
 google.golang.org/protobuf/reflect/protoregistry
 google.golang.org/protobuf/runtime/protoiface
 google.golang.org/protobuf/runtime/protoimpl
-# gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f
-## explicit

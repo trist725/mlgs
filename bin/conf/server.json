@@ -11,6 +11,6 @@
 
 	"XlsxPath": "../xlsx",
 	"ProfilePath": "./profile",
-
+	"GateAddrs": ["127.0.0.1:8888"]
 }
 

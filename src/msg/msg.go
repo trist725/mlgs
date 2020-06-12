@@ -2,6 +2,8 @@ package msg
 
 import (
 	//protocol "github.com/trist725/mgsu/network/protocol/protobuf/v2"
+	"mlgs/src/conf"
+
 	"github.com/trist725/myleaf/network/protobuf"
 )
 
@@ -14,7 +16,7 @@ var (
 )
 
 func init() {
-	Processor.SetByteOrder(true)
+	Processor.SetByteOrder(conf.LittleEndian)
 
 	Processor.Register(&C2S_Ping{})
 	Processor.Register(&S2C_Pong{})

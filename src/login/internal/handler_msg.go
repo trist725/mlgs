@@ -1,10 +1,12 @@
 package internal
 
 import (
+	"mlgs/src/base"
+	"mlgs/src/conf"
 	"reflect"
 
 	"github.com/globalsign/mgo/bson"
-	"github.com/trist725/myleaf/gate"
+	"github.com/trist725/mgsu/util"
 	"github.com/trist725/myleaf/log"
 
 	"mlgs/src/game"
@@ -25,12 +27,12 @@ func handleLoginAuth(args []interface{}) {
 	// 收到的消息
 	recv := args[0].(*msg.C2S_Login)
 	// 消息的发送者
-	sender := args[1].(gate.Agent)
+	sender := args[1].(*base.Agent)
 	send := &msg.S2C_Login{}
 	//close必须在send之后
 	closeFlag := false
 	defer func() {
-		sender.WriteMsg(send)
+		sender.WriteMsgEx(util.Int32ToByteArr(sender.UserData().(int32), conf.LittleEndian), send)
 		if closeFlag {
 			log.Debug("close agent...[%v]", sender.RemoteAddr())
 			sender.Close()
