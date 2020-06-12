@@ -28,6 +28,7 @@ bin/login
 bin/robot
 bin/mlgs
 pkg
+go
 # vendor
 .DS_Store
 # ~*.xlsx
