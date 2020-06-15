@@ -1,10 +1,13 @@
 package internal
 
 import (
+	"mlgs/src/base"
+	"mlgs/src/conf"
 	"mlgs/src/msg"
 	s "mlgs/src/session"
 	"reflect"
 
+	"github.com/trist725/mgsu/util"
 	"github.com/trist725/myleaf/gate"
 	"github.com/trist725/myleaf/log"
 )
@@ -23,19 +26,12 @@ func regiserMsgHandle(m interface{}, h interface{}) {
 
 func handlePong(args []interface{}) {
 	//recv := args[0].(*msg.C2S_Ping)
-	sender := args[1].(gate.Agent)
-	if sender.UserData() == nil {
-		log.Debug("no session yet")
-		return
-	}
-
-	sid := sender.UserData().(uint64)
-	session := s.Mgr().GetSession(sid)
-	if session == nil {
-		log.Debug("handlePong return for nil session")
-		return
-	}
-	session.Update()
+	//test
+	send := msg.New_S2C_Pong()
+	sender := args[1].(*base.Agent)
+	ext := [][]byte{util.Int32ToByteArr(0, conf.LittleEndian),
+		util.Int32ToByteArr(sender.UserData().(int32), conf.LittleEndian)}
+	sender.WriteMsgEx(ext, send)
 }
 
 func handleUpdateUserData(args []interface{}) {

@@ -8,7 +8,7 @@ import (
 )
 
 // -------------------------
-// | clientID | id | protobuf message |
+// | clientID | (clientID) | id | protobuf message |
 // -------------------------
 type ServerProcessor struct {
 	littleEndian bool
@@ -36,7 +36,19 @@ func (p *ServerProcessor) SetDefaultRouter(msgRouter *chanrpc.Server) {
 // goroutine safe
 func (p *ServerProcessor) Route(msg interface{}, userData interface{}) error {
 	if p.defaultRouter != nil {
-		p.defaultRouter.Go("ServerForward", msg, userData, p.clientID)
+		switch p.clientID {
+		//当clientID为0时,关闭客户端
+		case 0:
+			msgByte := msg.([]byte)
+			if p.littleEndian {
+				p.clientID = int32(binary.LittleEndian.Uint32(msgByte[:4]))
+			} else {
+				p.clientID = int32(binary.BigEndian.Uint32(msgByte[:4]))
+			}
+			p.defaultRouter.Go("ServerCloseClient", msgByte[4:], userData, p.clientID)
+		default:
+			p.defaultRouter.Go("ServerForward", msg, userData, p.clientID)
+		}
 	}
 
 	return nil

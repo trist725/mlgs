@@ -4,9 +4,7 @@ import (
 	"mlgs/src/msg"
 	"mlgs/src/robot/robot"
 	"reflect"
-	"time"
 
-	"github.com/trist725/mgsu/util"
 	"github.com/trist725/myleaf/log"
 	"github.com/trist725/myleaf/network"
 	"github.com/trist725/myleaf/network/protobuf"
@@ -33,24 +31,29 @@ func (a *Agent) UserData() interface{} {
 
 func (a *Agent) SendSome() {
 	//登陆
+	//{
+	//	send := msg.Get_C2S_Login()
+	//	send.UID = util.GenRandomString(10)
+	//	send.NickName = util.GenRandomString(5)
+	//	send.Sex = "sex"
+	//	send.Location = "loc"
+	//	send.Password = "pwd"
+	//	send.Logintype = msg.C2S_Login_E_LoginType_WeChat
+	//	a.SetUserData(send)
+	//	a.WriteMsg(send)
+	//}
 	{
-		send := msg.Get_C2S_Login()
-		send.UID = util.GenRandomString(10)
-		send.NickName = util.GenRandomString(5)
-		send.Sex = "sex"
-		send.Location = "loc"
-		send.Password = "pwd"
-		send.Logintype = msg.C2S_Login_E_LoginType_WeChat
-		a.SetUserData(send)
+		send := msg.New_C2S_Ping()
 		a.WriteMsg(send)
+		//count++
 	}
 	//等待登陆成功
-	time.Sleep(1 * time.Second)
+	//time.Sleep(1 * time.Second)
 	//签到
 	{
 		send := msg.Get_C2S_DaySign()
 		send.Day = 1
-		a.WriteMsg(send)
+		//a.WriteMsg(send)
 	}
 	//快速匹配
 	{
@@ -87,11 +90,11 @@ func (a *Agent) Init() {
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_LoginInfo{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_Login{}, robot.ChanRPC)
 	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_DaySign{}, robot.ChanRPC)
+	a.Processor.(*protobuf.Processor).SetRouter(&msg.S2C_Pong{}, robot.ChanRPC)
 }
 
 func (a *Agent) Run() {
 	a.Init()
-
 	a.SendSome()
 
 	for {
@@ -100,7 +103,6 @@ func (a *Agent) Run() {
 			log.Debug("read message: %v", err)
 			break
 		}
-
 		if a.Processor != nil {
 			msg, err := a.Processor.Unmarshal(data)
 			if err != nil {

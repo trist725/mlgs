@@ -71,9 +71,9 @@ func (a *Agent) WriteMsgEx(ext interface{}, msg interface{}) {
 			return
 		}
 		//insert ext
-		wrapData := [][]byte{ext.([]byte)}
-		wrapData = append(wrapData, data...)
-		err = a.conn.WriteMsg(wrapData...)
+		extByte := ext.([][]byte)
+		extByte = append(extByte, data...)
+		err = a.conn.WriteMsg(extByte...)
 		if err != nil {
 			log.Error("write message %v error: %v", reflect.TypeOf(msg), err)
 		}

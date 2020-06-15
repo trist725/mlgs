@@ -11,6 +11,7 @@ func init() {
 	regiserMsgHandle(&msg.S2C_Login{}, handleLogin)
 
 	regiserMsgHandle(&msg.S2C_GetMailList{}, handleGetMailList)
+	regiserMsgHandle(&msg.S2C_Pong{}, handlePong)
 }
 
 func regiserMsgHandle(m interface{}, h interface{}) {
@@ -21,10 +22,19 @@ func handleLogin(args []interface{}) {
 	// 收到的消息
 	recv := args[0].(*msg.S2C_Login)
 	a := args[1].(*msg.C2S_Login)
-
 	if recv.Reason == msg.S2C_Login_E_Err_LoginSuccess || recv.Reason == msg.S2C_Login_E_Err_NewAccount {
 		log.Debug("[%s-%s] login success", a.UID, a.NickName)
 	}
+}
+
+var count int
+
+func handlePong(args []interface{}) {
+	// 收到的消息
+	//recv := args[0].(*msg.S2C_Pong)
+	//a := args[1].(*agent.Agent)
+	//t := time.Now().Nanosecond()
+
 }
 
 //

@@ -76,8 +76,8 @@ github.com/trist725/mgsu/util v0.0.0-20200509033703-729ba4db1192 h1:0oEH7Vd0evV9
 github.com/trist725/mgsu/util v0.0.0-20200509033703-729ba4db1192/go.mod h1:OJGU196y+to2DkbVAol0wALH58k8SPHzIWI437lquAk=
 github.com/trist725/mgsu/util v0.0.0-20200611111608-73b4ea6d9b85 h1:70D3AFxAOOB6i2OhMk83+ONydkZgK8MI0jjCoWv6jzA=
 github.com/trist725/mgsu/util v0.0.0-20200611111608-73b4ea6d9b85/go.mod h1:OJGU196y+to2DkbVAol0wALH58k8SPHzIWI437lquAk=
-github.com/trist725/myleaf v0.0.0-20200611113717-8647a939d27d h1:s/HOUwgKX9NgrjwrTaqKsuYO4I0iVzDLRMAqk/cI4pQ=
-github.com/trist725/myleaf v0.0.0-20200611113717-8647a939d27d/go.mod h1:5ImyI7IUeFrFlMkc5RkDtx4VUcyW2OHHSZOPW8csLIc=
+github.com/trist725/myleaf v0.0.0-20200615090909-203d950d579a h1:0DbgDnJEXmdZ0aF6T4ryBTerfz5GxOQJbwDV8P2ZkJk=
+github.com/trist725/myleaf v0.0.0-20200615090909-203d950d579a/go.mod h1:5ImyI7IUeFrFlMkc5RkDtx4VUcyW2OHHSZOPW8csLIc=
 github.com/wendal/errors v0.0.0-20130201093226-f66c77a7882b/go.mod h1:Q12BUT7DqIlHRmgv3RskH+UCM/4eqVMgI0EMmlSpAXc=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550/go.mod h1:yigFU9vqHzYiE8UmvKecakEJjdnWj3jj499lnFckfCI=

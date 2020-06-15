@@ -8,7 +8,7 @@ import (
 
 func init() {
 	msg.Processor.SetRouter(&msg.C2S_Login{}, login.ChanRPC)
-
+	msg.Processor.SetRouter(&msg.C2S_Ping{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_DaySign{}, game.ChanRPC)
 
 }
