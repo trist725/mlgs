@@ -80,6 +80,23 @@ func (a *Agent) WriteMsgEx(ext interface{}, msg interface{}) {
 	}
 }
 
+func (a *Agent) WriteCmd(cmdType uint16, cmdData interface{}) {
+	cmdHead := Int32ToByteArr(0)
+	//insert ext
+	cmdTypeByte := Uint16ToByteArr(cmdType)
+	var cmdDataByte []byte
+	switch cmdType {
+	case 0:
+		cmdDataByte = Int32ToByteArr(cmdData.(int32))
+	case 1:
+	default:
+	}
+	err := a.conn.WriteMsg(cmdHead, cmdTypeByte, cmdDataByte)
+	if err != nil {
+		log.Error("write cmd type:%d error: %v", cmdType, err)
+	}
+}
+
 func (a *Agent) UserData() interface{} {
 	return a.userData
 }

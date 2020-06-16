@@ -32,7 +32,7 @@ func handleLoginAuth(args []interface{}) {
 	//close必须在send之后
 	closeFlag := false
 	defer func() {
-		sender.WriteMsgEx(util.Int32ToByteArr(sender.UserData().(int32), conf.LittleEndian), send)
+		sender.WriteMsgEx(util.UInt32ToByteArr(uint32(sender.UserData().(int32)), conf.LittleEndian), send)
 		if closeFlag {
 			log.Debug("close agent...[%v]", sender.RemoteAddr())
 			sender.Close()

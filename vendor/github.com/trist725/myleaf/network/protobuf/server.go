@@ -8,7 +8,10 @@ import (
 )
 
 // -------------------------
-// | clientID | (clientID) | id | protobuf message |
+// | clientID | id | protobuf message |
+// -------------------------
+// -------------------------
+// | 0 | cmdType | cmdData |
 // -------------------------
 type ServerProcessor struct {
 	littleEndian bool
@@ -37,15 +40,16 @@ func (p *ServerProcessor) SetDefaultRouter(msgRouter *chanrpc.Server) {
 func (p *ServerProcessor) Route(msg interface{}, userData interface{}) error {
 	if p.defaultRouter != nil {
 		switch p.clientID {
-		//当clientID为0时,关闭客户端
+		//当clientID为0时,进一步解析作为指令处理
 		case 0:
 			msgByte := msg.([]byte)
+			var cmdType uint16
 			if p.littleEndian {
-				p.clientID = int32(binary.LittleEndian.Uint32(msgByte[:4]))
+				cmdType = binary.LittleEndian.Uint16(msgByte[0:2])
 			} else {
-				p.clientID = int32(binary.BigEndian.Uint32(msgByte[:4]))
+				cmdType = binary.BigEndian.Uint16(msgByte[0:2])
 			}
-			p.defaultRouter.Go("ServerCloseClient", msgByte[4:], userData, p.clientID)
+			p.defaultRouter.Go("ServerCommand", msgByte[2:], userData, cmdType)
 		default:
 			p.defaultRouter.Go("ServerForward", msg, userData, p.clientID)
 		}
