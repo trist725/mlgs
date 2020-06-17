@@ -130,6 +130,35 @@ func (p *Processor) Route(msg interface{}, userData interface{}) error {
 	return nil
 }
 
+func (p *Processor) RouteEx(msg interface{}, agent interface{}, ext interface{}) error {
+	// raw
+	if msgRaw, ok := msg.(MsgRaw); ok {
+		if msgRaw.msgID >= uint16(len(p.msgInfo)) {
+			return fmt.Errorf("message id %v not registered", msgRaw.msgID)
+		}
+		i := p.msgInfo[msgRaw.msgID]
+		if i.msgRawHandler != nil {
+			i.msgRawHandler([]interface{}{msgRaw.msgID, msgRaw.msgRawData, agent, ext})
+		}
+		return nil
+	}
+
+	// protobuf
+	msgType := reflect.TypeOf(msg)
+	id, ok := p.msgID[msgType]
+	if !ok {
+		return fmt.Errorf("message %s not registered", msgType)
+	}
+	i := p.msgInfo[id]
+	if i.msgHandler != nil {
+		i.msgHandler([]interface{}{msg, agent, ext})
+	}
+	if i.msgRouter != nil {
+		i.msgRouter.Go(msgType, msg, agent, ext)
+	}
+	return nil
+}
+
 // goroutine safe
 func (p *Processor) Unmarshal(data []byte) (interface{}, error) {
 	if len(data) < 2 {

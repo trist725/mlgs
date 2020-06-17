@@ -44,6 +44,7 @@ func (a *Agent) SendSome() {
 	//}
 	{
 		send := msg.New_C2S_Ping()
+		a.SetUserData(a.conn.LocalAddr().String())
 		a.WriteMsg(send)
 		//count++
 	}

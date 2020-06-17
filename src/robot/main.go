@@ -15,7 +15,7 @@ var gTcpClient network.TCPClient
 func init() {
 	gTcpClient = network.TCPClient{
 		Addr:            conf.Client.TCPAddr,
-		ConnNum:         1,
+		ConnNum:         10,
 		ConnectInterval: 3 * time.Second,
 		PendingWriteNum: 1000,
 		NewAgent:        a.NewAgent,

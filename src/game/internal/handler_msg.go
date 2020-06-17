@@ -27,11 +27,11 @@ func handlePong(args []interface{}) {
 	//test
 	send := msg.New_S2C_Pong()
 	sender := args[1].(*base.Agent)
-	//ext := [][]byte{util.Int32ToByteArr(0, conf.LittleEndian),
-	//	util.Int32ToByteArr(sender.UserData().(int32), conf.LittleEndian)}
-	ext := [][]byte{base.Int32ToByteArr(sender.UserData().(int32))}
+	clientID := args[2].(int32)
+
+	ext := [][]byte{base.Int32ToByteArr(clientID)}
 	sender.WriteMsgEx(ext, send)
-	sender.WriteCmd(0, sender.UserData().(int32))
+	sender.WriteCmd(0, clientID)
 }
 
 func handleUpdateUserData(args []interface{}) {

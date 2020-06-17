@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"mlgs/src/msg"
 	"reflect"
 
@@ -27,14 +28,16 @@ func handleLogin(args []interface{}) {
 	}
 }
 
-var count int
+//test
+var index int
 
 func handlePong(args []interface{}) {
 	// 收到的消息
 	//recv := args[0].(*msg.S2C_Pong)
-	//a := args[1].(*agent.Agent)
+	a := args[1].(string)
 	//t := time.Now().Nanosecond()
-
+	index++
+	fmt.Printf("[%s]recv index:[%d]\n", a, index)
 }
 
 //

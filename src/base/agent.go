@@ -27,20 +27,15 @@ func (a *Agent) Run() {
 
 		if a.processor != nil {
 			//截取clientID
-			msg, err := a.processor.Unmarshal(data)
-			if err != nil {
-				log.Debug("unmarshal raw message error: %v", err)
-				break
-			}
-			a.SetUserData(a.processor.(*protobuf.ServerProcessor).ClientID())
-			//a.processor.Route(msg, a)
-			//实际解包路由
-			msg, err = m.Processor.Unmarshal(msg.([]byte))
+			clientID, msgByte := a.processor.(*protobuf.ServerProcessor).ParseClientID(data)
+			//a.SetUserData(clientID)
+			//路由pb消息
+			msg, err := m.Processor.Unmarshal(msgByte)
 			if err != nil {
 				log.Debug("unmarshal message error: %v", err)
 				break
 			}
-			err = m.Processor.Route(msg, a)
+			err = m.Processor.RouteEx(msg, a, clientID)
 			if err != nil {
 				log.Debug("route message error: %v", err)
 				break

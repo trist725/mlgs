@@ -34,7 +34,7 @@ github.com/trist725/mgsu/log
 # github.com/trist725/mgsu/util v0.0.0-20200616072828-4a07b7a4c01f
 ## explicit
 github.com/trist725/mgsu/util
-# github.com/trist725/myleaf v0.0.0-20200616075311-49539d168932
+# github.com/trist725/myleaf v0.0.0-20200617034648-65d050991516
 ## explicit
 github.com/trist725/myleaf
 github.com/trist725/myleaf/chanrpc
