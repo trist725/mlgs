@@ -2,6 +2,8 @@ syntax="proto3";
 
 package model;
 
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
 /// 帐号状态
 //enum E_AccountState {
 //    State_ = 0;
@@ -17,9 +19,8 @@ package model;
 //@collection
 message Account {
     /// mongodb默认主键_id做账号id
-    //@bson=_id
-    int64 ID = 1;
-    /// 客户端传来的唯一id,如微信unionID
+    int64 ID = 1 [(gogoproto.moretags) = "bson:\"_id\""] ;
+    /// 客户端传来的唯一id,如微信unionID/steamID
     string UID = 2;
     /// 密码
     //string Password = 4;
@@ -46,6 +47,4 @@ message Account {
     //string ChannelAccount = 11;
     /// 封号标记,1为被封
     int32 Ban = 12;
-    ///游客/微信
-    int32 Type = 13;
 }

@@ -12,12 +12,9 @@ func CreateAccount(recv *msg.C2S_Login) (d *Account, err error) {
 	}
 	d = Get_Account()
 	d.ID = int64(nextSeq)
-	d.UID = recv.UID
 	d.Ban = 0
 	d.RegisterTime = time.Now().Unix()
-	d.Password = recv.Password
-	d.Location = recv.Location
-	d.Type = int32(recv.Logintype)
+
 	return
 }
 

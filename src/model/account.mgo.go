@@ -6,13 +6,13 @@ package model
 import (
 	json "encoding/json"
 	fmt "fmt"
+	mgo "github.com/globalsign/mgo"
+	_ "github.com/gogo/protobuf/gogoproto"
+	proto "github.com/gogo/protobuf/proto"
+	mongodb "github.com/trist725/mgsu/db/mongodb"
 	math "math"
 	msg "mlgs/src/msg"
 	sync "sync"
-
-	mgo "github.com/globalsign/mgo"
-	proto "github.com/gogo/protobuf/proto"
-	mongodb "github.com/trist725/mgsu/db/mongodb"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -49,8 +49,6 @@ func (m *Account) ResetEx() {
 
 	m.Ban = 0
 
-	m.Type = 0
-
 }
 
 func (m Account) Clone() *Account {
@@ -70,8 +68,6 @@ func (m Account) Clone() *Account {
 	n.Password = m.Password
 
 	n.Ban = m.Ban
-
-	n.Type = m.Type
 
 	return n
 }

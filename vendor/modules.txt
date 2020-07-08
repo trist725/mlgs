@@ -1,5 +1,8 @@
-# github.com/astaxie/beego v1.12.1
+# github.com/astaxie/beego v1.12.2
+## explicit
 github.com/astaxie/beego/logs
+# github.com/frankban/quicktest v1.10.0
+## explicit
 # github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 ## explicit
 github.com/globalsign/mgo
@@ -16,8 +19,6 @@ github.com/gogo/protobuf/protoc-gen-gogo/descriptor
 github.com/golang/protobuf/proto
 # github.com/gorilla/websocket v1.4.2
 github.com/gorilla/websocket
-# github.com/kr/pretty v0.2.0
-## explicit
 # github.com/kr/text v0.2.0
 ## explicit
 # github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644
@@ -25,13 +26,14 @@ github.com/shiena/ansicolor
 # github.com/tealeg/xlsx v1.0.6-0.20191105032217-48f552b38ead
 ## explicit
 github.com/tealeg/xlsx
-# github.com/trist725/mgsu/db v0.0.0-20200511093703-ad769b7b05d7
+# github.com/trist725/mgsu/db v0.0.0-20200624064338-e35efa53c32e
 ## explicit
 github.com/trist725/mgsu/db
 github.com/trist725/mgsu/db/mongodb
-# github.com/trist725/mgsu/log v0.0.0-20200511072914-077d3303ef68
+# github.com/trist725/mgsu/log v0.0.0-20200624064338-e35efa53c32e
+## explicit
 github.com/trist725/mgsu/log
-# github.com/trist725/mgsu/util v0.0.0-20200616072828-4a07b7a4c01f
+# github.com/trist725/mgsu/util v0.0.0-20200624064338-e35efa53c32e
 ## explicit
 github.com/trist725/mgsu/util
 # github.com/trist725/myleaf v0.0.0-20200617034648-65d050991516
@@ -48,7 +50,8 @@ github.com/trist725/myleaf/module
 github.com/trist725/myleaf/network
 github.com/trist725/myleaf/network/protobuf
 github.com/trist725/myleaf/timer
-# google.golang.org/protobuf v1.23.0
+# google.golang.org/protobuf v1.25.0
+## explicit
 google.golang.org/protobuf/encoding/prototext
 google.golang.org/protobuf/encoding/protowire
 google.golang.org/protobuf/internal/descfmt
@@ -59,12 +62,11 @@ google.golang.org/protobuf/internal/encoding/messageset
 google.golang.org/protobuf/internal/encoding/tag
 google.golang.org/protobuf/internal/encoding/text
 google.golang.org/protobuf/internal/errors
-google.golang.org/protobuf/internal/fieldnum
 google.golang.org/protobuf/internal/fieldsort
 google.golang.org/protobuf/internal/filedesc
 google.golang.org/protobuf/internal/filetype
 google.golang.org/protobuf/internal/flags
-google.golang.org/protobuf/internal/genname
+google.golang.org/protobuf/internal/genid
 google.golang.org/protobuf/internal/impl
 google.golang.org/protobuf/internal/mapsort
 google.golang.org/protobuf/internal/pragma

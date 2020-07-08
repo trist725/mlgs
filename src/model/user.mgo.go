@@ -6,14 +6,13 @@ package model
 import (
 	json "encoding/json"
 	fmt "fmt"
-	math "math"
-	msg "mlgs/src/msg"
-	sync "sync"
-
 	mgo "github.com/globalsign/mgo"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	mongodb "github.com/trist725/mgsu/db/mongodb"
+	math "math"
+	msg "mlgs/src/msg"
+	sync "sync"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -58,10 +57,6 @@ func (m *User) ResetEx() {
 
 	m.Exp = 0
 
-	m.DaySigned = false
-
-	m.SignedDays = 0
-
 }
 
 func (m User) Clone() *User {
@@ -89,10 +84,6 @@ func (m User) Clone() *User {
 	n.LastLogoutTime = m.LastLogoutTime
 
 	n.Exp = m.Exp
-
-	n.DaySigned = m.DaySigned
-
-	n.SignedDays = m.SignedDays
 
 	return n
 }

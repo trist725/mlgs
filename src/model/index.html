@@ -229,15 +229,14 @@
                   <td>ID</td>
                   <td><a href="#int64">int64</a></td>
                   <td></td>
-                  <td><p>mongodb默认主键_id做账号id
-@bson=_id </p></td>
+                  <td><p>mongodb默认主键_id做账号id </p></td>
                 </tr>
               
                 <tr>
                   <td>UID</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>客户端传来的唯一id,如微信unionID </p></td>
+                  <td><p>客户端传来的唯一id,如微信unionID/steamID </p></td>
                 </tr>
               
                 <tr>
@@ -283,13 +282,6 @@ string ChannelName = 10;
 / 渠道帐号
 string ChannelAccount = 11;
 / 封号标记,1为被封 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>Type</td>
-                  <td><a href="#int32">int32</a></td>
-                  <td></td>
-                  <td><p>游客/微信 </p></td>
                 </tr>
               
             </tbody>
@@ -398,20 +390,6 @@ int32 ServerID = 3;
                   <td></td>
                   <td><p>经验
 @msg </p></td>
-                </tr>
-              
-                <tr>
-                  <td>DaySigned</td>
-                  <td><a href="#bool">bool</a></td>
-                  <td></td>
-                  <td><p>今日是否已签到 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>SignedDays</td>
-                  <td><a href="#int32">int32</a></td>
-                  <td></td>
-                  <td><p>已签到天数 </p></td>
                 </tr>
               
             </tbody>
