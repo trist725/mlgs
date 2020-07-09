@@ -35,6 +35,7 @@ func (m *Module) OnInit() {
 			LenMsgLen:       conf.LenMsgLen,
 			MaxMsgLen:       conf.MaxMsgLen,
 			LittleEndian:    conf.LittleEndian,
+			AutoReconnect:   true,
 		}
 		gate.Start()
 		Gates = append(Gates, &gate)

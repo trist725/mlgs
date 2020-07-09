@@ -100,7 +100,10 @@ func (a *Agent) SetUserData(data interface{}) {
 	a.userData = data
 }
 
-func (a *Agent) OnClose() {}
+//todo: 网关意外断开处理
+func (a *Agent) OnClose() {
+
+}
 
 func (a *Agent) LocalAddr() net.Addr {
 	return a.conn.LocalAddr()

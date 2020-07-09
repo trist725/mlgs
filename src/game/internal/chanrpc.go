@@ -11,32 +11,12 @@ import (
 
 func init() {
 	skeleton.RegisterChanRPC("NewAgent", rpcNewAgent)
-	skeleton.RegisterChanRPC("CloseAgent", rpcCloseAgent)
 	skeleton.RegisterChanRPC("LoginAuthPass", rpcHandleLoginAuthPass)
 }
 
 func rpcNewAgent(args []interface{}) {
 	a := args[0].(gate.Agent)
 	_ = a
-}
-
-func rpcCloseAgent(args []interface{}) {
-	a := args[0].(gate.Agent)
-	//_ = a
-	a.Close()
-
-	//清session
-	if a.UserData() != nil {
-		sid := a.UserData().(uint64)
-		session := s.Mgr().GetSession(sid)
-		if session != nil {
-			session.Close()
-			log.Debug("[%s] session id:[%d] closed, current session count:[%d]", session.Sign(), sid, s.Mgr().Count())
-		}
-	}
-
-	//设为0表示conn已断开
-	a.SetUserData(uint64(0))
 }
 
 const saveIntervalMinute = 3 // 保存数据间隔（单位：分钟）
