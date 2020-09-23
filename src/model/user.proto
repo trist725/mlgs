@@ -34,4 +34,5 @@ message User {
     ///经验
     //@msg
     int64 Exp = 10;
+
 }

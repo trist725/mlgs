@@ -31,16 +31,14 @@ type Account struct {
 	/// 客户端传来的唯一id,如微信unionID/steamID
 	UID string `protobuf:"bytes,2,opt,name=UID,proto3" json:"UID,omitempty"`
 	/// 密码
-	//string Password = 4;
+	Password string `protobuf:"bytes,4,opt,name=Password,proto3" json:"Password,omitempty"`
 	/// 注册时间
 	RegisterTime int64 `protobuf:"varint,5,opt,name=RegisterTime,proto3" json:"RegisterTime,omitempty"`
 	///token校验
 	//    string accessToken = 6;
 	//    string refreshToken = 7;
 	///登陆地理位置
-	Location string `protobuf:"bytes,8,opt,name=location,proto3" json:"location,omitempty"`
-	///密码
-	Password string `protobuf:"bytes,9,opt,name=password,proto3" json:"password,omitempty"`
+	Location string `protobuf:"bytes,8,opt,name=Location,proto3" json:"Location,omitempty"`
 	/// 帐号状态 1=游客, 2=注册, 3=绑定
 	//E_AccountState State = 6;
 	/// 密钥
@@ -104,6 +102,13 @@ func (m *Account) GetUID() string {
 	return ""
 }
 
+func (m *Account) GetPassword() string {
+	if m != nil {
+		return m.Password
+	}
+	return ""
+}
+
 func (m *Account) GetRegisterTime() int64 {
 	if m != nil {
 		return m.RegisterTime
@@ -114,13 +119,6 @@ func (m *Account) GetRegisterTime() int64 {
 func (m *Account) GetLocation() string {
 	if m != nil {
 		return m.Location
-	}
-	return ""
-}
-
-func (m *Account) GetPassword() string {
-	if m != nil {
-		return m.Password
 	}
 	return ""
 }
@@ -139,7 +137,7 @@ func init() {
 func init() { proto.RegisterFile("account.proto", fileDescriptor_8e28828dcb8d24f0) }
 
 var fileDescriptor_8e28828dcb8d24f0 = []byte{
-	// 235 bytes of a gzipped FileDescriptorProto
+	// 236 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4d, 0x4c, 0x4e, 0xce,
 	0x2f, 0xcd, 0x2b, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0xcd, 0xcd, 0x4f, 0x49, 0xcd,
 	0x91, 0xd2, 0x4d, 0xcf, 0x2c, 0xc9, 0x28, 0x4d, 0xd2, 0x4b, 0xce, 0xcf, 0xd5, 0x4f, 0xcf, 0x4f,
@@ -147,14 +145,14 @@ var fileDescriptor_8e28828dcb8d24f0 = []byte{
 	0x92, 0x91, 0x8b, 0xdd, 0x11, 0x62, 0x8e, 0x90, 0x1c, 0x17, 0x93, 0xa7, 0x8b, 0x04, 0xa3, 0x02,
 	0xa3, 0x06, 0xb3, 0x13, 0xdf, 0xa7, 0x7b, 0xf2, 0x5c, 0x49, 0xc5, 0xf9, 0x79, 0x56, 0x4a, 0xf1,
 	0x99, 0x29, 0x4a, 0x41, 0x4c, 0x9e, 0x2e, 0x42, 0x02, 0x5c, 0xcc, 0xa1, 0x9e, 0x2e, 0x12, 0x4c,
-	0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x20, 0xa6, 0x90, 0x12, 0x17, 0x4f, 0x50, 0x6a, 0x7a, 0x66, 0x71,
-	0x49, 0x6a, 0x51, 0x48, 0x66, 0x6e, 0xaa, 0x04, 0x2b, 0x48, 0x6f, 0x10, 0x8a, 0x98, 0x90, 0x14,
-	0x17, 0x47, 0x4e, 0x7e, 0x72, 0x62, 0x49, 0x66, 0x7e, 0x9e, 0x04, 0x07, 0x58, 0x2b, 0x9c, 0x0f,
-	0x92, 0x2b, 0x48, 0x2c, 0x2e, 0x2e, 0xcf, 0x2f, 0x4a, 0x91, 0xe0, 0x84, 0xc8, 0xc1, 0xf8, 0x20,
-	0xdb, 0x9c, 0x12, 0xf3, 0x24, 0x78, 0x14, 0x18, 0x35, 0x58, 0x83, 0x40, 0x4c, 0x27, 0x89, 0x13,
-	0x8f, 0xe4, 0x18, 0x2f, 0x3c, 0x92, 0x63, 0x7c, 0xf0, 0x48, 0x8e, 0x71, 0xc2, 0x63, 0x39, 0x86,
-	0x0b, 0x8f, 0xe5, 0x18, 0x6e, 0x3c, 0x96, 0x63, 0x48, 0x62, 0x03, 0x7b, 0xc6, 0x18, 0x10, 0x00,
-	0x00, 0xff, 0xff, 0x5d, 0x30, 0xb0, 0x85, 0x13, 0x01, 0x00, 0x00,
+	0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x20, 0xa6, 0x90, 0x14, 0x17, 0x47, 0x40, 0x62, 0x71, 0x71, 0x79,
+	0x7e, 0x51, 0x8a, 0x04, 0x0b, 0x58, 0x18, 0xce, 0x17, 0x52, 0xe2, 0xe2, 0x09, 0x4a, 0x4d, 0xcf,
+	0x2c, 0x2e, 0x49, 0x2d, 0x0a, 0xc9, 0xcc, 0x4d, 0x95, 0x60, 0x05, 0x99, 0x1b, 0x84, 0x22, 0x06,
+	0xd2, 0xef, 0x93, 0x9f, 0x9c, 0x58, 0x92, 0x99, 0x9f, 0x27, 0xc1, 0x01, 0xd1, 0x0f, 0xe3, 0x83,
+	0x6c, 0x73, 0x4a, 0xcc, 0x93, 0xe0, 0x51, 0x60, 0xd4, 0x60, 0x0d, 0x02, 0x31, 0x9d, 0x24, 0x4e,
+	0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18,
+	0x2e, 0x3c, 0x96, 0x63, 0xb8, 0xf1, 0x58, 0x8e, 0x21, 0x89, 0x0d, 0xec, 0x19, 0x63, 0x40, 0x00,
+	0x00, 0x00, 0xff, 0xff, 0xda, 0x89, 0x05, 0x79, 0x13, 0x01, 0x00, 0x00,
 }
 
 func (m *Account) Marshal() (dAtA []byte, err error) {
@@ -182,13 +180,6 @@ func (m *Account) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x60
 	}
-	if len(m.Password) > 0 {
-		i -= len(m.Password)
-		copy(dAtA[i:], m.Password)
-		i = encodeVarintAccount(dAtA, i, uint64(len(m.Password)))
-		i--
-		dAtA[i] = 0x4a
-	}
 	if len(m.Location) > 0 {
 		i -= len(m.Location)
 		copy(dAtA[i:], m.Location)
@@ -200,6 +191,13 @@ func (m *Account) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i = encodeVarintAccount(dAtA, i, uint64(m.RegisterTime))
 		i--
 		dAtA[i] = 0x28
+	}
+	if len(m.Password) > 0 {
+		i -= len(m.Password)
+		copy(dAtA[i:], m.Password)
+		i = encodeVarintAccount(dAtA, i, uint64(len(m.Password)))
+		i--
+		dAtA[i] = 0x22
 	}
 	if len(m.UID) > 0 {
 		i -= len(m.UID)
@@ -240,14 +238,14 @@ func (m *Account) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovAccount(uint64(l))
 	}
+	l = len(m.Password)
+	if l > 0 {
+		n += 1 + l + sovAccount(uint64(l))
+	}
 	if m.RegisterTime != 0 {
 		n += 1 + sovAccount(uint64(m.RegisterTime))
 	}
 	l = len(m.Location)
-	if l > 0 {
-		n += 1 + l + sovAccount(uint64(l))
-	}
-	l = len(m.Password)
 	if l > 0 {
 		n += 1 + l + sovAccount(uint64(l))
 	}
@@ -343,6 +341,38 @@ func (m *Account) Unmarshal(dAtA []byte) error {
 			}
 			m.UID = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Password", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAccount
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAccount
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAccount
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Password = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		case 5:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field RegisterTime", wireType)
@@ -393,38 +423,6 @@ func (m *Account) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Location = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 9:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Password", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAccount
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthAccount
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthAccount
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Password = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 12:
 			if wireType != 0 {

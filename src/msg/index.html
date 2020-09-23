@@ -198,61 +198,6 @@
         
           
           <li>
-            <a href="#Hall.proto">Hall.proto</a>
-            <ul>
-              
-                <li>
-                  <a href="#msg.C2S_DaySign"><span class="badge">M</span>C2S_DaySign</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.C2S_Login"><span class="badge">M</span>C2S_Login</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.C2S_SwitchHallRoleSex"><span class="badge">M</span>C2S_SwitchHallRoleSex</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.S2C_DaySign"><span class="badge">M</span>S2C_DaySign</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.S2C_Login"><span class="badge">M</span>S2C_Login</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.S2C_LoginInfo"><span class="badge">M</span>S2C_LoginInfo</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.S2C_SwitchHallRoleSex"><span class="badge">M</span>S2C_SwitchHallRoleSex</a>
-                </li>
-              
-              
-                <li>
-                  <a href="#msg.C2S_Login.E_LoginType"><span class="badge">E</span>C2S_Login.E_LoginType</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.S2C_DaySign.E_Err_DaySign"><span class="badge">E</span>S2C_DaySign.E_Err_DaySign</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.S2C_Login.E_ErrReason"><span class="badge">E</span>S2C_Login.E_ErrReason</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.S2C_SwitchHallRoleSex.E_Err"><span class="badge">E</span>S2C_SwitchHallRoleSex.E_Err</a>
-                </li>
-              
-              
-              
-            </ul>
-          </li>
-        
-          
-          <li>
             <a href="#item.proto">item.proto</a>
             <ul>
               
@@ -284,40 +229,28 @@
         
           
           <li>
-            <a href="#mail.proto">mail.proto</a>
+            <a href="#Login.proto">Login.proto</a>
             <ul>
               
                 <li>
-                  <a href="#msg.C2S_GetAllMailReward"><span class="badge">M</span>C2S_GetAllMailReward</a>
+                  <a href="#msg.C2S_Login"><span class="badge">M</span>C2S_Login</a>
                 </li>
               
                 <li>
-                  <a href="#msg.C2S_GetMailList"><span class="badge">M</span>C2S_GetMailList</a>
+                  <a href="#msg.S2C_Login"><span class="badge">M</span>S2C_Login</a>
                 </li>
               
                 <li>
-                  <a href="#msg.C2S_GetMailReward"><span class="badge">M</span>C2S_GetMailReward</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.Mail"><span class="badge">M</span>Mail</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.S2C_GetAllMailReward"><span class="badge">M</span>S2C_GetAllMailReward</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.S2C_GetMailList"><span class="badge">M</span>S2C_GetMailList</a>
-                </li>
-              
-                <li>
-                  <a href="#msg.S2C_GetMailReward"><span class="badge">M</span>S2C_GetMailReward</a>
+                  <a href="#msg.S2C_LoginInfo"><span class="badge">M</span>S2C_LoginInfo</a>
                 </li>
               
               
                 <li>
-                  <a href="#msg.S2C_GetMailReward.E_Err"><span class="badge">E</span>S2C_GetMailReward.E_Err</a>
+                  <a href="#msg.C2S_Login.E_LoginType"><span class="badge">E</span>C2S_Login.E_LoginType</a>
+                </li>
+              
+                <li>
+                  <a href="#msg.S2C_Login.E_ErrReason"><span class="badge">E</span>S2C_Login.E_ErrReason</a>
                 </li>
               
               
@@ -570,479 +503,6 @@
     
       
       <div class="file-heading">
-        <h2 id="Hall.proto">Hall.proto</h2><a href="#title">Top</a>
-      </div>
-      <p></p>
-
-      
-        <h3 id="msg.C2S_DaySign">C2S_DaySign</h3>
-        <p>每日签到请求</p><p>@msg</p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>day</td>
-                  <td><a href="#int32">int32</a></td>
-                  <td></td>
-                  <td><p>要签到的天数 </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="msg.C2S_Login">C2S_Login</h3>
-        <p>登陆请求</p><p>@msg</p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>UID</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p>微信登陆时是微信uid,游客登陆时是手机唯一标识 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>NickName</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p>用户昵称 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>AvatarURL</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p>用户头像url </p></td>
-                </tr>
-              
-                <tr>
-                  <td>sex</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p>性别 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>password</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p>微信登陆传openid，游客登陆传空 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>location</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p>地理位置 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>logintype</td>
-                  <td><a href="#msg.C2S_Login.E_LoginType">C2S_Login.E_LoginType</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>CltType</td>
-                  <td><a href="#int32">int32</a></td>
-                  <td></td>
-                  <td><p>客户端设备类型,1-android,2-ios,3-h5 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>BigVer</td>
-                  <td><a href="#int32">int32</a></td>
-                  <td></td>
-                  <td><p>客户端版本号: BigVer.SmallVer.FixVer </p></td>
-                </tr>
-              
-                <tr>
-                  <td>SmallVer</td>
-                  <td><a href="#int32">int32</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>FixVer</td>
-                  <td><a href="#int32">int32</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="msg.C2S_SwitchHallRoleSex">C2S_SwitchHallRoleSex</h3>
-        <p>切换大厅角色显示的性别</p><p>@msg</p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Sex</td>
-                  <td><a href="#int32">int32</a></td>
-                  <td></td>
-                  <td><p>要切换到的性别,0-女,1-男 </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="msg.S2C_DaySign">S2C_DaySign</h3>
-        <p>每日签到回复</p><p>@msg</p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>err</td>
-                  <td><a href="#msg.S2C_DaySign.E_Err_DaySign">S2C_DaySign.E_Err_DaySign</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>Monies</td>
-                  <td><a href="#msg.Money">Money</a></td>
-                  <td>repeated</td>
-                  <td><p>签到后的货币信息 </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="msg.S2C_Login">S2C_Login</h3>
-        <p>登陆回复</p><p>@msg</p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>reason</td>
-                  <td><a href="#msg.S2C_Login.E_ErrReason">S2C_Login.E_ErrReason</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="msg.S2C_LoginInfo">S2C_LoginInfo</h3>
-        <p>登陆成功后下发信息</p><p>@msg</p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>ID</td>
-                  <td><a href="#int64">int64</a></td>
-                  <td></td>
-                  <td><p>玩家id </p></td>
-                </tr>
-              
-                <tr>
-                  <td>NickName</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p>用户昵称 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>AvatarURL</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p>头像url </p></td>
-                </tr>
-              
-                <tr>
-                  <td>Monies</td>
-                  <td><a href="#msg.Money">Money</a></td>
-                  <td>repeated</td>
-                  <td><p>货币信息 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>DaySigned</td>
-                  <td><a href="#bool">bool</a></td>
-                  <td></td>
-                  <td><p>今日是否已签到 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>SignedDays</td>
-                  <td><a href="#int32">int32</a></td>
-                  <td></td>
-                  <td><p>已签到天数 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>SignRewards</td>
-                  <td><a href="#msg.Item">Item</a></td>
-                  <td>repeated</td>
-                  <td><p>每日签到奖励,数组第几个代表第几天 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>HallRoleSex</td>
-                  <td><a href="#int32">int32</a></td>
-                  <td></td>
-                  <td><p>大厅角色性别,0-女,1-男 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>InTheGame</td>
-                  <td><a href="#bool">bool</a></td>
-                  <td></td>
-                  <td><p>是否在游戏中(重连) </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="msg.S2C_SwitchHallRoleSex">S2C_SwitchHallRoleSex</h3>
-        <p>@msg</p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Err</td>
-                  <td><a href="#msg.S2C_SwitchHallRoleSex.E_Err">S2C_SwitchHallRoleSex.E_Err</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-
-      
-        <h3 id="msg.C2S_Login.E_LoginType">C2S_Login.E_LoginType</h3>
-        <p>登陆类型</p>
-        <table class="enum-table">
-          <thead>
-            <tr><td>Name</td><td>Number</td><td>Description</td></tr>
-          </thead>
-          <tbody>
-            
-              <tr>
-                <td>E_LoginType_WeChat</td>
-                <td>0</td>
-                <td><p>微信登陆</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_LoginType_Guest</td>
-                <td>1</td>
-                <td><p>游客登陆</p></td>
-              </tr>
-            
-          </tbody>
-        </table>
-      
-        <h3 id="msg.S2C_DaySign.E_Err_DaySign">S2C_DaySign.E_Err_DaySign</h3>
-        <p></p>
-        <table class="enum-table">
-          <thead>
-            <tr><td>Name</td><td>Number</td><td>Description</td></tr>
-          </thead>
-          <tbody>
-            
-              <tr>
-                <td>E_ErrReason_</td>
-                <td>0</td>
-                <td><p>保留</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_Success</td>
-                <td>1</td>
-                <td><p>成功签到</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_AlreadySign</td>
-                <td>2</td>
-                <td><p>今日已签到</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_Unknown</td>
-                <td>6</td>
-                <td><p>其它错误</p></td>
-              </tr>
-            
-          </tbody>
-        </table>
-      
-        <h3 id="msg.S2C_Login.E_ErrReason">S2C_Login.E_ErrReason</h3>
-        <p></p>
-        <table class="enum-table">
-          <thead>
-            <tr><td>Name</td><td>Number</td><td>Description</td></tr>
-          </thead>
-          <tbody>
-            
-              <tr>
-                <td>E_ErrReason_</td>
-                <td>0</td>
-                <td><p>保留</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_LoginSuccess</td>
-                <td>1</td>
-                <td><p>成功登陆,将下发数据</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_NewAccount</td>
-                <td>2</td>
-                <td><p>成功创建新账号,读表获取初始数据</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_LoginInfoNotMatch</td>
-                <td>3</td>
-                <td><p>登陆信息不匹配,登陆失败</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_LocationWarn</td>
-                <td>4</td>
-                <td><p>验证通过,允许登陆,但登陆地点异常警告</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_UserNotExist</td>
-                <td>5</td>
-                <td><p>用户不存在</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_AlreadyLogin</td>
-                <td>6</td>
-                <td><p>已登陆</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_Unknown</td>
-                <td>7</td>
-                <td><p>其它错误</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_LowVersion</td>
-                <td>8</td>
-                <td><p>客户端版本过低</p></td>
-              </tr>
-            
-          </tbody>
-        </table>
-      
-        <h3 id="msg.S2C_SwitchHallRoleSex.E_Err">S2C_SwitchHallRoleSex.E_Err</h3>
-        <p></p>
-        <table class="enum-table">
-          <thead>
-            <tr><td>Name</td><td>Number</td><td>Description</td></tr>
-          </thead>
-          <tbody>
-            
-              <tr>
-                <td>E_Err_</td>
-                <td>0</td>
-                <td><p>保留</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_Success</td>
-                <td>1</td>
-                <td><p>成功</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_Invalid_Param</td>
-                <td>2</td>
-                <td><p>参数不对</p></td>
-              </tr>
-            
-              <tr>
-                <td>E_Err_Unknown</td>
-                <td>3</td>
-                <td><p>其它错误</p></td>
-              </tr>
-            
-          </tbody>
-        </table>
-      
-
-      
-
-      
-    
-      
-      <div class="file-heading">
         <h2 id="item.proto">item.proto</h2><a href="#title">Top</a>
       </div>
       <p></p>
@@ -1198,27 +658,13 @@
     
       
       <div class="file-heading">
-        <h2 id="mail.proto">mail.proto</h2><a href="#title">Top</a>
+        <h2 id="Login.proto">Login.proto</h2><a href="#title">Top</a>
       </div>
       <p></p>
 
       
-        <h3 id="msg.C2S_GetAllMailReward">C2S_GetAllMailReward</h3>
-        <p>一键领取</p>
-
-        
-
-        
-      
-        <h3 id="msg.C2S_GetMailList">C2S_GetMailList</h3>
-        <p>获取未领取奖励的邮件列表</p>
-
-        
-
-        
-      
-        <h3 id="msg.C2S_GetMailReward">C2S_GetMailReward</h3>
-        <p>领取mail中的奖励</p>
+        <h3 id="msg.C2S_Login">C2S_Login</h3>
+        <p>登陆请求</p><p>@msg</p>
 
         
           <table class="field-table">
@@ -1228,132 +674,78 @@
             <tbody>
               
                 <tr>
-                  <td>Id</td>
-                  <td><a href="#int64">int64</a></td>
-                  <td></td>
-                  <td><p>要领取奖励的邮件Id </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="msg.Mail">Mail</h3>
-        <p></p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>Id</td>
-                  <td><a href="#int64">int64</a></td>
-                  <td></td>
-                  <td><p>邮件编号 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>RewardType</td>
-                  <td><a href="#int64">int64</a></td>
-                  <td></td>
-                  <td><p>奖励类型,对应item表id </p></td>
-                </tr>
-              
-                <tr>
-                  <td>RewardNum</td>
-                  <td><a href="#int64">int64</a></td>
-                  <td></td>
-                  <td><p>奖励数量 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>Content</td>
+                  <td>UID</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>邮件内容 </p></td>
+                  <td><p>微信登陆时是微信uid,游客登陆时是手机唯一标识 </p></td>
                 </tr>
               
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="msg.S2C_GetAllMailReward">S2C_GetAllMailReward</h3>
-        <p></p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
                 <tr>
-                  <td>Ids</td>
+                  <td>NickName</td>
                   <td><a href="#string">string</a></td>
-                  <td>repeated</td>
-                  <td><p>领取成功的id </p></td>
+                  <td></td>
+                  <td><p>用户昵称 </p></td>
                 </tr>
               
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="msg.S2C_GetMailList">S2C_GetMailList</h3>
-        <p></p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
                 <tr>
-                  <td>Mails</td>
-                  <td><a href="#msg.Mail">Mail</a></td>
-                  <td>repeated</td>
-                  <td><p>大佬读不了int64数组,改成string数组 </p></td>
+                  <td>AvatarURL</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>用户头像url </p></td>
                 </tr>
               
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="msg.S2C_GetMailReward">S2C_GetMailReward</h3>
-        <p></p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
+                <tr>
+                  <td>sex</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>性别 </p></td>
+                </tr>
               
                 <tr>
-                  <td>Id</td>
-                  <td><a href="#int64">int64</a></td>
+                  <td>password</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>微信登陆传openid，游客登陆传空 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>location</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>地理位置 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>logintype</td>
+                  <td><a href="#msg.C2S_Login.E_LoginType">C2S_Login.E_LoginType</a></td>
                   <td></td>
                   <td><p> </p></td>
                 </tr>
               
                 <tr>
-                  <td>Err</td>
-                  <td><a href="#msg.S2C_GetMailReward.E_Err">S2C_GetMailReward.E_Err</a></td>
+                  <td>CltType</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>客户端设备类型,1-android,2-ios,3-h5 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>BigVer</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>客户端版本号: BigVer.SmallVer.FixVer </p></td>
+                </tr>
+              
+                <tr>
+                  <td>SmallVer</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>FixVer</td>
+                  <td><a href="#int32">int32</a></td>
                   <td></td>
                   <td><p> </p></td>
                 </tr>
@@ -1365,9 +757,136 @@
 
         
       
+        <h3 id="msg.S2C_Login">S2C_Login</h3>
+        <p>登陆回复</p><p>@msg</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>reason</td>
+                  <td><a href="#msg.S2C_Login.E_ErrReason">S2C_Login.E_ErrReason</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="msg.S2C_LoginInfo">S2C_LoginInfo</h3>
+        <p>登陆成功后下发信息</p><p>@msg</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>ID</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>玩家id </p></td>
+                </tr>
+              
+                <tr>
+                  <td>NickName</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>用户昵称 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>AvatarURL</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>头像url </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Monies</td>
+                  <td><a href="#msg.Money">Money</a></td>
+                  <td>repeated</td>
+                  <td><p>货币信息 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>DaySigned</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>今日是否已签到 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>SignedDays</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>已签到天数 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>SignRewards</td>
+                  <td><a href="#msg.Item">Item</a></td>
+                  <td>repeated</td>
+                  <td><p>每日签到奖励,数组第几个代表第几天 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>HallRoleSex</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>大厅角色性别,0-女,1-男 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>InTheGame</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>是否在游戏中(重连) </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
 
       
-        <h3 id="msg.S2C_GetMailReward.E_Err">S2C_GetMailReward.E_Err</h3>
+        <h3 id="msg.C2S_Login.E_LoginType">C2S_Login.E_LoginType</h3>
+        <p>登陆类型</p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>E_LoginType_WeChat</td>
+                <td>0</td>
+                <td><p>微信登陆</p></td>
+              </tr>
+            
+              <tr>
+                <td>E_LoginType_Guest</td>
+                <td>1</td>
+                <td><p>游客登陆</p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+      
+        <h3 id="msg.S2C_Login.E_ErrReason">S2C_Login.E_ErrReason</h3>
         <p></p>
         <table class="enum-table">
           <thead>
@@ -1376,27 +895,57 @@
           <tbody>
             
               <tr>
-                <td>E_Err_</td>
+                <td>E_ErrReason_</td>
                 <td>0</td>
-                <td><p></p></td>
+                <td><p>保留</p></td>
               </tr>
             
               <tr>
-                <td>E_Err_Succeed</td>
+                <td>E_Err_LoginSuccess</td>
                 <td>1</td>
-                <td><p>成功</p></td>
+                <td><p>成功登陆,将下发数据</p></td>
               </tr>
             
               <tr>
-                <td>E_Err_Already_Receive</td>
+                <td>E_Err_NewAccount</td>
                 <td>2</td>
-                <td><p>失败,已经领取过</p></td>
+                <td><p>成功创建新账号,读表获取初始数据</p></td>
               </tr>
             
               <tr>
-                <td>E_Err_UnKnown</td>
+                <td>E_Err_LoginInfoNotMatch</td>
                 <td>3</td>
-                <td><p>失败,其它</p></td>
+                <td><p>登陆信息不匹配,登陆失败</p></td>
+              </tr>
+            
+              <tr>
+                <td>E_Err_LocationWarn</td>
+                <td>4</td>
+                <td><p>验证通过,允许登陆,但登陆地点异常警告</p></td>
+              </tr>
+            
+              <tr>
+                <td>E_Err_UserNotExist</td>
+                <td>5</td>
+                <td><p>用户不存在</p></td>
+              </tr>
+            
+              <tr>
+                <td>E_Err_AlreadyLogin</td>
+                <td>6</td>
+                <td><p>已登陆</p></td>
+              </tr>
+            
+              <tr>
+                <td>E_Err_Unknown</td>
+                <td>7</td>
+                <td><p>其它错误</p></td>
+              </tr>
+            
+              <tr>
+                <td>E_Err_LowVersion</td>
+                <td>8</td>
+                <td><p>客户端版本过低</p></td>
               </tr>
             
           </tbody>
@@ -1428,7 +977,7 @@
                   <td>Type</td>
                   <td><a href="#int32">int32</a></td>
                   <td></td>
-                  <td><p>类型, 1=金币,2=钻石,3=积分, </p></td>
+                  <td><p>类型, 1=铜币,2=元宝,3=绑定元宝, </p></td>
                 </tr>
               
                 <tr>

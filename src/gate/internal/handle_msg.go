@@ -23,5 +23,5 @@ func handlePong(args []interface{}) {
 
 	ext := [][]byte{base.Int32ToByteArr(clientID)}
 	sender.WriteMsgEx(ext, send)
-	sender.WriteCmd(0, clientID)
+	//sender.WriteCmd(0, clientID)
 }

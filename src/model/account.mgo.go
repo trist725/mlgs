@@ -20,6 +20,7 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+var _ = json.Marshal
 var _ = msg.PH
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,8 +32,8 @@ func New_Account() *Account {
 }
 
 func (m Account) JsonString() string {
-	bs, _ := json.Marshal(m)
-	return fmt.Sprintf("{\"Account\":%s}", string(bs))
+	ba, _ := json.Marshal(m)
+	return "Account:" + string(ba)
 }
 
 func (m *Account) ResetEx() {
@@ -41,11 +42,11 @@ func (m *Account) ResetEx() {
 
 	m.UID = ""
 
+	m.Password = ""
+
 	m.RegisterTime = 0
 
 	m.Location = ""
-
-	m.Password = ""
 
 	m.Ban = 0
 
@@ -61,11 +62,11 @@ func (m Account) Clone() *Account {
 
 	n.UID = m.UID
 
+	n.Password = m.Password
+
 	n.RegisterTime = m.RegisterTime
 
 	n.Location = m.Location
-
-	n.Password = m.Password
 
 	n.Ban = m.Ban
 

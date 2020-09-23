@@ -23,16 +23,14 @@ message Account {
     /// 客户端传来的唯一id,如微信unionID/steamID
     string UID = 2;
     /// 密码
-    //string Password = 4;
+    string Password = 4;
     /// 注册时间
     int64 RegisterTime = 5;
     ///token校验
 //    string accessToken = 6;
 //    string refreshToken = 7;
     ///登陆地理位置
-    string location = 8;
-    ///密码
-    string password = 9;
+    string Location = 8;
     /// 帐号状态 1=游客, 2=注册, 3=绑定
     //E_AccountState State = 6;
     /// 密钥

@@ -5,11 +5,10 @@ package msg
 
 import (
 	fmt "fmt"
+	proto "github.com/gogo/protobuf/proto"
 	io "io"
 	math "math"
 	math_bits "math/bits"
-
-	proto "github.com/gogo/protobuf/proto"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -25,7 +24,7 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 /// 用户货币信息
 type Money struct {
-	/// 类型, 1=金币,2=钻石,3=积分,
+	/// 类型, 1=铜币,2=元宝,3=绑定元宝,
 	Type int32 `protobuf:"varint,1,opt,name=Type,proto3" json:"Type,omitempty"`
 	/// 数量
 	Num int64 `protobuf:"varint,2,opt,name=Num,proto3" json:"Num,omitempty"`

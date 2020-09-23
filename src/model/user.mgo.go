@@ -20,6 +20,7 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+var _ = json.Marshal
 var _ = msg.PH
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,8 +32,8 @@ func New_User() *User {
 }
 
 func (m User) JsonString() string {
-	bs, _ := json.Marshal(m)
-	return fmt.Sprintf("{\"User\":%s}", string(bs))
+	ba, _ := json.Marshal(m)
+	return "User:" + string(ba)
 }
 
 func (m *User) ResetEx() {
