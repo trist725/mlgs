@@ -165,24 +165,6 @@ func (m User) RemoveByID(session *mongodb.Session, dbName string) error {
 	return session.DB(dbName).C(TblUser).RemoveId(m.ID)
 }
 
-func (m User) ToMsg(n *msg.User) *msg.User {
-	if n == nil {
-		n = msg.Get_User()
-	}
-
-	n.ID = m.ID
-
-	n.Level = m.Level
-
-	n.NickName = m.NickName
-
-	n.Sex = m.Sex
-
-	n.Exp = m.Exp
-
-	return n
-}
-
 var g_User_Pool = sync.Pool{}
 
 func Get_User() *User {

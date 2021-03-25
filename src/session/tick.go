@@ -1,7 +1,6 @@
 package session
 
 import (
-	"mlgs/src/msg"
 	"mlgs/src/sd"
 	"time"
 
@@ -27,13 +26,10 @@ func (manager *Manager) checkTick(skeleton *module.Skeleton) {
 				dur := time.Now().Unix() - session.lastActiveTime
 				if dur >= sd.InitKickTimeOutClientTime() {
 					skeleton.ChanRPCServer.Go("CloseAgent", session.agent)
-				} else if dur >= sd.InitCheckTimeOutClientTime() {
-					send := msg.Get_S2C_Pong()
-					session.agent.WriteMsg(send)
 				}
 			}
 			smap.Unlock()
 		}
-		time.Sleep(time.Duration(sd.InitCheckTimeOutClientTime()) * time.Second)
+		time.Sleep(time.Duration(sd.InitCheckTickInterval()) * time.Second)
 	}
 }

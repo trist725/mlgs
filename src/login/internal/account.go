@@ -11,22 +11,6 @@ import (
 	"mlgs/src/msg"
 )
 
-type LoginReq struct {
-	MerchantCode string
-	Password     string
-	PlayerId     string
-	ProductCode  string
-	Token        string
-}
-
-type LoginResp struct {
-	Message string `json:"Message,omitempty"`
-	UserId  string `json:"UserId,omitempty"`
-	Product string `json:"Product,omitempty"`
-	Code    int    `json:"Code,omitempty"`
-	Token   string
-}
-
 func checkAccountExist(dbSession *mongodb.Session, uid string) (*model.Account, error) {
 	account, err := model.SC.FindOne_Account(dbSession, bson.M{"UID": uid})
 	if err == nil {
@@ -34,19 +18,6 @@ func checkAccountExist(dbSession *mongodb.Session, uid string) (*model.Account, 
 	}
 	model.Put_Account(account)
 	return nil, nil
-}
-
-func checkLoginInfo(account *model.Account, recv *msg.C2S_Login) error {
-	if account.UID != recv.UID {
-		return fmt.Errorf("login uid:[%s] not match", recv.UID)
-	}
-	if recv.Logintype == msg.C2S_Login_E_LoginType_WeChat {
-		if account.Password != recv.Password {
-			return fmt.Errorf("login uid:[%s] with password:[%s] not match", recv.UID, recv.Password)
-		}
-	}
-
-	return nil
 }
 
 func createAccount(dbSession *mongodb.Session, recv *msg.C2S_Login) (*model.Account, error) {

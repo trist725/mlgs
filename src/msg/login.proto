@@ -1,0 +1,28 @@
+syntax="proto3";
+
+package msg;
+
+///登录请求
+//@msg
+message C2S_Login{
+  ///玩家id
+  string UserId = 1;
+  ///校验码
+  string VerifyCode = 2;
+}
+
+
+///登录回包
+//@msg
+message S2C_Login{
+  ///登录结果
+  enum E_Error {
+    Error_ = 0;
+    /// 成功
+    OK = 1;
+    /// 失败
+    Failed = 2;
+  }
+  ///登录结果
+  E_Error Err = 1;
+}

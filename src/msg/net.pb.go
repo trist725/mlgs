@@ -5,11 +5,10 @@ package msg
 
 import (
 	fmt "fmt"
+	proto "github.com/gogo/protobuf/proto"
 	io "io"
 	math "math"
 	math_bits "math/bits"
-
-	proto "github.com/gogo/protobuf/proto"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -24,9 +23,10 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 ///通知掉线
+//@msg
 type S2C_DisConn struct {
 	///玩家id
-	UserId int64 `protobuf:"varint,1,opt,name=UserId,proto3" json:"UserId,omitempty"`
+	UserId string `protobuf:"bytes,1,opt,name=UserId,proto3" json:"UserId,omitempty"`
 }
 
 func (m *S2C_DisConn) Reset()         { *m = S2C_DisConn{} }
@@ -62,15 +62,18 @@ func (m *S2C_DisConn) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_S2C_DisConn proto.InternalMessageInfo
 
-func (m *S2C_DisConn) GetUserId() int64 {
+func (m *S2C_DisConn) GetUserId() string {
 	if m != nil {
 		return m.UserId
 	}
-	return 0
+	return ""
 }
 
 /// ping心跳
+//@msg
 type C2S_Ping struct {
+	///客户端时间戳
+	TimeStamp int64 `protobuf:"varint,1,opt,name=TimeStamp,proto3" json:"TimeStamp,omitempty"`
 }
 
 func (m *C2S_Ping) Reset()         { *m = C2S_Ping{} }
@@ -106,8 +109,18 @@ func (m *C2S_Ping) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_C2S_Ping proto.InternalMessageInfo
 
+func (m *C2S_Ping) GetTimeStamp() int64 {
+	if m != nil {
+		return m.TimeStamp
+	}
+	return 0
+}
+
 /// 回复ping心跳
+//@msg
 type S2C_Pong struct {
+	///服务端时间戳
+	TimeStamp int64 `protobuf:"varint,1,opt,name=TimeStamp,proto3" json:"TimeStamp,omitempty"`
 }
 
 func (m *S2C_Pong) Reset()         { *m = S2C_Pong{} }
@@ -143,6 +156,13 @@ func (m *S2C_Pong) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_S2C_Pong proto.InternalMessageInfo
 
+func (m *S2C_Pong) GetTimeStamp() int64 {
+	if m != nil {
+		return m.TimeStamp
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*S2C_DisConn)(nil), "msg.S2C_DisConn")
 	proto.RegisterType((*C2S_Ping)(nil), "msg.C2S_Ping")
@@ -152,15 +172,17 @@ func init() {
 func init() { proto.RegisterFile("net.proto", fileDescriptor_a5b10ce944527a32) }
 
 var fileDescriptor_a5b10ce944527a32 = []byte{
-	// 126 bytes of a gzipped FileDescriptorProto
+	// 146 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0xcc, 0x4b, 0x2d, 0xd1,
 	0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0xce, 0x2d, 0x4e, 0x57, 0x52, 0xe5, 0xe2, 0x0e, 0x36,
 	0x72, 0x8e, 0x77, 0xc9, 0x2c, 0x76, 0xce, 0xcf, 0xcb, 0x13, 0x12, 0xe3, 0x62, 0x0b, 0x2d, 0x4e,
-	0x2d, 0xf2, 0x4c, 0x91, 0x60, 0x54, 0x60, 0xd4, 0x60, 0x0e, 0x82, 0xf2, 0x94, 0xb8, 0xb8, 0x38,
-	0x9c, 0x8d, 0x82, 0xe3, 0x03, 0x32, 0xf3, 0xd2, 0x41, 0x6c, 0x90, 0x96, 0x80, 0xfc, 0xbc, 0x74,
-	0x27, 0x89, 0x13, 0x8f, 0xe4, 0x18, 0x2f, 0x3c, 0x92, 0x63, 0x7c, 0xf0, 0x48, 0x8e, 0x71, 0xc2,
-	0x63, 0x39, 0x86, 0x0b, 0x8f, 0xe5, 0x18, 0x6e, 0x3c, 0x96, 0x63, 0x48, 0x62, 0x03, 0x5b, 0x62,
-	0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0xed, 0xbe, 0x45, 0xdd, 0x71, 0x00, 0x00, 0x00,
+	0x2d, 0xf2, 0x4c, 0x91, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x82, 0xf2, 0x94, 0x34, 0xb8, 0x38,
+	0x9c, 0x8d, 0x82, 0xe3, 0x03, 0x32, 0xf3, 0xd2, 0x85, 0x64, 0xb8, 0x38, 0x43, 0x32, 0x73, 0x53,
+	0x83, 0x4b, 0x12, 0x73, 0x0b, 0xc0, 0xca, 0x98, 0x83, 0x10, 0x02, 0x20, 0x95, 0x20, 0x03, 0x03,
+	0xf2, 0x09, 0xa9, 0x74, 0x92, 0x38, 0xf1, 0x48, 0x8e, 0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f,
+	0xe4, 0x18, 0x27, 0x3c, 0x96, 0x63, 0xb8, 0xf0, 0x58, 0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x24,
+	0x36, 0xb0, 0x03, 0x8d, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0xfe, 0xf7, 0xec, 0xfd, 0xad, 0x00,
+	0x00, 0x00,
 }
 
 func (m *S2C_DisConn) Marshal() (dAtA []byte, err error) {
@@ -183,10 +205,12 @@ func (m *S2C_DisConn) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.UserId != 0 {
-		i = encodeVarintNet(dAtA, i, uint64(m.UserId))
+	if len(m.UserId) > 0 {
+		i -= len(m.UserId)
+		copy(dAtA[i:], m.UserId)
+		i = encodeVarintNet(dAtA, i, uint64(len(m.UserId)))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -211,6 +235,11 @@ func (m *C2S_Ping) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.TimeStamp != 0 {
+		i = encodeVarintNet(dAtA, i, uint64(m.TimeStamp))
+		i--
+		dAtA[i] = 0x8
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -234,6 +263,11 @@ func (m *S2C_Pong) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.TimeStamp != 0 {
+		i = encodeVarintNet(dAtA, i, uint64(m.TimeStamp))
+		i--
+		dAtA[i] = 0x8
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -254,8 +288,9 @@ func (m *S2C_DisConn) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.UserId != 0 {
-		n += 1 + sovNet(uint64(m.UserId))
+	l = len(m.UserId)
+	if l > 0 {
+		n += 1 + l + sovNet(uint64(l))
 	}
 	return n
 }
@@ -266,6 +301,9 @@ func (m *C2S_Ping) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if m.TimeStamp != 0 {
+		n += 1 + sovNet(uint64(m.TimeStamp))
+	}
 	return n
 }
 
@@ -275,6 +313,9 @@ func (m *S2C_Pong) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if m.TimeStamp != 0 {
+		n += 1 + sovNet(uint64(m.TimeStamp))
+	}
 	return n
 }
 
@@ -314,10 +355,10 @@ func (m *S2C_DisConn) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field UserId", wireType)
 			}
-			m.UserId = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowNet
@@ -327,21 +368,31 @@ func (m *S2C_DisConn) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.UserId |= int64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthNet
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthNet
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.UserId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipNet(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthNet
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthNet
 			}
 			if (iNdEx + skippy) > l {
@@ -385,16 +436,32 @@ func (m *C2S_Ping) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: C2S_Ping: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TimeStamp", wireType)
+			}
+			m.TimeStamp = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowNet
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.TimeStamp |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipNet(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthNet
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthNet
 			}
 			if (iNdEx + skippy) > l {
@@ -438,16 +505,32 @@ func (m *S2C_Pong) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: S2C_Pong: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TimeStamp", wireType)
+			}
+			m.TimeStamp = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowNet
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.TimeStamp |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipNet(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthNet
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthNet
 			}
 			if (iNdEx + skippy) > l {

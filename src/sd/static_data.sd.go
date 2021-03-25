@@ -3,22 +3,11 @@
 
 package sd
 
-import (
-	"log"
-	"path/filepath"
-)
+import "log"
+import "path/filepath"
 
 var (
-	AchieveMgr     = newAchieveManager()
-	CompetitionMgr = newCompetitionManager()
-	EmailMgr       = newEmailManager()
-	GlobalMgr      = newGlobalManager()
-	ItemMgr        = newItemManager()
-	PersonMgr      = newPersonManager()
-	RoomMgr        = newRoomManager()
-	ShopMgr        = newShopManager()
-	TaskMgr        = newTaskManager()
-	TimeMgr        = newTimeManager()
+	GlobalMgr = newGlobalManager()
 )
 
 func LoadAll(excelDir string) (success bool) {
@@ -30,25 +19,7 @@ func LoadAll(excelDir string) (success bool) {
 
 	success = true
 
-	success = AchieveMgr.Load(filepath.Join(absExcelDir, "achieve.xlsx")) && success
-
-	success = CompetitionMgr.Load(filepath.Join(absExcelDir, "competition.xlsx")) && success
-
-	success = EmailMgr.Load(filepath.Join(absExcelDir, "email.xlsx")) && success
-
 	success = GlobalMgr.Load(filepath.Join(absExcelDir, "global.xlsx")) && success
-
-	success = ItemMgr.Load(filepath.Join(absExcelDir, "item.xlsx")) && success
-
-	success = PersonMgr.Load(filepath.Join(absExcelDir, "person.xlsx")) && success
-
-	success = RoomMgr.Load(filepath.Join(absExcelDir, "room.xlsx")) && success
-
-	success = ShopMgr.Load(filepath.Join(absExcelDir, "shop.xlsx")) && success
-
-	success = TaskMgr.Load(filepath.Join(absExcelDir, "task.xlsx")) && success
-
-	success = TimeMgr.Load(filepath.Join(absExcelDir, "time.xlsx")) && success
 
 	return
 }
@@ -62,25 +33,7 @@ func AfterLoadAll(excelDir string) (success bool) {
 
 	success = true
 
-	success = AchieveMgr.AfterLoadAll(filepath.Join(absExcelDir, "achieve.xlsx")) && success
-
-	success = CompetitionMgr.AfterLoadAll(filepath.Join(absExcelDir, "competition.xlsx")) && success
-
-	success = EmailMgr.AfterLoadAll(filepath.Join(absExcelDir, "email.xlsx")) && success
-
 	success = GlobalMgr.AfterLoadAll(filepath.Join(absExcelDir, "global.xlsx")) && success
-
-	success = ItemMgr.AfterLoadAll(filepath.Join(absExcelDir, "item.xlsx")) && success
-
-	success = PersonMgr.AfterLoadAll(filepath.Join(absExcelDir, "person.xlsx")) && success
-
-	success = RoomMgr.AfterLoadAll(filepath.Join(absExcelDir, "room.xlsx")) && success
-
-	success = ShopMgr.AfterLoadAll(filepath.Join(absExcelDir, "shop.xlsx")) && success
-
-	success = TaskMgr.AfterLoadAll(filepath.Join(absExcelDir, "task.xlsx")) && success
-
-	success = TimeMgr.AfterLoadAll(filepath.Join(absExcelDir, "time.xlsx")) && success
 
 	return
 }

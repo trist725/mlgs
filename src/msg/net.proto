@@ -3,16 +3,23 @@ syntax="proto3";
 package msg;
 
 ///通知掉线
+//@msg
 message S2C_DisConn{
     ///玩家id
-    int64 UserId = 1;
+    string UserId = 1;
 }
 
 /// ping心跳
+//@msg
 message C2S_Ping {
+    ///客户端时间戳
+    int64 TimeStamp = 1;
 }
 
 /// 回复ping心跳
+//@msg
 message S2C_Pong {
+    ///服务端时间戳
+    int64 TimeStamp = 1;
 }
 

@@ -50,10 +50,11 @@ func rpcHandleLoginAuthPass(args []interface{}) {
 	}
 	account := args[1].(model.Account)
 	user := args[2].(model.User)
+	userID := args[3].(string)
 	if account.ID == 0 || user.ID == 0 {
 		log.Error("invalid account or user")
 	}
-	ns := s.New(a, &account, &user)
+	ns := s.New(a, userID, &account, &user)
 	sc := s.Mgr().Count()
 	log.Debug("current session count: %d", sc)
 	s.Mgr().CheckTick(skeleton)

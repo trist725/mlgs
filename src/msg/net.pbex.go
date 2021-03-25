@@ -6,10 +6,9 @@ package msg
 import (
 	json "encoding/json"
 	fmt "fmt"
+	proto "github.com/gogo/protobuf/proto"
 	math "math"
 	sync "sync"
-
-	proto "github.com/gogo/protobuf/proto"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -21,7 +20,7 @@ var _ = math.Inf
 // message [S2C_DisConn] begin
 func (m *S2C_DisConn) ResetEx() {
 
-	m.UserId = 0
+	m.UserId = ""
 
 }
 
@@ -93,6 +92,8 @@ func Put_S2C_DisConn(i interface{}) {
 // message [C2S_Ping] begin
 func (m *C2S_Ping) ResetEx() {
 
+	m.TimeStamp = 0
+
 }
 
 func (m C2S_Ping) Clone() *C2S_Ping {
@@ -100,6 +101,8 @@ func (m C2S_Ping) Clone() *C2S_Ping {
 	if !ok || n == nil {
 		n = &C2S_Ping{}
 	}
+
+	n.TimeStamp = m.TimeStamp
 
 	return n
 }
@@ -161,6 +164,8 @@ func Put_C2S_Ping(i interface{}) {
 // message [S2C_Pong] begin
 func (m *S2C_Pong) ResetEx() {
 
+	m.TimeStamp = 0
+
 }
 
 func (m S2C_Pong) Clone() *S2C_Pong {
@@ -168,6 +173,8 @@ func (m S2C_Pong) Clone() *S2C_Pong {
 	if !ok || n == nil {
 		n = &S2C_Pong{}
 	}
+
+	n.TimeStamp = m.TimeStamp
 
 	return n
 }

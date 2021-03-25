@@ -21,6 +21,7 @@ type Session struct {
 
 	agent     gate.Agent
 	closeFlag int32
+	userID    string
 	user      *model.User    // 需要保存到数据库的用户数据
 	account   *model.Account // 帐号数据
 	//cache          *cache.Player  // 玩家游戏过程中的数据
@@ -29,13 +30,14 @@ type Session struct {
 
 var gSessionId uint64
 
-func New(agent gate.Agent, account *model.Account, user *model.User) *Session {
+func New(agent gate.Agent, userID string, account *model.Account, user *model.User) *Session {
 	session := &Session{
 		agent:   agent,
 		account: account,
 		user:    user,
+		userID:  userID,
 		id:      atomic.AddUint64(&gSessionId, 1),
-		sign:    fmt.Sprintf("user-%d-%s", user.ID, user.NickName),
+		sign:    fmt.Sprintf("user-%d-%s", user.ID, userID),
 	}
 	//用于从agent获取到session
 	session.agent.SetUserData(session.id)
