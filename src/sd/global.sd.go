@@ -5,14 +5,14 @@ package sd
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
-	"path/filepath"
 	"strconv"
-
-	"github.com/tealeg/xlsx"
-	"github.com/trist725/mgsu/util"
 )
+import "fmt"
+import "log"
+import "path/filepath"
+
+import "github.com/tealeg/xlsx"
+import "github.com/trist725/mgsu/util"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // TODO 添加扩展import代码
@@ -241,71 +241,64 @@ func (mgr *GlobalManager) AfterLoadAll(excelFilePath string) (success bool) {
 	// TODO 添加加载后处理代码
 	//after_load_all_begin
 	{
-		d, ok := mgr.dataMap[int64(E_Global_InitUserDataId)]
+		d, ok := mgr.dataMap[E_Global_KickTimeOutClientTime]
 		if !ok {
-			log.Fatal("获取用户初始数据在person表id失败")
+			log.Fatal("获取 服务端主动断开无活动客户端时间 失败")
 			return false
 		}
 		tid, err := strconv.Atoi(d.Value)
 		if err != nil {
-			log.Fatal("获取用户初始数据在person表id失败", err)
-			return false
-		}
-		gInitUserDataId = int64(tid)
-		if gInitUserDataId <= 0 {
-			log.Fatal("获取用户初始数据在person表id值有误", tid)
-			return false
-		}
-	}
-	{
-		d, ok := mgr.dataMap[int64(E_Global_InitMatchRoomId)]
-		if !ok {
-			log.Fatal("获取匹配房间数据在room表的id数组失败")
-			return false
-		}
-		if err := json.Unmarshal([]byte(d.Value), &gInitQuickMatchRoomId); err != nil {
-			log.Fatal("获取匹配房间数据在room表的id数组有误", err)
-			return false
-		}
-	}
-	{
-		d, ok := mgr.dataMap[int64(E_Global_MinStartGamePlayer)]
-		if !ok {
-			log.Fatal("获取开始对局的最少人数失败")
-			return false
-		}
-		tid, err := strconv.Atoi(d.Value)
-		if err != nil {
-			log.Fatal("获取开始对局的最少人数失败", err)
-			return false
-		}
-		gMinStartGamePlayer = tid
-	}
-	{
-		d, ok := mgr.dataMap[int64(E_Global_KickTimeOutClientTime)]
-		if !ok {
-			log.Fatal("获取服务端主动断开无活动客户端时间失败")
-			return false
-		}
-		tid, err := strconv.Atoi(d.Value)
-		if err != nil {
-			log.Fatal("获取服务端主动断开无活动客户端时间失败", err)
+			log.Fatal("获取 服务端主动断开无活动客户端时间 失败", err)
 			return false
 		}
 		gKickTimeOutClientTime = int64(tid)
 	}
 	{
-		d, ok := mgr.dataMap[int64(E_Global_CheckTimeOutClientTime)]
+		d, ok := mgr.dataMap[E_Global_ClientVerifyCode]
 		if !ok {
-			log.Fatal("获取无活动下服务端发送心跳包间隔时间失败")
+			log.Fatal("获取 客户端校验码 失败")
+			return false
+		}
+		gClientVerifyCode = d.Value
+	}
+	{
+		d, ok := mgr.dataMap[E_Global_CheckTickInterval]
+		if !ok {
+			log.Fatal("获取 心跳校验间隔 失败")
 			return false
 		}
 		tid, err := strconv.Atoi(d.Value)
 		if err != nil {
-			log.Fatal("获取无活动下服务端发送心跳包间隔时间失败", err)
+			log.Fatal("获取 心跳校验间隔 失败", err)
 			return false
 		}
-		gCheckTimeOutClientTime = int64(tid)
+		gCheckTickInterval = int64(tid)
+	}
+	{
+		d, ok := mgr.dataMap[E_Global_PlayerPerRoom]
+		if !ok {
+			log.Fatal("获取 房间最大玩家数 失败")
+			return false
+		}
+		tid, err := strconv.Atoi(d.Value)
+		if err != nil {
+			log.Fatal("获取 心跳校验间隔 失败", err)
+			return false
+		}
+		gPlayerPerRoom = int64(tid)
+	}
+	{
+		d, ok := mgr.dataMap[E_Global_BystanderPerRoom]
+		if !ok {
+			log.Fatal("获取 房间最大旁观者数 失败")
+			return false
+		}
+		tid, err := strconv.Atoi(d.Value)
+		if err != nil {
+			log.Fatal("获取 心跳校验间隔 失败", err)
+			return false
+		}
+		gBystanderPerRoom = int64(tid)
 	}
 	//after_load_all_end
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -315,35 +308,6 @@ func (mgr *GlobalManager) AfterLoadAll(excelFilePath string) (success bool) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // TODO 添加扩展代码
 //extend_begin
-
-//用户初始化数据在person表的id
-var gInitUserDataId int64
-
-func InitUserDataId() int64 {
-	return gInitUserDataId
-}
-
-//快速匹配房间数据在room表的id数组
-var gInitQuickMatchRoomId []int64
-
-//快速匹配房间数据在room表的id
-func InitQuickMatchRoomId() int64 {
-	if len(gInitQuickMatchRoomId) < 1 {
-		log.Fatal("匹配房间数据在room表的id数组 配表有误")
-	}
-	return gInitQuickMatchRoomId[0]
-}
-
-//开始对局的最少人数
-var gMinStartGamePlayer int
-
-func InitMinStartGamePlayer() int {
-	if gMinStartGamePlayer < 1 {
-		log.Fatal("开始对局的最少人数 配表有误")
-	}
-	return gMinStartGamePlayer
-}
-
 //服务端主动断开无活动客户端时间(单位:秒)
 var gKickTimeOutClientTime int64
 
@@ -354,14 +318,40 @@ func InitKickTimeOutClientTime() int64 {
 	return gKickTimeOutClientTime
 }
 
-//无活动下服务端发送心跳包间隔时间(单位:秒)
-var gCheckTimeOutClientTime int64
+var gClientVerifyCode string
 
-func InitCheckTimeOutClientTime() int64 {
-	if gCheckTimeOutClientTime < 1 {
-		log.Fatal("无活动下服务端发送心跳包间隔时间(单位:秒) 配表有误")
+func InitClientVerifyCode() string {
+	if gClientVerifyCode == "" {
+		log.Fatal("客户端校验码 配表有误")
 	}
-	return gCheckTimeOutClientTime
+	return gClientVerifyCode
+}
+
+var gCheckTickInterval int64
+
+func InitCheckTickInterval() int64 {
+	if gCheckTickInterval < 1 {
+		log.Fatal("心跳校验间隔 配表有误")
+	}
+	return gCheckTickInterval
+}
+
+var gPlayerPerRoom int64
+
+func InitPlayerPerRoom() int64 {
+	if gPlayerPerRoom < 1 {
+		log.Fatal("房间最大玩家数 配表有误")
+	}
+	return gPlayerPerRoom
+}
+
+var gBystanderPerRoom int64
+
+func InitBystanderPerRoom() int64 {
+	if gBystanderPerRoom < 1 {
+		log.Fatal("房间最大旁观者数 配表有误")
+	}
+	return gBystanderPerRoom
 }
 
 //extend_end
